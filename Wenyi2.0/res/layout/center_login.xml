@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bgfile"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp" >
+
+    <RelativeLayout
+        android:id="@id/title"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentTop="true" >
+
+        <ImageView
+            android:id="@id/return_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/f53_btn" />
+
+        <TextView
+            style="@style/titleFont"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/user_login"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@id/register"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/user_register"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <include layout="@layout/public_layout_line" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line_welcome"
+        android:ignoreGravity="@+id/position1" >
+
+        <EditText
+            android:id="@id/wenyi_user_email"
+            style="@style/matchW"
+            android:layout_marginTop="10dp"
+            android:hint="@string/enter_user_email" />
+
+        <EditText
+            android:id="@id/wenyi_user_password"
+            style="@style/matchW"
+            android:layout_below="@id/wenyi_user_email"
+            android:layout_marginTop="10dp"
+            android:hint="@string/enter_user_password"
+            android:password="true" />
+
+        <TextView
+            android:id="@+id/login_passwd_forget"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/wenyi_user_password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_tag"
+            android:gravity="center"
+            android:text="@string/user_login"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@id/login"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/wenyi_user_password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_tag"
+            android:gravity="center"
+            android:text="@string/user_login"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        style="@style/matchW"
+        android:layout_alignLeft="@+id/relativeLayout1"
+        android:layout_below="@id/relativeLayout1"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/wrapWH"
+            android:layout_marginTop="15dp"
+            android:text="@string/login_other_text"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@id/sinalogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dip"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/login_sina"
+            android:gravity="center"
+            android:text="@string/login_sina_text"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@id/qqlogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dip"
+            android:background="@drawable/login_qq"
+            android:gravity="center"
+            android:text="@string/login_qq_text"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</RelativeLayout>

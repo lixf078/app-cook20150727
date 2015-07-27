@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@drawable/bgfile" >
+    
+    <RelativeLayout
+       	android:id="@id/title"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentTop="true" >
+        
+        <ImageView
+	        android:id="@id/return_img"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:src="@drawable/f53_btn" />
+
+        <TextView
+            android:id="@id/titleFont"
+            style="@style/titleFont"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="反馈" />
+        
+        <ImageView
+            android:id="@+id/submit_idea"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/f133" />
+        
+    </RelativeLayout>
+    
+    <include layout="@layout/public_layout_line"/>
+    
+    <LinearLayout
+        android:layout_below="@id/title"
+        style="@style/matchW"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+        
+        <EditText
+            android:id="@+id/user_send_idea"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="30dp"
+            android:gravity="top"
+            android:background="@color/white"
+            android:hint="请输入您要反馈的内容!" />
+        
+    </LinearLayout>
+    
+</RelativeLayout>

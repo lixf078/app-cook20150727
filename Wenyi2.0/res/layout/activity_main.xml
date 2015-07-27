@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:keepScreenOn="true" >
+
+    <include layout="@layout/wenyi_common_header" />
+
+    <RelativeLayout
+        android:id="@+id/essay_adv_rl"
+        android:layout_width="match_parent"
+        android:layout_height="220dip"
+        android:layout_below="@id/wenyi_common_header"
+        android:layout_marginBottom="5dip"
+        android:layout_marginTop="5dip">
+
+        <com.shecook.wenyi.essay.view.AutoScrollViewPager
+            android:id="@+id/view_pager_advert"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.shecook.wenyi.essay.view.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/view_pager_advert"
+            android:layout_marginTop="15dp"
+            android:padding="5dip" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/leibie_categry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/essay_adv_rl" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ot_1"
+            android:gravity="center_horizontal"
+            android:text="@string/essay_new_action" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ot_3"
+            android:gravity="center_horizontal"
+            android:text="@string/essay_everyday_chart" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/shicai_default"
+            android:gravity="center_horizontal"
+            android:text="@string/essay_life_way" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/leibie_categry_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/leibie_categry" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ot_1"
+            android:gravity="center_horizontal"
+            android:text="@string/essay_good_baby" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ot_3"
+            android:gravity="center_horizontal"
+            android:text="@string/essay_cook_knowledge" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/shicai_default"
+            android:gravity="center_horizontal"
+            android:text="@string/essay_question_answer" />
+    </LinearLayout>
+
+</RelativeLayout>

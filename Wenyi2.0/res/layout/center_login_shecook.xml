@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@drawable/bgfile" >
+    
+    <RelativeLayout
+       	android:id="@id/title"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentTop="true" >
+        
+        <ImageView
+	        android:id="@id/return_img"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:src="@drawable/f53_btn" />
+
+        <TextView
+            android:id="@id/titleFont"
+            style="@style/titleFont"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/login_by_wenyi" />
+        
+        <ImageView
+            android:id="@id/register"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/f131" />
+        
+    </RelativeLayout>
+    
+    <include layout="@layout/public_layout_line"/>
+    
+    <LinearLayout
+        android:layout_below="@id/title"
+        style="@style/matchW"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+        
+        <EditText
+            android:id="@id/wenyi_user_email"
+            style="@style/matchW"
+            android:layout_marginTop="10dp"
+            android:hint="@string/enter_user_email" />
+        
+        <EditText
+            android:id="@id/wenyi_user_password"
+            style="@style/matchW"
+            android:layout_marginTop="10dp"
+            android:hint="@string/enter_user_password"
+            android:password="true"/>
+        
+        <ImageView
+            android:id="@id/login"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/f132" />
+        
+    </LinearLayout>
+    
+</RelativeLayout>

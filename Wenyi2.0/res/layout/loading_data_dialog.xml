@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <LinearLayout
+        android:id="@+id/data_loading_suibi"
+        style="@style/macthWH"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
+
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar"
+            android:layout_width="30dip"
+            android:layout_height="30dip" />
+
+        <TextView
+            android:id="@+id/load_data_info"
+            style="@style/wrapWH"
+            android:layout_marginLeft="10dp"
+            android:text="@string/try_loading"/>
+    </LinearLayout>
+</RelativeLayout>

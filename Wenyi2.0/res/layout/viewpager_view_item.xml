@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/grid_relative"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/item_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/wenyi_02"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/black_half"
+        android:gravity="left|center_vertical"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textSize="17sp" />
+
+</RelativeLayout>

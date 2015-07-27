@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- HeaderGridView -->
+    <declare-styleable name="HeaderGridView">
+        <attr name="MyColums" format="integer" />
+    </declare-styleable>
+
+    <!-- 自定义 FlowImageIndicator 需要的属性 -->
+    <declare-styleable name="FlowImageIndicator">
+        <attr name="counts" format="integer"></attr>
+        <attr name="item_width" format="dimension"></attr>
+        <attr name="item_height" format="dimension"></attr>
+        <attr name="item_space" format="dimension"></attr>
+        <attr name="point_selected_image" format="reference"></attr>
+        <attr name="point_normal_image" format="reference"></attr>
+    </declare-styleable>
+
+    <!-- 开源控件 PagerSlidingTabStrip用到的 ，删除了 PagerSlidingTabStrip 所以这个是没用的 -->
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="pstsIndicatorColor" format="color" />
+        <attr name="pstsUnderlineColor" format="color" />
+        <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsIndicatorHeight" format="dimension" />
+        <attr name="pstsUnderlineHeight" format="dimension" />
+        <attr name="pstsDividerPadding" format="dimension" />
+        <attr name="pstsTabPaddingLeftRight" format="dimension" />
+        <attr name="pstsScrollOffset" format="dimension" />
+        <attr name="pstsTabBackground" format="reference" />
+        <attr name="pstsShouldExpand" format="boolean" />
+        <attr name="pstsTextAllCaps" format="boolean" />
+    </declare-styleable>
+
+    <!-- 圆形imageview -->
+    <declare-styleable name="RoundedImageView">
+        <attr name="riv_corner_radius" format="dimension" />
+        <attr name="riv_border_width" format="dimension" />
+        <attr name="riv_border_color" format="color" />
+        <attr name="riv_mutate_background" format="boolean" />
+        <attr name="riv_oval" format="boolean" />
+        <attr name="android:scaleType" />
+    </declare-styleable>
+
+    <!-- 底部拖动布局 -->
+    <declare-styleable name="SlidingUpPanelLayout">
+        <attr name="panelHeight" format="dimension" />
+        <attr name="shadowHeight" format="dimension" />
+        <attr name="paralaxOffset" format="dimension" />
+        <attr name="fadeColor" format="color" />
+        <attr name="flingVelocity" format="integer" />
+        <attr name="dragView" format="reference" />
+        <attr name="overlay" format="boolean" />
+    </declare-styleable>
+
+    
+    <!-- 自定义，自动换行的横向布局 -->
+    <declare-styleable name="AutoLineLayout">
+        
+        <attr name="itemSpace" format="dimension"></attr>
+        <attr name="lineSpace" format="dimension"></attr>
+        
+    </declare-styleable>
+        <declare-styleable name="NumberPicker">
+        <attr name="normalTextColor" format="color" />
+        <attr name="normalTextSize" format="dimension" />
+        <attr name="selecredTextColor" format="color" />
+        <attr name="selecredTextSize" format="dimension" />
+        <attr name="unitHight" format="dimension" />
+        <attr name="itemNumber" format="integer"/>
+        <attr name="lineColor" format="color" />
+        <attr name="maskHight" format="dimension"/>
+        <attr name="noEmpty" format="boolean"/>
+        <attr name="isEnable" format="boolean"/>
+    </declare-styleable>
+      <declare-styleable name="HoloCircularProgressBar">
+        <attr name="stroke_width" format="dimension" />
+        <attr name="progress" format="float" />
+        <attr name="marker_progress" format="float" />
+        <attr name="progress_color" format="color" />
+        <attr name="progress_background_color" format="color" />
+        <attr name="thumb_visible" format="boolean" />
+        <attr name="marker_visible" format="boolean" />
+        <attr name="android:gravity" />
+    </declare-styleable>
+    <!-- 自定义ListView头部图片下拉放大 -->
+    <declare-styleable name="ImgListView">
+        <attr name="headimage" format="reference|color" />
+    </declare-styleable>
+    <attr name="circularProgressBarStyle" format="reference" />
+</resources>
