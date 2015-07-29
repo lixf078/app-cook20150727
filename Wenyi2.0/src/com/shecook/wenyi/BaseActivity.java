@@ -15,15 +15,11 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.shecook.wenyi.common.volley.RequestQueue;
-import com.shecook.wenyi.common.volley.Response;
-import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.Request.Method;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
-import com.shecook.wenyi.common.volley.toolbox.Volley;
+import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.model.WenyiUser;
-import com.shecook.wenyi.model.factory.TokenFactory;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.net.NetResult;
@@ -363,17 +359,21 @@ public class BaseActivity extends FragmentActivity {
 	}
 	
 	String mid = "";
-	public void getToken(boolean force) {
+	
+	
+	public void getTokenFrom(boolean force, Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		if(!force && user.get_token() != null){
-			return ;
+			// return ;
 		}
-		RequestQueue requestQueue = Volley
-				.newRequestQueue(getApplicationContext());
 		JSONObject jsonObject = new JSONObject();
 		JSONObject sub = new JSONObject();
+		Log.d("lixufeng ","mid " + user.get_mID());
 		if(TextUtils.isEmpty(user.get_mID())){
 			mid = UUID.randomUUID().toString();
+		}else{
+			mid = user.get_mID();
 		}
+		Log.d("lixufeng ","mid " + user.get_mID());
 		try {
 			sub.put("mtype", "android");
 			sub.put("mid", mid);
@@ -381,56 +381,18 @@ public class BaseActivity extends FragmentActivity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		Listener<NetResult> resultListener = new Listener<NetResult>() {
-
-			@Override
-			public void onResponse(NetResult result) {
-				Log.d(TAG, "response -> " + result.toString());
-				String response = result.toString();
-				if(!TextUtils.isEmpty(response)){
-					try {
-						JSONObject jsonObject = new JSONObject(response);
-						int statuscode = jsonObject.getInt("statuscode");
-						if(statuscode == 200){
-							JSONObject dataJson = jsonObject.getJSONObject("data");
-							int core_status = dataJson.getInt("core_status");
-							if(core_status == 200){
-								WenyiUser user = new WenyiUser();
-								user.set_flag(statuscode);
-								user.set_mID(mid);
-								user.set_token(dataJson.getString("token"));
-								Util.saveUserData(BaseActivity.this, user);
-							}else{
-								// 有错误情况
-							}
-						}else{
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}else{
-				}
-				
-				
-			}
-		};
+		JsonObjectRequest wenyiRequest = new JsonObjectRequest(Method.POST, 
+				HttpUrls.GET_TOKEN, jsonObject, resultListener, errorListener);
 		
-		ErrorListener errorListener = new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				Log.e(TAG, error.getMessage(), error);
-			}
-		};
-		WenyiJSONObjectRequest wenyiRequest = new WenyiJSONObjectRequest(Method.POST, 
-				HttpUrls.GET_TOKEN, jsonObject.toString(), new TokenFactory(), resultListener, errorListener);
-		
-		requestQueue.add(wenyiRequest);
+		try {
+			VolleyUtils.getInstance().addReequest(wenyiRequest);
+		} catch (AppException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void getCatalog(String url, JSONObject jsonObject, Listener<NetResult> resultListener, ErrorListener errorListener) {
+	public void getCatalog(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		WenyiUser user = Util.getUserData(this);
-		/*RequestQueue requestQueue = Volley.newRequestQueue(getActivity()
-				.getApplicationContext());*/
 		JSONObject sub = new JSONObject();
 		if (TextUtils.isEmpty(user.get_mID())) {
 			mid = UUID.randomUUID().toString();
@@ -438,22 +400,23 @@ public class BaseActivity extends FragmentActivity {
 		try {
 			sub.put("mtype", "android");
 			sub.put("mid", mid);
+			sub.put("token", user.get_token());
+			if(null == jsonObject){
+				jsonObject = new JSONObject();
+			}
 			jsonObject.put("common", sub);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		
-		WenyiJSONObjectRequest wenyiRequest = new WenyiJSONObjectRequest(
-				Method.POST, url, jsonObject.toString(),
-				new TokenFactory(), resultListener, errorListener);
+		JsonObjectRequest wenyiRequest = new JsonObjectRequest(
+				Method.POST, url, jsonObject, resultListener, errorListener);
 
 		try {
 			VolleyUtils.getInstance().addReequest(wenyiRequest);
 		} catch (AppException e) {
 			e.printStackTrace();
 		}
-//		requestQueue.add(wenyiRequest);
 	}
-	
 	
 }

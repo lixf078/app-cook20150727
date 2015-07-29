@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.model.WenyiUser;
+import com.umeng.fb.model.UserInfo;
 public class Util {
 
     public static final int SHOW_DIALOG = 100;
@@ -244,13 +245,16 @@ public class Util {
     }
 
     public static int saveUserData(Context context,WenyiUser user){
+    	SharedPreferences userInfo = null;
     	try {
-			SharedPreferences userInfo = context.getSharedPreferences("user_info", 0);
+			userInfo = context.getSharedPreferences("user_info", 0);
 			SharedPreferences.Editor editor = userInfo.edit();
 			Log.d("lixf","email: " + user.get_email() + ", message: " + user.get_msgcount());
 			if(null != user.get_email() && !"".equals(user.get_email())){
 				editor.putString("useremail", user.get_email());
 			}
+			editor.putString("_token", user.get_token());
+			editor.putString("_mid", user.get_mID());
 			editor.putString("userpasswd", user.get_password());
 			editor.putString("_userguid", user.get_userguid());
 			editor.putString("_nickname", user.get_nickname());
@@ -266,15 +270,20 @@ public class Util {
 			wenyiUser = user;
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally{
+			userInfo = null;
 		}
     	return 0;
     }
 
     public static boolean resetUser(Context context){
+    	SharedPreferences userInfo = null;
     	try {
-			SharedPreferences userInfo = context.getSharedPreferences("user_info", 0);
+			userInfo = context.getSharedPreferences("user_info", 0);
 			SharedPreferences.Editor editor = userInfo.edit();
 			editor.putString("useremail", "");
+			editor.putString("_token", "");
+			editor.putString("_mid", "");
 			editor.putString("userpasswd", "");
 			editor.putString("_userguid", "");
 			editor.putString("_nickname", "");
@@ -290,17 +299,20 @@ public class Util {
 			wenyiUser = null;
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally{
+			userInfo = null;
 		}
     	return false;
     }
     public static WenyiUser wenyiUser = null;
 
     public static WenyiUser getUserData(Context context){
+    	SharedPreferences userInfo = null;
     	try {
     		if(null == wenyiUser){
     			wenyiUser = new WenyiUser();
     		}
-			SharedPreferences userInfo = context.getSharedPreferences("user_info", 0);
+			userInfo = context.getSharedPreferences("user_info", 0);
 			wenyiUser.set_email(userInfo.getString("useremail", ""));
 			wenyiUser.set_password(userInfo.getString("userpasswd", ""));
 			wenyiUser.set_userguid(userInfo.getString("_userguid", ""));
@@ -314,10 +326,12 @@ public class Util {
 			wenyiUser.set_msgcount(userInfo.getString("_msgcount", ""));
 			wenyiUser.set_level_core(userInfo.getString("_level_score",""));
 			wenyiUser.set_token(userInfo.getString("_token", ""));
+			wenyiUser.set_mID(userInfo.getString("_mid", ""));
 		} catch (Exception e) {
 			wenyiUser = null;
 			e.printStackTrace();
 		}
+    	userInfo = null;
     	return wenyiUser;
     }
     public void removeAllList(List list){

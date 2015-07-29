@@ -1,7 +1,7 @@
 package com.shecook.wenyi.model;
 
-import com.shecook.wenyi.R;
 import java.io.Serializable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -193,6 +193,13 @@ public class WenyiUser extends BaseModel implements Serializable{
 
 	public void set_login_type(String _login_type) {
 		this._login_type = _login_type;
+	}
+
+	@Override
+	public String toString() {
+		return "WenyiUser [_ID=" + _ID + ", _mID=" + _mID + ", _userguid="
+				+ _userguid + ", _email=" + _email + ", _nickname=" + _nickname
+				+ ", token=" + token + "]";
 	}
 	
 }

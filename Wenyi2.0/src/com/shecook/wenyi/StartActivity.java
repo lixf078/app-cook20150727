@@ -2,36 +2,28 @@ package com.shecook.wenyi;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RadioGroup;
 
-import com.shecook.wenyi.common.volley.Request.Method;
 import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
-import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.cookbook.CookbookFragment;
 import com.shecook.wenyi.essay.WelcomeFragment;
 import com.shecook.wenyi.group.GroupFragment;
 import com.shecook.wenyi.mainpackage.FragmentTabAdapter;
 import com.shecook.wenyi.model.WenyiUser;
-import com.shecook.wenyi.model.factory.TokenFactory;
 import com.shecook.wenyi.personal.PersonalFragment;
 import com.shecook.wenyi.piazza.PiazzaFragment;
-import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
-import com.shecook.wenyi.util.net.NetResult;
-import com.shecook.wenyi.util.volleybox.VolleyUtils;
-import com.shecook.wenyi.util.volleybox.WenyiJSONObjectRequest;
 
 public class StartActivity extends BaseActivity {
 
@@ -47,13 +39,18 @@ public class StartActivity extends BaseActivity {
 
 	public String hello = "hello ";
 
+	public static JSONObject welcomeData;
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bottom_navigation);
 
-		getToken(false);
-
+		getTokenFrom(false,tokenResultListener,tokenErrorListener);
+	}
+	
+	public void initView(){
 		fragments.add(new WelcomeFragment());
 		fragments.add(new CookbookFragment());
 		fragments.add(new PiazzaFragment());
@@ -73,72 +70,88 @@ public class StartActivity extends BaseActivity {
 								+ " checked!!! ");
 					}
 				});
-		
-		
-		JSONObject jsonObject = new JSONObject();
-		JSONObject sub = new JSONObject();
-		if (TextUtils.isEmpty(user.get_mID())) {
-			mid = UUID.randomUUID().toString();
-		}
-		try {
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
-			jsonObject.put("common", sub);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		Listener<JSONObject> resultListener = new Listener<JSONObject>() {
-
-			@Override
-			public void onResponse(JSONObject response) {
-				Log.d("lixufeng", "onResponse " + response.toString());
-			}
-		};
-
-		ErrorListener errorListener = new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				Log.e(TAG, error.getMessage(), error);
-			}
-		};
-		JsonObjectRequest wenyiRequest = new JsonObjectRequest(
-				Method.POST, HttpUrls.ESSAY_WENYI_LIST, jsonObject, resultListener, errorListener);
-
-		try {
-			VolleyUtils.getInstance().addReequest(wenyiRequest);
-		} catch (AppException e) {
-			e.printStackTrace();
-		}
-	
-		// getCatalog(HttpUrls.ESSAY_WENYI_LIST, jsonObject, resultListener, errorListener);
 	}
 	
-	public void getCatalog(String url, JSONObject jsonObject, Listener<NetResult> resultListener, ErrorListener errorListener) {
-		WenyiUser user = Util.getUserData(this);
-		/*RequestQueue requestQueue = Volley.newRequestQueue(getActivity()
-				.getApplicationContext());*/
-		JSONObject sub = new JSONObject();
-		if (TextUtils.isEmpty(user.get_mID())) {
-			mid = UUID.randomUUID().toString();
-		}
-		try {
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
-			jsonObject.put("common", sub);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		
-		WenyiJSONObjectRequest wenyiRequest = new WenyiJSONObjectRequest(
-				Method.POST, url, jsonObject.toString(),
-				new TokenFactory(), resultListener, errorListener);
+	Handler handler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			int what = msg.what;
+			switch (what) {
+			case 1:
+				getCatalog(HttpUrls.ESSAY_WENYI_LIST_CATALOG, null, catalogResultListener, catalogErrorListener);
+				break;
 
-		try {
-			VolleyUtils.getInstance().addReequest(wenyiRequest);
-		} catch (AppException e) {
-			e.printStackTrace();
-		}
-//		requestQueue.add(wenyiRequest);
+			default:
+				break;
+			}
+		};
+	};
+	
+	public static JSONObject getWelcomeData() {
+		return welcomeData;
 	}
+
+	public void setWelcomeData(JSONObject welcomeData) {
+		this.welcomeData = welcomeData;
+	}
+	
+	Listener<JSONObject> tokenResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.d(TAG, "tokenResultListener onResponse -> " + result.toString());
+			String response = result.toString();
+			if(!TextUtils.isEmpty(response)){
+				try {
+					JSONObject jsonObject = new JSONObject(response);
+					int statuscode = jsonObject.getInt("statuscode");
+					if(statuscode == 200){
+						JSONObject dataJson = jsonObject.getJSONObject("data");
+						int core_status = dataJson.getInt("core_status");
+						if(core_status == 200){
+							WenyiUser user = new WenyiUser();
+							user.set_flag(statuscode);
+							user.set_mID(mid);
+							user.set_token(dataJson.getString("token"));
+							Util.saveUserData(StartActivity.this, user);
+							handler.sendEmptyMessage(1);
+						}else{
+							// 有错误情况
+						}
+					}else{
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else{
+			}
+			
+			
+		}
+	};
+	
+	ErrorListener tokenErrorListener = new Response.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			Log.e(TAG, error.getMessage(), error);
+		}
+	};
+	
+	Listener<JSONObject> catalogResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.d(TAG, "catalogResultListener onResponse -> " + result.toString());
+			setWelcomeData(result);
+			initView();
+		}
+	};
+	
+	ErrorListener catalogErrorListener = new Response.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			Log.e(TAG, error.getMessage(), error);
+		}
+	};
+	
 	
 }

@@ -4,13 +4,21 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shecook.wenyi.R;
-import com.shecook.wenyi.model.MyAdvView;
+import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
+import com.shecook.wenyi.model.essay.EssayGallery;
+import com.shecook.wenyi.util.volleybox.LruImageCache;
+import com.shecook.wenyi.util.volleybox.VolleyUtils;
 import com.shecook.wenyi.view.RecyclingPagerAdapter;
 
 /**
@@ -22,10 +30,9 @@ import com.shecook.wenyi.view.RecyclingPagerAdapter;
 public class ViewPagerAdapter extends RecyclingPagerAdapter {
 
 	private Context context;
-	private ArrayList<MyAdvView> mPageViews;
-	private int size;
+	private ArrayList<EssayGallery> mPageViews;
 	private boolean isInfiniteLoop;
-	public ViewPagerAdapter(Context context, ArrayList<MyAdvView> mPageViews) {
+	public ViewPagerAdapter(Context context, ArrayList<EssayGallery> mPageViews) {
 		this.context = context;
 		this.mPageViews = mPageViews;
 		isInfiniteLoop = false;
@@ -36,33 +43,45 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 		return mPageViews.size();
 	}
 
-	/**
-	 * get really position
-	 * 
-	 * @param position
-	 * @return
-	 */
-	private int getPosition(int position) {
-		return position % size;
-	}
-
 	@SuppressWarnings("deprecation")
 	@SuppressLint("SetJavaScriptEnabled") @Override
 	public View getView(int position, View view, ViewGroup container) {
 		ViewHolder holder;
+		Log.d("lixufeng","getView position " + position + ", mPageViews.size() " + mPageViews.size());
+		if(position >= mPageViews.size()){
+			position = position % mPageViews.size();
+		}
 		if (view == null) {
+			EssayGallery essayGallery = mPageViews.get(position);
 			view = LayoutInflater.from(context).inflate(
      				R.layout.viewpager_view_item, null);
 			holder = new ViewHolder();
-			view.findViewById(R.id.item_img).setBackgroundResource(R.drawable.wenyi_01);
-			TextView textView = (TextView)view.findViewById(R.id.item_title);
-			textView.setText("测试链接");
-			holder.advTitle = "测试链接";
+			holder.advTitle = essayGallery.getTitle();
+			holder.eventUrl = essayGallery.getEvent_content();
+			holder.imageUrl = essayGallery.getImgUrl();
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
 		}
 		
+		NetworkImageView imageView = (NetworkImageView) view.findViewById(R.id.item_img);
+		LruImageCache lruImageCache = LruImageCache.instance();
+	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+	    imageView.setDefaultImageResId(R.drawable.wenyi_01);
+	    imageView.setErrorImageResId(R.drawable.wenyi_01);
+	    
+	    imageView.setImageUrl(holder.imageUrl, imageLoader);
+	    imageView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Uri uri = Uri.parse(((ViewHolder) arg0.getTag()).eventUrl);
+				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				context.startActivity(intent);
+			}
+		});
+		TextView textView = (TextView)view.findViewById(R.id.item_title);
+		textView.setText(holder.advTitle);
 		return view ;
 	}
 
@@ -84,6 +103,6 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 	private static class ViewHolder {
 		String advTitle;
 		String eventUrl;
-		
+		String imageUrl;
 	}
 }

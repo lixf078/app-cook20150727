@@ -5,12 +5,12 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <ImageView
+    <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
         android:id="@+id/item_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/wenyi_02"
+        android:background="@drawable/wenyi_01"
         android:scaleType="fitXY" />
 
     <TextView

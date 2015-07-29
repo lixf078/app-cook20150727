@@ -1,25 +1,26 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:keepScreenOn="true" >
+    android:keepScreenOn="true"
+    android:orientation="vertical" >
 
     <include layout="@layout/wenyi_common_header" />
 
     <RelativeLayout
         android:id="@+id/essay_adv_rl"
         android:layout_width="match_parent"
-        android:layout_height="220dip"
-        android:layout_below="@id/wenyi_common_header"
+        android:layout_height="match_parent"
         android:layout_marginBottom="5dip"
-        android:layout_marginTop="5dip">
+        android:layout_marginTop="5dip"
+        android:layout_weight="1" >
 
         <com.shecook.wenyi.essay.view.AutoScrollViewPager
             android:id="@+id/view_pager_advert"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
+        
         <com.shecook.wenyi.essay.view.CirclePageIndicator
             android:id="@+id/indicator"
             android:layout_width="fill_parent"
@@ -32,8 +33,7 @@
     <LinearLayout
         android:id="@+id/leibie_categry"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/essay_adv_rl" >
+        android:layout_height="wrap_content" >
 
         <TextView
             android:layout_width="match_parent"
@@ -66,8 +66,7 @@
     <LinearLayout
         android:id="@+id/leibie_categry_2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/leibie_categry" >
+        android:layout_height="wrap_content" >
 
         <TextView
             android:layout_width="match_parent"
@@ -76,7 +75,8 @@
             android:layout_weight="1"
             android:drawableTop="@drawable/ot_1"
             android:gravity="center_horizontal"
-            android:text="@string/essay_good_baby" />
+            android:text="@string/essay_good_baby"
+            android:textColor="@color/black" />
 
         <TextView
             android:layout_width="match_parent"
@@ -85,16 +85,19 @@
             android:layout_weight="1"
             android:drawableTop="@drawable/ot_3"
             android:gravity="center_horizontal"
-            android:text="@string/essay_cook_knowledge" />
+            android:text="@string/essay_cook_knowledge"
+            android:textColor="@color/black" />
 
-        <TextView
+        <com.shecook.wenyi.common.volley.toolbox.NetworkTextView
+            android:id="@+id/essay_question_answer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dip"
             android:layout_weight="1"
             android:drawableTop="@drawable/shicai_default"
             android:gravity="center_horizontal"
-            android:text="@string/essay_question_answer" />
+            android:text="@string/essay_question_answer"
+            android:textColor="@color/black" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

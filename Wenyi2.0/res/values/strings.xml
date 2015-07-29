@@ -34,15 +34,6 @@
     <string name="want_submit_homework">交作业</string>
     <string name="browse">浏览</string>
     <string name="begin_trip">开始旅程</string>
-    <string name="pull_to_refresh_pull_label">下拉刷新</string>
-    <string name="pull_to_refresh_release_label">松开后刷新</string>
-    <string name="pull_to_refresh_refreshing_label">刷新...</string>
-    <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
-    <string name="pull_to_refresh_footer_label">松开加载更多...</string>
-    <string name="pull_to_refresh_footer_pull_label">上拉更多</string>
-    <string name="pull_to_refresh_footer_refreshing_label">加载中...</string>
-    <string name="refresh_down_text">下拉刷新</string>
-    <string name="refresh_release_text">松开后刷新</string>
     <string name="cook_book_title">大家都在学</string>
     <string name="cook_book_detail">菜谱详情</string>
     <string name="enter_user_nickname">请输入昵称</string>

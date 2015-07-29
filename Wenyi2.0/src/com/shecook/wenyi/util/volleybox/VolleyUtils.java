@@ -39,6 +39,10 @@ public class VolleyUtils {
 		return mUtils;
 	}
 
+	public RequestQueue getRequestQueue(){
+		return mRequestQueue;
+	}
+	
 	/** 将 Map 转换成字符串 */
 	@SuppressWarnings("deprecation")
 	public static String converMapParamToStr(Map<String, String> params) {
