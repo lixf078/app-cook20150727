@@ -63,7 +63,6 @@ public class WelcomeFragment extends BaseFragmeng {
 	
 	private List<EssayCatlog> catalogList;
 	private JSONObject jsonObject;
-	
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -90,6 +89,11 @@ public class WelcomeFragment extends BaseFragmeng {
 		
 		View rootView = inflater.inflate(R.layout.activity_main, container,
 				false);
+		initView(rootView);
+		return rootView;
+	}
+
+	private void initView(View rootView){
 		right_img = (ImageView) rootView.findViewById(R.id.right_img);
 		return_img = (ImageView) rootView.findViewById(R.id.return_img);
 		middle_title = (TextView) rootView.findViewById(R.id.middle_title);
@@ -127,9 +131,9 @@ public class WelcomeFragment extends BaseFragmeng {
 				WelcomeFragment.this.getActivity().startActivity(new Intent(WelcomeFragment.this.getActivity(),EssayListActivity.class));
 			}
 		});
-		return rootView;
+	    
 	}
-
+	
 	private void initData(){
 		WenyiLog.logv(LOGTAG, "initData 1111");
 		if(jsonObject != null){

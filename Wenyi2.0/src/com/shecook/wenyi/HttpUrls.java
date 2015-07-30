@@ -8,4 +8,5 @@ public class HttpUrls {
 	public static final String PERSONAL_LOGIN_3RD = BASE_URL + "user/connect";
 	public static final String ESSAY_WENYI_LIST_CATALOG = BASE_URL + "article/catalog";
 	public static final String ESSAY_WENYI_LIST = BASE_URL + "article/list";
+	public static final String ESSAY_WENYILIST_ITEM_DETAIL = BASE_URL + "article/detail";
 }

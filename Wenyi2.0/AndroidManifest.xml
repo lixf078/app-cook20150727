@@ -80,6 +80,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.shecook.wenyi.essay.EssayItemDeatilActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
             android:name="com.shecook.wenyi.personal.PersonalRegister"
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
@@ -89,6 +94,14 @@
         </activity>
         <activity
             android:name="com.shecook.wenyi.personal.PersonalLoginCommon"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shecook.wenyi.personal.PersonalSettings"
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
