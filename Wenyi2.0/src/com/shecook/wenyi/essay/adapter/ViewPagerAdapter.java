@@ -47,41 +47,38 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 	@SuppressLint("SetJavaScriptEnabled") @Override
 	public View getView(int position, View view, ViewGroup container) {
 		ViewHolder holder;
-		Log.d("lixufeng","getView position " + position + ", mPageViews.size() " + mPageViews.size());
 		if(position >= mPageViews.size()){
 			position = position % mPageViews.size();
 		}
+		EssayGallery essayGallery = mPageViews.get(position);
 		if (view == null) {
-			EssayGallery essayGallery = mPageViews.get(position);
 			view = LayoutInflater.from(context).inflate(
      				R.layout.viewpager_view_item, null);
 			holder = new ViewHolder();
-			holder.advTitle = essayGallery.getTitle();
-			holder.eventUrl = essayGallery.getEvent_content();
-			holder.imageUrl = essayGallery.getImgUrl();
+			holder.advTitle = (TextView) view.findViewById(R.id.item_title);
+			holder.imageUrl = (NetworkImageView) view.findViewById(R.id.item_img);
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
 		}
-		
-		NetworkImageView imageView = (NetworkImageView) view.findViewById(R.id.item_img);
+
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    imageView.setDefaultImageResId(R.drawable.wenyi_01);
-	    imageView.setErrorImageResId(R.drawable.wenyi_01);
-	    
-	    imageView.setImageUrl(holder.imageUrl, imageLoader);
-	    imageView.setOnClickListener(new OnClickListener() {
+	    holder.imageUrl.setDefaultImageResId(R.drawable.wenyi_01);
+	    holder.imageUrl.setErrorImageResId(R.drawable.wenyi_01);
+	    holder.imageUrl.setImageUrl(essayGallery.getImgUrl(), imageLoader);
+	    holder.imageUrl.setTag("" + essayGallery.getEvent_content());
+	    holder.imageUrl.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
-				Uri uri = Uri.parse(((ViewHolder) arg0.getTag()).eventUrl);
+				Uri uri = Uri.parse((String)arg0.getTag());
 				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(intent);
 			}
 		});
-		TextView textView = (TextView)view.findViewById(R.id.item_title);
-		textView.setText(holder.advTitle);
+		holder.advTitle.setText(essayGallery.getTitle());
 		return view ;
 	}
 
@@ -101,8 +98,7 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 	}
 	
 	private static class ViewHolder {
-		String advTitle;
-		String eventUrl;
-		String imageUrl;
+		TextView advTitle;
+		NetworkImageView imageUrl;
 	}
 }

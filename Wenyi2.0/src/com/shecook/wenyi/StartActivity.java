@@ -10,12 +10,14 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.RadioGroup;
 
 import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.cookbook.CookbookFragment;
 import com.shecook.wenyi.essay.WelcomeFragment;
 import com.shecook.wenyi.group.GroupFragment;
@@ -41,12 +43,18 @@ public class StartActivity extends BaseActivity {
 
 	public static JSONObject welcomeData;
 	
+	NetworkImageView networkImageView = null;
+	
+	private long castTime = 0l;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bottom_navigation);
-
+		castTime = System.currentTimeMillis();
+		Log.d(TAG, "catalogResultListener onCreate -> " + castTime);
+		networkImageView = (NetworkImageView) findViewById(R.id.main_layout_fillparent);
+		networkImageView.setVisibility(View.VISIBLE);
 		getTokenFrom(false,tokenResultListener,tokenErrorListener);
 	}
 	
@@ -66,8 +74,7 @@ public class StartActivity extends BaseActivity {
 					@Override
 					public void OnRgsExtraCheckedChanged(RadioGroup radioGroup,
 							int checkedId, int index) {
-						System.out.println("Extra---- " + index
-								+ " checked!!! ");
+						Log.d(TAG, "OnRgsExtraCheckedChanged -> " + index);
 					}
 				});
 	}
@@ -79,7 +86,12 @@ public class StartActivity extends BaseActivity {
 			case 1:
 				getCatalog(HttpUrls.ESSAY_WENYI_LIST_CATALOG, null, catalogResultListener, catalogErrorListener);
 				break;
-
+			case 2:
+				if(System.currentTimeMillis() - castTime < 5000){
+					handler.sendEmptyMessageDelayed(2, 500);
+				}else{
+					networkImageView.setVisibility(View.GONE);
+				}
 			default:
 				break;
 			}
@@ -140,7 +152,9 @@ public class StartActivity extends BaseActivity {
 
 		@Override
 		public void onResponse(JSONObject result) {
+//			Toast.makeText(getApplicationContext(), "onResponse", Toast.LENGTH_SHORT).show();
 			Log.d(TAG, "catalogResultListener onResponse -> " + result.toString());
+			handler.sendEmptyMessage(2);
 			setWelcomeData(result);
 			initView();
 		}

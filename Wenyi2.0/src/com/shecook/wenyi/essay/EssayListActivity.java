@@ -127,7 +127,7 @@ public class EssayListActivity extends BaseActivity {
 				Intent intent = new Intent(EssayListActivity.this,EssayItemDeatilActivity.class);
 				intent.putExtra("essaytitle", "" + mListItems.get((int)position).getTitle());
 				intent.putExtra("articleid", "" + mListItems.get((int)position).getId());
-				startActivity(new Intent(EssayListActivity.this,EssayItemDeatilActivity.class));
+				startActivity(intent);
 			}
 		});
 	}
@@ -177,7 +177,7 @@ public class EssayListActivity extends BaseActivity {
 			int what = msg.what;
 			switch (what) {
 			case 1:
-				Log.d("lixufeng111", "handleMessage mListItems " + mListItems.toString());
+				Log.d(TAG, "handleMessage mListItems " + mListItems.toString());
 				mAdapter.notifyDataSetChanged();
 				// Call onRefreshComplete when the list has been refreshed.
 				mPullRefreshListView.onRefreshComplete();
@@ -202,7 +202,11 @@ public class EssayListActivity extends BaseActivity {
 			mid = user.get_mID();
 		}
 		try {
-			paramsub.put("catalogid", "20");
+			String catalogid = getIntent().getStringExtra("catalogid");
+			if(TextUtils.isEmpty(catalogid)){
+				catalogid = "10";
+			}
+			paramsub.put("catalogid", catalogid);
 			paramsub.put("pindex", "" + ++index);
 			paramsub.put("count", "20");
 			
@@ -254,10 +258,10 @@ public class EssayListActivity extends BaseActivity {
 				if(!jsonObject.isNull("statuscode") && 200 == jsonObject.getInt("statuscode")){
 					WenyiLog.logv(TAG, "initData 33333");
 					if(!jsonObject.isNull("data")){
-						WenyiLog.logv(TAG, "initData 44444");
 						JSONObject data = jsonObject.getJSONObject("data");
 						
 						JSONArray list = data.getJSONArray("list");
+						WenyiLog.logv(TAG, "initData 44444 length " + list.length());
 						LinkedList<EssayListItem> listTemp = new LinkedList<EssayListItem>();
 						for(int i = 0,j = list.length(); i < j; i++){
 							JSONObject jb = list.getJSONObject(i);

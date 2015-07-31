@@ -26,8 +26,9 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.TextView;
+import android.widget.ImageView;
 
+import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader.ImageContainer;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader.ImageListener;
@@ -36,7 +37,7 @@ import com.shecook.wenyi.common.volley.toolbox.ImageLoader.ImageListener;
  * Handles fetching an image from a URL as well as the life-cycle of the
  * associated request.
  */
-public class NetworkTextView extends TextView {
+public class NetworkImageRoundView extends ImageView {
     /** The URL of the network image to load */
     private String mUrl;
 
@@ -56,25 +57,25 @@ public class NetworkTextView extends TextView {
     /** Current ImageContainer. (either in-flight or finished) */
     private ImageContainer mImageContainer;
 
-    public NetworkTextView(Context context) {
+    public NetworkImageRoundView(Context context) {
         this(context, null);
     }
 
-    public NetworkTextView(Context context, AttributeSet attrs) {
+    public NetworkImageRoundView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public NetworkTextView(Context context, AttributeSet attrs, int defStyle) {
+    public NetworkImageRoundView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
     /**
      * Sets URL of the image that should be loaded into this view. Note that calling this will
      * immediately either set the cached image (if available) or the default image specified by
-     * {@link NetworkTextView#setDefaultImageResId(int)} on the view.
+     * {@link NetworkImageRoundView#setDefaultImageResId(int)} on the view.
      *
-     * NOTE: If applicable, {@link NetworkTextView#setDefaultImageResId(int)} and
-     * {@link NetworkTextView#setErrorImageResId(int)} should be called prior to calling
+     * NOTE: If applicable, {@link NetworkImageRoundView#setDefaultImageResId(int)} and
+     * {@link NetworkImageRoundView#setErrorImageResId(int)} should be called prior to calling
      * this function.
      *
      * @param url The URL that should be loaded into this ImageView.
@@ -158,10 +159,7 @@ public class NetworkTextView extends TextView {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         if (mErrorImageId != 0) {
-//                            setImageResource(mErrorImageId);
-                            Drawable drawable = getResources().getDrawable(mErrorImageId); // / 这一步必须要做,否则不会显示. 
-                            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); 
-                            setCompoundDrawables(null, drawable, null, null);
+                            setImageResource(mErrorImageId);
                         }
                     }
 
@@ -186,25 +184,19 @@ public class NetworkTextView extends TextView {
                         	Bitmap bmp = response.getBitmap();
                             //获得图片的宽，并创建结果bitmap
                             int width = bmp.getWidth();
-                            Bitmap resultBmp = Bitmap.createBitmap(width, width,
+                            Bitmap resultBmp = Bitmap.createBitmap(width/2, width/2,
                                     Bitmap.Config.ARGB_8888);
                             Paint paint = new Paint();
                             Canvas canvas = new Canvas(resultBmp);
                             //画圆
-                            canvas.drawCircle(width / 2, width / 2, width / 2, paint);
+                            canvas.drawCircle(width / 4, width / 4, width / 4, paint);
                             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));// 选择交集去上层图片
                             canvas.drawBitmap(bmp, 0, 0, paint);
-                            Drawable drawable = new BitmapDrawable(resultBmp);
                             
-                        	// Drawable drawable = new BitmapDrawable(response.getBitmap());
-                        	drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); 
-                            setCompoundDrawables(null, drawable, null, null);
-                            // setImageBitmap(response.getBitmap());
-                            bmp.recycle();
+                            setImageBitmap(resultBmp);
+//                            bmp.recycle();
                         } else if (mDefaultImageId != 0) {
-                            Drawable drawable = getResources().getDrawable( mDefaultImageId);
-                            setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
-                            // setImageResource(mDefaultImageId);
+                            setImageResource(mDefaultImageId);
                         }
                     }
                 }, maxWidth, maxHeight);
@@ -215,15 +207,10 @@ public class NetworkTextView extends TextView {
 
     private void setDefaultImageOrNull() {
         if(mDefaultImageId != 0) {
-        	Drawable drawable = getResources().getDrawable( mDefaultImageId);
-        	drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); 
-            setCompoundDrawables(null, drawable, null, null);
-//            setImageResource(mDefaultImageId);
+            setImageResource(mDefaultImageId);
         }
         else {
-//        	Drawable drawable = getResources().getDrawable( mDefaultImageId);
-//            setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-//            setImageBitmap(null);
+            setImageBitmap(null);
         }
     }
 
@@ -239,8 +226,7 @@ public class NetworkTextView extends TextView {
             // If the view was bound to an image request, cancel it and clear
             // out the image from the view.
             mImageContainer.cancelRequest();
-//            setImageBitmap(null);
-            setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            setImageBitmap(null);
             // also clear out the container so we can reload the image if necessary.
             mImageContainer = null;
         }

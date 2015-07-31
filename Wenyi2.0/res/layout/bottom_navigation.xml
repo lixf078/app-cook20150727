@@ -5,6 +5,16 @@
     android:background="@android:color/white"
     android:orientation="vertical" >
 
+    <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+        android:id="@+id/main_layout_fillparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dip"
+        android:background="@drawable/wenyi_06"
+        android:gravity="center"
+        android:visibility="gone"
+        android:scaleType="fitXY" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -15,16 +25,16 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1.0"
-            android:background="@drawable/background"/>
+            android:background="@drawable/background" />
 
         <RadioGroup
             android:id="@+id/tabs_rg"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:background="@color/brown2"
             android:gravity="center"
             android:orientation="horizontal"
-            android:background="@color/brown2"
             android:paddingBottom="7dp"
             android:paddingTop="7dp" >
 
@@ -48,8 +58,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:button="@null"
                 android:background="@color/transparent"
+                android:button="@null"
                 android:drawableTop="@drawable/menus02_btn_refresh_select"
                 android:gravity="center"
                 android:singleLine="true"
@@ -62,11 +72,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
+                android:background="@color/transparent"
                 android:button="@null"
                 android:drawableTop="@drawable/menus03_btn_refresh_select"
                 android:gravity="center"
                 android:singleLine="true"
-                android:background="@color/transparent"
                 android:text="@string/piazza"
                 android:textColor="#000000"
                 android:textSize="13sp" />
@@ -76,12 +86,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
+                android:background="@color/transparent"
                 android:button="@null"
                 android:drawableTop="@drawable/menus04_btn_refresh_select"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/group"
-                android:background="@color/transparent"
                 android:textColor="#000000"
                 android:textSize="13sp" />
 

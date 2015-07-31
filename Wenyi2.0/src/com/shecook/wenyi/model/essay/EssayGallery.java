@@ -8,6 +8,21 @@ public class EssayGallery {
 	public String event_content;
 	public String timeline;
 
+	public EssayGallery(int id, String title, String imgUrl, int event_type,
+			String event_content, String timeline) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.imgUrl = imgUrl;
+		this.event_type = event_type;
+		this.event_content = event_content;
+		this.timeline = timeline;
+	}
+
+	public EssayGallery() {
+		super();
+	}
+
 	public int getId() {
 		return id;
 	}

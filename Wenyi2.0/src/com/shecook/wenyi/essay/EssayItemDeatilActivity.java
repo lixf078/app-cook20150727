@@ -179,7 +179,7 @@ public class EssayItemDeatilActivity extends BaseActivity {
 	String mid = "";
 	public void getCatalogList(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		WenyiUser user = Util.getUserData(EssayItemDeatilActivity.this);
-		Log.d("lixufeng", "getCatalogList " + user);
+		Log.d("lixufeng", "getCatalogList " + user + ",articleid " + articleid);
 		JSONObject sub = new JSONObject();
 		JSONObject paramsub = new JSONObject();
 		if (TextUtils.isEmpty(user.get_mID())) {

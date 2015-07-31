@@ -50,7 +50,7 @@ import com.shecook.wenyi.view.FixedSpeedScroller;
 import com.shecook.wenyi.view.PageIndicator;
 
 @SuppressLint("ShowToast")
-public class WelcomeFragment extends BaseFragmeng {
+public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 	private static final String LOGTAG = "WelcomeFragment";
 
 	private AutoScrollViewPager viewPager;
@@ -60,7 +60,7 @@ public class WelcomeFragment extends BaseFragmeng {
 
 	private ImageView return_img, right_img;
 	private TextView middle_title;
-	
+
 	private List<EssayCatlog> catalogList;
 	private JSONObject jsonObject;
 
@@ -74,7 +74,8 @@ public class WelcomeFragment extends BaseFragmeng {
 	public void onCreate(Bundle savedInstanceState) {
 		WenyiLog.logv(LOGTAG, "onCreate");
 		super.onCreate(savedInstanceState);
-		// getCatalog_(HttpUrls.ESSAY_WENYI_LIST, null, catalogResultListener, catalogErrorListener);
+		// getCatalog_(HttpUrls.ESSAY_WENYI_LIST, null, catalogResultListener,
+		// catalogErrorListener);
 		mPageViews = new ArrayList<EssayGallery>();
 		catalogList = new ArrayList<EssayCatlog>();
 		jsonObject = StartActivity.getWelcomeData();
@@ -86,22 +87,22 @@ public class WelcomeFragment extends BaseFragmeng {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		WenyiLog.logv(LOGTAG, "onCreateView");
-		
+
 		View rootView = inflater.inflate(R.layout.activity_main, container,
 				false);
 		initView(rootView);
 		return rootView;
 	}
 
-	private void initView(View rootView){
+	private void initView(View rootView) {
 		right_img = (ImageView) rootView.findViewById(R.id.right_img);
 		return_img = (ImageView) rootView.findViewById(R.id.return_img);
 		middle_title = (TextView) rootView.findViewById(R.id.middle_title);
 
 		right_img.setVisibility(View.GONE);
-		return_img.setVisibility(View.GONE);
+		return_img.setVisibility(View.INVISIBLE);
 		middle_title.setText(R.string.essay);
-		
+
 		viewPager = (AutoScrollViewPager) rootView
 				.findViewById(R.id.view_pager_advert);
 		mIndicator = (CirclePageIndicator) rootView
@@ -117,38 +118,95 @@ public class WelcomeFragment extends BaseFragmeng {
 		viewPager.setStopScrollWhenTouch(true);
 		setViewPagerScrollSpeed(viewPager);
 
-		NetworkTextView textView = (NetworkTextView) rootView.findViewById(R.id.essay_question_answer);
+		NetworkTextView textView2 = (NetworkTextView) rootView
+				.findViewById(R.id.essay_new_action);
+		NetworkTextView textView3 = (NetworkTextView) rootView
+				.findViewById(R.id.essay_everyday_chart);
+		NetworkTextView textView4 = (NetworkTextView) rootView
+				.findViewById(R.id.essay_life_way);
+		NetworkTextView textView5 = (NetworkTextView) rootView
+				.findViewById(R.id.essay_good_baby);
+		NetworkTextView textView6 = (NetworkTextView) rootView
+				.findViewById(R.id.essay_cook_knowledge);
+		NetworkTextView textView = (NetworkTextView) rootView
+				.findViewById(R.id.essay_question_answer);
 		LruImageCache lruImageCache = LruImageCache.instance();
-	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    textView.setDefaultImageResId(R.drawable.icon_dialog);
-	    textView.setErrorImageResId(R.drawable.icon_dialog);
-	    
-	    textView.setImageUrl("http://static.wenyijcc.com/notes/cata/d6766f3f5777451dbb4ae703911c8030.jpg", imageLoader);
-	    textView.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				WelcomeFragment.this.getActivity().startActivity(new Intent(WelcomeFragment.this.getActivity(),EssayListActivity.class));
-			}
-		});
-	    
+		Log.d(TAG,"size " + catalogList.size());
+		if (null != catalogList && catalogList.size() > 0) {
+			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
+					.getRequestQueue(), lruImageCache);
+			textView.setDefaultImageResId(R.drawable.shicai_default);
+			textView.setErrorImageResId(R.drawable.shicai_default);
+
+			textView.setImageUrl(catalogList.get(0).getIconurl(), imageLoader);
+			textView.setOnClickListener(this);
+		}
+
+		if (null != catalogList && catalogList.size() > 1) {
+			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
+					.getRequestQueue(), lruImageCache);
+			textView2.setDefaultImageResId(R.drawable.shicai_default);
+			textView2.setErrorImageResId(R.drawable.shicai_default);
+
+			textView2.setImageUrl(catalogList.get(1).getIconurl(), imageLoader);
+			textView2.setOnClickListener(this);
+		}
+		if (null != catalogList && catalogList.size() > 2) {
+			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
+					.getRequestQueue(), lruImageCache);
+			textView3.setDefaultImageResId(R.drawable.shicai_default);
+			textView3.setErrorImageResId(R.drawable.shicai_default);
+
+			textView3.setImageUrl(catalogList.get(2).getIconurl(), imageLoader);
+			textView3.setOnClickListener(this);
+		}
+		if (null != catalogList && catalogList.size() > 3) {
+			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
+					.getRequestQueue(), lruImageCache);
+			textView4.setDefaultImageResId(R.drawable.shicai_default);
+			textView4.setErrorImageResId(R.drawable.shicai_default);
+			textView4.setImageUrl(catalogList.get(3).getIconurl(), imageLoader);
+			textView4.setOnClickListener(this);
+		}
+		if (null != catalogList && catalogList.size() > 4) {
+			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
+					.getRequestQueue(), lruImageCache);
+			textView5.setDefaultImageResId(R.drawable.shicai_default);
+			textView5.setErrorImageResId(R.drawable.shicai_default);
+
+			textView5.setImageUrl(catalogList.get(4).getIconurl(), imageLoader);
+			textView5.setOnClickListener(this);
+		}
+
+		if (null != catalogList && catalogList.size() > 5) {
+			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
+					.getRequestQueue(), lruImageCache);
+			textView6.setDefaultImageResId(R.drawable.shicai_default);
+			textView6.setErrorImageResId(R.drawable.shicai_default);
+
+			textView6.setImageUrl(catalogList.get(5).getIconurl(), imageLoader);
+			textView6.setOnClickListener(this);
+		}
+
 	}
-	
-	private void initData(){
+
+	private void initData() {
 		WenyiLog.logv(LOGTAG, "initData 1111");
-		if(jsonObject != null){
+		if (jsonObject != null) {
 			try {
 				WenyiLog.logv(LOGTAG, "initData 22222");
-				int status_code = jsonObject.isNull("statuscode") ? -1 : jsonObject.getInt("statuscode");
-				if(200 == status_code){
+				int status_code = jsonObject.isNull("statuscode") ? -1
+						: jsonObject.getInt("statuscode");
+				if (200 == status_code) {
 					WenyiLog.logv(LOGTAG, "initData 33333");
-					if(!jsonObject.isNull("data")){
+					if (!jsonObject.isNull("data")) {
 						WenyiLog.logv(LOGTAG, "initData 44444");
 						JSONObject data = jsonObject.getJSONObject("data");
 						JSONArray gallery = data.getJSONArray("gallery");
-						for(int i = 0,j = gallery.length(); i < j; i++){
+						for (int i = 0, j = gallery.length(); i < j; i++) {
 							JSONObject jb = gallery.getJSONObject(i);
-							WenyiLog.logv(LOGTAG, "initData 5555 jb " + jb.toString());
+							WenyiLog.logv(LOGTAG,
+									"initData 5555 jb " + jb.toString());
 							EssayGallery eg = new EssayGallery();
 							eg.setId(jb.getInt("id"));
 							eg.setTitle(jb.getString("title"));
@@ -158,11 +216,12 @@ public class WelcomeFragment extends BaseFragmeng {
 							eg.setTimeline(jb.getString("timeline"));
 							mPageViews.add(eg);
 						}
-						
+
 						JSONArray catalog = data.getJSONArray("catalog");
-						for(int i = 0,j = gallery.length(); i < j; i++){
+						for (int i = 0, j = catalog.length(); i < j; i++) {
 							JSONObject catalogjb = catalog.getJSONObject(i);
-							WenyiLog.logv(LOGTAG, "initData 5555aaaaa jb " + catalogjb.toString());
+							WenyiLog.logv(LOGTAG, "initData 5555aaaaa jb "
+									+ catalogjb.toString());
 							EssayCatlog ec = new EssayCatlog();
 							ec.setId(catalogjb.getInt("id"));
 							ec.setTitle(catalogjb.getString("title"));
@@ -171,15 +230,18 @@ public class WelcomeFragment extends BaseFragmeng {
 							ec.setIspub(catalogjb.getBoolean("ispub"));
 							ec.setCount(catalogjb.getInt("count"));
 							ec.setEvent_type(catalogjb.getInt("event_type"));
-							ec.setEvent_content(catalogjb.getString("event_content"));
+							ec.setEvent_content(catalogjb
+									.getString("event_content"));
 							ec.setTimeline(catalogjb.getString("timeline"));
 							catalogList.add(ec);
 						}
 					}
-				}else{
-					Toast.makeText(getActivity(), "" + jsonObject.getString("errmsg"), Toast.LENGTH_SHORT);
-					if(status_code == 10005){
-						
+				} else {
+					Toast.makeText(getActivity(),
+							"" + jsonObject.getString("errmsg"),
+							Toast.LENGTH_SHORT);
+					if (status_code == 10005) {
+
 					}
 				}
 			} catch (JSONException e) {
@@ -187,7 +249,7 @@ public class WelcomeFragment extends BaseFragmeng {
 			}
 		}
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		WenyiLog.logv(LOGTAG, "onActivityCreated");
@@ -235,7 +297,7 @@ public class WelcomeFragment extends BaseFragmeng {
 		WenyiLog.logv(LOGTAG, "onDetach");
 		super.onDetach();
 	}
-	
+
 	private void setViewPagerScrollSpeed(AutoScrollViewPager mViewPager) {
 		try {
 			Field mScroller = null;
@@ -267,51 +329,95 @@ public class WelcomeFragment extends BaseFragmeng {
 			Log.e(TAG, error.getMessage(), error);
 		}
 	};
-	
-	
+
 	Listener<JSONObject> catalogResultListener = new Listener<JSONObject>() {
 
 		@Override
 		public void onResponse(JSONObject result) {
-			Log.d(TAG, "catalogResultListener onResponse -> " + result.toString());
+			Log.d(TAG,
+					"catalogResultListener onResponse -> " + result.toString());
 		}
 	};
-	
+
 	ErrorListener catalogErrorListener = new Response.ErrorListener() {
 		@Override
 		public void onErrorResponse(VolleyError error) {
 			Log.e(TAG, error.getMessage(), error);
 		}
 	};
-	
+
 	String mid = "";
-	public void getCatalog_(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
+
+	public void getCatalog_(String url, JSONObject jsonObject,
+			Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		WenyiUser user = Util.getUserData(getActivity());
 		JSONObject sub = new JSONObject();
 		if (TextUtils.isEmpty(user.get_mID())) {
 			mid = UUID.randomUUID().toString();
-		}else{
+		} else {
 			mid = user.get_mID();
 		}
 		try {
 			sub.put("mtype", "android");
 			sub.put("mid", mid);
 			sub.put("token", user.get_token());
-			if(null == jsonObject){
+			if (null == jsonObject) {
 				jsonObject = new JSONObject();
 			}
 			jsonObject.put("common", sub);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
-		JsonObjectRequest wenyiRequest = new JsonObjectRequest(
-				Method.POST, url, jsonObject, resultListener, errorListener);
+
+		JsonObjectRequest wenyiRequest = new JsonObjectRequest(Method.POST,
+				url, jsonObject, resultListener, errorListener);
 
 		try {
 			VolleyUtils.getInstance().addReequest(wenyiRequest);
 		} catch (AppException e) {
 			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void onClick(View view) {
+		Intent intent = new Intent(WelcomeFragment.this.getActivity(),
+				EssayListActivity.class);
+		int id = view.getId();
+		switch (id) {
+		case R.id.essay_new_action:
+			intent.putExtra("catalogid", "" + catalogList.get(0).getId());
+			WelcomeFragment.this.getActivity().startActivity(
+					intent);
+			break;
+		case R.id.essay_everyday_chart:
+			intent.putExtra("catalogid", "" + catalogList.get(1).getId());
+			WelcomeFragment.this.getActivity().startActivity(
+					intent);
+			break;
+		case R.id.essay_life_way:
+			intent.putExtra("catalogid", "" + catalogList.get(2).getId());
+			WelcomeFragment.this.getActivity().startActivity(
+					intent);
+			break;
+		case R.id.essay_good_baby:
+			intent.putExtra("catalogid", "" + catalogList.get(3).getId());
+			WelcomeFragment.this.getActivity().startActivity(
+					intent);
+			break;
+		case R.id.essay_cook_knowledge:
+			intent.putExtra("catalogid", "" + catalogList.get(4).getId());
+			WelcomeFragment.this.getActivity().startActivity(
+					intent);
+			
+		case R.id.essay_question_answer:
+			intent.putExtra("catalogid", "" + catalogList.get(5).getId());
+			WelcomeFragment.this.getActivity().startActivity(
+					intent);
+			break;
+			
+		default:
+			break;
 		}
 	}
 }
