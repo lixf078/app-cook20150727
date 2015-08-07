@@ -19,6 +19,7 @@ import android.annotation.TargetApi;
 import android.util.Log;
 import android.view.View;
 
+import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.State;
 

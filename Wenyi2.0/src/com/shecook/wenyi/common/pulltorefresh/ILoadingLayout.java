@@ -2,6 +2,7 @@ package com.shecook.wenyi.common.pulltorefresh;
 
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import com.shecook.wenyi.R;
 
 public interface ILoadingLayout {
 

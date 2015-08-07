@@ -22,6 +22,7 @@ import android.annotation.TargetApi;
 import android.net.TrafficStats;
 import android.os.Build;
 import android.os.Process;
+import com.shecook.wenyi.R;
 
 /**
  * Provides a thread for performing network dispatch from a queue of requests.

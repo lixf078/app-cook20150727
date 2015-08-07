@@ -21,6 +21,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.view.View;
 
+import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.State;

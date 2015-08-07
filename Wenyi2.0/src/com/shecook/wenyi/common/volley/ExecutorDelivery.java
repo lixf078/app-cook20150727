@@ -19,6 +19,7 @@ package com.shecook.wenyi.common.volley;
 import java.util.concurrent.Executor;
 
 import android.os.Handler;
+import com.shecook.wenyi.R;
 
 /**
  * Delivers responses and errors.

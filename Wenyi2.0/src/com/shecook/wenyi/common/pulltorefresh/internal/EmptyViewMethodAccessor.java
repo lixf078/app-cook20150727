@@ -16,6 +16,7 @@
 package com.shecook.wenyi.common.pulltorefresh.internal;
 
 import android.view.View;
+import com.shecook.wenyi.R;
 
 /**
  * Interface that allows PullToRefreshBase to hijack the call to

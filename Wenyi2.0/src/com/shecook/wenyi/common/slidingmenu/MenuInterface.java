@@ -3,6 +3,7 @@ package com.shecook.wenyi.common.slidingmenu;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import com.shecook.wenyi.R;
 
 public interface MenuInterface {
 

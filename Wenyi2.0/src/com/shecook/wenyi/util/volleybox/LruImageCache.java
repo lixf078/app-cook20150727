@@ -3,6 +3,7 @@ package com.shecook.wenyi.util.volleybox;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 
+import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader.ImageCache;
 
 public class LruImageCache implements ImageCache {

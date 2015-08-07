@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
+import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.slidingmenu.SlidingMenu.OnClosedListener;
 import com.shecook.wenyi.common.slidingmenu.SlidingMenu.OnOpenedListener;
 //import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;

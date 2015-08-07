@@ -714,7 +714,6 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 				mHeaderLayout.pullToRefresh();
 				break;
 			default:
-				// NO-OP
 				break;
 		}
 	}

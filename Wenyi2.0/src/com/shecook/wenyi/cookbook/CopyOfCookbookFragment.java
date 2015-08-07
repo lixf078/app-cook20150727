@@ -17,9 +17,13 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,8 +31,6 @@ import android.widget.Toast;
 
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
-import com.shecook.wenyi.StartActivity;
-import com.shecook.wenyi.StartActivity.UpdateFragmentListener;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
@@ -43,6 +45,7 @@ import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.cookbook.adapter.CookbookListAdapter;
+import com.shecook.wenyi.cookbook.adapter.CookbookExpandableListAdapter;
 import com.shecook.wenyi.essay.EssayItemDeatilActivity;
 import com.shecook.wenyi.model.CookbookCatalog;
 import com.shecook.wenyi.model.CookbookListItem;
@@ -52,22 +55,20 @@ import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class CookbookFragment extends Fragment implements
-		UpdateFragmentListener {
-
+public class CopyOfCookbookFragment extends Fragment {
 	private static final String TAG = "CookbookFragment";
 
 	static final int MENU_SET_MODE = 0;
-	public JSONObject cookbookCatalogObject;
 
 	private LinkedList<CookbookCatalog> mCatalogItems;
-
+	
 	private LinkedList<CookbookListItem> mListItems;
 	private PullToRefreshListView mPullRefreshListView;
 	private CookbookListAdapter mAdapter;
+	CookbookExpandableListAdapter expandAdapter;
 	private boolean shouldLoad = true;
 	private boolean isFirstLoad = true;
-	private StartActivity mActivity;
+	private Activity mActivity;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -79,28 +80,44 @@ public class CookbookFragment extends Fragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
-		mActivity = (StartActivity) getActivity();
-		mActivity.setUpdateFragmentListener(this);
+		mActivity = getActivity();
 		mCatalogItems = new LinkedList<CookbookCatalog>();
 		mListItems = new LinkedList<CookbookListItem>();
-		if (null != cookbookCatalogObject) {
-			initCatalogData(cookbookCatalogObject);
-		} else {
-			getCatalog(HttpUrls.COOKBOOK_LIST_CATALOG, null,
-					catalogResultListener, catalogErrorListener);
-		}
+		getCatalog(HttpUrls.COOKBOOK_LIST_CATALOG, null, catalogResultListener, catalogErrorListener);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onCreateView");
-		View rootView = inflater.inflate(R.layout.copyofcookbook_list_fragment,
+		View rootView = inflater.inflate(R.layout.cookbook_list_fragment,
 				container, false);
 		initView(rootView);
+		ExpandableListView expandableListView = (ExpandableListView) rootView.findViewById(R.id.expandable_listview);
+//		expandableListView.setChildDivider(getActivity().getResources().getDrawable(R.drawable.transport));
+		expandableListView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		expandAdapter = new CookbookExpandableListAdapter(getActivity(), mCatalogItems);
+		expandableListView.setAdapter(expandAdapter);
+		expandableListView.setOnChildClickListener(new OnChildClickListener() {
 
-		mPullRefreshListView = (PullToRefreshListView) rootView
-				.findViewById(R.id.pull_refresh_list);
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                    int groupPosition, int childPosition, long id) {
+            	WenyiLog.logv(TAG, "onChildClick groupPosition " + groupPosition + ",childPosition " + childPosition);
+                return false;
+            }
+        });
+		expandableListView.setOnGroupClickListener(new OnGroupClickListener() {
+			
+			@Override
+			public boolean onGroupClick(ExpandableListView parent, View view, int groupPosition,
+					long arg3) {
+				WenyiLog.logv(TAG, "onGroupClick groupPosition " + groupPosition);
+				return false;
+			}
+		});
+		
+		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.pull_refresh_list);
 
 		// Set a listener to be invoked when the list should be refreshed.
 		mPullRefreshListView
@@ -108,7 +125,8 @@ public class CookbookFragment extends Fragment implements
 					@Override
 					public void onRefresh(
 							PullToRefreshBase<ListView> refreshView) {
-						String label = DateUtils.formatDateTime(mActivity,
+						String label = DateUtils.formatDateTime(
+								mActivity,
 								System.currentTimeMillis(),
 								DateUtils.FORMAT_SHOW_TIME
 										| DateUtils.FORMAT_SHOW_DATE
@@ -134,8 +152,8 @@ public class CookbookFragment extends Fragment implements
 							getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null,
 									listResultListener, listErrorListener);
 						} else {
-							Toast.makeText(mActivity, "End of List!",
-									Toast.LENGTH_SHORT).show();
+							Toast.makeText(mActivity,
+									"End of List!", Toast.LENGTH_SHORT).show();
 						}
 					}
 				});
@@ -174,18 +192,20 @@ public class CookbookFragment extends Fragment implements
 		return rootView;
 	}
 
-	String title = "";
-
 	private void initView(View view) {
 		ImageView returnImage = (ImageView) view.findViewById(R.id.return_img);
-		returnImage.setVisibility(View.GONE);
+		returnImage.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View arg0) {
+			}
+		});
 		ImageView settingImage = (ImageView) view.findViewById(R.id.right_img);
 		settingImage.setVisibility(View.GONE);
-
 		TextView titleView = (TextView) view.findViewById(R.id.middle_title);
+		String title = "";
 		if (TextUtils.isEmpty(title)) {
-			titleView.setText(R.string.caipu);
+			titleView.setText(R.string.essay);
 		} else {
 			titleView.setText("" + title);
 		}
@@ -244,45 +264,51 @@ public class CookbookFragment extends Fragment implements
 			int what = msg.what;
 			switch (what) {
 			case 1:
-				//
-				if (isFirstLoad) {
+				// 
+				if(isFirstLoad){
 					isFirstLoad = false;
 					// 把全局加载框隐藏
-				} else {
+				}else{
 					// 隐藏局部加载框
 				}
-				Log.d(TAG, "handleMessage mListItems " + mListItems.toString());
+				Log.d(TAG,
+						"handleMessage mListItems " + mListItems.toString());
 				mAdapter.notifyDataSetChanged();
 				// Call onRefreshComplete when the list has been refreshed.
 				mPullRefreshListView.onRefreshComplete();
 				break;
 			case 2:
-				if (mCatalogItems != null && mCatalogItems.size() > 0) {
+				if(mCatalogItems != null && mCatalogItems.size() > 0){
 					catalogid = "" + mCatalogItems.get(0).getId();
 				}
-				getCatalogList(HttpUrls.COOKBOOK_LIST, null,
-						listResultListener, listErrorListener);
+				getCatalogList(HttpUrls.COOKBOOK_LIST, null, listResultListener,
+						listErrorListener);
+				expandAdapter.notifyDataSetChanged();
 			default:
 				break;
 			}
 		};
 	};
 
+	
 	public void getCatalog(String url, JSONObject jsonObject,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		WenyiUser user = Util.getUserData(mActivity);
 		JSONObject sub = new JSONObject();
+		JSONObject paramsub = new JSONObject();
 		if (TextUtils.isEmpty(user.get_mID())) {
 			mid = UUID.randomUUID().toString();
 		} else {
 			mid = user.get_mID();
 		}
 		try {
-			String catalogid = mActivity.getIntent()
-					.getStringExtra("catalogid");
+			String catalogid = mActivity.getIntent().getStringExtra("catalogid");
 			if (TextUtils.isEmpty(catalogid)) {
 				catalogid = "10";
 			}
+			paramsub.put("catalogid", catalogid);
+			paramsub.put("pindex", "" + ++index);
+			paramsub.put("count", "20");
 
 			sub.put("mtype", "android");
 			sub.put("mid", mid);
@@ -290,6 +316,7 @@ public class CookbookFragment extends Fragment implements
 			if (null == jsonObject) {
 				jsonObject = new JSONObject();
 			}
+			jsonObject.put("param", paramsub);
 			jsonObject.put("common", sub);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -304,27 +331,11 @@ public class CookbookFragment extends Fragment implements
 			e.printStackTrace();
 		}
 	}
-
-	public JSONObject getCookbookCatalogObject() {
-		return cookbookCatalogObject;
-	}
-
-	public void setCookbookCatalogObject(JSONObject cookbookCatalogObject) {
-		this.cookbookCatalogObject = cookbookCatalogObject;
-	}
-
-	public String getCatalogid() {
-		return catalogid;
-	}
-
-	public void setCatalogid(String catalogid) {
-		this.catalogid = catalogid;
-	}
-
+	
+	
 	String mid = "";
 	private int index = 0;
 	String catalogid = "";
-
 	public void getCatalogList(String url, JSONObject jsonObject,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		WenyiUser user = Util.getUserData(mActivity);
@@ -382,7 +393,7 @@ public class CookbookFragment extends Fragment implements
 			Log.e(TAG, error.getMessage(), error);
 		}
 	};
-
+	
 	Listener<JSONObject> listResultListener = new Listener<JSONObject>() {
 
 		@Override
@@ -405,33 +416,30 @@ public class CookbookFragment extends Fragment implements
 			try {
 				if (!jsonObject.isNull("statuscode")
 						&& 200 == jsonObject.getInt("statuscode")) {
-
+					
 					if (!jsonObject.isNull("data")) {
-
+						
 						JSONObject data = jsonObject.getJSONObject("data");
 						JSONArray list = data.getJSONArray("catalog");
 						LinkedList<CookbookCatalog> listTemp = new LinkedList<CookbookCatalog>();
-
+						
 						for (int i = 0, j = list.length(); i < j; i++) {
 							JSONObject jb = list.getJSONObject(i);
 							CookbookCatalog cbc = new CookbookCatalog();
 							cbc.setId(jb.getString("id"));
 							cbc.setCataname(jb.getString("cataname"));
 							cbc.setParentid(jb.getString("parentid"));
-
+							
 							LinkedList<CookbookCatalog> listTemp2 = null;
 							listTemp2 = new LinkedList<CookbookCatalog>();
-							if (jb.has("cata_items")) {
-								JSONArray sublist = jb
-										.getJSONArray("cata_items");
+							if(jb.has("cata_items")){
+								JSONArray sublist = jb.getJSONArray("cata_items");
 								for (int k = 0, t = sublist.length(); k < t; k++) {
 									JSONObject subjb = sublist.getJSONObject(k);
 									CookbookCatalog subCbc = new CookbookCatalog();
 									subCbc.setId(subjb.getString("id"));
-									subCbc.setCataname(subjb
-											.getString("cataname"));
-									subCbc.setParentid(subjb
-											.getString("parentid"));
+									subCbc.setCataname(subjb.getString("cataname"));
+									subCbc.setParentid(subjb.getString("parentid"));
 									listTemp2.add(subCbc);
 								}
 							}
@@ -452,7 +460,7 @@ public class CookbookFragment extends Fragment implements
 			}
 		}
 	}
-
+	
 	private void initData(JSONObject jsonObject, int flag) {
 		if (jsonObject != null) {
 			try {
@@ -494,14 +502,5 @@ public class CookbookFragment extends Fragment implements
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@Override
-	public void updateFragment(String cataId) {
-		Log.d(TAG, "updateFragment");
-		index = 0;
-		catalogid = cataId;
-		getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null,
-				listResultListener, listErrorListener);
 	}
 }

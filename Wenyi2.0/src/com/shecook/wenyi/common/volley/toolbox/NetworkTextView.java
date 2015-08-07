@@ -28,6 +28,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
+import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader.ImageContainer;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader.ImageListener;
@@ -200,7 +201,7 @@ public class NetworkTextView extends TextView {
                         	drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); 
                             setCompoundDrawables(null, drawable, null, null);
                             // setImageBitmap(response.getBitmap());
-                            bmp.recycle();
+//                            bmp.recycle();
                         } else if (mDefaultImageId != 0) {
                             Drawable drawable = getResources().getDrawable( mDefaultImageId);
                             setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);

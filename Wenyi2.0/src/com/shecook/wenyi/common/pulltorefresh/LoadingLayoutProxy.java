@@ -5,6 +5,7 @@ import java.util.HashSet;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
+import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.pulltorefresh.internal.LoadingLayout;
 
 public class LoadingLayoutProxy implements ILoadingLayout {

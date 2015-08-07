@@ -18,6 +18,7 @@ package com.shecook.wenyi.common.pulltorefresh;
 import android.view.View;
 import android.view.animation.Interpolator;
 
+import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnPullEventListener;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnRefreshListener;

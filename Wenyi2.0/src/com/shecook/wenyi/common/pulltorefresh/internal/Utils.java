@@ -1,6 +1,7 @@
 package com.shecook.wenyi.common.pulltorefresh.internal;
 
 import android.util.Log;
+import com.shecook.wenyi.R;
 
 public class Utils {
 

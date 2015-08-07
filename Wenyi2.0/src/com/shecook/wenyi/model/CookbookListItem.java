@@ -1,5 +1,7 @@
 package com.shecook.wenyi.model;
 
+import com.shecook.wenyi.R;
+
 public class CookbookListItem {
 	
 	private String id;// 菜谱主id

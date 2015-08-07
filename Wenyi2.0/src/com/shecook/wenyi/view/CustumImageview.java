@@ -3,6 +3,7 @@ package com.shecook.wenyi.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
+import com.shecook.wenyi.R;
 
 public class CustumImageview extends LinearLayout {
 

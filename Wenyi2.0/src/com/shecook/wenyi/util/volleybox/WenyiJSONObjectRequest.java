@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.AuthFailureError;
 import com.shecook.wenyi.common.volley.NetworkResponse;
 import com.shecook.wenyi.common.volley.ParseError;

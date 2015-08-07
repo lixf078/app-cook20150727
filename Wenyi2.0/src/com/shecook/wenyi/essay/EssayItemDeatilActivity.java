@@ -1,5 +1,6 @@
 package com.shecook.wenyi.essay;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
 
@@ -7,15 +8,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnKeyListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,20 +52,34 @@ import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class EssayItemDeatilActivity extends BaseActivity {
+public class EssayItemDeatilActivity extends BaseActivity implements
+		OnClickListener {
 
 	private LinkedList<EssayListItemDetail> mListItems;
 	private PullToRefreshListView mPullRefreshListView;
 	private EssayListDetailAdapter mAdapter;
-	
+
+	EditText comment = null; // add comments edit
+	EditText bottomcomment = null; // bottom add comments edit
+	private ImageView shareImg;
+
+	public String titleContent = ""; // 分享title
+	public String ownerIconUrl = ""; // 分享icon url
+	public String contentIconUrl = "";
+	public String content = "";
+	public String layer = "";
+
+	private AlertDialog alertDialog = null;
+	private Dialog commentsAlertDialog = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.essay_listitem_detail);
 		initView();
 
-		getCatalogList(HttpUrls.ESSAY_WENYILIST_ITEM_DETAIL, null, detailResultListener,
-				detailErrorListener);
+		getCatalogList(HttpUrls.ESSAY_WENYILIST_ITEM_DETAIL, null,
+				detailResultListener, detailErrorListener);
 		mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
 
 		// Set a listener to be invoked when the list should be refreshed.
@@ -77,8 +100,8 @@ public class EssayItemDeatilActivity extends BaseActivity {
 								.setLastUpdatedLabel(label);
 
 						// Do work to refresh the list here.
-						getCatalogList(HttpUrls.ESSAY_WENYILIST_ITEM_DETAIL, null,
-								detailResultListener, detailErrorListener);
+						getCatalogList(HttpUrls.ESSAY_WENYILIST_ITEM_DETAIL,
+								null, detailResultListener, detailErrorListener);
 					}
 				});
 
@@ -88,7 +111,7 @@ public class EssayItemDeatilActivity extends BaseActivity {
 
 					@Override
 					public void onLastItemVisible() {
-						
+
 					}
 				});
 
@@ -111,7 +134,9 @@ public class EssayItemDeatilActivity extends BaseActivity {
 		});
 
 	}
+
 	private String articleid = "";
+
 	private void initView() {
 		ImageView returnImage = (ImageView) findViewById(R.id.return_img);
 		returnImage.setOnClickListener(new OnClickListener() {
@@ -121,8 +146,10 @@ public class EssayItemDeatilActivity extends BaseActivity {
 				finish();
 			}
 		});
-		ImageView settingImage = (ImageView) findViewById(R.id.right_img);
-		settingImage.setVisibility(View.GONE);
+		shareImg = (ImageView) findViewById(R.id.right_img);
+		shareImg.setBackgroundResource(R.drawable.f55_btn);
+		shareImg.setVisibility(View.VISIBLE);
+		shareImg.setOnClickListener(this);
 		TextView titleView = (TextView) findViewById(R.id.middle_title);
 		String title = getIntent().getStringExtra("essaytitle");
 		articleid = getIntent().getStringExtra("articleid");
@@ -131,6 +158,9 @@ public class EssayItemDeatilActivity extends BaseActivity {
 		} else {
 			titleView.setText("" + title);
 		}
+		
+		bottomcomment = (EditText) findViewById(R.id.comment_text_id);
+		bottomcomment.setOnClickListener(this);
 	}
 
 	@Override
@@ -169,31 +199,96 @@ public class EssayItemDeatilActivity extends BaseActivity {
 				// Call onRefreshComplete when the list has been refreshed.
 				mPullRefreshListView.onRefreshComplete();
 				break;
+			case Util.SHOW_DIALOG:
+				if (null == alertDialog) {
+					alertDialog = Util
+							.showLoadDataDialog(EssayItemDeatilActivity.this);
+				}
+				if (!alertDialog.isShowing()) {
+					alertDialog.show();
+				}
+				break;
+			case Util.DISMISS_DIALOG:
+				if (null == alertDialog) {
+					alertDialog = Util
+							.showLoadDataDialog(EssayItemDeatilActivity.this);
+				}
+				if (alertDialog.isShowing()) {
+					alertDialog.cancel();
+				}
+				break;
+			case Util.DISMISS_DIALOG_COMMENTS:
+				if (commentsAlertDialog.isShowing()) {
+					commentsAlertDialog.cancel();
+				}
+				if (alertDialog != null && alertDialog.isShowing()) {
+					alertDialog.cancel();
+				}
+				break;
+			case Util.SHOW_DIALOG_COMMENTS:
+				if (null == commentsAlertDialog) {
+					commentsAlertDialog = Util
+							.showAddCommentDialog(EssayItemDeatilActivity.this);
+				}
 
+				if (!commentsAlertDialog.isShowing()) {
+					commentsAlertDialog.show();
+				}
+				ImageView cancel = (ImageView) commentsAlertDialog
+						.findViewById(R.id.add_comments_cancel);
+				cancel.setOnClickListener(EssayItemDeatilActivity.this);
+				ImageView ok = (ImageView) commentsAlertDialog
+						.findViewById(R.id.add_comments_ok);
+				ok.setOnClickListener(EssayItemDeatilActivity.this);
+				comment = (EditText) commentsAlertDialog
+						.findViewById(R.id.add_comments_content);
+
+				handler.sendEmptyMessage(Util.DISMISS_DIALOG_INPUT);
+				break;
+			case Util.DISMISS_DIALOG_INPUT:
+				InputMethodManager inputMethodManager = (InputMethodManager) comment
+						.getContext().getSystemService(
+								Context.INPUT_METHOD_SERVICE);
+				inputMethodManager.toggleSoftInput(0,
+						InputMethodManager.HIDE_NOT_ALWAYS);
+				commentsAlertDialog.setOnKeyListener(new OnKeyListener() {
+
+					@Override
+					public boolean onKey(DialogInterface dialog, int keyCode,
+							KeyEvent event) {
+						if (keyCode == KeyEvent.KEYCODE_BACK) {
+							commentsAlertDialog.dismiss();
+						}
+						return false;
+					}
+				});
+				break;
 			default:
 				break;
 			}
 		};
 	};
-	
+
 	String mid = "";
-	public void getCatalogList(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
+
+	public void getCatalogList(String url, JSONObject jsonObject,
+			Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		WenyiUser user = Util.getUserData(EssayItemDeatilActivity.this);
 		Log.d("lixufeng", "getCatalogList " + user + ",articleid " + articleid);
 		JSONObject sub = new JSONObject();
 		JSONObject paramsub = new JSONObject();
 		if (TextUtils.isEmpty(user.get_mID())) {
 			mid = UUID.randomUUID().toString();
-		}else{
+		} else {
 			mid = user.get_mID();
 		}
 		try {
 			paramsub.put("articleid", articleid);
-			
+
 			sub.put("mtype", "android");
 			sub.put("mid", mid);
 			sub.put("token", user.get_token());
-			if(null == jsonObject){
+			if (null == jsonObject) {
 				jsonObject = new JSONObject();
 			}
 			jsonObject.put("param", paramsub);
@@ -201,9 +296,9 @@ public class EssayItemDeatilActivity extends BaseActivity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
-		JsonObjectRequest wenyiRequest = new JsonObjectRequest(
-				Method.POST, url, jsonObject, resultListener, errorListener);
+
+		JsonObjectRequest wenyiRequest = new JsonObjectRequest(Method.POST,
+				url, jsonObject, resultListener, errorListener);
 
 		try {
 			VolleyUtils.getInstance().addReequest(wenyiRequest);
@@ -211,6 +306,7 @@ public class EssayItemDeatilActivity extends BaseActivity {
 			e.printStackTrace();
 		}
 	}
+
 	Listener<JSONObject> detailResultListener = new Listener<JSONObject>() {
 
 		@Override
@@ -228,22 +324,25 @@ public class EssayItemDeatilActivity extends BaseActivity {
 			Log.e(TAG, error.getMessage(), error);
 		}
 	};
-	private void initData(JSONObject jsonObject, int flag){
+
+	private void initData(JSONObject jsonObject, int flag) {
 		WenyiLog.logv(TAG, "initData 1111");
-		if(jsonObject != null){
+		if (jsonObject != null) {
 			try {
 				WenyiLog.logv(TAG, "initData 22222");
-				if(!jsonObject.isNull("statuscode") && 200 == jsonObject.getInt("statuscode")){
+				if (!jsonObject.isNull("statuscode")
+						&& 200 == jsonObject.getInt("statuscode")) {
 					WenyiLog.logv(TAG, "initData 33333");
-					if(!jsonObject.isNull("data")){
+					if (!jsonObject.isNull("data")) {
 						WenyiLog.logv(TAG, "initData 44444");
 						JSONObject data = jsonObject.getJSONObject("data");
-						
+
 						JSONArray list = data.getJSONArray("detail");
 						LinkedList<EssayListItemDetail> listTemp = new LinkedList<EssayListItemDetail>();
-						for(int i = 0,j = list.length(); i < j; i++){
+						for (int i = 0, j = list.length(); i < j; i++) {
 							JSONObject jb = list.getJSONObject(i);
-							WenyiLog.logv(TAG, "initData 5555 jb " + jb.toString());
+							WenyiLog.logv(TAG,
+									"initData 5555 jb " + jb.toString());
 							EssayListItemDetail elid = new EssayListItemDetail();
 							elid.setId(jb.getString("id"));
 							elid.setCataid(jb.getString("cataid"));
@@ -253,15 +352,48 @@ public class EssayItemDeatilActivity extends BaseActivity {
 							listTemp.add(elid);
 						}
 						mListItems.addAll(listTemp);
-						
+
 						handler.sendEmptyMessage(1);
 					}
-				}else{
-					Toast.makeText(EssayItemDeatilActivity.this, "" + jsonObject.getString("errmsg"), Toast.LENGTH_SHORT);
+				} else {
+					Toast.makeText(EssayItemDeatilActivity.this, ""
+							+ jsonObject.getString("errmsg"),
+							Toast.LENGTH_SHORT).show();
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	@Override
+	public void onClick(View view) {
+		int id = view.getId();
+		switch (id) {
+		case R.id.add_comments_cancel:
+			handler.sendEmptyMessage(Util.DISMISS_DIALOG_COMMENTS);
+			break;
+		case R.id.add_comments_ok:
+			// sendCommentsLoadMoreData();
+			break;
+		case R.id.comment_text_id:
+			handler.sendEmptyMessage(Util.SHOW_DIALOG_COMMENTS);
+			break;
+		case R.id.right_img:
+			if (contentIconUrl != null) {
+				ownerIconUrl = contentIconUrl;
+			}
+
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("title", titleContent);
+			map.put("content", content);
+			map.put("layer", layer);
+			map.put("image", ownerIconUrl);
+			map.put("url", HttpUrls.ESSAY_WENYILIST_ITEM_DETAIL);
+			map.put("from", "book");
+			openShare(map);
+		default:
+			break;
 		}
 	}
 }

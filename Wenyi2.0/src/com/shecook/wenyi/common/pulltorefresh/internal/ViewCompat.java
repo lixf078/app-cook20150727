@@ -20,6 +20,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.View;
+import com.shecook.wenyi.R;
 
 @SuppressWarnings("deprecation")
 public class ViewCompat {

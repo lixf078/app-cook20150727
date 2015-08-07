@@ -1,5 +1,7 @@
 package com.shecook.wenyi.model.essay;
 
+import com.shecook.wenyi.R;
+
 public class EssayGallery {
 	public int id;
 	public String title;

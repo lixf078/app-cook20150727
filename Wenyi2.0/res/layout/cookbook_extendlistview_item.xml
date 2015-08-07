@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:layout_marginTop="150dip"
+    android:orientation="horizontal"
+    android:paddingBottom="5dip"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip"
+    android:paddingTop="5dip" >
+
+    <TextView
+        android:id="@+id/cookbook_listitem_detail_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_alignParentRight="true" />
+    <!--
+    <RelativeLayout
+        android:id="@+id/cookbook_listitem_textlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="10dip"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/cookbook_listitem_detail_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true" />
+
+        <TextView
+            android:id="@+id/cookbook_listitem_go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ico_next" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/cookbook_listitem_bottomline"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cookbook_listitem_textlayout"
+        android:text="@string/bottom_line"
+        android:textColor="@color/orange" />
+    -->
+
+</RelativeLayout>

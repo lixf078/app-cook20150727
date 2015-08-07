@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.pulltorefresh.internal.EmptyViewMethodAccessor;
 
 public class PullToRefreshExpandableListView extends PullToRefreshAdapterViewBase<ExpandableListView> {

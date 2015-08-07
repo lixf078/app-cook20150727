@@ -1,5 +1,7 @@
 package com.shecook.wenyi.model;
 
+import com.shecook.wenyi.R;
+
 public class EssayListItem {
 	private String id;
 	private String cataid;

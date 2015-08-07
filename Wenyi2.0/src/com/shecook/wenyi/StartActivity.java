@@ -1,8 +1,12 @@
 package com.shecook.wenyi;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
@@ -10,26 +14,45 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.shecook.wenyi.common.slidingmenu.SlidingMenu;
+import com.shecook.wenyi.common.slidingmenu.SlidingMenu.OnCloseListener;
+import com.shecook.wenyi.common.volley.Request.Method;
 import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
+import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.cookbook.CookbookFragment;
+import com.shecook.wenyi.cookbook.adapter.CookbookExpandableListAdapter;
 import com.shecook.wenyi.essay.WelcomeFragment;
 import com.shecook.wenyi.group.GroupFragment;
 import com.shecook.wenyi.mainpackage.FragmentTabAdapter;
+import com.shecook.wenyi.model.CookbookCatalog;
 import com.shecook.wenyi.model.WenyiUser;
 import com.shecook.wenyi.personal.PersonalFragment;
 import com.shecook.wenyi.piazza.PiazzaFragment;
+import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
+import com.shecook.wenyi.util.WenyiLog;
+import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class StartActivity extends BaseActivity {
+public class StartActivity extends BaseActivity{
 
 	public static final String TAG = "StartActivity";
+
+	public interface UpdateFragmentListener{
+		public void updateFragment(String info);
+	}
+	
 	/*
 	 * 1,检查版本是否需要更新 2,判断启动方式（通知，桌面等）
 	 */
@@ -38,7 +61,14 @@ public class StartActivity extends BaseActivity {
 	 */
 	private RadioGroup rgs;
 	public List<Fragment> fragments = new ArrayList<Fragment>();
-
+	WelcomeFragment welcomeFragment = null;
+	CookbookFragment cookbookFragment = null;
+	PiazzaFragment piazzaFragment = null;
+	GroupFragment groupFragment = null;
+	PersonalFragment personalFragment = null;
+	
+	UpdateFragmentListener updateFragmentListener;
+	
 	public String hello = "hello ";
 
 	public static JSONObject welcomeData;
@@ -47,10 +77,23 @@ public class StartActivity extends BaseActivity {
 	
 	private long castTime = 0l;
 	
+	private SlidingMenu menu;
+	private View menuView;
+	CookbookExpandableListAdapter expandAdapter;
+	private LinkedList<CookbookCatalog> mCatalogItems;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bottom_navigation);
+		
+		welcomeFragment = new WelcomeFragment();
+		cookbookFragment = new CookbookFragment();
+		piazzaFragment = new PiazzaFragment();
+		groupFragment = new GroupFragment();
+		personalFragment = new PersonalFragment();
+		
+		mCatalogItems = new LinkedList<CookbookCatalog>();
 		castTime = System.currentTimeMillis();
 		Log.d(TAG, "catalogResultListener onCreate -> " + castTime);
 		networkImageView = (NetworkImageView) findViewById(R.id.main_layout_fillparent);
@@ -58,12 +101,42 @@ public class StartActivity extends BaseActivity {
 		getTokenFrom(false,tokenResultListener,tokenErrorListener);
 	}
 	
+	public void initMenu(){
+		menu = new SlidingMenu(this);
+		menu.setMode(SlidingMenu.LEFT);
+		menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+		menu.setShadowWidthRes(R.dimen.shadow_width);
+		menu.setShadowDrawable(R.drawable.shadow);
+		menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+		menu.setFadeDegree(0.35f);
+		menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+		menu.setMenu(R.layout.menu_frame);
+		menu.setOnCloseListener(new OnCloseListener() {
+			
+			@Override
+			public void onClose() {
+				
+			}
+		});
+		menuView = menu.findViewById(R.id.expandable_listview);
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		/*if(keyCode == KeyEvent.KEYCODE_BACK){
+			menu.toggle();
+			return true;
+		}*/
+		return super.onKeyDown(keyCode, event);
+	}
+	
 	public void initView(){
-		fragments.add(new WelcomeFragment());
-		fragments.add(new CookbookFragment());
-		fragments.add(new PiazzaFragment());
-		fragments.add(new GroupFragment());
-		fragments.add(new PersonalFragment());
+		initMenu();
+		fragments.add(welcomeFragment);
+		fragments.add(cookbookFragment);
+		fragments.add(piazzaFragment);
+		fragments.add(groupFragment);
+		fragments.add(personalFragment);
 
 		rgs = (RadioGroup) findViewById(R.id.tabs_rg);
 
@@ -75,8 +148,44 @@ public class StartActivity extends BaseActivity {
 					public void OnRgsExtraCheckedChanged(RadioGroup radioGroup,
 							int checkedId, int index) {
 						Log.d(TAG, "OnRgsExtraCheckedChanged -> " + index);
+						if(index == 1){
+							menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+						}else{
+							menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+						}
 					}
 				});
+		
+		ExpandableListView expandableListView = (ExpandableListView) menuView.findViewById(R.id.expandable_listview);
+//		expandableListView.setChildDivider(getActivity().getResources().getDrawable(R.drawable.transport));
+		expandableListView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		expandAdapter = new CookbookExpandableListAdapter(StartActivity.this, mCatalogItems);
+		expandableListView.setAdapter(expandAdapter);
+		expandableListView.setOnChildClickListener(new OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                    int groupPosition, int childPosition, long id) {
+            	WenyiLog.logv(TAG, "onChildClick groupPosition " + groupPosition + ",childPosition " + childPosition);
+            	updateFragmentListener.updateFragment(mCatalogItems.get(groupPosition).getCata_items().get(childPosition).getId());
+            	menu.toggle();
+                return false;
+            }
+        });
+		expandableListView.setOnGroupClickListener(new OnGroupClickListener() {
+			
+			@Override
+			public boolean onGroupClick(ExpandableListView parent, View view, int groupPosition,
+					long arg3) {
+				WenyiLog.logv(TAG, "onGroupClick groupPosition " + groupPosition);
+				if(mCatalogItems.get(groupPosition).getCata_items().size() == 0){
+					menu.toggle();
+					updateFragmentListener.updateFragment(mCatalogItems.get(groupPosition).getId());
+				}
+				return false;
+			}
+		});
+		
 	}
 	
 	Handler handler = new Handler(){
@@ -85,6 +194,7 @@ public class StartActivity extends BaseActivity {
 			switch (what) {
 			case 1:
 				getCatalog(HttpUrls.ESSAY_WENYI_LIST_CATALOG, null, catalogResultListener, catalogErrorListener);
+				getCookbookCatalog(HttpUrls.COOKBOOK_LIST_CATALOG, null, cookbookCatalogResultListener, cookbookCatalogErrorListener);
 				break;
 			case 2:
 				if(System.currentTimeMillis() - castTime < 5000){
@@ -92,6 +202,10 @@ public class StartActivity extends BaseActivity {
 				}else{
 					networkImageView.setVisibility(View.GONE);
 				}
+				break;
+			case 3:
+				expandAdapter.notifyDataSetChanged();
+				break;
 			default:
 				break;
 			}
@@ -167,5 +281,112 @@ public class StartActivity extends BaseActivity {
 		}
 	};
 	
+	public void getCookbookCatalog(String url, JSONObject jsonObject,
+			Listener<JSONObject> resultListener, ErrorListener errorListener) {
+		WenyiUser user = Util.getUserData(StartActivity.this);
+		JSONObject sub = new JSONObject();
+		if (TextUtils.isEmpty(user.get_mID())) {
+			mid = UUID.randomUUID().toString();
+		} else {
+			mid = user.get_mID();
+		}
+		try {
+			sub.put("mtype", "android");
+			sub.put("mid", mid);
+			sub.put("token", user.get_token());
+			if (null == jsonObject) {
+				jsonObject = new JSONObject();
+			}
+			jsonObject.put("common", sub);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		JsonObjectRequest wenyiRequest = new JsonObjectRequest(Method.POST,
+				url, jsonObject, resultListener, errorListener);
+
+		try {
+			VolleyUtils.getInstance().addReequest(wenyiRequest);
+		} catch (AppException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	Listener<JSONObject> cookbookCatalogResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.d(TAG,
+					"cookbookCatalogResultListener onResponse -> " + result.toString());
+			cookbookFragment.setCookbookCatalogObject(result);
+			initCatalogData(result);
+		}
+	};
+
+	ErrorListener cookbookCatalogErrorListener = new Response.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			Log.e(TAG, error.getMessage(), error);
+		}
+	};
+	
+	private void initCatalogData(JSONObject jsonObject) {
+		if (jsonObject != null) {
+			try {
+				if (!jsonObject.isNull("statuscode")
+						&& 200 == jsonObject.getInt("statuscode")) {
+					
+					if (!jsonObject.isNull("data")) {
+						
+						JSONObject data = jsonObject.getJSONObject("data");
+						JSONArray list = data.getJSONArray("catalog");
+						LinkedList<CookbookCatalog> listTemp = new LinkedList<CookbookCatalog>();
+						
+						for (int i = 0, j = list.length(); i < j; i++) {
+							JSONObject jb = list.getJSONObject(i);
+							CookbookCatalog cbc = new CookbookCatalog();
+							cbc.setId(jb.getString("id"));
+							cbc.setCataname(jb.getString("cataname"));
+							cbc.setParentid(jb.getString("parentid"));
+							
+							LinkedList<CookbookCatalog> listTemp2 = null;
+							listTemp2 = new LinkedList<CookbookCatalog>();
+							if(jb.has("cata_items")){
+								JSONArray sublist = jb.getJSONArray("cata_items");
+								for (int k = 0, t = sublist.length(); k < t; k++) {
+									JSONObject subjb = sublist.getJSONObject(k);
+									CookbookCatalog subCbc = new CookbookCatalog();
+									subCbc.setId(subjb.getString("id"));
+									subCbc.setCataname(subjb.getString("cataname"));
+									subCbc.setParentid(subjb.getString("parentid"));
+									listTemp2.add(subCbc);
+								}
+							}
+							cbc.setCata_items(listTemp2);
+							listTemp.add(cbc);
+						}
+						mCatalogItems.addAll(listTemp);
+
+						handler.sendEmptyMessage(3);
+					}
+				} else {
+					Toast.makeText(StartActivity.this,
+							"" + jsonObject.getString("errmsg"),
+							Toast.LENGTH_SHORT).show();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public UpdateFragmentListener getUpdateFragmentListener() {
+		return updateFragmentListener;
+	}
+
+	public void setUpdateFragmentListener(
+			UpdateFragmentListener updateFragmentListener) {
+		this.updateFragmentListener = updateFragmentListener;
+	}
 	
 }

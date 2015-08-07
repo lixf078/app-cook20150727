@@ -14,13 +14,13 @@ import android.widget.TextView;
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
-import com.shecook.wenyi.model.EssayListItem;
 import com.shecook.wenyi.model.EssayListItemDetail;
+import com.shecook.wenyi.util.WenyiLog;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
 public class EssayListDetailAdapter extends BaseAdapter {
-
+	private static final String TAG = "EssayListDetailAdapter";
 	private LinkedList<EssayListItemDetail> mListItems;
 	private Context context;
 
@@ -77,15 +77,15 @@ public class EssayListDetailAdapter extends BaseAdapter {
 			LruImageCache lruImageCache = LruImageCache.instance();
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
-			holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
-			holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
+			holder.imageUrl.setDefaultImageResId(R.drawable.loadingpic);
+			holder.imageUrl.setErrorImageResId(R.drawable.loadingpic);
 
 			holder.imageUrl.setImageUrl(elid.getRowcontent(), imageLoader);
 			holder.imageUrl.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View arg0) {
-					
+					WenyiLog.logd(TAG, "imageview click");
 				}
 			});
 		} else{

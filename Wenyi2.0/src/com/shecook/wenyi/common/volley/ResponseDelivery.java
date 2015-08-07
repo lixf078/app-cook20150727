@@ -16,6 +16,8 @@
 
 package com.shecook.wenyi.common.volley;
 
+import com.shecook.wenyi.R;
+
 
 public interface ResponseDelivery {
     /**

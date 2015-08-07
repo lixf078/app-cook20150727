@@ -1,5 +1,6 @@
 package com.shecook.wenyi.model;
 
+import com.shecook.wenyi.R;
 import java.io.Serializable;
 
 import org.json.JSONException;

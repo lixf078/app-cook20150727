@@ -1,5 +1,6 @@
 package com.shecook.wenyi.model;
 
+import com.shecook.wenyi.R;
 import java.util.LinkedList;
 
 public class CookbookCatalog {

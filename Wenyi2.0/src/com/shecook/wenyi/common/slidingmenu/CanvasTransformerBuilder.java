@@ -3,6 +3,7 @@ package com.shecook.wenyi.common.slidingmenu;
 import android.graphics.Canvas;
 import android.view.animation.Interpolator;
 
+import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.slidingmenu.SlidingMenu.CanvasTransformer;
 
 public class CanvasTransformerBuilder {
