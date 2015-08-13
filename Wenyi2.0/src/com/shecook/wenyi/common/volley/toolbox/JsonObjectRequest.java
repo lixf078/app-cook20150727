@@ -35,7 +35,7 @@ import com.shecook.wenyi.common.volley.Response.Listener;
  * optional {@link JSONObject} to be passed in as part of the request body.
  */
 public class JsonObjectRequest extends JsonRequest<JSONObject> {
-
+	private static String TAG = "JsonObjectRequest";
     /**
      * Creates a new request.
      * @param method the HTTP method to use
@@ -75,7 +75,7 @@ public class JsonObjectRequest extends JsonRequest<JSONObject> {
             String jsonString =
                 new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             
-            Log.d("JsonObjectRequest", "结果字符串："+jsonString);
+            Log.w(TAG, "结果字符串：" + jsonString);
             
             return Response.success(new JSONObject(jsonString),
                     HttpHeaderParser.parseCacheHeaders(response));

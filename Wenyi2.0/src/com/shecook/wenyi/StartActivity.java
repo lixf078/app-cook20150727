@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -86,6 +87,11 @@ public class StartActivity extends BaseActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bottom_navigation);
+		
+		Log.e(TAG, "catalogResultListener getDefaultDisplay -> " + getWindowManager().getDefaultDisplay().getWidth());
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		Log.e(TAG, "catalogResultListener widthPixels -> " + displayMetrics.widthPixels);
 		
 		welcomeFragment = new WelcomeFragment();
 		cookbookFragment = new CookbookFragment();
@@ -188,6 +194,8 @@ public class StartActivity extends BaseActivity{
 		
 	}
 	
+	private boolean shouldNotify = false;
+	
 	Handler handler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
@@ -197,14 +205,19 @@ public class StartActivity extends BaseActivity{
 				getCookbookCatalog(HttpUrls.COOKBOOK_LIST_CATALOG, null, cookbookCatalogResultListener, cookbookCatalogErrorListener);
 				break;
 			case 2:
-				if(System.currentTimeMillis() - castTime < 5000){
+				if(System.currentTimeMillis() - castTime < 3000){
 					handler.sendEmptyMessageDelayed(2, 500);
 				}else{
+					shouldNotify = true;
 					networkImageView.setVisibility(View.GONE);
 				}
 				break;
 			case 3:
-				expandAdapter.notifyDataSetChanged();
+				if(shouldNotify){
+					expandAdapter.notifyDataSetChanged();
+				}else{
+					handler.sendEmptyMessageDelayed(3, 500);
+				}
 				break;
 			default:
 				break;
@@ -316,8 +329,6 @@ public class StartActivity extends BaseActivity{
 
 		@Override
 		public void onResponse(JSONObject result) {
-			Log.d(TAG,
-					"cookbookCatalogResultListener onResponse -> " + result.toString());
 			cookbookFragment.setCookbookCatalogObject(result);
 			initCatalogData(result);
 		}

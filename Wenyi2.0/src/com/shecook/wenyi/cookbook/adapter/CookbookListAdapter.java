@@ -75,7 +75,9 @@ public class CookbookListAdapter extends BaseAdapter {
 			}
 		});
 		holder.title.setText(cbli.getRecipename());
-		holder.summary.setText(cbli.getSummary());
+		if("".equals(cbli.getSummary())){
+			holder.summary.setText(cbli.getSummary());
+		}
 		return view ;
 	}
 	

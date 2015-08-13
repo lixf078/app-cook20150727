@@ -72,10 +72,15 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 			
 			@Override
 			public void onClick(View arg0) {
+				Log.d("ViewPagerAdapter", "onClick url " + arg0.getTag());
 				Uri uri = Uri.parse((String)arg0.getTag());
 				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(intent);
+				try {
+					context.startActivity(intent);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		holder.advTitle.setText(essayGallery.getTitle());

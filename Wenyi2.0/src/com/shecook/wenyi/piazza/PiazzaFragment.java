@@ -1,14 +1,14 @@
 package com.shecook.wenyi.piazza;
 
-import com.shecook.wenyi.R;
-import com.shecook.wenyi.util.WenyiLog;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.shecook.wenyi.R;
+import com.shecook.wenyi.util.WenyiLog;
 
 public class PiazzaFragment extends Fragment {
 	private static final String LOGTAG = "PiazzaFragment";

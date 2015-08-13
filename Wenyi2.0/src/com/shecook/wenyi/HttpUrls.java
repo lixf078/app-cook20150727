@@ -9,6 +9,13 @@ public class HttpUrls {
 	public static final String ESSAY_WENYI_LIST_CATALOG = BASE_URL + "article/catalog";
 	public static final String ESSAY_WENYI_LIST = BASE_URL + "article/list";
 	public static final String ESSAY_WENYILIST_ITEM_DETAIL = BASE_URL + "article/detail";
+	
 	public static final String COOKBOOK_LIST_CATALOG = BASE_URL + "recipe/catalog";
 	public static final String COOKBOOK_LIST = BASE_URL + "recipe/list";
+	public static final String COOKBOOK_LIST_ITEM_DETAIL = BASE_URL + "recipe/detail";
+	
+//	public static final String PIZZA_CATALOG_
+	
+	public static final String PERSONAL_MYCARD = BASE_URL + "user/mycard";
+	
 }

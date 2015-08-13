@@ -41,14 +41,16 @@
                 android:background="@drawable/set_top"
                 android:visibility="invisible" />
 
-            <!-- <ImageView
+            <!--
+                 <ImageView
                 android:id="@+id/essay_item_go"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/set_on_top"
                 android:layout_centerInParent="true"
                 android:paddingRight="10dip"
-                android:src="@drawable/ico_next" /> -->
+                android:src="@drawable/ico_next" />
+            -->
         </RelativeLayout>
 
         <LinearLayout
@@ -62,19 +64,19 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/essay_item_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:textColor="@color/date_color" />
-
-            <TextView
                 android:id="@+id/essay_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
                 android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/essay_item_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:textColor="@color/date_color" />
         </LinearLayout>
     </RelativeLayout>
 

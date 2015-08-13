@@ -82,7 +82,7 @@ public class HttpClientStack implements HttpStack {
         addHeaders(httpRequest, request.getHeaders());
         onPrepareRequest(httpRequest);
         HttpParams httpParams = httpRequest.getParams();
-        Log.d("lixufeng","performRequest " + httpParams);
+        Log.w("HttpClientStack","performRequest " + httpParams);
         int timeoutMs = request.getTimeoutMs();
         // TODO: Reevaluate this connection timeout based on more wide-scale
         // data collection and possibly different for wifi vs. 3G.

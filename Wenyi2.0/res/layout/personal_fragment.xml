@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/bgfile"
     android:paddingLeft="5dip"
-    android:paddingRight="8dip"
-    android:background="@drawable/bgfile" >
+    android:paddingRight="8dip" >
 
     <RelativeLayout
         android:id="@+id/personal_header"
@@ -26,9 +26,12 @@
                 android:background="@drawable/icon" />
 
             <TextView
+                android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="@string/personal_username_hint" />
         </LinearLayout>
 
         <ImageView
@@ -40,14 +43,16 @@
             android:background="@drawable/settings" />
     </RelativeLayout>
 
+    <!-- 用户个人信息 -->
+
     <LinearLayout
         android:id="@+id/personal_info"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/personal_header"
-        android:paddingTop="10dip"
         android:gravity="center_horizontal"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingTop="16dp" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -56,6 +61,7 @@
             android:gravity="center_horizontal"
             android:orientation="vertical" >
 
+            <!--
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,7 +70,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                android:drawableTop="@drawable/my_level"
+                android:drawablePadding="8dp"
+                android:text="@string/user_level" />
+            -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/my_level"
+                android:text="@string/user_level" />
         </LinearLayout>
 
         <LinearLayout
@@ -74,6 +90,7 @@
             android:gravity="center_horizontal"
             android:orientation="vertical" >
 
+            <!--
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,7 +99,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                android:text="@string/personal_gold" />
+            -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/money"
+                android:text="@string/personal_gold" />
         </LinearLayout>
 
         <LinearLayout
@@ -92,7 +117,8 @@
             android:gravity="center_horizontal"
             android:orientation="vertical" >
 
-            <ImageView
+            <!--
+                 <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/email" />
@@ -100,7 +126,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                android:text="@string/personal_email" />
+            -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/email"
+                android:text="@string/personal_email" />
         </LinearLayout>
 
         <LinearLayout
@@ -118,46 +152,55 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name" />
+                android:layout_marginTop="8dp"
+                android:text="@string/personal_experience" />
         </LinearLayout>
     </LinearLayout>
+
+    <!-- 用户收藏等 -->
 
     <LinearLayout
         android:id="@+id/personal_center"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_below="@id/personal_info"
-        android:paddingLeft="8dip"
-        android:paddingTop="10dip"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:paddingLeft="8dip" >
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
+            <!--
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/user_alt" />
+            -->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/user_alt"
+                android:drawablePadding="20dp"
+                android:gravity="center_vertical"
                 android:paddingLeft="16dip"
-                android:text="@string/app_name" />
+                android:text="@string/personal_my_friend"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:paddingTop="10dip"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
-            <ImageView
+            <!--
+                 <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/my_collection" />
@@ -166,17 +209,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dip"
-                android:text="@string/app_name" />
+                android:text="@string/app_name"
+                android:textSize="16sp" />
+            -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/my_collection"
+                android:drawablePadding="20dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dip"
+                android:text="@string/personal_my_collection"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:paddingTop="10dip"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
-            <ImageView
+            <!--
+                 <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/my_chat_bubble" />
@@ -185,16 +241,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dip"
-                android:text="@string/app_name" />
+                android:text="@string/app_name"
+                android:textSize="16sp" />
+            -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/my_chat_bubble"
+                android:drawablePadding="20dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dip"
+                android:text="@string/personal_my_chat_bubble"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
+            <!--
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -204,17 +273,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dip"
-                android:text="@string/app_name" />
+                android:text="@string/app_name"
+                android:textSize="16sp" />
+            -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/edit"
+                android:drawablePadding="20dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dip"
+                android:text="@string/personal_my_edit"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
-            <ImageView
+            <!--
+                 <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/my_cookhome" />
@@ -223,7 +305,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dip"
-                android:text="@string/app_name" />
+                android:text="@string/app_name"
+                android:textSize="16sp" />
+            -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/my_cookhome"
+                android:drawablePadding="20dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dip"
+                android:text="@string/personal_my_cookhome"
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 

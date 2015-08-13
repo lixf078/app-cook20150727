@@ -34,7 +34,7 @@
     <string name="want_submit_homework">交作业</string>
     <string name="browse">浏览</string>
     <string name="begin_trip">开始旅程</string>
-    <string name="cook_book_title">大家都在学</string>
+    <string name="cook_book_title">每日更新</string>
     <string name="cook_book_detail">菜谱详情</string>
     <string name="enter_user_nickname">请输入昵称</string>
     <string name="enter_user_email">请输入用户名/手机/邮箱</string>
@@ -44,7 +44,7 @@
     <string name="login_success">登录成功</string>
     <string name="login_failed">登录失败</string>
     <string name="click_to_login">点击登录</string>
-    <string name="user_level">等级:厨房小毛猴</string>
+    <string name="user_level">厨房小毛猴</string>
     <string name="user_score">经验:100/1000</string>
     <string name="score_tip">经验:</string>
     <string name="level_tip">等级:</string>
@@ -106,5 +106,16 @@
      <string name="essay_cook_knowledge">厨房百科</string>
      <string name="essay_question_answer">你问我答</string>
      <string name="bottom_line">----------------------</string>
+     <string name="cookbook_summary">做大米时，你试着要加一点点盐，味道会更好...</string>
      
+     <!-- presonal string -->
+     <string name="personal_my_friend">我的好友</string>
+     <string name="personal_my_collection">我的收藏</string>
+     <string name="personal_my_chat_bubble">我的评论</string>
+     <string name="personal_my_edit">我发表的</string>
+     <string name="personal_my_cookhome">私人厨房</string>
+     <string name="personal_gold">积分</string>
+     <string name="personal_email">消息</string>
+     <string name="personal_experience">经验</string>
+     <string name="personal_username_hint">钻石王老五</string>
 </resources>

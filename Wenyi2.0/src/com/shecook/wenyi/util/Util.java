@@ -37,7 +37,6 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.model.WenyiUser;
-import com.umeng.fb.model.UserInfo;
 public class Util {
 
     public static final int SHOW_DIALOG = 100;
@@ -287,7 +286,7 @@ public class Util {
 			editor.putString("userpasswd", "");
 			editor.putString("_userguid", "");
 			editor.putString("_nickname", "");
-			editor.putString("_flag", "");
+			editor.putInt("_flag", -1);
 			editor.putString("_uimage30", "");
 			editor.putString("_uimage50", "");
 			editor.putString("_uimage180", "");

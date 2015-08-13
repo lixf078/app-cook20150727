@@ -34,8 +34,6 @@ import org.apache.http.impl.cookie.DateUtils;
 
 import android.os.SystemClock;
 
-import com.shecook.wenyi.R;
-import com.shecook.wenyi.common.activeandroid.util.Log;
 import com.shecook.wenyi.common.volley.AuthFailureError;
 import com.shecook.wenyi.common.volley.Cache;
 import com.shecook.wenyi.common.volley.Network;
@@ -94,14 +92,14 @@ public class BasicNetwork implements Network {
                 addCacheHeaders(headers, request.getCacheEntry());
                 String url = request.getUrl();
                 
-                VolleyLog.e("lixufeng performRequest parsedUrl %s " , url);
+                VolleyLog.e("performRequest parsedUrl %s " , url);
                 
         		HashMap<String, String> map = new HashMap<String, String>();
         		map.putAll(request.getHeaders());
         		map.putAll(headers);
 
         		for (String headerName : map.keySet()) {
-        			VolleyLog.e("lixufeng performRequest headerName %s headerValue %s" , headerName , map.get(headerName));
+        			VolleyLog.e("performRequest headerName %s headerValue %s" , headerName , map.get(headerName));
         		}
                 
                 httpResponse = mHttpStack.performRequest(request, headers);

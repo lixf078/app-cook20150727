@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white" >
+
+    <include layout="@layout/wenyi_common_header" />
+
+    <RelativeLayout
+        android:id="@+id/want_comments"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="5dip" >
+
+        <EditText
+            android:id="@+id/comment_text_id"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:hint="@string/want_comments"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <!-- The PullToRefreshListView replaces a standard ListView widget. -->
+
+    <com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView
+        android:id="@id/pull_refresh_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/want_comments"
+        android:layout_below="@id/wenyi_common_header"
+        android:cacheColorHint="#00000000"
+        android:divider="#00000000"
+        android:dividerHeight="4dp"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:listSelector="@android:color/transparent"
+        android:scrollbars="none"
+        android:smoothScrollbar="true" />
+
+</RelativeLayout>

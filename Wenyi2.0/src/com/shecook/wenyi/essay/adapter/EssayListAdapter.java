@@ -58,12 +58,13 @@ public class EssayListAdapter extends BaseAdapter {
      				R.layout.essay_list_item, null);
 			holder = new ViewHolder();
 			holder.advTitle = (TextView) view.findViewById(R.id.essay_item_title);
+			holder.advTime = (TextView) view.findViewById(R.id.essay_item_time);
 			holder.imageUrl = (NetworkImageView) view.findViewById(R.id.item_img);
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
 		}
-		Log.d("lixufeng111","getView advTitle " + holder.advTitle + ",size " + mListItems.size() + ",position " + position);
+
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
 	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
@@ -77,12 +78,13 @@ public class EssayListAdapter extends BaseAdapter {
 			}
 		});
 		holder.advTitle.setText(eli.getTitle());
+		holder.advTime.setText(eli.getTimeline());
 		return view ;
 	}
 	
 	private static class ViewHolder {
 		TextView advTitle;
-		TextView eventUrl;
+		TextView advTime;
 		NetworkImageView imageUrl;
 	}
 }

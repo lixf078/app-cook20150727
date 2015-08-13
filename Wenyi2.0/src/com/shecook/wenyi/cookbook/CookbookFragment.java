@@ -154,7 +154,6 @@ public class CookbookFragment extends Fragment implements
 		soundListener.addSoundEvent(State.REFRESHING, R.raw.refreshing_sound);
 		mPullRefreshListView.setOnPullEventListener(soundListener);
 		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
-		// You can also just use setListAdapter(mAdapter) or
 		mPullRefreshListView.setAdapter(mAdapter);
 		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -163,12 +162,12 @@ public class CookbookFragment extends Fragment implements
 					long position) {
 				Intent intent = new Intent(mActivity,
 						EssayItemDeatilActivity.class);
-				intent.putExtra("essaytitle",
+				intent.putExtra("cookbooktitle",
 						"" + mListItems.get((int) position).getRecipename());
 				intent.putExtra("articleid", ""
 						+ mListItems.get((int) position).getId());
-				startActivity(new Intent(mActivity,
-						EssayItemDeatilActivity.class));
+//				startActivity(new Intent(mActivity,
+//						CookbookListItemDetail.class));
 			}
 		});
 		return rootView;

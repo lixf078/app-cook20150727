@@ -59,7 +59,7 @@ public abstract class JsonRequest<T> extends Request<T> {
     public JsonRequest(int method, String url, String requestBody, Listener<T> listener,
             ErrorListener errorListener) {
         super(method, url, errorListener);
-        VolleyLog.d("JsonRequest requestBody %s" , requestBody);
+        VolleyLog.e("JsonRequest requestBody %s" , requestBody);
         mListener = listener;
         mRequestBody = requestBody;
     }
@@ -95,7 +95,7 @@ public abstract class JsonRequest<T> extends Request<T> {
 
     @Override
     public byte[] getBody() {
-    	VolleyLog.d("lixufeng getBody mRequestBody %s" , mRequestBody);
+    	VolleyLog.e("lixufeng getBody mRequestBody %s" , mRequestBody);
         try {
             return mRequestBody == null ? null : mRequestBody.getBytes(PROTOCOL_CHARSET);
         } catch (UnsupportedEncodingException uee) {
@@ -106,7 +106,7 @@ public abstract class JsonRequest<T> extends Request<T> {
     }
     
     public String getRequestParamsStr(){
-    	VolleyLog.d("lixufeng getRequestParamsStr mRequestBody %s" , mRequestBody);
+    	VolleyLog.e("lixufeng getRequestParamsStr mRequestBody %s" , mRequestBody);
     	return mRequestBody;
     }
 }
