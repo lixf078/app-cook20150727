@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.StartActivity;
 import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
@@ -137,8 +138,12 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 			int what = msg.what;
 			switch (what) {
 			case 1:
+				Intent intent = new Intent(mActivity,PersonalLoginCommon.class);
+				startActivityForResult(intent, 1);
 				break;
 			case 2:
+				Util.updateBooleanData(mActivity, "islogin", false);
+				((StartActivity)getActivity()).getTokenFrom(false, tokenResultListener, tokenErrorListener);
 				break;
 			case 3:
 				break;
@@ -168,9 +173,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 							// 有错误情况
 						}
 					} else if (statuscode == HttpStatus.USER_NOT_LOGIN) {
-						Intent intent = new Intent(
-								"com.shecook.wenyi.personal.personallogin");
-						startActivityForResult(intent, 1);
+						handler.sendEmptyMessage(1);
+					}else if(statuscode == HttpStatus.USER_TOKEN_OUTDATE){
+						handler.sendEmptyMessage(2);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -188,6 +193,51 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		}
 	};
 
+	
+	
+	Listener<JSONObject> tokenResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.d(TAG, "tokenResultListener onResponse -> " + result.toString());
+			String response = result.toString();
+			if(!TextUtils.isEmpty(response)){
+				try {
+					JSONObject jsonObject = new JSONObject(response);
+					int statuscode = jsonObject.getInt("statuscode");
+					if(statuscode == 200){
+						JSONObject dataJson = jsonObject.getJSONObject("data");
+						int core_status = dataJson.getInt("core_status");
+						if(core_status == 200){
+							WenyiUser user = new WenyiUser();
+							user.set_flag(statuscode);
+							user.set_mID(Util.getMid(mActivity));
+							user.set_token(dataJson.getString("token"));
+							Util.saveUserData(mActivity, user);
+							handler.sendEmptyMessage(1);
+						}else{
+							// 有错误情况
+						}
+					}else{
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else{
+			}
+			
+			
+		}
+	};
+	
+	ErrorListener tokenErrorListener = new Response.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			Log.e(TAG, error.getMessage(), error);
+		}
+	};
+	
+	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 	}

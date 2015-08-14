@@ -34,7 +34,7 @@ public class FragmentTabAdapter implements RadioGroup.OnCheckedChangeListener{
 
         // 默认显示第一页
         FragmentTransaction ft = fragmentActivity.getSupportFragmentManager().beginTransaction();
-        ft.add(fragmentContentId, fragments.get(4));
+        ft.add(fragmentContentId, fragments.get(0));
         ft.commit();
 
         rgs.setOnCheckedChangeListener(this);

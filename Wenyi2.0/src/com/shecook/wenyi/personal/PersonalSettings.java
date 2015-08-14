@@ -5,10 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -19,7 +23,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shecook.wenyi.BaseActivity;
+import com.shecook.wenyi.HttpStatus;
+import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.common.volley.Response;
+import com.shecook.wenyi.common.volley.VolleyError;
+import com.shecook.wenyi.common.volley.Response.ErrorListener;
+import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.util.Util;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
@@ -165,12 +175,50 @@ public class PersonalSettings extends BaseActivity implements OnClickListener{
 		});
 	}
 	private void logoutSucess(){
-		Toast.makeText(PersonalSettings.this, getString(R.string.user_loginout), Toast.LENGTH_SHORT).show();
-		login.setText(R.string.user_login);
-		Util.resetUser(PersonalSettings.this);
-		isLogin = false;
-		setResult(RESULT_OK);
-		/*Intent intent = new Intent(PersonalSettings.this,CenterActivity.class);
-		startActivity(intent);*/
+		userOperator(HttpUrls.PERSONAL_USER_LOGOUT, null, logoutResultListener, logoutCardErrorListener);
 	}
+	
+	Listener<JSONObject> logoutResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.e(TAG,
+					"userCardResultListener onResponse -> " + result.toString());
+			String response = result.toString();
+			if (!TextUtils.isEmpty(response)) {
+				try {
+					JSONObject jsonObject = new JSONObject(response);
+					int statuscode = jsonObject.getInt("statuscode");
+					if (statuscode == HttpStatus.STATUS_OK) {
+						JSONObject dataJson = jsonObject.getJSONObject("data");
+						int core_status = dataJson.getInt("core_status");
+						if (core_status == 200) {
+							Toast.makeText(PersonalSettings.this, getString(R.string.user_loginout), Toast.LENGTH_SHORT).show();
+							login.setText(R.string.user_login);
+							Util.updateBooleanData(PersonalSettings.this, "islogin", false);
+							isLogin = false;
+						} else {
+							// 有错误情况
+						}
+					} else if (statuscode == HttpStatus.USER_NOT_LOGIN) {
+						Intent intent = new Intent(
+								"com.shecook.wenyi.personal.personallogin");
+						startActivityForResult(intent, 1);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+			}
+
+		}
+	};
+
+	ErrorListener logoutCardErrorListener = new Response.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			Log.e(TAG, error.getMessage(), error);
+		}
+	};
+	
 }

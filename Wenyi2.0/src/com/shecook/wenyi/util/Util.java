@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -265,6 +266,7 @@ public class Util {
 			editor.putString("_level", user.get_level());
 			editor.putString("_msgcount", user.get_msgcount());
 			editor.putString("_level_score", user.get_level_core());
+			editor.putBoolean("islogin", user.is_isLogin());
 			editor.commit();
 			wenyiUser = user;
 		} catch (Exception e) {
@@ -282,7 +284,7 @@ public class Util {
 			SharedPreferences.Editor editor = userInfo.edit();
 			editor.putString("useremail", "");
 			editor.putString("_token", "");
-			editor.putString("_mid", "");
+//			editor.putString("_mid", "");
 			editor.putString("userpasswd", "");
 			editor.putString("_userguid", "");
 			editor.putString("_nickname", "");
@@ -294,6 +296,7 @@ public class Util {
 			editor.putString("_level", "");
 			editor.putString("_msgcount", "");
 			editor.putString("_level_score", "");
+			editor.putBoolean("islogin", false);
 			editor.commit();
 			wenyiUser = null;
 		} catch (Exception e) {
@@ -303,6 +306,55 @@ public class Util {
 		}
     	return false;
     }
+    
+    public static String mid = "";
+    public static String getMid(Context context){
+    	if(!"".equals(mid)){
+    		return mid;
+    	}
+    	SharedPreferences userInfo = null;
+    	try {
+			userInfo = context.getSharedPreferences("user_info", 0);
+			userInfo.getString("_mid", "");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+		}
+    	userInfo = null;
+    	if("".equals(mid)){
+    		mid = UUID.randomUUID().toString();
+    	}
+    	return mid;
+    }
+    
+    public static boolean updateBooleanData(Context context, String key, boolean value){
+    	SharedPreferences userInfo = null;
+    	try {
+			userInfo = context.getSharedPreferences("user_info", 0);
+			SharedPreferences.Editor editor = userInfo.edit();
+			editor.putBoolean(key, value);
+			editor.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+		}
+    	return false;
+    }
+    
+    public static boolean updateStringData(Context context, String key, String value){
+    	SharedPreferences userInfo = null;
+    	try {
+			userInfo = context.getSharedPreferences("user_info", 0);
+			SharedPreferences.Editor editor = userInfo.edit();
+			editor.putString(key, value);
+			editor.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+		}
+    	return false;
+    }
+    
     public static WenyiUser wenyiUser = null;
 
     public static WenyiUser getUserData(Context context){
@@ -326,6 +378,7 @@ public class Util {
 			wenyiUser.set_level_core(userInfo.getString("_level_score",""));
 			wenyiUser.set_token(userInfo.getString("_token", ""));
 			wenyiUser.set_mID(userInfo.getString("_mid", ""));
+			wenyiUser.set_isLogin(userInfo.getBoolean("islogin", false));
 		} catch (Exception e) {
 			wenyiUser = null;
 			e.printStackTrace();

@@ -295,7 +295,8 @@ public class BaseActivity extends FragmentActivity {
 
 	public void checkLogin(){
 		 user = Util.getUserData(BaseActivity.this);
-		 if(user != null && !"".equals(user.get_flag())){
+		 Log.e(TAG, "checkLogin " + user);
+		 if(user != null && user.is_isLogin()){
 			 isLogin = true;
 		 }else{
 			 isLogin = false;
@@ -357,9 +358,8 @@ public class BaseActivity extends FragmentActivity {
 		
 		return null;
 	}
-	
+
 	String mid = "";
-	
 	
 	public void getTokenFrom(boolean force, Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		if(!force && user.get_token() != null){
@@ -367,13 +367,12 @@ public class BaseActivity extends FragmentActivity {
 		}
 		JSONObject jsonObject = new JSONObject();
 		JSONObject sub = new JSONObject();
-		Log.d("lixufeng ","mid " + user.get_mID());
-		if(TextUtils.isEmpty(user.get_mID())){
+		if(TextUtils.isEmpty(mid = Util.getMid(BaseActivity.this))){
 			mid = UUID.randomUUID().toString();
-		}else{
+		}/*else{
 			mid = user.get_mID();
-		}
-		Log.d("lixufeng ","mid " + user.get_mID());
+		}*/
+		Log.d("lixufeng ","mid " + mid);
 		try {
 			sub.put("mtype", "android");
 			sub.put("mid", mid);
@@ -395,6 +394,34 @@ public class BaseActivity extends FragmentActivity {
 		WenyiUser user = Util.getUserData(this);
 		JSONObject sub = new JSONObject();
 		if (TextUtils.isEmpty(user.get_mID())) {
+			mid = UUID.randomUUID().toString();
+		}
+		try {
+			sub.put("mtype", "android");
+			sub.put("mid", mid);
+			sub.put("token", user.get_token());
+			if(null == jsonObject){
+				jsonObject = new JSONObject();
+			}
+			jsonObject.put("common", sub);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		JsonObjectRequest wenyiRequest = new JsonObjectRequest(
+				Method.POST, url, jsonObject, resultListener, errorListener);
+
+		try {
+			VolleyUtils.getInstance().addReequest(wenyiRequest);
+		} catch (AppException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void userOperator(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener){
+		WenyiUser user = Util.getUserData(this);
+		JSONObject sub = new JSONObject();
+		if (TextUtils.isEmpty(mid = user.get_mID())) {
 			mid = UUID.randomUUID().toString();
 		}
 		try {

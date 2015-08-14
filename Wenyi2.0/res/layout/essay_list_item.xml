@@ -4,12 +4,11 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dip"
     android:layout_marginRight="10dip"
-    android:layout_marginTop="10dip"
+    android:layout_marginTop="3dip"
     android:orientation="horizontal"
-    android:paddingBottom="5dip"
+    android:paddingBottom="4dip"
     android:paddingLeft="10dip"
-    android:paddingRight="10dip"
-    android:paddingTop="5dip" >
+    android:paddingRight="10dip" >
 
     <RelativeLayout
         android:layout_width="fill_parent"

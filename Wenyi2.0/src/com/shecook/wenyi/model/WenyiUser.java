@@ -1,6 +1,5 @@
 package com.shecook.wenyi.model;
 
-import com.shecook.wenyi.R;
 import java.io.Serializable;
 
 import org.json.JSONException;
@@ -27,6 +26,7 @@ public class WenyiUser extends BaseModel implements Serializable{
     private String _msgcount;
     private String _level_core;
     private String _login_type;
+    private boolean _isLogin;
 
     public WenyiUser() {
         super();
@@ -58,6 +58,14 @@ public class WenyiUser extends BaseModel implements Serializable{
 		_ID = jObject.isNull("uid") ? "-1" : jObject.getInt("uid") + "";
 
 		token = jObject.isNull("token") ? "" : jObject.getString("token");
+	}
+
+    public boolean is_isLogin() {
+		return _isLogin;
+	}
+
+	public void set_isLogin(boolean _isLogin) {
+		this._isLogin = _isLogin;
 	}
 
 	public String get_ID() {
@@ -200,7 +208,7 @@ public class WenyiUser extends BaseModel implements Serializable{
 	public String toString() {
 		return "WenyiUser [_ID=" + _ID + ", _mID=" + _mID + ", _userguid="
 				+ _userguid + ", _email=" + _email + ", _nickname=" + _nickname
-				+ ", token=" + token + "]";
+				+ ", token=" + token + ", isLogin " + "]";
 	}
 	
 }

@@ -23,7 +23,6 @@ import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.model.WenyiUser;
-import com.shecook.wenyi.model.factory.RegistreFactory;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.net.NetResult;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -94,7 +93,7 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 				paramSub.put("pwd", "aaaaaa");
 				
 				commonSub.put("mtype", "android");
-				commonSub.put("mid", user.get_mID());
+				commonSub.put("mid", Util.getMid(PersonalLoginCommon.this));
 				commonSub.put("token", user.get_token());// 注册，登陆之后可能会更改
 				
 				jsonObject.put("param", paramSub);
@@ -231,17 +230,52 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 	private void post(JSONObject jsonObject) {
 		Log.d(TAG, "wenyi login post start ");
 		handler.sendEmptyMessage(Util.SHOW_DIALOG);
-		RegistreFactory registreFactory = new RegistreFactory();
-		basePost(HttpUrls.PERSONAL_LOGIN, jsonObject.toString(), registreFactory, resultListener,errorListener);
+//		RegistreFactory registreFactory = new RegistreFactory();
+//		basePost(HttpUrls.PERSONAL_LOGIN, jsonObject.toString(), registreFactory, resultListener,errorListener);
+		
+		userOperator(HttpUrls.PERSONAL_LOGIN, jsonObject, loginResultListener, loginErrorListener);
 	}
 	
 	private void post3RD(JSONObject jsonObject) {
 		Log.d(TAG, "wenyi login post start ");
 		handler.sendEmptyMessage(Util.SHOW_DIALOG);
-		RegistreFactory registreFactory = new RegistreFactory();
-		basePost(HttpUrls.PERSONAL_LOGIN_3RD, jsonObject.toString(), registreFactory, resultListener,errorListener);
+//		RegistreFactory registreFactory = new RegistreFactory();
+//		basePost(HttpUrls.PERSONAL_LOGIN_3RD, jsonObject.toString(), registreFactory, resultListener,errorListener);
+		userOperator(HttpUrls.PERSONAL_LOGIN_3RD, jsonObject, loginResultListener, loginErrorListener);
 	}
 
+	
+	Listener<JSONObject> loginResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.e(TAG,
+					"userCardResultListener onResponse -> " + result.toString());
+			String response = result.toString();
+			if (!TextUtils.isEmpty(response)) {
+				try {
+					Log.d(TAG, "response -> " + response.toString());
+					Message message = new Message();
+					message.what = Util.DISMISS_DIALOG;
+					message.obj = response.toString();
+					handler.sendMessage(message);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+			}
+
+		}
+	};
+
+	ErrorListener loginErrorListener = new Response.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			Log.e(TAG, error.getMessage(), error);
+		}
+	};
+	
+	
 	Listener<NetResult> resultListener = new Listener<NetResult>() {
 
 		@Override
@@ -295,6 +329,7 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 								user.set_nickname(nickname);
 								user.set_email(useremail);
 								user.set_password(passwd);
+								user.set_isLogin(true);
 								Util.saveUserData(PersonalLoginCommon.this, user);
 								isLogin = true;
 							}else{
@@ -324,4 +359,12 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 	};
 	private static final String LOGTAG = "PersonalLoginCommon";
 	AlertDialog alertDialog;
+	
+	@Override
+	protected void onDestroy() {
+		if(alertDialog != null && alertDialog.isShowing()){
+			alertDialog.dismiss();
+		}
+		super.onDestroy();
+	}
 }
