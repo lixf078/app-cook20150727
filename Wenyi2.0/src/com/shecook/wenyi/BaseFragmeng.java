@@ -37,13 +37,9 @@ public class BaseFragmeng extends Fragment {
 		RequestQueue requestQueue = Volley.newRequestQueue(getActivity()
 				.getApplicationContext());
 		JSONObject jsonObject = new JSONObject();
-		JSONObject sub = new JSONObject();
-		if (TextUtils.isEmpty(user.get_mID())) {
-			mid = UUID.randomUUID().toString();
-		}
+		
+		JSONObject sub = Util.getCommonParam(getActivity());
 		try {
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
 			jsonObject.put("common", sub);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -96,16 +92,13 @@ public class BaseFragmeng extends Fragment {
 	}
 	
 	public void getCatalog(String url, JSONObject jsonObject, Listener<NetResult> resultListener, ErrorListener errorListener) {
-		WenyiUser user = Util.getUserData(getActivity());
-		/*RequestQueue requestQueue = Volley.newRequestQueue(getActivity()
-				.getApplicationContext());*/
-		JSONObject sub = new JSONObject();
-		if (TextUtils.isEmpty(user.get_mID())) {
-			mid = UUID.randomUUID().toString();
+
+		if(null == jsonObject){
+			jsonObject = new JSONObject();
 		}
+		
+		JSONObject sub = Util.getCommonParam(getActivity());
 		try {
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
 			jsonObject.put("common", sub);
 		} catch (JSONException e) {
 			e.printStackTrace();

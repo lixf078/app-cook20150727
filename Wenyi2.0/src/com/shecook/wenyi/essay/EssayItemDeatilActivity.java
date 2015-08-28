@@ -273,26 +273,17 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 
 	public void getCatalogList(String url, JSONObject jsonObject,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		WenyiUser user = Util.getUserData(EssayItemDeatilActivity.this);
 		Log.d("lixufeng", "getCatalogList " + user + ",articleid " + articleid);
-		JSONObject sub = new JSONObject();
+		JSONObject commonsub = Util.getCommonParam(EssayItemDeatilActivity.this);
 		JSONObject paramsub = new JSONObject();
-		if (TextUtils.isEmpty(user.get_mID())) {
-			mid = UUID.randomUUID().toString();
-		} else {
-			mid = user.get_mID();
+		if (null == jsonObject) {
+			jsonObject = new JSONObject();
 		}
 		try {
 			paramsub.put("articleid", articleid);
-
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
-			sub.put("token", user.get_token());
-			if (null == jsonObject) {
-				jsonObject = new JSONObject();
-			}
+			
+			jsonObject.put("common", commonsub);
 			jsonObject.put("param", paramsub);
-			jsonObject.put("common", sub);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.shecook.wenyi.BaseActivity;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.StartActivity;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
@@ -269,30 +270,19 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 		};
 	};
 
-	String mid = "";
-
 	public void getCookbookDetail(String url, JSONObject jsonObject,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		WenyiUser user = Util.getUserData(CookbookItemDeatilActivity.this);
 		Log.d("lixufeng", "getCookbookDetail " + user + ",recipeid " + recipeid);
-		JSONObject sub = new JSONObject();
-		JSONObject paramsub = new JSONObject();
-		if (TextUtils.isEmpty(user.get_mID())) {
-			mid = UUID.randomUUID().toString();
-		} else {
-			mid = user.get_mID();
+		if (null == jsonObject) {
+			jsonObject = new JSONObject();
 		}
+		JSONObject commonsub = Util.getCommonParam(CookbookItemDeatilActivity.this);
+		JSONObject paramsub = new JSONObject();
+		
 		try {
 			paramsub.put("articleid", recipeid);
-
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
-			sub.put("token", user.get_token());
-			if (null == jsonObject) {
-				jsonObject = new JSONObject();
-			}
 			jsonObject.put("param", paramsub);
-			jsonObject.put("common", sub);
+			jsonObject.put("common", commonsub);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

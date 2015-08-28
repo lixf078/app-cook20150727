@@ -359,23 +359,14 @@ public class BaseActivity extends FragmentActivity {
 		return null;
 	}
 
-	String mid = "";
 	
 	public void getTokenFrom(boolean force, Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		if(!force && user.get_token() != null){
 			// return ;
 		}
 		JSONObject jsonObject = new JSONObject();
-		JSONObject sub = new JSONObject();
-		if(TextUtils.isEmpty(mid = Util.getMid(BaseActivity.this))){
-			mid = UUID.randomUUID().toString();
-		}/*else{
-			mid = user.get_mID();
-		}*/
-		Log.d("lixufeng ","mid " + mid);
+		JSONObject sub = Util.getCommonParam(BaseActivity.this);
 		try {
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
 			jsonObject.put("common", sub);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -391,18 +382,11 @@ public class BaseActivity extends FragmentActivity {
 	}
 	
 	public void getCatalog(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		WenyiUser user = Util.getUserData(this);
-		JSONObject sub = new JSONObject();
-		if (TextUtils.isEmpty(user.get_mID())) {
-			mid = UUID.randomUUID().toString();
+		if(null == jsonObject){
+			jsonObject = new JSONObject();
 		}
+		JSONObject sub = Util.getCommonParam(BaseActivity.this);
 		try {
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
-			sub.put("token", user.get_token());
-			if(null == jsonObject){
-				jsonObject = new JSONObject();
-			}
 			jsonObject.put("common", sub);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -419,18 +403,11 @@ public class BaseActivity extends FragmentActivity {
 	}
 	
 	public void userOperator(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener){
-		WenyiUser user = Util.getUserData(this);
-		JSONObject sub = new JSONObject();
-		if (TextUtils.isEmpty(mid = user.get_mID())) {
-			mid = UUID.randomUUID().toString();
+		if(null == jsonObject){
+			jsonObject = new JSONObject();
 		}
+		JSONObject sub = Util.getCommonParam(BaseActivity.this);
 		try {
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
-			sub.put("token", user.get_token());
-			if(null == jsonObject){
-				jsonObject = new JSONObject();
-			}
 			jsonObject.put("common", sub);
 		} catch (JSONException e) {
 			e.printStackTrace();

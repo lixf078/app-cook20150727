@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,11 +63,13 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 			holder = (ViewHolder) view.getTag();
 		}
 
-		LruImageCache lruImageCache = LruImageCache.instance();
-	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.imageUrl.setDefaultImageResId(R.drawable.wenyi_01);
-	    holder.imageUrl.setErrorImageResId(R.drawable.wenyi_01);
-	    holder.imageUrl.setImageUrl(essayGallery.getImgUrl(), imageLoader);
+		if(!TextUtils.isEmpty(essayGallery.getImgUrl())){
+			LruImageCache lruImageCache = LruImageCache.instance();
+			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+			holder.imageUrl.setDefaultImageResId(R.drawable.wenyi_01);
+			holder.imageUrl.setErrorImageResId(R.drawable.wenyi_01);
+			holder.imageUrl.setImageUrl(essayGallery.getImgUrl(), imageLoader);
+		}
 	    holder.imageUrl.setTag("" + essayGallery.getEvent_content());
 	    holder.imageUrl.setOnClickListener(new OnClickListener() {
 			

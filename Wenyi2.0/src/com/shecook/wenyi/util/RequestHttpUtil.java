@@ -13,7 +13,6 @@ import com.shecook.wenyi.common.volley.Request.Method;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
-import com.shecook.wenyi.model.WenyiUser;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
 public class RequestHttpUtil {
@@ -22,19 +21,19 @@ public class RequestHttpUtil {
 	public static String token = "";
 
 	public static void getHttpData(Activity activity, String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		WenyiUser user = Util.getUserData(activity);
 		
 		JSONObject sub = new JSONObject();
 		
 		if("".equals(mid)){
-			if (null == user || TextUtils.isEmpty(mid = user.get_mID())) {
+			if (TextUtils.isEmpty(mid = Util.getMid(activity))) {
 				mid = UUID.randomUUID().toString();
+				Util.updateStringData(activity, "_mid", mid);
 			}
 		}
 		try {
 			sub.put("mtype", "android");
 			sub.put("mid", mid);
-			sub.put("token", user.get_token());
+			sub.put("token", Util.getToken(activity));
 			if(null == jsonObject){
 				jsonObject = new JSONObject();
 			}

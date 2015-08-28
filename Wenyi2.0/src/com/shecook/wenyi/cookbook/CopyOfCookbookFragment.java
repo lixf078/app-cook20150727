@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.StartActivity;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
@@ -293,14 +294,14 @@ public class CopyOfCookbookFragment extends Fragment {
 	
 	public void getCatalog(String url, JSONObject jsonObject,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		WenyiUser user = Util.getUserData(mActivity);
-		JSONObject sub = new JSONObject();
-		JSONObject paramsub = new JSONObject();
-		if (TextUtils.isEmpty(user.get_mID())) {
-			mid = UUID.randomUUID().toString();
-		} else {
-			mid = user.get_mID();
+
+		if (null == jsonObject) {
+			jsonObject = new JSONObject();
 		}
+
+		JSONObject commonsub = Util.getCommonParam(getActivity());
+
+		JSONObject paramsub = new JSONObject();
 		try {
 			String catalogid = mActivity.getIntent().getStringExtra("catalogid");
 			if (TextUtils.isEmpty(catalogid)) {
@@ -310,14 +311,8 @@ public class CopyOfCookbookFragment extends Fragment {
 			paramsub.put("pindex", "" + ++index);
 			paramsub.put("count", "20");
 
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
-			sub.put("token", user.get_token());
-			if (null == jsonObject) {
-				jsonObject = new JSONObject();
-			}
 			jsonObject.put("param", paramsub);
-			jsonObject.put("common", sub);
+			jsonObject.put("common", commonsub);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -338,15 +333,15 @@ public class CopyOfCookbookFragment extends Fragment {
 	String catalogid = "";
 	public void getCatalogList(String url, JSONObject jsonObject,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		WenyiUser user = Util.getUserData(mActivity);
-		Log.d("lixufeng", "getCatalogList " + user);
-		JSONObject sub = new JSONObject();
-		JSONObject paramsub = new JSONObject();
-		if (TextUtils.isEmpty(user.get_mID())) {
-			mid = UUID.randomUUID().toString();
-		} else {
-			mid = user.get_mID();
+
+		if (null == jsonObject) {
+			jsonObject = new JSONObject();
 		}
+
+		JSONObject commonsub = Util.getCommonParam(getActivity());
+
+		JSONObject paramsub = new JSONObject();
+		
 		try {
 			if (TextUtils.isEmpty(catalogid)) {
 				catalogid = "10004";
@@ -355,14 +350,8 @@ public class CopyOfCookbookFragment extends Fragment {
 			paramsub.put("pindex", "" + ++index);
 			paramsub.put("count", "20");
 
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
-			sub.put("token", user.get_token());
-			if (null == jsonObject) {
-				jsonObject = new JSONObject();
-			}
 			jsonObject.put("param", paramsub);
-			jsonObject.put("common", sub);
+			jsonObject.put("common", commonsub);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

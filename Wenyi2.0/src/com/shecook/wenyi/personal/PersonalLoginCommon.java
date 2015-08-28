@@ -102,7 +102,6 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 			}catch(Exception e){
 				
 			}
-			finish();
 			break;
 		}
 	}
@@ -332,6 +331,12 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 								user.set_isLogin(true);
 								Util.saveUserData(PersonalLoginCommon.this, user);
 								isLogin = true;
+								if (alertDialog.isShowing()) {
+									Log.d(LOGTAG, "DISMISS_DIALOG");
+									alertDialog.cancel();
+								}
+								setResult(RESULT_OK);
+								finish();
 							}else{
 								
 							}
@@ -351,6 +356,7 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 					alertDialog.cancel();
 				}
 				finish();
+				setResult(RESULT_CANCELED);
 				break;
 			default:
 				break;

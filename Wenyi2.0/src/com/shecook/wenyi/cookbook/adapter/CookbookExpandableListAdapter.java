@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shecook.wenyi.R;
@@ -88,9 +89,16 @@ public class CookbookExpandableListAdapter extends BaseExpandableListAdapter {
      				R.layout.cookbook_extendlistview_item, null);
 			holder = new ViewHolder();
 			holder.text = (TextView) convertView.findViewById(R.id.cookbook_listitem_detail_text);
+			holder.imageView = (ImageView) convertView.findViewById(R.id.cookbook_listitem_image);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
+		}
+		holder.imageView.setVisibility(View.VISIBLE);
+		if(isExpanded){
+			holder.imageView.setBackgroundResource(R.drawable.arrow_press);
+		}else{
+			holder.imageView.setBackgroundResource(R.drawable.arrow_normal);
 		}
 		holder.text.setText(cbc.getCataname());
 		return convertView;
@@ -108,5 +116,6 @@ public class CookbookExpandableListAdapter extends BaseExpandableListAdapter {
     }
 	private static class ViewHolder {
 		TextView text;
+		ImageView imageView;
 	}
 }

@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,6 +25,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore.Images;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -40,6 +44,8 @@ import com.shecook.wenyi.R;
 import com.shecook.wenyi.model.WenyiUser;
 public class Util {
 
+	public static final String TAG = "com.shecook.wenyi.util.Util-";
+	
     public static final int SHOW_DIALOG = 100;
     public static final int DISMISS_DIALOG = 101;
     public static final int SHOW_DIALOG_COMMENTS = 102;
@@ -86,7 +92,7 @@ public class Util {
     	Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
     	width = display.getWidth();
     	height = display.getHeight();
-    	Log.d("lixf","width " + width + ",height " + height);
+    	Log.d(TAG,"width " + width + ",height " + height);
         return width;
     }
     public static void setWidth(int width) {
@@ -249,12 +255,19 @@ public class Util {
     	try {
 			userInfo = context.getSharedPreferences("user_info", 0);
 			SharedPreferences.Editor editor = userInfo.edit();
-			Log.d("lixf","email: " + user.get_email() + ", message: " + user.get_msgcount());
+			Log.e(TAG,"email: " + user.get_email() + ", message: " + user.get_msgcount() + ",token " + user.get_token());
 			if(null != user.get_email() && !"".equals(user.get_email())){
 				editor.putString("useremail", user.get_email());
+				wenyiUser.set_email(user.get_email());
 			}
-			editor.putString("_token", user.get_token());
-			editor.putString("_mid", user.get_mID());
+			if((token = user.get_token()) != null && !"".equals(token)){
+				editor.putString("_token", token);
+				wenyiUser.set_token(user.get_token());
+			}
+			if(user.get_mID() != null && !"".equals(user.get_mID())){
+				editor.putString("_mid", user.get_mID());
+				wenyiUser.set_mID(user.get_mID());
+			}
 			editor.putString("userpasswd", user.get_password());
 			editor.putString("_userguid", user.get_userguid());
 			editor.putString("_nickname", user.get_nickname());
@@ -268,7 +281,18 @@ public class Util {
 			editor.putString("_level_score", user.get_level_core());
 			editor.putBoolean("islogin", user.is_isLogin());
 			editor.commit();
-			wenyiUser = user;
+			
+			wenyiUser.set_password(user.get_password());
+			wenyiUser.set_userguid(user.get_userguid());
+			wenyiUser.set_nickname(user.get_nickname());
+			wenyiUser.set_flag(user.get_flag());
+			wenyiUser.set_uimage30(user.get_uimage30());
+			wenyiUser.set_score(user.get_score());
+			wenyiUser.set_level(user.get_level());
+			wenyiUser.set_msgcount(user.get_msgcount());
+			wenyiUser.set_level_core(user.get_level_core());
+			wenyiUser.set_isLogin(user.is_isLogin());
+			user = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{
@@ -315,9 +339,10 @@ public class Util {
     	SharedPreferences userInfo = null;
     	try {
 			userInfo = context.getSharedPreferences("user_info", 0);
-			userInfo.getString("_mid", "");
+			mid = userInfo.getString("_mid", "");
 		} catch (Exception e) {
 			e.printStackTrace();
+			mid = "";
 		}finally{
 		}
     	userInfo = null;
@@ -326,6 +351,25 @@ public class Util {
     	}
     	return mid;
     }
+    
+    public static String token = "";
+    public static String getToken(Context context){
+    	if(!"".equals(token)){
+    		return token;
+    	}
+    	SharedPreferences userInfo = null;
+    	try {
+			userInfo = context.getSharedPreferences("user_info", 0);
+			token = userInfo.getString("_token", "");
+		} catch (Exception e) {
+			e.printStackTrace();
+			token = "";
+		}finally{
+		}
+    	userInfo = null;
+    	return token;
+    }
+    
     
     public static boolean updateBooleanData(Context context, String key, boolean value){
     	SharedPreferences userInfo = null;
@@ -353,6 +397,22 @@ public class Util {
 		}finally{
 		}
     	return false;
+    }
+    
+    public static JSONObject getCommonParam(Context context){
+    	JSONObject sub = new JSONObject();
+		if (TextUtils.isEmpty(mid = getMid(context))) {
+			mid = UUID.randomUUID().toString();
+			updateStringData(context, "_mid", mid);
+		}
+		try {
+			sub.put("mtype", "android");
+			sub.put("mid", mid);
+			sub.put("token", token = getToken(context));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+    	return sub;
     }
     
     public static WenyiUser wenyiUser = null;
@@ -434,7 +494,7 @@ public class Util {
 
         // 缩放图片动作
         matrix.postScale(scaleWidth, scaleHeight);
-        Log.d("lixf", "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
+        Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
 
         // 创建新的图片
         Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
@@ -463,7 +523,7 @@ public class Util {
 
         // 缩放图片动作
         matrix.postScale(scaleWidth, scaleHeight);
-        Log.d("lixf", "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
+        Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
 
         // 创建新的图片
         Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
@@ -490,7 +550,7 @@ public class Util {
 
         // 缩放图片动作
         matrix.postScale(scaleWidth, scaleHeight);
-        Log.d("lixf", "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
+        Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
 
         // 创建新的图片
         Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
@@ -519,7 +579,7 @@ public class Util {
 
         // 缩放图片动作
         matrix.postScale(scaleWidth, scaleHeight);
-        Log.d("lixf", "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
+        Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
 
         // 创建新的图片
         Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
@@ -548,7 +608,7 @@ public class Util {
 
         // 缩放图片动作
         matrix.postScale(scaleWidth, scaleHeight);
-        Log.d("lixf", "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
+        Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
 
         // 创建新的图片
         Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
@@ -578,7 +638,7 @@ public class Util {
 
         // 缩放图片动作
         matrix.postScale(scaleWidth, scaleHeight);
-        Log.d("lixf", "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
+        Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
 
         // 创建新的图片
         Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,

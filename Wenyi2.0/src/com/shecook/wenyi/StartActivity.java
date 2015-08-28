@@ -3,7 +3,6 @@ package com.shecook.wenyi;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -165,6 +164,10 @@ public class StartActivity extends BaseActivity{
 		ExpandableListView expandableListView = (ExpandableListView) menuView.findViewById(R.id.expandable_listview);
 //		expandableListView.setChildDivider(getActivity().getResources().getDrawable(R.drawable.transport));
 		expandableListView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		
+		expandableListView.setGroupIndicator(null);
+		
+		
 		expandAdapter = new CookbookExpandableListAdapter(StartActivity.this, mCatalogItems);
 		expandableListView.setAdapter(expandAdapter);
 		expandableListView.setOnChildClickListener(new OnChildClickListener() {
@@ -249,7 +252,6 @@ public class StartActivity extends BaseActivity{
 						if(core_status == 200){
 							WenyiUser user = new WenyiUser();
 							user.set_flag(statuscode);
-							user.set_mID(mid);
 							user.set_token(dataJson.getString("token"));
 							Util.saveUserData(StartActivity.this, user);
 							handler.sendEmptyMessage(1);
@@ -296,25 +298,17 @@ public class StartActivity extends BaseActivity{
 	
 	public void getCookbookCatalog(String url, JSONObject jsonObject,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		WenyiUser user = Util.getUserData(StartActivity.this);
-		JSONObject sub = new JSONObject();
-		if (TextUtils.isEmpty(user.get_mID())) {
-			mid = UUID.randomUUID().toString();
-		} else {
-			mid = user.get_mID();
+		if (null == jsonObject) {
+			jsonObject = new JSONObject();
 		}
+
+		JSONObject sub = Util.getCommonParam(StartActivity.this);
+
 		try {
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
-			sub.put("token", user.get_token());
-			if (null == jsonObject) {
-				jsonObject = new JSONObject();
-			}
 			jsonObject.put("common", sub);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
 		JsonObjectRequest wenyiRequest = new JsonObjectRequest(Method.POST,
 				url, jsonObject, resultListener, errorListener);
 

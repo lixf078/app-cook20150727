@@ -3,6 +3,7 @@ package com.shecook.wenyi.cookbook.adapter;
 import java.util.LinkedList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -75,7 +76,7 @@ public class CookbookListAdapter extends BaseAdapter {
 			}
 		});
 		holder.title.setText(cbli.getRecipename());
-		if("".equals(cbli.getSummary())){
+		if(!"".equals(cbli.getSummary())){
 			holder.summary.setText(cbli.getSummary());
 		}
 		return view ;

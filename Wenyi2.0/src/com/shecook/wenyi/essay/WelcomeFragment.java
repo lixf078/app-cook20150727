@@ -3,7 +3,6 @@ package com.shecook.wenyi.essay;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,7 +13,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +36,6 @@ import com.shecook.wenyi.common.volley.toolbox.NetworkTextView;
 import com.shecook.wenyi.essay.adapter.ViewPagerAdapter;
 import com.shecook.wenyi.essay.view.AutoScrollViewPager;
 import com.shecook.wenyi.essay.view.CirclePageIndicator;
-import com.shecook.wenyi.model.WenyiUser;
 import com.shecook.wenyi.model.essay.EssayCatlog;
 import com.shecook.wenyi.model.essay.EssayGallery;
 import com.shecook.wenyi.util.AppException;
@@ -108,6 +105,15 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 		mIndicator = (CirclePageIndicator) rootView
 				.findViewById(R.id.indicator);
 
+		
+		EssayGallery eg = new EssayGallery();
+		eg.setId(1000);
+		eg.setTitle(getResources().getString(R.string.app_name));
+		eg.setImgUrl("");
+		eg.setEvent_type(10);
+		eg.setEvent_content("www.baidu.com");
+		mPageViews.add(eg);
+		
 		adapter = new ViewPagerAdapter(this.getActivity()
 				.getApplicationContext(), mPageViews);
 		viewPager.setAdapter(adapter);
@@ -118,18 +124,19 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 		viewPager.setStopScrollWhenTouch(true);
 		setViewPagerScrollSpeed(viewPager);
 
-		NetworkTextView textView2 = (NetworkTextView) rootView
-				.findViewById(R.id.essay_new_action);
-		NetworkTextView textView3 = (NetworkTextView) rootView
-				.findViewById(R.id.essay_everyday_chart);
-		NetworkTextView textView4 = (NetworkTextView) rootView
-				.findViewById(R.id.essay_life_way);
-		NetworkTextView textView5 = (NetworkTextView) rootView
-				.findViewById(R.id.essay_good_baby);
-		NetworkTextView textView6 = (NetworkTextView) rootView
-				.findViewById(R.id.essay_cook_knowledge);
 		NetworkTextView textView = (NetworkTextView) rootView
+				.findViewById(R.id.essay_new_action);
+		NetworkTextView textView2 = (NetworkTextView) rootView
+				.findViewById(R.id.essay_everyday_chart);
+		NetworkTextView textView3 = (NetworkTextView) rootView
+				.findViewById(R.id.essay_life_way);
+		NetworkTextView textView4 = (NetworkTextView) rootView
+				.findViewById(R.id.essay_good_baby);
+		NetworkTextView textView5 = (NetworkTextView) rootView
+				.findViewById(R.id.essay_cook_knowledge);
+		NetworkTextView textView6 = (NetworkTextView) rootView
 				.findViewById(R.id.essay_question_answer);
+		
 		LruImageCache lruImageCache = LruImageCache.instance();
 		Log.d(TAG,"size " + catalogList.size());
 		if (null != catalogList && catalogList.size() > 0) {
@@ -139,6 +146,7 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 			textView.setErrorImageResId(R.drawable.shicai_default);
 
 			textView.setImageUrl(catalogList.get(0).getIconurl(), imageLoader);
+			textView.setText(catalogList.get(0).getTitle());
 			textView.setOnClickListener(this);
 		}
 
@@ -147,8 +155,9 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 					.getRequestQueue(), lruImageCache);
 			textView2.setDefaultImageResId(R.drawable.shicai_default);
 			textView2.setErrorImageResId(R.drawable.shicai_default);
-
+			
 			textView2.setImageUrl(catalogList.get(1).getIconurl(), imageLoader);
+			textView2.setText(catalogList.get(1).getTitle());
 			textView2.setOnClickListener(this);
 		}
 		if (null != catalogList && catalogList.size() > 2) {
@@ -158,6 +167,8 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 			textView3.setErrorImageResId(R.drawable.shicai_default);
 
 			textView3.setImageUrl(catalogList.get(2).getIconurl(), imageLoader);
+			textView3.setText(catalogList.get(2).getTitle());
+			Log.d("lixufeng", "initView " + catalogList.get(2).getTitle());
 			textView3.setOnClickListener(this);
 		}
 		if (null != catalogList && catalogList.size() > 3) {
@@ -165,7 +176,10 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 					.getRequestQueue(), lruImageCache);
 			textView4.setDefaultImageResId(R.drawable.shicai_default);
 			textView4.setErrorImageResId(R.drawable.shicai_default);
+			
 			textView4.setImageUrl(catalogList.get(3).getIconurl(), imageLoader);
+			Log.d("lixufeng", "initView " + catalogList.get(3).getTitle());
+			textView4.setText(catalogList.get(3).getTitle());
 			textView4.setOnClickListener(this);
 		}
 		if (null != catalogList && catalogList.size() > 4) {
@@ -175,6 +189,7 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 			textView5.setErrorImageResId(R.drawable.shicai_default);
 
 			textView5.setImageUrl(catalogList.get(4).getIconurl(), imageLoader);
+			textView5.setText(catalogList.get(4).getTitle());
 			textView5.setOnClickListener(this);
 		}
 
@@ -185,6 +200,7 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 			textView6.setErrorImageResId(R.drawable.shicai_default);
 
 			textView6.setImageUrl(catalogList.get(5).getIconurl(), imageLoader);
+			textView6.setText(catalogList.get(5).getTitle());
 			textView6.setOnClickListener(this);
 		}
 
@@ -203,6 +219,9 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 						WenyiLog.logv(LOGTAG, "initData 44444");
 						JSONObject data = jsonObject.getJSONObject("data");
 						JSONArray gallery = data.getJSONArray("gallery");
+						if(gallery.length() > 0){
+							mPageViews.clear();
+						}
 						for (int i = 0, j = gallery.length(); i < j; i++) {
 							JSONObject jb = gallery.getJSONObject(i);
 							WenyiLog.logv(LOGTAG,
@@ -350,20 +369,8 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 
 	public void getCatalog_(String url, JSONObject jsonObject,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		WenyiUser user = Util.getUserData(getActivity());
-		JSONObject sub = new JSONObject();
-		if (TextUtils.isEmpty(user.get_mID())) {
-			mid = UUID.randomUUID().toString();
-		} else {
-			mid = user.get_mID();
-		}
+		JSONObject sub = Util.getCommonParam(getActivity());
 		try {
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
-			sub.put("token", user.get_token());
-			if (null == jsonObject) {
-				jsonObject = new JSONObject();
-			}
 			jsonObject.put("common", sub);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -386,31 +393,37 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 		int id = view.getId();
 		switch (id) {
 		case R.id.essay_new_action:
+			intent.putExtra("catalogtitle", "" + catalogList.get(0).getTitle());
 			intent.putExtra("catalogid", "" + catalogList.get(0).getId());
 			WelcomeFragment.this.getActivity().startActivity(
 					intent);
 			break;
 		case R.id.essay_everyday_chart:
+			intent.putExtra("catalogtitle", "" + catalogList.get(1).getTitle());
 			intent.putExtra("catalogid", "" + catalogList.get(1).getId());
 			WelcomeFragment.this.getActivity().startActivity(
 					intent);
 			break;
 		case R.id.essay_life_way:
+			intent.putExtra("catalogtitle", "" + catalogList.get(2).getTitle());
 			intent.putExtra("catalogid", "" + catalogList.get(2).getId());
 			WelcomeFragment.this.getActivity().startActivity(
 					intent);
 			break;
 		case R.id.essay_good_baby:
+			intent.putExtra("catalogtitle", "" + catalogList.get(3).getTitle());
 			intent.putExtra("catalogid", "" + catalogList.get(3).getId());
 			WelcomeFragment.this.getActivity().startActivity(
 					intent);
 			break;
 		case R.id.essay_cook_knowledge:
+			intent.putExtra("catalogtitle", "" + catalogList.get(4).getTitle());
 			intent.putExtra("catalogid", "" + catalogList.get(4).getId());
 			WelcomeFragment.this.getActivity().startActivity(
 					intent);
-			
+			break;
 		case R.id.essay_question_answer:
+			intent.putExtra("catalogtitle", "" + catalogList.get(5).getTitle());
 			intent.putExtra("catalogid", "" + catalogList.get(5).getId());
 			WelcomeFragment.this.getActivity().startActivity(
 					intent);

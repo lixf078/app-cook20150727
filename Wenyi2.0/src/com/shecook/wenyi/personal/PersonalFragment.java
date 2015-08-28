@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts.Photo;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
@@ -28,16 +30,24 @@ import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
+import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
 import com.shecook.wenyi.model.WenyiUser;
 import com.shecook.wenyi.util.RequestHttpUtil;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
+import com.shecook.wenyi.util.volleybox.LruImageCache;
+import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
 public class PersonalFragment extends Fragment implements OnClickListener {
 	private static final String TAG = "PersonalFragment";
 
 	private Activity mActivity;
 
+	private TextView user_level, personal_gold, personal_email, personal_experience;
+	
+	private NetworkImageRoundView userIconView;
+	
 	@Override
 	public void onAttach(Activity activity) {
 		WenyiLog.logv(TAG, "onAttach");
@@ -51,7 +61,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		WenyiUser user = Util.getUserData(mActivity);
 		RequestHttpUtil.getHttpData(mActivity, HttpUrls.PERSONAL_MYCARD, null,
 				userCardResultListener, userCardErrorListener);
-		retrieveContactInfoFromSIM();
+		// retrieveContactInfoFromSIM();
 	}
 
 	@Override
@@ -68,6 +78,15 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		ImageView settings = (ImageView) rootView
 				.findViewById(R.id.personal_center_settings);
 		settings.setOnClickListener(this);
+		
+		userIconView = (NetworkImageRoundView) rootView.findViewById(R.id.user_icon);
+		userIconView.setDefaultImageResId(R.drawable.icon);
+		userIconView.setErrorImageResId(R.drawable.icon);
+		
+		user_level = (TextView) rootView.findViewById(R.id.user_level);
+		personal_gold = (TextView) rootView.findViewById(R.id.personal_gold);
+		personal_email = (TextView) rootView.findViewById(R.id.personal_email);
+		personal_experience = (TextView) rootView.findViewById(R.id.personal_experience);
 	}
 
 	@Override
@@ -146,6 +165,8 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 				((StartActivity)getActivity()).getTokenFrom(false, tokenResultListener, tokenErrorListener);
 				break;
 			case 3:
+				WenyiUser user = (WenyiUser) msg.obj;
+				updateView(user);
 				break;
 			default:
 				break;
@@ -153,6 +174,26 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		};
 	};
 
+	
+	public void updateView(WenyiUser user){
+		user_level.setText(user.get_level());
+		personal_gold.setText(user.get_score());
+		personal_email.setText(user.get_msgcount());
+		personal_experience.setText(user.get_level_core());
+		
+		LruImageCache lruImageCache = LruImageCache.instance();
+	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+	    
+	    userIconView.setImageUrl(user.get_uimage30(), imageLoader);
+	    userIconView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				
+			}
+		});
+	}
+	
 	Listener<JSONObject> userCardResultListener = new Listener<JSONObject>() {
 
 		@Override
@@ -166,12 +207,17 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 					int statuscode = jsonObject.getInt("statuscode");
 					if (statuscode == HttpStatus.STATUS_OK) {
 						JSONObject dataJson = jsonObject.getJSONObject("data");
-						int core_status = dataJson.getInt("core_status");
-						if (core_status == 200) {
-
-						} else {
-							// 有错误情况
-						}
+						WenyiUser user = new WenyiUser();
+						user.set_score(dataJson.getString("u_gold"));
+						user.set_level(dataJson.getString("u_lvlname"));
+						user.set_msgcount(dataJson.getString("u_newmsg_count"));
+						user.set_level_core(dataJson.getString("u_exp"));
+						user.set_u_newfriends_count(dataJson.getString("u_newfriends_count"));
+						user.set_uimage50(dataJson.getString("u_portrait"));
+						Message msg = new Message();
+						msg.what = 3;
+						msg.obj = user;
+						handler.sendMessage(msg);
 					} else if (statuscode == HttpStatus.USER_NOT_LOGIN) {
 						handler.sendEmptyMessage(1);
 					}else if(statuscode == HttpStatus.USER_TOKEN_OUTDATE){
@@ -225,8 +271,6 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 				}
 			}else{
 			}
-			
-			
 		}
 	};
 	
@@ -239,7 +283,10 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 	
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+		if(requestCode == 1 && resultCode == -1){
+			RequestHttpUtil.getHttpData(mActivity, HttpUrls.PERSONAL_MYCARD, null,
+					userCardResultListener, userCardErrorListener);
+		}
 	}
 
 	// test info

@@ -125,7 +125,8 @@ public class EssayListActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
 				Intent intent = new Intent(EssayListActivity.this,EssayItemDeatilActivity.class);
-				intent.putExtra("essaytitle", "" + mListItems.get((int)position).getTitle());
+//				intent.putExtra("essaytitle", "" + mListItems.get((int)position).getTitle());
+				intent.putExtra("essaytitle", "" + EssayListActivity.this.getIntent().getStringExtra("catalogtitle"));
 				intent.putExtra("articleid", "" + mListItems.get((int)position).getId());
 				startActivity(intent);
 			}
@@ -189,19 +190,16 @@ public class EssayListActivity extends BaseActivity {
 		};
 	};
 	
-	String mid = "";
 	private int index = 0;
 	public void getCatalogList(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		WenyiUser user = Util.getUserData(EssayListActivity.this);
-		Log.d("lixufeng", "getCatalogList " + user);
-		JSONObject sub = new JSONObject();
-		JSONObject paramsub = new JSONObject();
-		if (TextUtils.isEmpty(user.get_mID())) {
-			mid = UUID.randomUUID().toString();
-		}else{
-			mid = user.get_mID();
+		if(null == jsonObject){
+			jsonObject = new JSONObject();
 		}
+		Log.d("lixufeng", "getCatalogList " + user);
+		JSONObject commonsub = Util.getCommonParam(EssayListActivity.this);
+		JSONObject paramsub = new JSONObject();
 		try {
+			jsonObject.put("common", commonsub);
 			String catalogid = getIntent().getStringExtra("catalogid");
 			if(TextUtils.isEmpty(catalogid)){
 				catalogid = "10";
@@ -210,14 +208,8 @@ public class EssayListActivity extends BaseActivity {
 			paramsub.put("pindex", "" + ++index);
 			paramsub.put("count", "20");
 			
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
-			sub.put("token", user.get_token());
-			if(null == jsonObject){
-				jsonObject = new JSONObject();
-			}
 			jsonObject.put("param", paramsub);
-			jsonObject.put("common", sub);
+			jsonObject.put("common", commonsub);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
