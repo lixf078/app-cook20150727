@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -91,6 +92,12 @@ public class EssayListDetailAdapter extends BaseAdapter {
 		} else{
 			holder.imageUrl.setVisibility(View.GONE);
 			holder.advTitle.setVisibility(View.VISIBLE);
+			if("essayTitleElid".equals(rowtype)){
+				holder.advTitle.setTextSize(24);
+				holder.advTitle.setGravity(Gravity.CENTER_HORIZONTAL);
+			}else{
+				holder.advTitle.setTextSize(16);
+			}
 			holder.advTitle.setText(elid.getRowcontent());
 		}
 		return view;

@@ -263,6 +263,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/personal_my_edit"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"

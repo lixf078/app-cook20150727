@@ -1,14 +1,12 @@
 package com.shecook.wenyi;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -172,6 +170,8 @@ public class BaseActivity extends FragmentActivity {
 		mController.openShare(BaseActivity.this, false);
 	}
 
+	public boolean netConnected = true;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -181,6 +181,7 @@ public class BaseActivity extends FragmentActivity {
 		
 		if(!Util.checkConnection(this)){
 			Toast.makeText(this, getString(R.string.network_has_problem), Toast.LENGTH_SHORT).show();
+			netConnected = false;
 		}
 		checkLogin();
 		userGuid = Util.wenyiUser == null?Util.getUserData(BaseActivity.this).get_userguid():Util.wenyiUser.get_userguid();

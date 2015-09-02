@@ -22,4 +22,6 @@ public class HttpUrls {
 	
 	public static final String PERSONAL_MYCARD = BASE_URL + "user/mycard";
 	
+	public static final String PERSONAL_EDITION_HOMEWORK = BASE_URL + "follow/mylist";
+	
 }

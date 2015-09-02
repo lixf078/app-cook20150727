@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shecook.wenyi.HttpStatus;
@@ -47,6 +48,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 	private TextView user_level, personal_gold, personal_email, personal_experience;
 	
 	private NetworkImageRoundView userIconView;
+	LinearLayout personal_my_edit;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -87,6 +89,10 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		personal_gold = (TextView) rootView.findViewById(R.id.personal_gold);
 		personal_email = (TextView) rootView.findViewById(R.id.personal_email);
 		personal_experience = (TextView) rootView.findViewById(R.id.personal_experience);
+		
+		
+		personal_my_edit = (LinearLayout) rootView.findViewById(R.id.personal_my_edit);
+		personal_my_edit.setOnClickListener(this);
 	}
 
 	@Override
@@ -139,14 +145,18 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onClick(View view) {
+		Intent intent = null;
 		int id = view.getId();
 		switch (id) {
 		case R.id.personal_center_settings:
-			Intent intent = new Intent(this.getActivity(),
+			intent = new Intent(PersonalFragment.this.getActivity(),
 					PersonalSettings.class);
 			startActivity(intent);
 			break;
-
+		case R.id.personal_my_edit:
+			 intent = new Intent(PersonalFragment.this.getActivity(),
+					PersonalEdition.class);
+			startActivity(intent);
 		default:
 			break;
 		}
@@ -156,15 +166,15 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
 			switch (what) {
-			case 1:
+			case HttpStatus.USER_NOT_LOGIN:
 				Intent intent = new Intent(mActivity,PersonalLoginCommon.class);
 				startActivityForResult(intent, 1);
 				break;
-			case 2:
+			case HttpStatus.USER_TOKEN_OUTDATE:
 				Util.updateBooleanData(mActivity, "islogin", false);
 				((StartActivity)getActivity()).getTokenFrom(false, tokenResultListener, tokenErrorListener);
 				break;
-			case 3:
+			case HttpStatus.STATUS_OK:
 				WenyiUser user = (WenyiUser) msg.obj;
 				updateView(user);
 				break;
@@ -219,9 +229,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 						msg.obj = user;
 						handler.sendMessage(msg);
 					} else if (statuscode == HttpStatus.USER_NOT_LOGIN) {
-						handler.sendEmptyMessage(1);
+						handler.sendEmptyMessage(HttpStatus.USER_NOT_LOGIN);
 					}else if(statuscode == HttpStatus.USER_TOKEN_OUTDATE){
-						handler.sendEmptyMessage(2);
+						handler.sendEmptyMessage(HttpStatus.USER_TOKEN_OUTDATE);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -283,12 +293,14 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 	
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.e(TAG, "onActivityResult requestCode " + requestCode + ",resultCode " + resultCode);
 		if(requestCode == 1 && resultCode == -1){
 			RequestHttpUtil.getHttpData(mActivity, HttpUrls.PERSONAL_MYCARD, null,
 					userCardResultListener, userCardErrorListener);
 		}
 	}
-
+	
+// ***********************************************************
 	// test info
 
 	private static final String SURI = "content://icc/adn";

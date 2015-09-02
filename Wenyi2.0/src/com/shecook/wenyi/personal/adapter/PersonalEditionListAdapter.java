@@ -1,4 +1,4 @@
-package com.shecook.wenyi.essay.adapter;
+package com.shecook.wenyi.personal.adapter;
 
 import java.util.LinkedList;
 
@@ -13,20 +13,20 @@ import android.widget.TextView;
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
-import com.shecook.wenyi.model.EssayListItem;
+import com.shecook.wenyi.model.personal.PersonalHomeworkItem;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class EssayListAdapter extends BaseAdapter {
+public class PersonalEditionListAdapter extends BaseAdapter {
 	
 	
-	private LinkedList<EssayListItem> mListItems;
+	private LinkedList<PersonalHomeworkItem> mListItems;
 	private Context context;
-	public EssayListAdapter() {
+	public PersonalEditionListAdapter() {
 		super();
 	}
 
-	public EssayListAdapter(Context context, LinkedList<EssayListItem> list) {
+	public PersonalEditionListAdapter(Context context, LinkedList<PersonalHomeworkItem> list) {
 		super();
 		this.context = context;
 		mListItems = list;
@@ -51,7 +51,7 @@ public class EssayListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View view, ViewGroup arg2) {
 		ViewHolder holder;
-		EssayListItem eli = mListItems.get(position);
+		PersonalHomeworkItem phi = mListItems.get(position);
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(
      				R.layout.essay_list_item, null);
@@ -69,15 +69,16 @@ public class EssayListAdapter extends BaseAdapter {
 	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
 	    holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
 	    
-	    holder.imageUrl.setImageUrl(eli.getIconurl(), imageLoader);
+	    holder.imageUrl.setImageUrl(phi.getImages().get(0).getImageurl(), imageLoader);
 	    holder.imageUrl.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
+				
 			}
 		});
-		holder.advTitle.setText(eli.getTitle());
-		holder.advTime.setText(eli.getTimeline());
+		holder.advTitle.setText(phi.getDescription());
+		holder.advTime.setText(phi.getTimeline());
 		return view ;
 	}
 	

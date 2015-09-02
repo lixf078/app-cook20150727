@@ -268,30 +268,46 @@ public class Util {
 				editor.putString("_mid", user.get_mID());
 				wenyiUser.set_mID(user.get_mID());
 			}
+			
+			if(user.get_nickname() != null && !"".equals(user.get_nickname())){
+				editor.putString("_nickname", user.get_nickname());
+				wenyiUser.set_nickname(user.get_nickname());
+			}
+			
+			if(user.get_uimage30() != null && !"".equals(user.get_uimage30())){
+				editor.putString("_uimage30", user.get_uimage30());
+				wenyiUser.set_uimage30(user.get_uimage30());
+			}
+			
+			
+			if(user.get_score() != null && !"".equals(user.get_score())){
+				editor.putString("_score", user.get_score());
+				wenyiUser.set_score(user.get_score());
+			}
+			
+			if(user.get_level() != null && !"".equals(user.get_level())){
+				editor.putString("_level", user.get_level());
+				wenyiUser.set_level(user.get_level());
+			}
+			
+			if(user.get_msgcount() != null && !"".equals(user.get_msgcount())){
+				editor.putString("_msgcount", user.get_msgcount());
+				wenyiUser.set_msgcount(user.get_msgcount());
+			}
+			
 			editor.putString("userpasswd", user.get_password());
 			editor.putString("_userguid", user.get_userguid());
-			editor.putString("_nickname", user.get_nickname());
 			editor.putInt("_flag", user.get_flag());
-			editor.putString("_uimage30", user.get_uimage30());
 			editor.putString("_uimage50", user.get_uimage50());
 			editor.putString("_uimage180", user.get_uimage180());
-			editor.putString("_score", user.get_score());
-			editor.putString("_level", user.get_level());
-			editor.putString("_msgcount", user.get_msgcount());
-			editor.putString("_level_score", user.get_level_core());
 			editor.putBoolean("islogin", user.is_isLogin());
 			editor.commit();
 			
 			wenyiUser.set_password(user.get_password());
 			wenyiUser.set_userguid(user.get_userguid());
-			wenyiUser.set_nickname(user.get_nickname());
 			wenyiUser.set_flag(user.get_flag());
-			wenyiUser.set_uimage30(user.get_uimage30());
-			wenyiUser.set_score(user.get_score());
-			wenyiUser.set_level(user.get_level());
-			wenyiUser.set_msgcount(user.get_msgcount());
-			wenyiUser.set_level_core(user.get_level_core());
 			wenyiUser.set_isLogin(user.is_isLogin());
+			
 			user = null;
 		} catch (Exception e) {
 			e.printStackTrace();

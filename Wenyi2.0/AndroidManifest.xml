@@ -112,6 +112,15 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.shecook.wenyi.personal.PersonalEdition"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
         <!-- 腾讯SSO授权的Activity注册 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"

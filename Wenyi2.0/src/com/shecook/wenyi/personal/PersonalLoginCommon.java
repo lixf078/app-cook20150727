@@ -86,11 +86,11 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 			JSONObject paramSub = new JSONObject();
 			JSONObject commonSub = new JSONObject();
 			try {
-				// paramSub.put("loginid", useremail);
-				// paramSub.put("pwd", passwd);
+				paramSub.put("loginid", useremail);
+				paramSub.put("pwd", passwd);
 				
-				paramSub.put("loginid", "694809649@qq.com");
-				paramSub.put("pwd", "aaaaaa");
+				//paramSub.put("loginid", "694809649@qq.com");
+				//paramSub.put("pwd", "aaaaaa");
 				
 				commonSub.put("mtype", "android");
 				commonSub.put("mid", Util.getMid(PersonalLoginCommon.this));
@@ -337,11 +337,27 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 								}
 								setResult(RESULT_OK);
 								finish();
+								break;
 							}else{
-								
+								Toast.makeText(PersonalLoginCommon.this, dataJson.getString("msg"), Toast.LENGTH_SHORT).show();
 							}
 						}else{
-							isLogin = false;
+							if(statuscode == 10000){
+								WenyiUser user = Util.getUserData(getApplicationContext());
+								user.set_isLogin(true);
+								Util.saveUserData(PersonalLoginCommon.this, user);
+								isLogin = true;
+								if (alertDialog.isShowing()) {
+									Log.d(LOGTAG, "DISMISS_DIALOG");
+									alertDialog.cancel();
+								}
+								setResult(RESULT_OK);
+								Toast.makeText(PersonalLoginCommon.this, jsonObject.getString("errmsg"), Toast.LENGTH_SHORT).show();
+								finish();
+								break;
+							}else{
+								isLogin = false;
+							}
 							Toast.makeText(PersonalLoginCommon.this, jsonObject.getString("errmsg"), Toast.LENGTH_SHORT).show();
 						}
 					} catch (Exception e) {

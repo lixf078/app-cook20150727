@@ -151,7 +151,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 		shareImg.setVisibility(View.VISIBLE);
 		shareImg.setOnClickListener(this);
 		TextView titleView = (TextView) findViewById(R.id.middle_title);
-		String title = getIntent().getStringExtra("essaytitle");
+		String title = getIntent().getStringExtra("catalogtitle");
 		articleid = getIntent().getStringExtra("articleid");
 		if (TextUtils.isEmpty(title)) {
 			titleView.setText(R.string.essay);
@@ -343,7 +343,15 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 							listTemp.add(elid);
 						}
 						mListItems.addAll(listTemp);
-
+						EssayListItemDetail essayTitleElid = new EssayListItemDetail();
+						essayTitleElid.setId("");
+						essayTitleElid.setCataid("");
+						essayTitleElid.setArticleid("");
+						essayTitleElid.setRowtype("essayTitleElid");
+						String title = EssayItemDeatilActivity.this.getIntent().getStringExtra("essaytitle");
+						essayTitleElid.setRowcontent(title);
+						mListItems.add(0, essayTitleElid);
+						
 						handler.sendEmptyMessage(1);
 					}
 				} else {

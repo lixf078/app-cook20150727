@@ -1,12 +1,9 @@
 package com.shecook.wenyi.util;
 
-import java.util.UUID;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.shecook.wenyi.common.volley.Request.Method;
@@ -22,18 +19,9 @@ public class RequestHttpUtil {
 
 	public static void getHttpData(Activity activity, String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		
-		JSONObject sub = new JSONObject();
 		
-		if("".equals(mid)){
-			if (TextUtils.isEmpty(mid = Util.getMid(activity))) {
-				mid = UUID.randomUUID().toString();
-				Util.updateStringData(activity, "_mid", mid);
-			}
-		}
 		try {
-			sub.put("mtype", "android");
-			sub.put("mid", mid);
-			sub.put("token", Util.getToken(activity));
+			JSONObject sub = Util.getCommonParam(activity);
 			if(null == jsonObject){
 				jsonObject = new JSONObject();
 			}

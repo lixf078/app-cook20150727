@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -87,23 +86,30 @@ public class StartActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bottom_navigation);
 		
-		Log.e(TAG, "catalogResultListener getDefaultDisplay -> " + getWindowManager().getDefaultDisplay().getWidth());
+/*		Log.e(TAG, "catalogResultListener getDefaultDisplay -> " + getWindowManager().getDefaultDisplay().getWidth());
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-		Log.e(TAG, "catalogResultListener widthPixels -> " + displayMetrics.widthPixels);
+		Log.e(TAG, "catalogResultListener widthPixels -> " + displayMetrics.widthPixels);*/
 		
 		welcomeFragment = new WelcomeFragment();
 		cookbookFragment = new CookbookFragment();
 		piazzaFragment = new PiazzaFragment();
 		groupFragment = new GroupFragment();
 		personalFragment = new PersonalFragment();
-		
-		mCatalogItems = new LinkedList<CookbookCatalog>();
+
 		castTime = System.currentTimeMillis();
-		Log.d(TAG, "catalogResultListener onCreate -> " + castTime);
+		mCatalogItems = new LinkedList<CookbookCatalog>();
 		networkImageView = (NetworkImageView) findViewById(R.id.main_layout_fillparent);
 		networkImageView.setVisibility(View.VISIBLE);
-		getTokenFrom(false,tokenResultListener,tokenErrorListener);
+		Log.d(TAG, "catalogResultListener onCreate -> " + castTime);
+
+		if(netConnected){
+			getTokenFrom(false,tokenResultListener,tokenErrorListener);
+		}else{
+			initView();
+			handler.sendEmptyMessage(2);
+		}
+		
 	}
 	
 	public void initMenu(){
