@@ -2,17 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="@android:color/white" >
+    android:background="@android:color/white"
+    android:orientation="vertical" >
 
-    <include layout="@layout/wenyi_common_header"/>
-    
-<!--     The PullToRefreshListView replaces a standard ListView widget. -->
+    <include layout="@layout/wenyi_common_header" />
+
+    <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+        android:id="@+id/main_layout_fillparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dip"
+        android:background="@drawable/wenyi_06"
+        android:gravity="center"
+        android:scaleType="fitXY"
+        android:visibility="gone" />
+    <!-- The PullToRefreshListView replaces a standard ListView widget. -->
+
     <com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView
         android:id="@id/pull_refresh_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:cacheColorHint="#00ffffff"
+        android:cacheColorHint="#00000000"
         android:divider="@null"
         android:fadingEdge="none"
         android:fastScrollEnabled="false"

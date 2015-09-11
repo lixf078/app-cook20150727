@@ -60,7 +60,6 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mActivity = getActivity();
-		WenyiUser user = Util.getUserData(mActivity);
 		RequestHttpUtil.getHttpData(mActivity, HttpUrls.PERSONAL_MYCARD, null,
 				userCardResultListener, userCardErrorListener);
 		// retrieveContactInfoFromSIM();
@@ -176,7 +175,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 				break;
 			case HttpStatus.STATUS_OK:
 				WenyiUser user = (WenyiUser) msg.obj;
+				
 				updateView(user);
+				Log.e(TAG, "update user data " + Util.getUserData(mActivity).toString());
 				break;
 			default:
 				break;
@@ -224,8 +225,10 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 						user.set_level_core(dataJson.getString("u_exp"));
 						user.set_u_newfriends_count(dataJson.getString("u_newfriends_count"));
 						user.set_uimage50(dataJson.getString("u_portrait"));
+						user.set_isLogin(true);
+						Util.saveUserData(mActivity, user);
 						Message msg = new Message();
-						msg.what = 3;
+						msg.what = HttpStatus.STATUS_OK;
 						msg.obj = user;
 						handler.sendMessage(msg);
 					} else if (statuscode == HttpStatus.USER_NOT_LOGIN) {
@@ -270,7 +273,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 							user.set_mID(Util.getMid(mActivity));
 							user.set_token(dataJson.getString("token"));
 							Util.saveUserData(mActivity, user);
-							handler.sendEmptyMessage(1);
+							handler.sendEmptyMessage(HttpStatus.USER_NOT_LOGIN);
 						}else{
 							// 有错误情况
 						}

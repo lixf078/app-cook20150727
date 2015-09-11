@@ -3,18 +3,19 @@ package com.shecook.wenyi.cookbook.adapter;
 import java.util.LinkedList;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
 import com.shecook.wenyi.model.CookbookListItem;
+import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
@@ -65,6 +66,7 @@ public class CookbookListAdapter extends BaseAdapter {
 		}
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+	    holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(Util.getWidth(context) / 4, Util.getWidth(context) / 4));
 	    holder.imageUrl.setDefaultImageResId(R.drawable.icon);
 	    holder.imageUrl.setErrorImageResId(R.drawable.icon);
 	    

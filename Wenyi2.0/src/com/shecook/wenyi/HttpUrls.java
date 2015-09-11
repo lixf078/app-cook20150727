@@ -18,7 +18,10 @@ public class HttpUrls {
 	public static final String COOKBOOK_LIST = BASE_URL + "recipe/list";
 	public static final String COOKBOOK_LIST_ITEM_DETAIL = BASE_URL + "recipe/detail";
 	
-//	public static final String PIZZA_CATALOG_
+	public static final String COOKBOOK_HOMEWORK_LIST = BASE_URL + "follow/list";
+	
+	
+	public static final String PIZZA_TOPIC_LIST = BASE_URL + "topic/list"; // piazza discover list
 	
 	public static final String PERSONAL_MYCARD = BASE_URL + "user/mycard";
 	

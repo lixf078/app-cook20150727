@@ -32,7 +32,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@color/brown2"
+            android:background="@color/white"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingBottom="7dp"

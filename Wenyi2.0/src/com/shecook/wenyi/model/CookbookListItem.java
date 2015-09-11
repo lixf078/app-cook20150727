@@ -1,6 +1,5 @@
 package com.shecook.wenyi.model;
 
-import com.shecook.wenyi.R;
 
 public class CookbookListItem {
 	
@@ -16,7 +15,6 @@ public class CookbookListItem {
 
 	public CookbookListItem() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public CookbookListItem(String id, String recipename, String summary,

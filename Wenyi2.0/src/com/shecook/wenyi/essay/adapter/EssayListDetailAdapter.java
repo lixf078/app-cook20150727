@@ -10,12 +10,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.model.EssayListItemDetail;
+import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
@@ -80,7 +82,16 @@ public class EssayListDetailAdapter extends BaseAdapter {
 					.getRequestQueue(), lruImageCache);
 			holder.imageUrl.setDefaultImageResId(R.drawable.loadingpic);
 			holder.imageUrl.setErrorImageResId(R.drawable.loadingpic);
-
+			
+			try {
+				if(elid.getWidth() != 0){
+					holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, Util.getMetricsHeigh(context, elid.getWidth(), elid.getHeight())));
+				}
+//				Util.getHeight(context, elid.getWidth(), elid.getHeight());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			holder.imageUrl.setImageUrl(elid.getRowcontent(), imageLoader);
 			holder.imageUrl.setOnClickListener(new OnClickListener() {
 

@@ -1,8 +1,7 @@
-package com.shecook.wenyi.model.essay;
+package com.shecook.wenyi.model;
 
-import com.shecook.wenyi.R;
 
-public class EssayGallery {
+public class WenyiGallery {
 	public int id;
 	public String title;
 	public String imgUrl;
@@ -10,7 +9,7 @@ public class EssayGallery {
 	public String event_content;
 	public String timeline;
 
-	public EssayGallery(int id, String title, String imgUrl, int event_type,
+	public WenyiGallery(int id, String title, String imgUrl, int event_type,
 			String event_content, String timeline) {
 		super();
 		this.id = id;
@@ -21,7 +20,7 @@ public class EssayGallery {
 		this.timeline = timeline;
 	}
 
-	public EssayGallery() {
+	public WenyiGallery() {
 		super();
 	}
 

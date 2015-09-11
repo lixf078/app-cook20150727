@@ -37,7 +37,7 @@ import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.essay.EssayItemDeatilActivity;
-import com.shecook.wenyi.model.personal.HomeWorkImage;
+import com.shecook.wenyi.model.WenyiImage;
 import com.shecook.wenyi.model.personal.PersonalHomeworkItem;
 import com.shecook.wenyi.personal.adapter.PersonalEditionListAdapter;
 import com.shecook.wenyi.util.AppException;
@@ -281,10 +281,10 @@ public class PersonalEditionHomework extends Fragment {
 							phi.setComments(jb.getString("comments"));
 							phi.setTimeline(jb.getString("timeline"));
 							JSONArray imagelist = data.getJSONArray("images");
-							LinkedList<HomeWorkImage> toplistTemp = new LinkedList<HomeWorkImage>();
+							LinkedList<WenyiImage> toplistTemp = new LinkedList<WenyiImage>();
 							for(int k = 0, t = imagelist.length(); k < t; k++){
 								JSONObject imagejb = imagelist.getJSONObject(k);
-								HomeWorkImage homeWorkImage = new HomeWorkImage();
+								WenyiImage homeWorkImage = new WenyiImage();
 								homeWorkImage.setId(imagejb.getString("id"));
 								homeWorkImage.setFollowid(imagejb.getString("followid"));
 								homeWorkImage.setImageurl(imagejb.getString("imageurl"));

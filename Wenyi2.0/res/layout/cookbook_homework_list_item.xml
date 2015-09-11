@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:orientation="horizontal"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip" >
+
+    <ImageView
+        android:id="@+id/background_imageview"
+        android:layout_width="10dp"
+        android:layout_height="200dp"
+        android:background="@drawable/a2"
+        android:focusable="false" />
+
+    <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+        android:id="@+id/cookbook_homework_item_userimg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:focusable="false"
+        android:scaleType="fitXY" />
+
+    <RelativeLayout
+        android:id="@+id/cookbook_homework_item_info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dip"
+        android:layout_toRightOf="@id/cookbook_homework_item_userimg"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/cookbook_homework_item_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/app_name"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:id="@+id/cookbook_homework_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:text="@string/app_name"
+            android:textColor="@color/date_color" />
+
+        <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+            android:id="@+id/middle_image_cookbook"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/cookbook_homework_item_nickname"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/advertising_default_1"
+            android:focusable="false"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/cookbook_homework_item_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/middle_image_cookbook"
+            android:text="@string/app_name"
+            android:layout_below="@id/middle_image_cookbook"
+            android:drawableLeft="@drawable/ico_02"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:id="@+id/cookbook_homework_item_bottomline"
+            android:layout_width="match_parent"
+            android:layout_marginTop="6dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/brown2"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/cookbook_homework_item_comments"/>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -55,6 +55,9 @@
     <item name="wenyi_user_email" type="id">wenyi_user_email</item>
     <item name="wenyi_user_password" type="id">wenyi_user_password</item>
     <item name="wenyi_user_nickname" type="id">wenyi_user_nickname</item>
+    <item name="view_pager_advert" type="id">view_pager_advert</item>
+    <item name="indicator" type="id">indicator</item>
+    
 
     <!-- 布局ID -->
     <item name="con_linearlayout_1" type="id">con_linearlayout_1</item>

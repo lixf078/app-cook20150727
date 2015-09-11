@@ -12,7 +12,7 @@
     <item type="color" name="black_half">#8f000000</item><!-- #faebd7,f5f5f5 -->
     <item type="color" name="text_color">#1b1b1b</item>
     <item type="color" name="date_color">#d1c0a5</item><!-- 209 192 165 -->
-    <item type="color" name="item_background_color">#f1ece4</item><!-- 241 236 228 -->
+    <item type="color" name="item_background_color">#FFFFFF</item>
     <item type="color" name="nickname_color">#959595</item><!-- 149 149 149 -->
     <item type="color" name="sort_black">#cbbdae</item><!-- 普通选择后背景色203 189 174 -->
      <item type="color" name="sort_normal">#f0eae1</item><!-- 普通反选后背景色240 234 225 -->

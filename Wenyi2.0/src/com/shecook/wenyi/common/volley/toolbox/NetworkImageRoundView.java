@@ -26,10 +26,10 @@ import android.util.AttributeSet;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 
-import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader.ImageContainer;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader.ImageListener;
+import com.shecook.wenyi.util.Util;
 
 /**
  * Handles fetching an image from a URL as well as the life-cycle of the
@@ -179,15 +179,15 @@ public class NetworkImageRoundView extends ImageView {
 
                         if (response.getBitmap() != null) {
                         	
-                        	Bitmap bmp = response.getBitmap();
+                        	Bitmap bmp = Bitmap.createScaledBitmap(response.getBitmap(), Util.getWidth(getContext())/4, Util.getWidth(getContext())/4, false);
                             //获得图片的宽，并创建结果bitmap
                             int width = bmp.getWidth();
-                            Bitmap resultBmp = Bitmap.createBitmap(width/2, width/2,
+                            Bitmap resultBmp = Bitmap.createBitmap(width, width,
                                     Bitmap.Config.ARGB_8888);
                             Paint paint = new Paint();
                             Canvas canvas = new Canvas(resultBmp);
                             //画圆
-                            canvas.drawCircle(width / 4, width / 4, width / 4, paint);
+                            canvas.drawCircle(width / 2, width / 2, width / 2, paint);
                             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));// 选择交集去上层图片
                             canvas.drawBitmap(bmp, 0, 0, paint);
                             

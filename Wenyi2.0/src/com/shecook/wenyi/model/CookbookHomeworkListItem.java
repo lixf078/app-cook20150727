@@ -1,29 +1,26 @@
-package com.shecook.wenyi.model.personal;
+package com.shecook.wenyi.model;
 
 import java.util.ArrayList;
 
-import com.shecook.wenyi.model.WenyiImage;
+public class CookbookHomeworkListItem {
 
-
-public class PersonalHomeworkItem {
-	private String id; // 主Id,删除需传递此参数
+	private String id;// 菜谱主id
 	private String recipeid;
 	private String uid; // 用户主标识
-	private String nickname; // 昵称 
-	private String uportrait; // 头像
+	private String nickname; // 昵称
+	private String uportrait;// 头像
 	private String description; // 作业描述
-	private String comments; // 评论数 
-	private String timeline; // 时间
-	private ArrayList<WenyiImage> images; // 图片集合，默认第一张
+	private String comments; // 评论数
+	private String timeline;
+	private ArrayList<WenyiImage> imageList;
 
-	public PersonalHomeworkItem() {
+	public CookbookHomeworkListItem() {
 		super();
-		images = new ArrayList<WenyiImage>();
 	}
 
-	public PersonalHomeworkItem(String id, String recipeid, String uid,
+	public CookbookHomeworkListItem(String id, String recipeid, String uid,
 			String nickname, String uportrait, String description,
-			String comments, String timeline, ArrayList<WenyiImage> images) {
+			String comments, String timeline, ArrayList<WenyiImage> imageList) {
 		super();
 		this.id = id;
 		this.recipeid = recipeid;
@@ -33,7 +30,7 @@ public class PersonalHomeworkItem {
 		this.description = description;
 		this.comments = comments;
 		this.timeline = timeline;
-		this.images = images;
+		this.imageList = imageList;
 	}
 
 	public String getId() {
@@ -100,24 +97,15 @@ public class PersonalHomeworkItem {
 		this.timeline = timeline;
 	}
 
-	public ArrayList<WenyiImage> getImages() {
-		if(images == null){
-			images = new ArrayList<WenyiImage>();
+	public ArrayList<WenyiImage> getImageList() {
+		if(imageList == null){
+			imageList = new ArrayList<WenyiImage>();
 		}
-		return images;
+		return imageList;
 	}
 
-	public void setImages(ArrayList<WenyiImage> images) {
-		this.images = images;
+	public void setImageList(ArrayList<WenyiImage> imageList) {
+		this.imageList = imageList;
 	}
 
-	@Override
-	public String toString() {
-		return "PersonalHomeworkItem [id=" + id + ", recipeid=" + recipeid
-				+ ", uid=" + uid + ", nickname=" + nickname + ", uportrait="
-				+ uportrait + ", description=" + description + ", comments="
-				+ comments + ", timeline=" + timeline + ", images=" + images
-				+ "]";
-	}
-	
 }

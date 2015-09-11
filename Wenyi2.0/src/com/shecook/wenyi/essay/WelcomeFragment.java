@@ -36,8 +36,8 @@ import com.shecook.wenyi.common.volley.toolbox.NetworkTextView;
 import com.shecook.wenyi.essay.adapter.ViewPagerAdapter;
 import com.shecook.wenyi.essay.view.AutoScrollViewPager;
 import com.shecook.wenyi.essay.view.CirclePageIndicator;
+import com.shecook.wenyi.model.WenyiGallery;
 import com.shecook.wenyi.model.essay.EssayCatlog;
-import com.shecook.wenyi.model.essay.EssayGallery;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
@@ -52,7 +52,7 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 
 	private AutoScrollViewPager viewPager;
 	private PageIndicator mIndicator;
-	private ArrayList<EssayGallery> mPageViews;
+	private ArrayList<WenyiGallery> mPageViews;
 	private ViewPagerAdapter adapter;
 
 	private ImageView return_img, right_img;
@@ -73,7 +73,7 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		// getCatalog_(HttpUrls.ESSAY_WENYI_LIST, null, catalogResultListener,
 		// catalogErrorListener);
-		mPageViews = new ArrayList<EssayGallery>();
+		mPageViews = new ArrayList<WenyiGallery>();
 		catalogList = new ArrayList<EssayCatlog>();
 		jsonObject = StartActivity.getWelcomeData();
 		initData();
@@ -106,7 +106,7 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 				.findViewById(R.id.indicator);
 
 		
-		EssayGallery eg = new EssayGallery();
+		WenyiGallery eg = new WenyiGallery();
 		eg.setId(1000);
 		eg.setTitle(getResources().getString(R.string.app_name));
 		eg.setImgUrl("");
@@ -226,7 +226,7 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 							JSONObject jb = gallery.getJSONObject(i);
 							WenyiLog.logv(LOGTAG,
 									"initData 5555 jb " + jb.toString());
-							EssayGallery eg = new EssayGallery();
+							WenyiGallery eg = new WenyiGallery();
 							eg.setId(jb.getInt("id"));
 							eg.setTitle(jb.getString("title"));
 							eg.setImgUrl(jb.getString("imgurl"));

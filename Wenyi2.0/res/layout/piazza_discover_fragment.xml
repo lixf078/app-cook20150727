@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+  <!--   <RelativeLayout
+        android:id="@+id/piazza_adv_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dip"
+        android:layout_weight="2" >
+
+        <com.shecook.wenyi.essay.view.AutoScrollViewPager
+            android:id="@id/view_pager_advert"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.shecook.wenyi.essay.view.CirclePageIndicator
+            android:id="@id/indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/view_pager_advert"
+            android:layout_marginTop="15dp"
+            android:padding="5dip" />
+    </RelativeLayout> -->
+
+    <!-- The PullToRefreshListView replaces a standard ListView widget. -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView
+            android:id="@id/pull_refresh_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="@null"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:scrollbars="none"
+            android:smoothScrollbar="true" >
+
+        </com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView>
+    </LinearLayout>
+
+</LinearLayout>

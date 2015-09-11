@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
-import com.shecook.wenyi.model.essay.EssayGallery;
+import com.shecook.wenyi.model.WenyiGallery;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 import com.shecook.wenyi.view.RecyclingPagerAdapter;
@@ -31,9 +31,9 @@ import com.shecook.wenyi.view.RecyclingPagerAdapter;
 public class ViewPagerAdapter extends RecyclingPagerAdapter {
 
 	private Context context;
-	private ArrayList<EssayGallery> mPageViews;
+	private ArrayList<WenyiGallery> mPageViews;
 	private boolean isInfiniteLoop;
-	public ViewPagerAdapter(Context context, ArrayList<EssayGallery> mPageViews) {
+	public ViewPagerAdapter(Context context, ArrayList<WenyiGallery> mPageViews) {
 		this.context = context;
 		this.mPageViews = mPageViews;
 		isInfiniteLoop = false;
@@ -51,7 +51,7 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 		if(position >= mPageViews.size()){
 			position = position % mPageViews.size();
 		}
-		EssayGallery essayGallery = mPageViews.get(position);
+		WenyiGallery essayGallery = mPageViews.get(position);
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(
      				R.layout.viewpager_view_item, null);

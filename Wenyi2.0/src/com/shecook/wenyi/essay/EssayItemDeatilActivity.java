@@ -317,29 +317,25 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 	};
 
 	private void initData(JSONObject jsonObject, int flag) {
-		WenyiLog.logv(TAG, "initData 1111");
 		if (jsonObject != null) {
 			try {
-				WenyiLog.logv(TAG, "initData 22222");
 				if (!jsonObject.isNull("statuscode")
 						&& 200 == jsonObject.getInt("statuscode")) {
-					WenyiLog.logv(TAG, "initData 33333");
 					if (!jsonObject.isNull("data")) {
-						WenyiLog.logv(TAG, "initData 44444");
 						JSONObject data = jsonObject.getJSONObject("data");
 
 						JSONArray list = data.getJSONArray("detail");
 						LinkedList<EssayListItemDetail> listTemp = new LinkedList<EssayListItemDetail>();
 						for (int i = 0, j = list.length(); i < j; i++) {
 							JSONObject jb = list.getJSONObject(i);
-							WenyiLog.logv(TAG,
-									"initData 5555 jb " + jb.toString());
 							EssayListItemDetail elid = new EssayListItemDetail();
 							elid.setId(jb.getString("id"));
 							elid.setCataid(jb.getString("cataid"));
 							elid.setArticleid(jb.getString("articleid"));
 							elid.setRowtype(jb.getString("rowtype"));
 							elid.setRowcontent(jb.getString("rowcontent"));
+							elid.setWidth(jb.getInt("img_width"));
+							elid.setHeight(jb.getInt("img_height"));
 							listTemp.add(elid);
 						}
 						mListItems.addAll(listTemp);

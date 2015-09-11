@@ -1,81 +1,142 @@
 package com.shecook.wenyi.piazza;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.mainpackage.FragmentTabAdapter;
 import com.shecook.wenyi.util.WenyiLog;
 
 public class PiazzaFragment extends Fragment {
-	private static final String LOGTAG = "PiazzaFragment";
+	private static final String TAG = "PiazzaFragment";
+
+	private FragmentActivity mActivity;
+
+	private ImageView return_img, right_img;
+	private TextView middle_title;
+
+	private RadioGroup rgs;
+	public List<Fragment> fragments = new ArrayList<Fragment>();
+	PiazzaDiscoverFragment discoverFragment;
+	PiazzaDiscoverFragment questionFragment;
+	PiazzaDiscoverFragment foodFragment;
+	PiazzaDiscoverFragment friendFragment;
+
 	@Override
 	public void onAttach(Activity activity) {
-		WenyiLog.logv(LOGTAG, "onAttach");
+		WenyiLog.logv(TAG, "onAttach");
 		super.onAttach(activity);
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		WenyiLog.logv(LOGTAG, "onCreate");
+		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
+		discoverFragment = new PiazzaDiscoverFragment();
+		questionFragment = new PiazzaDiscoverFragment();
+		foodFragment = new PiazzaDiscoverFragment();
+		friendFragment = new PiazzaDiscoverFragment();
+
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		WenyiLog.logv(LOGTAG, "onCreateView");
-		return inflater.inflate(R.layout.atest_fragment, container, false);
+		mActivity = getActivity();
+		WenyiLog.logv(TAG, "onCreateView");
+		View rootView = inflater.inflate(R.layout.piazza_fragment, container,
+				false);
+		initView(rootView);
+		return rootView;
+	}
+
+	private void initView(View rootView) {
+//		rootView.findViewById(R.id.wenyi_common_header).setBackgroundColor(mActivity.getResources().getColor(R.color.white));
+		right_img = (ImageView) rootView.findViewById(R.id.right_img);
+		return_img = (ImageView) rootView.findViewById(R.id.return_img);
+		middle_title = (TextView) rootView.findViewById(R.id.middle_title);
+
+		right_img.setBackgroundResource(R.drawable.edit);
+		return_img.setVisibility(View.INVISIBLE);
+		middle_title.setText(R.string.piazza);
+
+		fragments.add(discoverFragment);
+		fragments.add(questionFragment);
+		fragments.add(foodFragment);
+		fragments.add(friendFragment);
+
+		rgs = (RadioGroup) rootView.findViewById(R.id.tabs_rg);
+
+		FragmentTabAdapter tabAdapter = new FragmentTabAdapter(mActivity,
+				fragments, R.id.personal_edition_content, rgs);
+		tabAdapter
+				.setOnRgsExtraCheckedChangedListener(new FragmentTabAdapter.OnRgsExtraCheckedChangedListener() {
+					@Override
+					public void OnRgsExtraCheckedChanged(RadioGroup radioGroup,
+							int checkedId, int index) {
+						Log.d(TAG, "OnRgsExtraCheckedChanged -> " + index);
+					}
+				});
+
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		WenyiLog.logv(LOGTAG, "onActivityCreated");
+		WenyiLog.logv(TAG, "onActivityCreated");
 		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
 	public void onStart() {
-		WenyiLog.logv(LOGTAG, "onStart");
+		WenyiLog.logv(TAG, "onStart");
 		super.onStart();
 	}
 
 	@Override
 	public void onResume() {
-		WenyiLog.logv(LOGTAG, "onResume");
+		WenyiLog.logv(TAG, "onResume");
 		super.onResume();
 	}
 
 	@Override
 	public void onPause() {
-		WenyiLog.logv(LOGTAG, "onPause");
+		WenyiLog.logv(TAG, "onPause");
 		super.onPause();
 	}
 
 	@Override
 	public void onStop() {
-		WenyiLog.logv(LOGTAG, "onStop");
+		WenyiLog.logv(TAG, "onStop");
 		super.onStop();
 	}
 
 	@Override
 	public void onDestroyView() {
-		WenyiLog.logv(LOGTAG, "onDestroyView");
+		WenyiLog.logv(TAG, "onDestroyView");
 		super.onDestroyView();
 	}
 
 	@Override
 	public void onDestroy() {
-		WenyiLog.logv(LOGTAG, "onDestroy");
+		WenyiLog.logv(TAG, "onDestroy");
 		super.onDestroy();
 	}
 
 	@Override
 	public void onDetach() {
-		WenyiLog.logv(LOGTAG, "onDetach");
+		WenyiLog.logv(TAG, "onDetach");
 		super.onDetach();
 	}
 }

@@ -220,7 +220,7 @@ public class WenyiUser extends BaseModel implements Serializable {
 	public String toString() {
 		return "WenyiUser [_ID=" + _ID + ", _mID=" + _mID + ", _userguid="
 				+ _userguid + ", _email=" + _email + ", _nickname=" + _nickname
-				+ ", token=" + token + ", isLogin " + "]";
+				+ ", token=" + token + ", isLogin " + _isLogin + "]";
 	}
 
 }

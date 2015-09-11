@@ -2,26 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dip"
-    android:layout_marginRight="10dip"
+    android:layout_marginLeft="15dip"
+    android:layout_marginRight="15dip"
     android:layout_marginTop="3dip"
-    android:orientation="horizontal"
-    android:paddingBottom="4dip"
-    android:paddingLeft="10dip"
-    android:paddingRight="10dip" >
+    android:layout_marginBottom="3dp"
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="fill_parent"
+        android:padding="20dip"
         android:layout_height="wrap_content"
         android:background="@color/item_background_color"
         android:orientation="horizontal" >
 
         <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
             android:id="@+id/item_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
             android:focusable="false"
             android:scaleType="fitXY" />
 

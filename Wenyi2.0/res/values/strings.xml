@@ -108,6 +108,12 @@
      <string name="bottom_line">----------------------</string>
      <string name="cookbook_summary">做大米时，你试着要加一点点盐，味道会更好...</string>
      
+     <!-- piazza string -->
+      <string name="piazza_discover_str">发现</string>
+      <string name="piazza_question_str">提问</string>
+      <string name="piazza_food_str">发美食</string>
+      <string name="piazza_friend_str">好友</string>
+      
      <!-- presonal string -->
      <string name="personal_my_friend">我的好友</string>
      <string name="personal_my_collection">我的收藏</string>

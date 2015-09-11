@@ -1,36 +1,37 @@
-package com.shecook.wenyi.model.personal;
+package com.shecook.wenyi.model.piazza;
 
 import java.util.ArrayList;
 
 import com.shecook.wenyi.model.WenyiImage;
 
-
-public class PersonalHomeworkItem {
+public class PiazzaDiscoverItem {
 	private String id; // 主Id,删除需传递此参数
-	private String recipeid;
 	private String uid; // 用户主标识
-	private String nickname; // 昵称 
+	private String ugid;
+	private String tags;
+	private String nickname; // 昵称
 	private String uportrait; // 头像
-	private String description; // 作业描述
-	private String comments; // 评论数 
+	private String body; // 内容
+	private String comments; // 评论数
 	private String timeline; // 时间
 	private ArrayList<WenyiImage> images; // 图片集合，默认第一张
 
-	public PersonalHomeworkItem() {
+	public PiazzaDiscoverItem() {
 		super();
 		images = new ArrayList<WenyiImage>();
 	}
 
-	public PersonalHomeworkItem(String id, String recipeid, String uid,
-			String nickname, String uportrait, String description,
+	public PiazzaDiscoverItem(String id, String uid, String ugid,
+			String tags, String nickname, String uportrait, String body,
 			String comments, String timeline, ArrayList<WenyiImage> images) {
 		super();
 		this.id = id;
-		this.recipeid = recipeid;
 		this.uid = uid;
+		this.ugid = ugid;
+		this.tags = tags;
 		this.nickname = nickname;
 		this.uportrait = uportrait;
-		this.description = description;
+		this.body = body;
 		this.comments = comments;
 		this.timeline = timeline;
 		this.images = images;
@@ -44,20 +45,28 @@ public class PersonalHomeworkItem {
 		this.id = id;
 	}
 
-	public String getRecipeid() {
-		return recipeid;
-	}
-
-	public void setRecipeid(String recipeid) {
-		this.recipeid = recipeid;
-	}
-
 	public String getUid() {
 		return uid;
 	}
 
 	public void setUid(String uid) {
 		this.uid = uid;
+	}
+
+	public String getUgid() {
+		return ugid;
+	}
+
+	public void setUgid(String ugid) {
+		this.ugid = ugid;
+	}
+
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
 	}
 
 	public String getNickname() {
@@ -76,12 +85,12 @@ public class PersonalHomeworkItem {
 		this.uportrait = uportrait;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getBody() {
+		return body;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 	public String getComments() {
@@ -101,9 +110,6 @@ public class PersonalHomeworkItem {
 	}
 
 	public ArrayList<WenyiImage> getImages() {
-		if(images == null){
-			images = new ArrayList<WenyiImage>();
-		}
 		return images;
 	}
 
@@ -113,11 +119,11 @@ public class PersonalHomeworkItem {
 
 	@Override
 	public String toString() {
-		return "PersonalHomeworkItem [id=" + id + ", recipeid=" + recipeid
-				+ ", uid=" + uid + ", nickname=" + nickname + ", uportrait="
-				+ uportrait + ", description=" + description + ", comments="
+		return "PersonalHomeworkItem [id=" + id + ", uid=" + uid + ", ugid="
+				+ ugid + ", tags=" + tags + ", nickname=" + nickname
+				+ ", uportrait=" + uportrait + ", body=" + body + ", comments="
 				+ comments + ", timeline=" + timeline + ", images=" + images
 				+ "]";
 	}
-	
+
 }

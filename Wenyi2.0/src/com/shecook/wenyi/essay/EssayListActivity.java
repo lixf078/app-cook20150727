@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shecook.wenyi.BaseActivity;
+import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
@@ -80,7 +81,13 @@ public class EssayListActivity extends BaseActivity {
 								.setLastUpdatedLabel(label);
 
 						// Do work to refresh the list here.
-						getCatalogList(HttpUrls.ESSAY_WENYI_LIST,null,listResultListener,listErrorListener);
+						if(shouldLoad){
+							getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null, listResultListener, listErrorListener);
+						}else{
+							Toast.makeText(EssayListActivity.this, "End of List!",
+									Toast.LENGTH_SHORT).show();
+							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
+						}
 					}
 				});
 
@@ -90,8 +97,9 @@ public class EssayListActivity extends BaseActivity {
 
 					@Override
 					public void onLastItemVisible() {
+						Log.e(TAG, "onLastItemVisible shouldLoad " + shouldLoad);
 						if(shouldLoad){
-							getCatalogList(HttpUrls.ESSAY_WENYI_LIST,null,listResultListener,listErrorListener);
+							getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null, listResultListener, listErrorListener);
 						}else{
 							Toast.makeText(EssayListActivity.this, "End of List!",
 									Toast.LENGTH_SHORT).show();
@@ -175,8 +183,7 @@ public class EssayListActivity extends BaseActivity {
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
 			switch (what) {
-			case 1:
-				Log.d(TAG, "handleMessage mListItems " + mListItems.toString());
+			case HttpStatus.STATUS_OK:
 				mAdapter.notifyDataSetChanged();
 				// Call onRefreshComplete when the list has been refreshed.
 				mPullRefreshListView.onRefreshComplete();
@@ -193,7 +200,6 @@ public class EssayListActivity extends BaseActivity {
 		if(null == jsonObject){
 			jsonObject = new JSONObject();
 		}
-		Log.d("lixufeng", "getCatalogList " + user);
 		JSONObject commonsub = Util.getCommonParam(EssayListActivity.this);
 		JSONObject paramsub = new JSONObject();
 		try {
@@ -250,56 +256,61 @@ public class EssayListActivity extends BaseActivity {
 					if(!jsonObject.isNull("data")){
 						JSONObject data = jsonObject.getJSONObject("data");
 						
-						JSONArray list = data.getJSONArray("list");
-						WenyiLog.logv(TAG, "initData 44444 length " + list.length());
-						LinkedList<EssayListItem> listTemp = new LinkedList<EssayListItem>();
-						for(int i = 0,j = list.length(); i < j; i++){
-							JSONObject jb = list.getJSONObject(i);
-							WenyiLog.logv(TAG, "initData 5555 jb " + jb.toString());
-							EssayListItem eli = new EssayListItem();
-							eli.setId(jb.getString("id"));
-							eli.setCataid(jb.getString("cataid"));
-							eli.setTitle(jb.getString("title"));
-							eli.setSumm(jb.getString("summ"));
-							eli.setIconurl(jb.getString("iconurl"));
-							eli.setOntop(jb.getBoolean("ontop"));
-							eli.setEvent_type(jb.getString("event_type"));
-							eli.setEvent_content(jb.getString("event_content"));
-							eli.setQkey(jb.getString("qkey"));
-							eli.setTimeline(jb.getString("timeline"));
-							listTemp.add(eli);
+						if(data.has("list")){
+							JSONArray list = data.getJSONArray("list");
+							WenyiLog.logv(TAG, "initData 44444 length " + list.length());
+							LinkedList<EssayListItem> listTemp = new LinkedList<EssayListItem>();
+							for(int i = 0,j = list.length(); i < j; i++){
+								JSONObject jb = list.getJSONObject(i);
+								WenyiLog.logv(TAG, "initData 5555 jb " + jb.toString());
+								EssayListItem eli = new EssayListItem();
+								eli.setId(jb.getString("id"));
+								eli.setCataid(jb.getString("cataid"));
+								eli.setTitle(jb.getString("title"));
+								eli.setSumm(jb.getString("summ"));
+								eli.setIconurl(jb.getString("iconurl"));
+								eli.setOntop(jb.getBoolean("ontop"));
+								eli.setEvent_type(jb.getString("event_type"));
+								eli.setEvent_content(jb.getString("event_content"));
+								eli.setQkey(jb.getString("qkey"));
+								eli.setTimeline(jb.getString("timeline"));
+								listTemp.add(eli);
+							}
+							mListItems.addAll(listTemp);
 						}
-						mListItems.addAll(listTemp);
 						
-						JSONArray toplist = data.getJSONArray("toplist");
-						LinkedList<EssayListItem> toplistTemp = new LinkedList<EssayListItem>();
-						for(int i = 0,j = toplist.length(); i < j; i++){
-							JSONObject topjb = toplist.getJSONObject(i);
-							WenyiLog.logv(TAG, "initData toplist topjb " + topjb.toString());
-							EssayListItem topeli = new EssayListItem();
-							topeli.setId(topjb.getString("id"));
-							topeli.setCataid(topjb.getString("cataid"));
-							topeli.setTitle(topjb.getString("title"));
-							topeli.setSumm(topjb.getString("summ"));
-							topeli.setIconurl(topjb.getString("iconurl"));
-							topeli.setOntop(topjb.getBoolean("ontop"));
-							topeli.setEvent_type(topjb.getString("event_type"));
-							topeli.setEvent_content(topjb.getString("event_content"));
-							topeli.setQkey(topjb.getString("qkey"));
-							topeli.setTimeline(topjb.getString("timeline"));
-							toplistTemp.add(topeli);
+						if(data.has("toplist")){
+							JSONArray toplist = data.getJSONArray("toplist");
+							LinkedList<EssayListItem> toplistTemp = new LinkedList<EssayListItem>();
+							for(int i = 0,j = toplist.length(); i < j; i++){
+								JSONObject topjb = toplist.getJSONObject(i);
+								WenyiLog.logv(TAG, "initData toplist topjb " + topjb.toString());
+								EssayListItem topeli = new EssayListItem();
+								topeli.setId(topjb.getString("id"));
+								topeli.setCataid(topjb.getString("cataid"));
+								topeli.setTitle(topjb.getString("title"));
+								topeli.setSumm(topjb.getString("summ"));
+								topeli.setIconurl(topjb.getString("iconurl"));
+								topeli.setOntop(topjb.getBoolean("ontop"));
+								topeli.setEvent_type(topjb.getString("event_type"));
+								topeli.setEvent_content(topjb.getString("event_content"));
+								topeli.setQkey(topjb.getString("qkey"));
+								topeli.setTimeline(topjb.getString("timeline"));
+								toplistTemp.add(topeli);
+							}
+							mListItems.addAll(0, toplistTemp);
 						}
-						mListItems.addAll(0, toplistTemp);
 						
 						index = data.getInt("pindex");
 						int core_status = data.getInt("core_status");
-						if(core_status == 0 && index == 0){
+						if(core_status == 200 && index == 0){
+							Log.e(TAG, "has not some item");
 							shouldLoad = false;
 						}
-						handler.sendEmptyMessage(1);
+						handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 					}
 				}else{
-					Toast.makeText(EssayListActivity.this, "" + jsonObject.getString("errmsg"), Toast.LENGTH_SHORT);
+					Toast.makeText(EssayListActivity.this, "" + jsonObject.getString("errmsg"), Toast.LENGTH_SHORT).show();
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();

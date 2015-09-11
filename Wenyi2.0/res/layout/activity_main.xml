@@ -16,12 +16,12 @@
         android:layout_marginBottom="5dip" >
 
         <com.shecook.wenyi.essay.view.AutoScrollViewPager
-            android:id="@+id/view_pager_advert"
+            android:id="@id/view_pager_advert"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <com.shecook.wenyi.essay.view.CirclePageIndicator
-            android:id="@+id/indicator"
+            android:id="@id/indicator"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/view_pager_advert"
@@ -115,7 +115,7 @@
                 android:text="@string/essay_question_answer"
                 android:textColor="@color/black" />
         </LinearLayout>
-        "
+
     </LinearLayout>
 
 </LinearLayout>

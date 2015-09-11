@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/piazza_adv_rl"
+    android:layout_width="match_parent"
+    android:layout_height="240dp"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:layout_marginTop="3dip"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:paddingBottom="4dip"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip" >
+
+    <com.shecook.wenyi.essay.view.AutoScrollViewPager
+        android:id="@id/view_pager_advert"
+        android:layout_width="match_parent"
+        android:layout_height="240dp" />
+
+    <com.shecook.wenyi.essay.view.CirclePageIndicator
+        android:id="@id/indicator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/view_pager_advert"
+        android:layout_marginTop="15dp"
+        android:padding="5dip" />
+
+</RelativeLayout>

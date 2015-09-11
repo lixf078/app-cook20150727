@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.StartActivity;
@@ -44,6 +45,7 @@ import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.cookbook.adapter.CookbookListAdapter;
 import com.shecook.wenyi.essay.EssayItemDeatilActivity;
+import com.shecook.wenyi.essay.EssayListActivity;
 import com.shecook.wenyi.model.CookbookCatalog;
 import com.shecook.wenyi.model.CookbookListItem;
 import com.shecook.wenyi.model.WenyiUser;
@@ -119,8 +121,13 @@ public class CookbookFragment extends Fragment implements
 								.setLastUpdatedLabel(label);
 
 						// Do work to refresh the list here.
-						getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null,
-								listResultListener, listErrorListener);
+						if (shouldLoad) {
+							getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null,
+									listResultListener, listErrorListener);
+						}else{
+							Toast.makeText(mActivity, "End of List!", Toast.LENGTH_SHORT).show();
+							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
+						}
 					}
 				});
 
@@ -152,7 +159,7 @@ public class CookbookFragment extends Fragment implements
 		soundListener.addSoundEvent(State.PULL_TO_REFRESH, R.raw.pull_event);
 		soundListener.addSoundEvent(State.RESET, R.raw.reset_sound);
 		soundListener.addSoundEvent(State.REFRESHING, R.raw.refreshing_sound);
-		mPullRefreshListView.setOnPullEventListener(soundListener);
+		// mPullRefreshListView.setOnPullEventListener(soundListener); // 音效
 		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
 		mPullRefreshListView.setAdapter(mAdapter);
 		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
@@ -242,15 +249,13 @@ public class CookbookFragment extends Fragment implements
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
 			switch (what) {
-			case 1:
-				//
+			case HttpStatus.STATUS_OK:
 				if (isFirstLoad) {
 					isFirstLoad = false;
 					// 把全局加载框隐藏
 				} else {
 					// 隐藏局部加载框
 				}
-				Log.d(TAG, "handleMessage mListItems " + mListItems.toString());
 				mAdapter.notifyDataSetChanged();
 				// Call onRefreshComplete when the list has been refreshed.
 				mPullRefreshListView.onRefreshComplete();
@@ -441,30 +446,32 @@ public class CookbookFragment extends Fragment implements
 						&& 200 == jsonObject.getInt("statuscode")) {
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
-						JSONArray list = data.getJSONArray("list");
-						LinkedList<CookbookListItem> listTemp = new LinkedList<CookbookListItem>();
-						for (int i = 0, j = list.length(); i < j; i++) {
-							JSONObject jb = list.getJSONObject(i);
-							CookbookListItem eli = new CookbookListItem();
-							eli.setId(jb.getString("id"));
-							eli.setRecipename(jb.getString("recipename"));
-							eli.setSummary(jb.getString("summary"));
-							eli.setImgoriginal(jb.getString("imgoriginal"));
-							eli.setImgthumbnail(jb.getString("imgthumbnail"));
-							eli.setComments(jb.getString("comments"));
-							eli.setFollows(jb.getString("follows"));
-							eli.setTag(jb.getString("tag"));
-							eli.setTimeline(jb.getString("timeline"));
-							listTemp.add(eli);
+						if(data.has("list")){
+							JSONArray list = data.getJSONArray("list");
+							LinkedList<CookbookListItem> listTemp = new LinkedList<CookbookListItem>();
+							for (int i = 0, j = list.length(); i < j; i++) {
+								JSONObject jb = list.getJSONObject(i);
+								CookbookListItem eli = new CookbookListItem();
+								eli.setId(jb.getString("id"));
+								eli.setRecipename(jb.getString("recipename"));
+								eli.setSummary(jb.getString("summary"));
+								eli.setImgoriginal(jb.getString("imgoriginal"));
+								eli.setImgthumbnail(jb.getString("imgthumbnail"));
+								eli.setComments(jb.getString("comments"));
+								eli.setFollows(jb.getString("follows"));
+								eli.setTag(jb.getString("tag"));
+								eli.setTimeline(jb.getString("timeline"));
+								listTemp.add(eli);
+							}
+							mListItems.addAll(listTemp);
 						}
-						mListItems.addAll(listTemp);
 
 						index = data.getInt("pindex");
 						int core_status = data.getInt("core_status");
 						if (core_status == 0 && index == 0) {
 							shouldLoad = false;
 						}
-						handler.sendEmptyMessage(1);
+						handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 					}
 				} else {
 					Toast.makeText(mActivity,

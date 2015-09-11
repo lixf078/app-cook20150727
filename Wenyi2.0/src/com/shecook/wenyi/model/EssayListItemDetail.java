@@ -7,6 +7,26 @@ public class EssayListItemDetail {
 	private String articleid;
 	private String rowtype;
 	private String rowcontent;
+	private int width;
+	private int height;
+
+	public EssayListItemDetail() {
+		super();
+	}
+
+	public EssayListItemDetail(String id, String cataid, String title,
+			String articleid, String rowtype, String rowcontent, int width,
+			int height) {
+		super();
+		this.id = id;
+		this.cataid = cataid;
+		this.title = title;
+		this.articleid = articleid;
+		this.rowtype = rowtype;
+		this.rowcontent = rowcontent;
+		this.width = width;
+		this.height = height;
+	}
 
 	public String getId() {
 		return id;
@@ -56,27 +76,20 @@ public class EssayListItemDetail {
 		this.rowcontent = rowcontent;
 	}
 
-	public EssayListItemDetail(String id, String cataid, String title,
-			String articleid, String rowtype, String rowcontent) {
-		super();
-		this.id = id;
-		this.cataid = cataid;
-		this.title = title;
-		this.articleid = articleid;
-		this.rowtype = rowtype;
-		this.rowcontent = rowcontent;
+	public int getWidth() {
+		return width;
 	}
 
-	public EssayListItemDetail() {
-		super();
-		// TODO Auto-generated constructor stub
+	public void setWidth(int width) {
+		this.width = width;
 	}
 
-	@Override
-	public String toString() {
-		return "EssayListItemDetail [id=" + id + ", cataid=" + cataid
-				+ ", title=" + title + ", articleid=" + articleid
-				+ ", rowtype=" + rowtype + ", rowcontent=" + rowcontent + "]";
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
 	}
 
 }
