@@ -180,7 +180,7 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
 				Intent intent = new Intent(mActivity,
-						EssayItemDeatilActivity.class);
+						PizzaDiscovertemDeatilActivity.class);
 				intent.putExtra("essaytitle", "");
 				startActivity(intent);
 			}
@@ -240,17 +240,17 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-		WenyiLog.logv(TAG, "onPause");
-		viewPager.stopAutoScroll();
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
 		WenyiLog.logv(TAG, "onResume");
 		viewPager.startAutoScroll();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		WenyiLog.logv(TAG, "onPause");
+		viewPager.stopAutoScroll();
 	}
 
 	@Override

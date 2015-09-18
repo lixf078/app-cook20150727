@@ -1,4 +1,4 @@
-package com.shecook.wenyi.essay;
+package com.shecook.wenyi.piazza;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -51,7 +51,7 @@ import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class EssayItemDeatilActivity extends BaseActivity implements
+public class PizzaDiscovertemDeatilActivity extends BaseActivity implements
 		OnClickListener {
 
 	private LinkedList<EssayListItemDetail> mListItems;
@@ -212,7 +212,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 			case Util.SHOW_DIALOG:
 				if (null == alertDialog) {
 					alertDialog = Util
-							.showLoadDataDialog(EssayItemDeatilActivity.this);
+							.showLoadDataDialog(PizzaDiscovertemDeatilActivity.this);
 				}
 				if (!alertDialog.isShowing()) {
 					alertDialog.show();
@@ -221,7 +221,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 			case Util.DISMISS_DIALOG:
 				if (null == alertDialog) {
 					alertDialog = Util
-							.showLoadDataDialog(EssayItemDeatilActivity.this);
+							.showLoadDataDialog(PizzaDiscovertemDeatilActivity.this);
 				}
 				if (alertDialog.isShowing()) {
 					alertDialog.cancel();
@@ -238,7 +238,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 			case Util.SHOW_DIALOG_COMMENTS:
 				if (null == commentsAlertDialog) {
 					commentsAlertDialog = Util
-							.showAddCommentDialog(EssayItemDeatilActivity.this);
+							.showAddCommentDialog(PizzaDiscovertemDeatilActivity.this);
 				}
 
 				if (!commentsAlertDialog.isShowing()) {
@@ -246,10 +246,10 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 				}
 				ImageView cancel = (ImageView) commentsAlertDialog
 						.findViewById(R.id.add_comments_cancel);
-				cancel.setOnClickListener(EssayItemDeatilActivity.this);
+				cancel.setOnClickListener(PizzaDiscovertemDeatilActivity.this);
 				ImageView ok = (ImageView) commentsAlertDialog
 						.findViewById(R.id.add_comments_ok);
-				ok.setOnClickListener(EssayItemDeatilActivity.this);
+				ok.setOnClickListener(PizzaDiscovertemDeatilActivity.this);
 				comment = (EditText) commentsAlertDialog
 						.findViewById(R.id.add_comments_content);
 
@@ -282,7 +282,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 	public void getCatalogList(String url, JSONObject jsonObject,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		Log.d("lixufeng", "getCatalogList " + user + ",articleid " + articleid);
-		JSONObject commonsub = Util.getCommonParam(EssayItemDeatilActivity.this);
+		JSONObject commonsub = Util.getCommonParam(PizzaDiscovertemDeatilActivity.this);
 		JSONObject paramsub = new JSONObject();
 		if (null == jsonObject) {
 			jsonObject = new JSONObject();
@@ -352,7 +352,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 						essayTitleElid.setCataid("");
 						essayTitleElid.setArticleid("");
 						essayTitleElid.setRowtype("essayTitleElid");
-						String title = EssayItemDeatilActivity.this.getIntent().getStringExtra("essaytitle");
+						String title = PizzaDiscovertemDeatilActivity.this.getIntent().getStringExtra("essaytitle");
 						essayTitleElid.setRowcontent(title);
 						mListItems.add(0, essayTitleElid);
 						
@@ -360,7 +360,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 						handler.sendEmptyMessage(HttpStatus.STATUS_LOAD_OTHER);
 					}
 				} else {
-					Toast.makeText(EssayItemDeatilActivity.this, ""
+					Toast.makeText(PizzaDiscovertemDeatilActivity.this, ""
 							+ jsonObject.getString("errmsg"),
 							Toast.LENGTH_SHORT).show();
 				}
@@ -404,7 +404,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 	public void getDataList(String url, JSONObject paramsub,
 			Listener<JSONObject> resultListener, ErrorListener errorListener, String commentid) {
 		Log.d("lixufeng", "getDataList " + user + ",articleid " + articleid);
-		JSONObject commonsub = Util.getCommonParam(EssayItemDeatilActivity.this);
+		JSONObject commonsub = Util.getCommonParam(PizzaDiscovertemDeatilActivity.this);
 		JSONObject jsonObject = new JSONObject();
 		try {
 			jsonObject.put("common", commonsub);
@@ -505,7 +505,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 						}
 					}
 				} else {
-					Toast.makeText(EssayItemDeatilActivity.this, ""
+					Toast.makeText(PizzaDiscovertemDeatilActivity.this, ""
 							+ jsonObject.getString("errmsg"),
 							Toast.LENGTH_SHORT).show();
 				}

@@ -2,7 +2,9 @@ package com.shecook.wenyi.model;
 
 import java.util.ArrayList;
 
-public class CookbookHomeworkListItem {
+import com.shecook.wenyi.model.cookbook.CookBookModel;
+
+public class CookbookHomeworkListItem extends CookBookModel{
 
 	private String id;// 菜谱主id
 	private String recipeid;

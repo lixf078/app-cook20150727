@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.model.CookbookHomeworkListItem;
 import com.shecook.wenyi.util.Util;
@@ -41,6 +40,10 @@ public class CookbookHomeworkListAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		return mListItems.size();
+//		if(mListItems.size() > 0){
+//			return 3;
+//		}
+//		return 0;
 	}
 
 	@Override
@@ -76,38 +79,42 @@ public class CookbookHomeworkListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) view.getTag();
 		}
-		holder.nickname.setText(item.getNickname());
-		holder.timeline.setText(item.getTimeline());
-		holder.comments.setText(" " + item.getComments());
-		
-		
-		LruImageCache lruImageCache = LruImageCache.instance();
-	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.uportraitImage.setDefaultImageResId(R.drawable.icon_dialog);
-	    holder.uportraitImage.setErrorImageResId(R.drawable.icon_dialog);
-	    
-	    holder.uportraitImage.setImageUrl(item.getUportrait(), imageLoader);
-	    holder.uportraitImage.setOnClickListener(new OnClickListener() {
+		try {
+			holder.nickname.setText(item.getNickname());
+			holder.timeline.setText(item.getTimeline());
+			holder.comments.setText(" " + item.getComments());
 			
-			@Override
-			public void onClick(View arg0) {
+			
+			LruImageCache lruImageCache = LruImageCache.instance();
+			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+			holder.uportraitImage.setDefaultImageResId(R.drawable.icon_dialog);
+			holder.uportraitImage.setErrorImageResId(R.drawable.icon_dialog);
+			
+			holder.uportraitImage.setImageUrl(item.getUportrait(), imageLoader);
+			holder.uportraitImage.setOnClickListener(new OnClickListener() {
 				
-			}
-		});
-		
-	    
-	    ImageLoader homeworkImageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.homeworkImage.setDefaultImageResId(R.drawable.c_130);
-	    holder.homeworkImage.setErrorImageResId(R.drawable.c_130);
-	    
-	    holder.homeworkImage.setImageUrl(item.getImageList().get(0).getImageurl(), homeworkImageLoader);
-	    holder.homeworkImage.setOnClickListener(new OnClickListener() {
-	    	
-			@Override
-			public void onClick(View arg0) {
+				@Override
+				public void onClick(View arg0) {
+					
+				}
+			});
+			
+			
+			ImageLoader homeworkImageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+			holder.homeworkImage.setDefaultImageResId(R.drawable.c_130);
+			holder.homeworkImage.setErrorImageResId(R.drawable.c_130);
+			
+			holder.homeworkImage.setImageUrl(item.getImageList().get(0).getImageurl(), homeworkImageLoader);
+			holder.homeworkImage.setOnClickListener(new OnClickListener() {
 				
-			}
-		});
+				@Override
+				public void onClick(View arg0) {
+					
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	    
 		return view;
 	}

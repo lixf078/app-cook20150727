@@ -87,6 +87,18 @@
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
+
+        <!-- cookbook -->
+        <activity
+            android:name="com.shecook.wenyi.cookbook.CookbookItemDeatilActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <!-- presonal -->
         <activity
             android:name="com.shecook.wenyi.personal.PersonalRegister"
             android:screenOrientation="nosensor"
@@ -111,7 +123,6 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.shecook.wenyi.personal.PersonalEdition"
             android:screenOrientation="nosensor"

@@ -17,6 +17,7 @@ import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.model.EssayListItemDetail;
+import com.shecook.wenyi.model.essay.EssayListCommentsItemDetail;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
@@ -69,6 +70,13 @@ public class EssayListDetailAdapter extends BaseAdapter {
 					.findViewById(R.id.item_img);
 			holder.advTitle = (TextView) view
 					.findViewById(R.id.essay_listitem_detail_text);
+			
+			holder.layout = (RelativeLayout) view.findViewById(R.id.essay_listdetail_comment_layout);
+			holder.uportraitImage = (NetworkImageView) view.findViewById(R.id.essay_item_comment_uportrait);
+			holder.essay_item_comment_nickname = (TextView) view.findViewById(R.id.essay_item_comment_nickname);
+			holder.essay_item_comment_timeline = (TextView) view.findViewById(R.id.essay_item_comment_timeline);
+			holder.essay_item_comment_comment = (TextView) view.findViewById(R.id.essay_item_comment_comment);
+			
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
@@ -77,6 +85,8 @@ public class EssayListDetailAdapter extends BaseAdapter {
 		if ("image".equals(rowtype)) {
 			holder.imageUrl.setVisibility(View.VISIBLE);
 			holder.advTitle.setVisibility(View.GONE);
+			holder.layout.setVisibility(View.GONE);
+			
 			LruImageCache lruImageCache = LruImageCache.instance();
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
@@ -100,9 +110,59 @@ public class EssayListDetailAdapter extends BaseAdapter {
 					WenyiLog.logd(TAG, "imageview click");
 				}
 			});
-		} else{
+		} else if("commentOne".equals(rowtype)){
+			EssayListCommentsItemDetail elcid = (EssayListCommentsItemDetail) elid;
+			holder.imageUrl.setVisibility(View.GONE);
+			holder.advTitle.setVisibility(View.GONE);
+			holder.layout.setVisibility(View.VISIBLE);
+			holder.uportraitImage.setVisibility(View.VISIBLE);
+			holder.essay_item_comment_nickname.setVisibility(View.VISIBLE);
+			holder.essay_item_comment_timeline.setVisibility(View.VISIBLE);
+			
+			LruImageCache lruImageCache = LruImageCache.instance();
+			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
+					.getRequestQueue(), lruImageCache);
+			holder.uportraitImage.setDefaultImageResId(R.drawable.icon);
+			holder.uportraitImage.setErrorImageResId(R.drawable.icon);
+			
+			try {
+				if(elid.getWidth() != 0){
+					// holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, Util.getMetricsHeigh(context, elid.getWidth(), elid.getHeight())));
+				}
+//				Util.getHeight(context, elid.getWidth(), elid.getHeight());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			holder.uportraitImage.setImageUrl(elcid.getUportrait(), imageLoader);
+			holder.uportraitImage.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					WenyiLog.logd(TAG, "uportraitImage imageview click");
+				}
+			});
+			holder.essay_item_comment_nickname.setText(elcid.getNickname());
+			holder.essay_item_comment_timeline.setText(elcid.getTimeline());
+			holder.essay_item_comment_comment.setText(elcid.getComment());
+			
+		} else if("commentTwo".equals(rowtype)){
+			Log.d(TAG, "commentTwo");
+			holder.imageUrl.setVisibility(View.GONE);
+			holder.advTitle.setVisibility(View.GONE);
+			holder.layout.setVisibility(View.VISIBLE);
+			EssayListCommentsItemDetail elcid = (EssayListCommentsItemDetail) elid;
+			
+			holder.uportraitImage.setVisibility(View.INVISIBLE);
+			holder.essay_item_comment_nickname.setVisibility(View.GONE);
+			holder.essay_item_comment_timeline.setVisibility(View.GONE);
+			holder.essay_item_comment_comment.setTextSize(16);
+			holder.essay_item_comment_comment.setText(elcid.getComment());
+		}else{
 			holder.imageUrl.setVisibility(View.GONE);
 			holder.advTitle.setVisibility(View.VISIBLE);
+			holder.layout.setVisibility(View.GONE);
+			
 			if("essayTitleElid".equals(rowtype)){
 				holder.advTitle.setTextSize(24);
 				holder.advTitle.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -118,5 +178,12 @@ public class EssayListDetailAdapter extends BaseAdapter {
 		TextView advTitle;
 		TextView eventUrl;
 		NetworkImageView imageUrl;
+		
+		// comments view
+		RelativeLayout layout;
+		NetworkImageView uportraitImage;
+		TextView essay_item_comment_nickname;
+		TextView essay_item_comment_timeline;
+		TextView essay_item_comment_comment;
 	}
 }

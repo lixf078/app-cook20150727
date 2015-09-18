@@ -3,25 +3,28 @@ package com.shecook.wenyi.cookbook.adapter;
 import java.util.LinkedList;
 
 import android.content.Context;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
-import com.shecook.wenyi.model.EssayListItemDetail;
+import com.shecook.wenyi.model.cookbook.CookBookModel;
+import com.shecook.wenyi.model.cookbook.CookbookComment;
+import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
 public class CookbookListDetailAdapter extends BaseAdapter {
 	private static final String TAG = "CookbookListDetailAdapter";
-	private LinkedList<EssayListItemDetail> mListItems;
+	private LinkedList<CookBookModel> mListItems;
 	private Context context;
 
 	public CookbookListDetailAdapter() {
@@ -29,7 +32,7 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 	}
 
 	public CookbookListDetailAdapter(Context context,
-			LinkedList<EssayListItemDetail> list) {
+			LinkedList<CookBookModel> list) {
 		super();
 		this.context = context;
 		mListItems = list;
@@ -54,33 +57,51 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View view, ViewGroup arg2) {
 		ViewHolder holder = null;
-		EssayListItemDetail elid = mListItems.get(position);
-		Log.d("lixufeng1", "getview position " + position + ",elid " + elid);
-		String rowtype = elid.getRowtype();
+		CookBookModel elid = mListItems.get(position);
+		String rowtype = elid.getRowType();
 		
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(
-					R.layout.essay_listitem_image, null);
+					R.layout.cookbook_itemdetail_info, null);
 			holder = new ViewHolder();
 			holder.imageUrl = (NetworkImageView) view
 					.findViewById(R.id.item_img);
 			holder.advTitle = (TextView) view
-					.findViewById(R.id.essay_listitem_detail_text);
+					.findViewById(R.id.cookbook_listitem_detail_text);
+			
+			holder.layout = (RelativeLayout) view.findViewById(R.id.cookbook_listdetail_comment_layout);
+			holder.uportraitImage = (NetworkImageView) view.findViewById(R.id.cookbook_item_comment_uportrait);
+			holder.cookbook_item_comment_nickname = (TextView) view.findViewById(R.id.cookbook_item_comment_nickname);
+			holder.cookbook_item_comment_timeline = (TextView) view.findViewById(R.id.cookbook_item_comment_timeline);
+			holder.cookbook_item_comment_comment = (TextView) view.findViewById(R.id.cookbook_item_comment_comment);
+			
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
 		}
 		
-		if ("image".equals(rowtype)) {
+		if ("imgoriginal".equals(rowtype)) {
 			holder.imageUrl.setVisibility(View.VISIBLE);
 			holder.advTitle.setVisibility(View.GONE);
+			holder.layout.setVisibility(View.GONE);
+			
 			LruImageCache lruImageCache = LruImageCache.instance();
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
 			holder.imageUrl.setDefaultImageResId(R.drawable.loadingpic);
 			holder.imageUrl.setErrorImageResId(R.drawable.loadingpic);
-
-			holder.imageUrl.setImageUrl(elid.getRowcontent(), imageLoader);
+			
+			try {
+//				holder.layout.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+				holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 750));
+//				if(elid.getWidth() != 0){
+//				}
+//				Util.getHeight(context, elid.getWidth(), elid.getHeight());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			holder.imageUrl.setImageUrl(elid.getRowContent(), imageLoader);
 			holder.imageUrl.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -88,10 +109,88 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 					WenyiLog.logd(TAG, "imageview click");
 				}
 			});
-		} else{
+		} else if("comments".equals(rowtype)){
+			CookbookComment elcid = (CookbookComment) elid;
+			holder.imageUrl.setVisibility(View.GONE);
+			holder.advTitle.setVisibility(View.GONE);
+			holder.layout.setVisibility(View.VISIBLE);
+			holder.uportraitImage.setVisibility(View.VISIBLE);
+			holder.cookbook_item_comment_nickname.setVisibility(View.VISIBLE);
+			holder.cookbook_item_comment_timeline.setVisibility(View.VISIBLE);
+			
+			LruImageCache lruImageCache = LruImageCache.instance();
+			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
+					.getRequestQueue(), lruImageCache);
+			holder.uportraitImage.setDefaultImageResId(R.drawable.icon);
+			holder.uportraitImage.setErrorImageResId(R.drawable.icon);
+			
+			try {
+				holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 750));
+//				holder.layout.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT));
+				//if(elid.getWidth() != 0){
+					// holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, Util.getMetricsHeigh(context, elid.getWidth(), elid.getHeight())));
+				//}
+//				Util.getHeight(context, elid.getWidth(), elid.getHeight());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			holder.uportraitImage.setImageUrl(elcid.getUportrait(), imageLoader);
+			holder.uportraitImage.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					WenyiLog.logd(TAG, "uportraitImage imageview click");
+				}
+			});
+			holder.cookbook_item_comment_nickname.setText(elcid.getNickname());
+			holder.cookbook_item_comment_timeline.setText(elcid.getTimeline());
+			holder.cookbook_item_comment_comment.setText(elcid.getComment());
+			
+		} else if("image".equals(rowtype)){
+			holder.imageUrl.setVisibility(View.VISIBLE);
+			holder.advTitle.setVisibility(View.GONE);
+			holder.layout.setVisibility(View.GONE);
+			
+			LruImageCache lruImageCache = LruImageCache.instance();
+			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
+					.getRequestQueue(), lruImageCache);
+			holder.imageUrl.setDefaultImageResId(R.drawable.loadingpic);
+			holder.imageUrl.setErrorImageResId(R.drawable.loadingpic);
+			
+			try {
+//				holder.layout.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+				holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 750));
+				/*if(elid.getWidth() != 0){
+					holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, Util.getMetricsHeigh(context, elid.getWidth(), elid.getHeight())));
+				}*/
+//				Util.getHeight(context, elid.getWidth(), elid.getHeight());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			holder.imageUrl.setImageUrl(elid.getRowContent(), imageLoader);
+			holder.imageUrl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					WenyiLog.logd(TAG, "imageview click");
+				}
+			});
+		}else{
 			holder.imageUrl.setVisibility(View.GONE);
 			holder.advTitle.setVisibility(View.VISIBLE);
-			holder.advTitle.setText(elid.getRowcontent());
+			holder.layout.setVisibility(View.GONE);
+//			holder.layout.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 0));
+			if("title".equals(rowtype)){
+				holder.advTitle.setTextSize(24);
+				holder.advTitle.setGravity(Gravity.CENTER_HORIZONTAL);
+			}else{
+				holder.advTitle.setTextSize(16);
+				holder.advTitle.setGravity(Gravity.LEFT);
+			}
+			holder.advTitle.setText(elid.getRowContent());
+//			holder.advTitle.setBackgroundColor(context.getResources().getColor(R.color.blue));
 		}
 		return view;
 	}
@@ -100,5 +199,12 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 		TextView advTitle;
 		TextView eventUrl;
 		NetworkImageView imageUrl;
+		
+		// comments view
+		RelativeLayout layout;
+		NetworkImageView uportraitImage;
+		TextView cookbook_item_comment_nickname;
+		TextView cookbook_item_comment_timeline;
+		TextView cookbook_item_comment_comment;
 	}
 }

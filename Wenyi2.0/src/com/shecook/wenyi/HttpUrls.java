@@ -14,6 +14,10 @@ public class HttpUrls {
 	public static final String ESSAY_WENYI_LIST = BASE_URL + "article/list";
 	public static final String ESSAY_WENYILIST_ITEM_DETAIL = BASE_URL + "article/detail";
 	
+	public static final String ESSAY_WENYILIST_ITEM_DETAIL_COMMENT = BASE_URL + "article/comment_list";
+	
+	
+	
 	public static final String COOKBOOK_LIST_CATALOG = BASE_URL + "recipe/catalog";
 	public static final String COOKBOOK_LIST = BASE_URL + "recipe/list";
 	public static final String COOKBOOK_LIST_ITEM_DETAIL = BASE_URL + "recipe/detail";

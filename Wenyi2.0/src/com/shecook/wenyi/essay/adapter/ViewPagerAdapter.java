@@ -30,6 +30,8 @@ import com.shecook.wenyi.view.RecyclingPagerAdapter;
  */
 public class ViewPagerAdapter extends RecyclingPagerAdapter {
 
+	private int mChildCount = 0;
+	
 	private Context context;
 	private ArrayList<WenyiGallery> mPageViews;
 	private boolean isInfiniteLoop;
@@ -109,4 +111,20 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 		TextView advTitle;
 		NetworkImageView imageUrl;
 	}
+	
+	@Override
+	public void notifyDataSetChanged() {
+//		mChildCount = getCount();
+		super.notifyDataSetChanged();
+	}
+	
+/*	@Override
+	public int getItemPosition(Object object) {
+		if(mChildCount > 0){
+			mChildCount--;
+		}
+		return POSITION_NONE;
+//		return super.getItemPosition(object);
+		
+	}*/
 }

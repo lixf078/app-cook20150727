@@ -5,7 +5,7 @@ public class EssayListItemDetail {
 	private String cataid;
 	private String title; // title,image,paragraph,subhead
 	private String articleid;
-	private String rowtype;
+	private String rowtype;// content(title,image,paragraph,subhead), commentOne, commentTwo
 	private String rowcontent;
 	private int width;
 	private int height;

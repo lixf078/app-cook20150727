@@ -48,6 +48,7 @@ import com.shecook.wenyi.essay.EssayItemDeatilActivity;
 import com.shecook.wenyi.essay.EssayListActivity;
 import com.shecook.wenyi.model.CookbookCatalog;
 import com.shecook.wenyi.model.CookbookListItem;
+import com.shecook.wenyi.model.CookbookListItemDetail;
 import com.shecook.wenyi.model.WenyiUser;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
@@ -167,14 +168,11 @@ public class CookbookFragment extends Fragment implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
-				Intent intent = new Intent(mActivity,
-						EssayItemDeatilActivity.class);
-				intent.putExtra("cookbooktitle",
-						"" + mListItems.get((int) position).getRecipename());
-				intent.putExtra("articleid", ""
-						+ mListItems.get((int) position).getId());
-//				startActivity(new Intent(mActivity,
-//						CookbookListItemDetail.class));
+				Log.d(TAG,"onItemClick arg2 " + arg2 + ",position " + position + ",recipeid " + mListItems.get((int) position).getId() + ",cookbooktitle " + mListItems.get((int) position).getRecipename());
+				Intent intent = new Intent(mActivity, CookbookItemDeatilActivity.class);
+				intent.putExtra("cookbooktitle", "" + mListItems.get((int) position).getRecipename());
+				intent.putExtra("recipeid", "" + mListItems.get((int) position).getId());
+				startActivity(intent);
 			}
 		});
 		return rootView;
