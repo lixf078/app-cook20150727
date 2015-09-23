@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.letv.shared.widget.BaseSwipeHelper;
 import com.letv.shared.widget.LeListView;
 import com.letv.shared.widget.pulltorefresh.OverscrollHelper;
 import com.letv.shared.widget.pulltorefresh.PullToRefreshAdapterViewBase;

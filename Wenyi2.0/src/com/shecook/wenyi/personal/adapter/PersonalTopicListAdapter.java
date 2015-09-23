@@ -17,16 +17,16 @@ import com.shecook.wenyi.model.EssayListItem;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class EssayListAdapter extends BaseAdapter {
+public class PersonalTopicListAdapter extends BaseAdapter {
 	
 	
 	private LinkedList<EssayListItem> mListItems;
 	private Context context;
-	public EssayListAdapter() {
+	public PersonalTopicListAdapter() {
 		super();
 	}
 
-	public EssayListAdapter(Context context, LinkedList<EssayListItem> list) {
+	public PersonalTopicListAdapter(Context context, LinkedList<EssayListItem> list) {
 		super();
 		this.context = context;
 		mListItems = list;
@@ -54,7 +54,7 @@ public class EssayListAdapter extends BaseAdapter {
 		EssayListItem eli = mListItems.get(position);
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(
-     				R.layout.essay_list_item, null);
+     				R.layout.personal_topic_list_item, null);
 			holder = new ViewHolder();
 			holder.advTitle = (TextView) view.findViewById(R.id.essay_item_title);
 			holder.advTime = (TextView) view.findViewById(R.id.essay_item_time);

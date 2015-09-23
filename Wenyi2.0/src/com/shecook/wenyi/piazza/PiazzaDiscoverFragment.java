@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -40,7 +39,6 @@ import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
-import com.shecook.wenyi.essay.EssayItemDeatilActivity;
 import com.shecook.wenyi.essay.adapter.ViewPagerAdapter;
 import com.shecook.wenyi.essay.view.AutoScrollViewPager;
 import com.shecook.wenyi.essay.view.CirclePageIndicator;

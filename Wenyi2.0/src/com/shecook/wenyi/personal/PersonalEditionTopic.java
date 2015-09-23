@@ -22,7 +22,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 import com.letv.shared.widget.BaseSwipeHelper;
+import com.letv.shared.widget.BaseSwipeListViewListener;
 import com.letv.shared.widget.LeListView;
+import com.letv.shared.widget.SwipeListViewHelper;
 import com.letv.shared.widget.pulltorefresh.PullToRefreshBase;
 import com.letv.shared.widget.pulltorefresh.PullToRefreshBase.Mode;
 import com.letv.shared.widget.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
@@ -30,7 +32,7 @@ import com.letv.shared.widget.pulltorefresh.PullToRefreshBase.OnRefreshListener;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
-import com.shecook.wenyi.common.pulltorefresh.CopyOfRefreshAndMoreListView;
+import com.shecook.wenyi.common.pulltorefresh.SwitchPullToRefreshListView;
 import com.shecook.wenyi.common.volley.Request.Method;
 import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
@@ -39,7 +41,7 @@ import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.essay.EssayItemDeatilActivity;
 import com.shecook.wenyi.model.EssayListItem;
-import com.shecook.wenyi.personal.adapter.EssayListAdapter;
+import com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
@@ -49,8 +51,8 @@ public class PersonalEditionTopic extends Fragment {
 	private static final String TAG = "PersonalEditionTopic";
 	
 	private Activity mActivity = null;
-	private CopyOfRefreshAndMoreListView mPullRefreshListView;
-	com.shecook.wenyi.personal.adapter.EssayListAdapter mAdapter = null;
+	private SwitchPullToRefreshListView mPullRefreshListView;
+	com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter mAdapter = null;
 	LinkedList<EssayListItem> mListItems;
 	private boolean shouldLoad = true;
 	@Override
@@ -67,7 +69,7 @@ public class PersonalEditionTopic extends Fragment {
 	}
 
 	public void initView(View rootView){
-		mPullRefreshListView = (CopyOfRefreshAndMoreListView) rootView.findViewById(R.id.pull_refresh_list);
+		mPullRefreshListView = (SwitchPullToRefreshListView) rootView.findViewById(R.id.pull_refresh_list);
 		
 		// Set a listener to be invoked when the list should be refreshed.
 		mPullRefreshListView
@@ -115,12 +117,18 @@ public class PersonalEditionTopic extends Fragment {
 //		ListView actualListView = mPullRefreshListView.getRefreshableView();
 
 		mListItems = new LinkedList<EssayListItem>();
-		mAdapter = new EssayListAdapter(mActivity, mListItems);
+		mAdapter = new PersonalTopicListAdapter(mActivity, mListItems);
 
 		/**
 		 * Add Sound Event Listener
 		 */
 		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
+//		mPullRefreshListView.getRefreshableView().setOffsetLeft(Util.getWidth(mActivity) * 4 / 5);
+//		mPullRefreshListView.getRefreshableView().setSwipeListViewListener(new MyBaseSwipeListViewListener());
+		
+		mPullRefreshListView.getRefreshableView().setSwipeActionLeft(BaseSwipeHelper.SWIPE_ACTION_REVEAL);
+		mPullRefreshListView.getRefreshableView().setSwipeActionRight(BaseSwipeHelper.SWIPE_ACTION_DISMISS);
+		mPullRefreshListView.getRefreshableView().setDismissAnimationTime(500);
 //		mPullRefreshListView.getRefreshableView().setSwipeMode(BaseSwipeHelper.SWIPE_MODE_LEFT);
 		
 //		mPullRefreshListView.getRefreshableView().setSwipeMode(BaseSwipeHelper.SWIPE_MODE_LEFT);
@@ -142,7 +150,70 @@ public class PersonalEditionTopic extends Fragment {
 			}
 		});
 	}
-	
+	class MyBaseSwipeListViewListener extends BaseSwipeListViewListener {
+
+        @Override
+        public void onDismiss(int[] reverseSortedPositions) {
+            Log.i("swipeLog", "onDismiss");
+            for (int position : reverseSortedPositions) {
+            }
+            mAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onOpened(int position, boolean toRight) {
+            Log.i("swipeLog", "onOpened");
+        }
+
+        @Override
+        public void onClosed(int position, boolean fromRight) {
+            Log.i("swipeLog", "onClosed");
+        }
+
+        @Override
+        public void onListChanged() {
+            Log.i("swipeLog", "onListChanged");
+        }
+
+        @Override
+        public void onMove(int position, float x) {
+            Log.i("swipeLog", "onMove");
+        }
+
+        @Override
+        public void onStartOpen(int position, int action, boolean right) {
+            Log.i("swipeLog", "onStartOpen");
+        }
+
+        @Override
+        public void onStartClose(int position, boolean right) {
+            Log.i("swipeLog", "onStartClose");
+        }
+
+        @Override
+        public int onChangeSwipeMode(int position) {
+            Log.i("swipeLog", "onChangeSwipeMode");
+            if (position == 5) {
+                return SwipeListViewHelper.SWIPE_MODE_NONE;
+            }
+            
+            if (position == mPullRefreshListView.getRefreshableView().getAdapter().getCount() - 5) {
+                return SwipeListViewHelper.SWIPE_MODE_NONE;
+            }
+            return super.onChangeSwipeMode(position);
+        }
+
+        @Override
+        public void onFirstListItem() {
+            Log.i("swipeLog", "onFirstListItem");
+        }
+
+        @Override
+        public void onLastListItem() {
+            Log.i("swipeLog", "onLastListItem");
+        }
+
+    }
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
