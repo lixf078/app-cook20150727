@@ -24,9 +24,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -51,9 +51,7 @@ import com.shecook.wenyi.cookbook.adapter.CookbookListDetailAdapter;
 import com.shecook.wenyi.essay.adapter.ViewPagerAdapter;
 import com.shecook.wenyi.essay.view.AutoScrollViewPager;
 import com.shecook.wenyi.essay.view.CirclePageIndicator;
-import com.shecook.wenyi.model.CookbookHomeworkListItem;
 import com.shecook.wenyi.model.WenyiGallery;
-import com.shecook.wenyi.model.WenyiImage;
 import com.shecook.wenyi.model.cookbook.CookBookModel;
 import com.shecook.wenyi.model.cookbook.CookbookComment;
 import com.shecook.wenyi.util.AppException;
@@ -157,10 +155,10 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 		mIndicator = (CirclePageIndicator) footer.findViewById(R.id.indicator);
 		
 		WenyiGallery eg = new WenyiGallery();
-		eg.setId(1000);
+		eg.setId(Integer.parseInt(recipeid));
 		eg.setTitle(getResources().getString(R.string.app_name));
 		eg.setImgUrl("");
-		eg.setEvent_type(10);
+		eg.setEvent_type(11);
 		eg.setEvent_content("www.baidu.com");
 		mPageViews.add(eg);
 		
@@ -231,12 +229,14 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 
 	@Override
 	protected void onStop() {
+		System.gc();
 		super.onStop();
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		System.gc();
 	}
 
 	Handler handler = new Handler() {
@@ -388,6 +388,8 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 						imageCbm.setId(detail.getString("id"));
 						imageCbm.setRowType("imgoriginal");
 						imageCbm.setRowContent(detail.getString("imgoriginal"));
+						imageCbm.setWidth(detail.getInt("oimg_width"));
+						imageCbm.setHeight(detail.getInt("oimg_height"));
 						listTemp.add(imageCbm);
 						
 						JSONArray indredients = detail.has("indredients") ? detail.getJSONArray("indredients") : null;
@@ -471,7 +473,7 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 								eg.setId(Integer.parseInt(jb.getString("id")));
 								eg.setTitle(jb.getString("description"));
 								eg.setImgUrl(jb.getJSONArray("images").getJSONObject(0).getString("imageurl"));
-								eg.setEvent_type(10);
+								eg.setEvent_type(11);
 								eg.setEvent_content("www.baidu.com");
 								mPageViews.add(eg);
 								/*CookbookHomeworkListItem chli = new CookbookHomeworkListItem();

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <item name="wenyi_common_tag_id1" type="id">wenyi_common_tag_id1</item>
+    <item name="wenyi_common_tag_id2" type="id">wenyi_common_tag_id2</item>
+    <item name="wenyi_common_tag_id3" type="id">wenyi_common_tag_id3</item>
+    
     <!-- 组件ID -->
     <item name="wenyi_common_header" type="id">wenyi_common_header</item>
     <item name="re_title_1" type="id">re_title_1</item>

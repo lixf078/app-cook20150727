@@ -95,7 +95,9 @@ public class EssayListDetailAdapter extends BaseAdapter {
 			
 			try {
 				if(elid.getWidth() != 0){
-					holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, Util.getMetricsHeigh(context, elid.getWidth(), elid.getHeight())));
+					RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(Util.getAdapterMetricsWidth(context, 0.8f), Util.getAdapterMetricsHeigh(context, elid.getWidth(), elid.getHeight(), 0.8f));
+					rl.addRule(RelativeLayout.CENTER_HORIZONTAL,RelativeLayout.TRUE);
+					holder.imageUrl.setLayoutParams(rl);
 				}
 //				Util.getHeight(context, elid.getWidth(), elid.getHeight());
 			} catch (Exception e) {

@@ -110,4 +110,12 @@ public class CookbookHomeworkListItem extends CookBookModel{
 		this.imageList = imageList;
 	}
 
+	@Override
+	public String toString() {
+		return "CookbookHomeworkListItem [id=" + id + ", recipeid=" + recipeid
+				+ ", uid=" + uid + ", nickname=" + nickname + ", uportrait="
+				+ uportrait + ", description=" + description + ", comments="
+				+ comments + ", timeline=" + timeline + ", imageList="
+				+ imageList + "]";
+	}
 }

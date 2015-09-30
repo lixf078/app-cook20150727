@@ -180,11 +180,13 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 	@Override
 	protected void onStop() {
 		super.onStop();
+		System.gc();
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		System.gc();
 	}
 
 	Handler handler = new Handler() {

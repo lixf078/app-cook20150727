@@ -139,6 +139,29 @@ public class Util {
 		return (int)descHeight;
 	}
 
+	public static int getAdapterMetricsWidth(Context context, float scale) {
+		if (mScreenWidth != 0) {
+
+		}
+		DisplayMetrics dm = new DisplayMetrics();
+		((Activity) context).getWindowManager().getDefaultDisplay()
+				.getMetrics(dm);
+		int mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
+		return (int)(mScreenWidth * scale);
+	}
+	public static int getAdapterMetricsHeigh(Context context, int sourceWidth, int sourceHeight, float scale) {
+		if (mScreenWidth == 0) {
+			DisplayMetrics dm = new DisplayMetrics();
+			((Activity) context).getWindowManager().getDefaultDisplay()
+			.getMetrics(dm);
+			mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
+		}
+		// int mScreenHeight = dm.heightPixels;
+		float descHeight = scale * mScreenWidth * sourceHeight / sourceWidth;
+//		Log.d(TAG, "getMetricsHeigh mScreenWidth " + mScreenWidth + ",sourceWidth " + sourceWidth + ",sourceHeight " + sourceHeight + ", descHeight " + descHeight);
+		return (int)descHeight;
+	}
+	
 	public static void setWidth(int width) {
 		Util.width = width;
 	}

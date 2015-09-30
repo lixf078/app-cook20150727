@@ -93,7 +93,9 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 			
 			try {
 //				holder.layout.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 0));
-				holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 750));
+				RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(Util.getAdapterMetricsWidth(context, 0.8f), Util.getAdapterMetricsHeigh(context, elid.getWidth(), elid.getHeight(), 0.8f));
+				rl.addRule(RelativeLayout.CENTER_HORIZONTAL,RelativeLayout.TRUE);
+				holder.imageUrl.setLayoutParams(rl);
 //				if(elid.getWidth() != 0){
 //				}
 //				Util.getHeight(context, elid.getWidth(), elid.getHeight());
@@ -125,7 +127,7 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 			holder.uportraitImage.setErrorImageResId(R.drawable.icon);
 			
 			try {
-				holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 750));
+				// holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, Util.getMetricsHeigh(context, 500, 750)));
 //				holder.layout.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT));
 				//if(elid.getWidth() != 0){
 					// holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, Util.getMetricsHeigh(context, elid.getWidth(), elid.getHeight())));
@@ -160,7 +162,7 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 			
 			try {
 //				holder.layout.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 0));
-				holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 750));
+				holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, Util.getMetricsHeigh(context, 500, 750)));
 				/*if(elid.getWidth() != 0){
 					holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, Util.getMetricsHeigh(context, elid.getWidth(), elid.getHeight())));
 				}*/

@@ -3,6 +3,7 @@ package com.shecook.wenyi.cookbook.adapter;
 import java.util.LinkedList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +24,8 @@ import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
 public class CookbookHomeworkListAdapter extends BaseAdapter {
 
+	private static String TAG = "CookbookHomeworkListAdapter";
+	
 	private LinkedList<CookbookHomeworkListItem> mListItems;
 	private Context context;
 
@@ -40,10 +43,6 @@ public class CookbookHomeworkListAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		return mListItems.size();
-//		if(mListItems.size() > 0){
-//			return 3;
-//		}
-//		return 0;
 	}
 
 	@Override
@@ -58,6 +57,7 @@ public class CookbookHomeworkListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View view, ViewGroup arg2) {
+		// Log.e(TAG, "getView " + position + ", mListItems size " + mListItems.size());
 		ViewHolder holder;
 		CookbookHomeworkListItem item = mListItems.get(position);
 		if (view == null) {
@@ -76,10 +76,12 @@ public class CookbookHomeworkListAdapter extends BaseAdapter {
 			holder.timeline = (TextView) view.findViewById(R.id.cookbook_homework_item_time);
 			holder.comments = (TextView) view.findViewById(R.id.cookbook_homework_item_comments);
 			holder.uportraitImage = (NetworkImageView) view.findViewById(R.id.cookbook_homework_item_userimg);
+			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
 		}
 		try {
+			Log.e(TAG, "getView tiem is " + position + ",item " + item + ", holder " + holder);
 			holder.nickname.setText(item.getNickname());
 			holder.timeline.setText(item.getTimeline());
 			holder.comments.setText(" " + item.getComments());
@@ -104,14 +106,16 @@ public class CookbookHomeworkListAdapter extends BaseAdapter {
 			holder.homeworkImage.setDefaultImageResId(R.drawable.c_130);
 			holder.homeworkImage.setErrorImageResId(R.drawable.c_130);
 			
-			holder.homeworkImage.setImageUrl(item.getImageList().get(0).getImageurl(), homeworkImageLoader);
-			holder.homeworkImage.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
+			if(item.getImageList().size() > 0){
+				holder.homeworkImage.setImageUrl(item.getImageList().get(0).getImageurl(), homeworkImageLoader);
+				holder.homeworkImage.setOnClickListener(new OnClickListener() {
 					
-				}
-			});
+					@Override
+					public void onClick(View arg0) {
+						
+					}
+				});
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -125,6 +129,11 @@ public class CookbookHomeworkListAdapter extends BaseAdapter {
 		TextView comments;
 		NetworkImageView uportraitImage;
 		NetworkImageView homeworkImage;
-		
+		@Override
+		public String toString() {
+			return "ViewHolder [nickname=" + nickname + ", timeline="
+					+ timeline + ", comments=" + comments + ", uportraitImage="
+					+ uportraitImage + ", homeworkImage=" + homeworkImage + "]";
+		}
 	}
 }

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
+import com.shecook.wenyi.cookbook.CookbookHomeworkList;
 import com.shecook.wenyi.model.WenyiGallery;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
@@ -53,7 +54,7 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 		if(position >= mPageViews.size()){
 			position = position % mPageViews.size();
 		}
-		WenyiGallery essayGallery = mPageViews.get(position);
+		WenyiGallery wenyiGallery = mPageViews.get(position);
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(
      				R.layout.viewpager_view_item, null);
@@ -65,20 +66,29 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 			holder = (ViewHolder) view.getTag();
 		}
 
-		if(!TextUtils.isEmpty(essayGallery.getImgUrl())){
+		if(!TextUtils.isEmpty(wenyiGallery.getImgUrl())){
 			LruImageCache lruImageCache = LruImageCache.instance();
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
 			holder.imageUrl.setDefaultImageResId(R.drawable.wenyi_01);
 			holder.imageUrl.setErrorImageResId(R.drawable.wenyi_01);
-			holder.imageUrl.setImageUrl(essayGallery.getImgUrl(), imageLoader);
+			holder.imageUrl.setImageUrl(wenyiGallery.getImgUrl(), imageLoader);
 		}
-	    holder.imageUrl.setTag("" + essayGallery.getEvent_content());
+	    holder.imageUrl.setTag(R.id.wenyi_common_tag_id1, "" + wenyiGallery.getEvent_type());
+	    holder.imageUrl.setTag(R.id.wenyi_common_tag_id2, "" + wenyiGallery.getEvent_content());
+	    holder.imageUrl.setTag(R.id.wenyi_common_tag_id3, "" + wenyiGallery.getId());
 	    holder.imageUrl.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
-				Log.d("ViewPagerAdapter", "onClick url " + arg0.getTag());
-				Uri uri = Uri.parse((String)arg0.getTag());
+				
+				if(11 == (Integer.parseInt(arg0.getTag(R.id.wenyi_common_tag_id1) + ""))){
+					Intent intent = new Intent(context, CookbookHomeworkList.class);
+					intent.putExtra("recipeid", "" + arg0.getTag(R.id.wenyi_common_tag_id3));
+					context.startActivity(intent);
+					return;
+				}
+				Log.d("ViewPagerAdapter", "onClick tag " + arg0.getTag(R.id.wenyi_common_tag_id1));
+				Uri uri = Uri.parse((String)arg0.getTag(R.id.wenyi_common_tag_id2));
 				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				try {
@@ -88,7 +98,7 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 				}
 			}
 		});
-		holder.advTitle.setText(essayGallery.getTitle());
+		holder.advTitle.setText(wenyiGallery.getTitle());
 		return view ;
 	}
 
