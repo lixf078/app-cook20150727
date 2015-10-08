@@ -282,15 +282,15 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-		viewPager.stopAutoScroll();
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
 		viewPager.startAutoScroll();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		viewPager.stopAutoScroll();
 	}
 
 	@Override

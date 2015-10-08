@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -57,11 +58,12 @@ public class CookbookHomeworkList extends BaseActivity implements OnClickListene
 	
 	private ImageView return_img, right_img;
 	private TextView middle_title;
-	
+	String recipeid = "";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
+		recipeid = CookbookHomeworkList.this.getIntent().getStringExtra("recipeid");
 		setContentView(R.layout.cookbook_homework_list);
 		initView();
 		getHomeworkList(HttpUrls.COOKBOOK_HOMEWORK_LIST,null,listResultListener,listErrorListener);
@@ -137,6 +139,9 @@ public class CookbookHomeworkList extends BaseActivity implements OnClickListene
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
+				Intent intent = new Intent(CookbookHomeworkList.this, CookbookHomeworkDeatilActivity.class);
+				intent.putExtra("followid", "" + mListItems.get((int) position).getId());
+				startActivity(intent);
 			}
 		});
 	}
@@ -215,11 +220,10 @@ public class CookbookHomeworkList extends BaseActivity implements OnClickListene
 		JSONObject paramsub = new JSONObject();
 		try {
 			jsonObject.put("common", commonsub);
-			String recipeid = CookbookHomeworkList.this.getIntent().getStringExtra("recipeid");
-			if(TextUtils.isEmpty(recipeid)){
-				recipeid = "3133";
+			
+			if(!TextUtils.isEmpty(recipeid)){
+				paramsub.put("recipeid", recipeid);
 			}
-			paramsub.put("recipeid", recipeid);
 			paramsub.put("pindex", "" + ++index);
 			paramsub.put("count", "20");
 			
@@ -335,52 +339,4 @@ public class CookbookHomeworkList extends BaseActivity implements OnClickListene
 		}
 	}
 	
-	public void testData(){
-		if(mListItems.size()>0){
-			return;
-		}
-		LinkedList<CookbookHomeworkListItem> listTemp = new LinkedList<CookbookHomeworkListItem>();
-		for(int i = 0,j = 10; i < j; i++){
-			CookbookHomeworkListItem chli = new CookbookHomeworkListItem();
-			chli.setId("27650");
-			chli.setRecipeid("3133");
-			chli.setUid("0");
-			chli.setNickname("玫瑰色人生");
-			chli.setUportrait("http://img2.shecook.com/members/558631d1cf6044699e6d92ba562ff8e0/normal/0.jpg");
-			chli.setDescription("作业描述");
-			chli.setComments("5");
-			chli.setTimeline("1分钟前");
-			if(i == 1){
-				for(int k = 0, t =2; k < t; k++){
-					WenyiImage homeWorkImage = new WenyiImage();
-					homeWorkImage.setId("27649");
-					homeWorkImage.setFollowid("27650");
-					homeWorkImage.setImageurl("http://static.wenyijcc.com/submit/201501/5f6aef0fb78245169d6583173e37e35b.jpg");
-					chli.getImageList().add(homeWorkImage);
-				}
-			}else if (i == 2){
-				chli.setNickname("丛中笑9166");
-				chli.setUportrait("http://img2.shecook.com/members/29c4da0f62954d8291fa340d6e804e1b/normal/0.jpg");
-				for(int k = 0, t =2; k < t; k++){
-					WenyiImage homeWorkImage = new WenyiImage();
-					homeWorkImage.setId("27649");
-					homeWorkImage.setFollowid("27650");
-					homeWorkImage.setImageurl("http://static.wenyijcc.com/submit/201501/5f6aef0fb78245169d6583173e37e35b.jpg");
-					chli.getImageList().add(homeWorkImage);
-				}
-			}else{
-				chli.setNickname("五彩水晶冻儿成功");
-				chli.setUportrait("http://img2.shecook.com/members/f24785b18936469db6433dc8c44e9440/normal/0.jpg");
-				for(int k = 0, t =2; k < t; k++){
-					WenyiImage homeWorkImage = new WenyiImage();
-					homeWorkImage.setId("27649");
-					homeWorkImage.setFollowid("27650");
-					homeWorkImage.setImageurl("http://static.wenyijcc.com/submit/201412/6bd86dbef6b8464cbabb84e3aa4fea50.jpg");
-					chli.getImageList().add(homeWorkImage);
-				}
-			}
-			listTemp.add(chli);
-		}
-//		mListItems.addAll(listTemp);
-	}
 }

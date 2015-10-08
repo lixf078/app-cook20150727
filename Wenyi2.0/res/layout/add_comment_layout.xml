@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white" >
+
+    <include layout="@layout/wenyi_common_header" />
+
+    <RelativeLayout
+        android:id="@+id/want_comments"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/wenyi_common_header"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:orientation="horizontal"
+        android:paddingTop="5dip" >
+
+        <EditText
+            android:id="@+id/comment_text_id"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="@color/transparent"
+            android:gravity="top"
+            android:hint="@string/want_add_comment"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

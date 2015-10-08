@@ -157,6 +157,10 @@ public class Util {
 			mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
 		}
 		// int mScreenHeight = dm.heightPixels;
+		if(sourceWidth == 0){
+			sourceWidth = (int) mScreenWidth;
+			sourceHeight = (int) mScreenWidth;
+		}
 		float descHeight = scale * mScreenWidth * sourceHeight / sourceWidth;
 //		Log.d(TAG, "getMetricsHeigh mScreenWidth " + mScreenWidth + ",sourceWidth " + sourceWidth + ",sourceHeight " + sourceHeight + ", descHeight " + descHeight);
 		return (int)descHeight;

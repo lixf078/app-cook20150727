@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -17,6 +18,7 @@ import com.shecook.wenyi.common.volley.Request.Method;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
+import com.shecook.wenyi.cookbook.CookbookCollectionActivity;
 import com.shecook.wenyi.model.WenyiUser;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
@@ -26,18 +28,17 @@ import com.shecook.wenyi.util.volleybox.VolleyUtils;
 import com.shecook.wenyi.util.volleybox.WenyiJSONObjectRequest;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
+import com.umeng.socialize.bean.CustomPlatform;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.controller.RequestType;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.controller.UMWXHandler;
+import com.umeng.socialize.controller.listener.SocializeListeners.OnCustomPlatformClickListener;
 import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
 import com.umeng.socialize.media.CircleShareContent;
-import com.umeng.socialize.media.QQShareContent;
-import com.umeng.socialize.media.QZoneShareContent;
 import com.umeng.socialize.media.SinaShareContent;
-import com.umeng.socialize.media.TencentWbShareContent;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMVideo;
 import com.umeng.socialize.media.UMusic;
@@ -48,7 +49,7 @@ import com.umeng.socialize.sso.TencentWBSsoHandler;
 
 public class BaseActivity extends FragmentActivity {
 
-	public static final String TAG = "BaseActivity";
+	public static String TAG = "BaseActivity";
 	public static boolean isLogin;
 	public static WenyiUser user;
 	public String userGuid;
@@ -59,16 +60,34 @@ public class BaseActivity extends FragmentActivity {
 			"com.umeng.login", RequestType.SOCIAL);
 	public String appId_wx = "wxf89758f00762d524";
 
-	public void openShare(HashMap<String, String> map) {
+	public void openShareForCookbook(HashMap<String, String> map, final String recipeid) {
 		mController.getConfig().removePlatform(SHARE_MEDIA.RENREN,
-				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS);
+				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.TENCENT);
+		CustomPlatform customPlatform = new CustomPlatform("copy_link","收 藏", R.drawable.my_collection);
+		customPlatform.mClickListener = new OnCustomPlatformClickListener() {
+			
+			@Override
+			public void onClick(CustomPlatform context, SocializeEntity entity,
+					SnsPostListener listener) {
+				Intent intent = new Intent(BaseActivity.this, CookbookCollectionActivity.class);
+				intent.putExtra("recipeid", recipeid);
+				intent.putExtra("event", "add");
+				startActivity(intent);
+			}
+		};
+		mController.getConfig().addCustomPlatform(customPlatform);
 		configSso(map);
 	}
 
-
+	public void openShare(HashMap<String, String> map) {
+		mController.getConfig().removePlatform(SHARE_MEDIA.RENREN,
+				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.TENCENT);
+		configSso(map);
+	}
+	
 	public void openShare(String content, String url) {
 		mController.getConfig().removePlatform(SHARE_MEDIA.RENREN,
-				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS);
+				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.TENCENT);
 		addPlatfromForWX("");
 		mController.setShareContent(content);
 
@@ -138,7 +157,7 @@ public class BaseActivity extends FragmentActivity {
 		circleMedia.setTargetUrl(webUrl);
 		mController.setShareMedia(circleMedia);
 
-		// 设置QQ空间分享内容
+		/*// 设置QQ空间分享内容
 		QZoneShareContent qzone = new QZoneShareContent();
 		qzone.setShareContent(shareContent);
 		qzone.setTargetUrl(webUrl);
@@ -159,7 +178,7 @@ public class BaseActivity extends FragmentActivity {
 		TencentWbShareContent tencent = new TencentWbShareContent(localImage);
 		tencent.setShareContent(shareContent);
 		tencent.setAppWebSite(webUrl);
-		mController.setShareMedia(tencent);
+		mController.setShareMedia(tencent);*/
 
 		// 设置新浪分享内容
 		SinaShareContent sinaContent = new SinaShareContent(localImage);

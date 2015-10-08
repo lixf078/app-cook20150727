@@ -44,9 +44,11 @@ import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
-import com.shecook.wenyi.essay.adapter.EssayListDetailAdapter;
-import com.shecook.wenyi.model.EssayListItemDetail;
+import com.shecook.wenyi.model.WenyiImage;
 import com.shecook.wenyi.model.essay.EssayListCommentsItemDetail;
+import com.shecook.wenyi.model.piazza.PiazzaQuestionCommentItem;
+import com.shecook.wenyi.model.piazza.PiazzaQuestionItem;
+import com.shecook.wenyi.piazza.adapter.PiazzaQuestionListAdapter;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
@@ -54,9 +56,9 @@ import com.shecook.wenyi.util.volleybox.VolleyUtils;
 public class PizzaDiscovertemDeatilActivity extends BaseActivity implements
 		OnClickListener {
 
-	private LinkedList<EssayListItemDetail> mListItems;
+	private LinkedList<Object> mListItems;
 	private PullToRefreshListView mPullRefreshListView;
-	private EssayListDetailAdapter mAdapter;
+	private PiazzaQuestionListAdapter mAdapter;
 
 	EditText comment = null; // add comments edit
 	EditText bottomcomment = null; // bottom add comments edit
@@ -77,7 +79,7 @@ public class PizzaDiscovertemDeatilActivity extends BaseActivity implements
 		setContentView(R.layout.essay_listitem_detail);
 		initView();
 
-		getCatalogList(HttpUrls.ESSAY_WENYILIST_ITEM_DETAIL, null,
+		getCatalogList(HttpUrls.PIZZA_TOPIC_LIST_ITEM_DETAIL, null,
 				detailResultListener, detailErrorListener);
 		mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
 
@@ -99,7 +101,7 @@ public class PizzaDiscovertemDeatilActivity extends BaseActivity implements
 								.setLastUpdatedLabel(label);
 
 						// Do work to refresh the list here.
-						getCatalogList(HttpUrls.ESSAY_WENYILIST_ITEM_DETAIL,
+						getCatalogList(HttpUrls.PIZZA_TOPIC_LIST_ITEM_DETAIL,
 								null, detailResultListener, detailErrorListener);
 					}
 				});
@@ -116,8 +118,8 @@ public class PizzaDiscovertemDeatilActivity extends BaseActivity implements
 
 		// ListView actualListView = mPullRefreshListView.getRefreshableView();
 
-		mListItems = new LinkedList<EssayListItemDetail>();
-		mAdapter = new EssayListDetailAdapter(this, mListItems);
+		mListItems = new LinkedList<Object>();
+//		mAdapter = new PiazzaQuestionListAdapter(this, mListItems); // lixufeng
 
 		mPullRefreshListView.setMode(Mode.DISABLED);
 		// You can also just use setListAdapter(mAdapter) or
@@ -207,7 +209,7 @@ public class PizzaDiscovertemDeatilActivity extends BaseActivity implements
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				getDataList(HttpUrls.ESSAY_WENYILIST_ITEM_DETAIL_COMMENT, paramsub, commentsResultListener, commentsErrorListener, "");
+				getDataList(HttpUrls.PIZZA_TOPIC_LIST_ITEM_DETAIL, paramsub, commentsResultListener, commentsErrorListener, "");
 				break;
 			case Util.SHOW_DIALOG:
 				if (null == alertDialog) {
@@ -332,36 +334,46 @@ public class PizzaDiscovertemDeatilActivity extends BaseActivity implements
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
 
-						JSONArray list = data.getJSONArray("detail");
-						LinkedList<EssayListItemDetail> listTemp = new LinkedList<EssayListItemDetail>();
+						JSONArray list = data.getJSONArray("list");
+						LinkedList<PiazzaQuestionItem> listTemp = new LinkedList<PiazzaQuestionItem>();
 						for (int i = 0, j = list.length(); i < j; i++) {
 							JSONObject jb = list.getJSONObject(i);
-							EssayListItemDetail elid = new EssayListItemDetail();
-							elid.setId(jb.getString("id"));
-							elid.setCataid(jb.getString("cataid"));
-							elid.setArticleid(jb.getString("articleid"));
-							elid.setRowtype(jb.getString("rowtype"));
-							elid.setRowcontent(jb.getString("rowcontent"));
-							elid.setWidth(jb.getInt("img_width"));
-							elid.setHeight(jb.getInt("img_height"));
-							listTemp.add(elid);
+							PiazzaQuestionItem pdi = new PiazzaQuestionItem();
+							pdi.setId(jb.getString("id"));
+							pdi.setUid(jb.getString("uid"));
+							pdi.setUgid(jb.getString("ugid"));
+							pdi.setNickname(jb.getString("nickname"));
+							pdi.setUportrait(jb.getString("uportrait"));
+							pdi.setBody(jb.getString("body"));
+							pdi.setTags(jb.getString("tags"));
+							pdi.setComments(jb.getString("comments"));
+							pdi.setTimeline(jb.getString("timeline"));
+							if(jb.has("images")){
+								JSONArray imagelist = jb.getJSONArray("images");
+								LinkedList<WenyiImage> toplistTemp = new LinkedList<WenyiImage>();
+								for (int k = 0, t = imagelist.length(); k < t; k++) {
+									JSONObject imagejb = imagelist.getJSONObject(k);
+									WenyiImage homeWorkImage = new WenyiImage();
+									homeWorkImage.setId(imagejb.getString("id"));
+									if(imagejb.has("imagejb")){
+										homeWorkImage.setFollowid(imagejb
+												.getString("followid"));
+									}
+									if(imagejb.has("imageurl")){
+										homeWorkImage.setImageurl(imagejb
+												.getString("imageurl"));
+									}
+									pdi.getImages().add(homeWorkImage);
+								}
+							}
+							listTemp.add(pdi);
 						}
 						mListItems.addAll(listTemp);
-						EssayListItemDetail essayTitleElid = new EssayListItemDetail();
-						essayTitleElid.setId("");
-						essayTitleElid.setCataid("");
-						essayTitleElid.setArticleid("");
-						essayTitleElid.setRowtype("essayTitleElid");
-						String title = PizzaDiscovertemDeatilActivity.this.getIntent().getStringExtra("essaytitle");
-						essayTitleElid.setRowcontent(title);
-						mListItems.add(0, essayTitleElid);
-						
 						handler.sendEmptyMessage(HttpStatus.STATUS_OK);
-						handler.sendEmptyMessage(HttpStatus.STATUS_LOAD_OTHER);
 					}
 				} else {
-					Toast.makeText(PizzaDiscovertemDeatilActivity.this, ""
-							+ jsonObject.getString("errmsg"),
+					Toast.makeText(PizzaDiscovertemDeatilActivity.this,
+							"" + jsonObject.getString("errmsg"),
 							Toast.LENGTH_SHORT).show();
 				}
 			} catch (JSONException e) {
@@ -393,7 +405,7 @@ public class PizzaDiscovertemDeatilActivity extends BaseActivity implements
 			map.put("content", content);
 			map.put("layer", layer);
 			map.put("image", ownerIconUrl);
-			map.put("url", HttpUrls.ESSAY_WENYILIST_ITEM_DETAIL);
+			map.put("url", HttpUrls.PIZZA_TOPIC_LIST_ITEM_DETAIL);
 			map.put("from", "book");
 			openShare(map);
 		default:
@@ -440,7 +452,50 @@ public class PizzaDiscovertemDeatilActivity extends BaseActivity implements
 			Log.e(TAG, error.getMessage(), error);
 		}
 	};
-
+	
+	
+	private void initQuextion(JSONObject jsonObject, int flag) {
+		if (jsonObject != null) {
+			try {
+				if (!jsonObject.isNull("statuscode")
+						&& 200 == jsonObject.getInt("statuscode")) {
+					if (!jsonObject.isNull("data")) {
+						JSONObject data = jsonObject.getJSONObject("data");
+						if(data.has("list")){
+							JSONArray list = data.getJSONArray("list");
+							LinkedList<PiazzaQuestionCommentItem> listTemp = new LinkedList<PiazzaQuestionCommentItem>();
+							for (int i = 0, j = list.length(); i < j; i++) {
+								JSONObject jb = list.getJSONObject(i);
+								PiazzaQuestionCommentItem elcid = new PiazzaQuestionCommentItem();
+								elcid.setId(jb.getString("id"));
+								elcid.setTopicid(jb.getString("topicid"));
+								elcid.setUid(jb.getString("uid"));
+								elcid.setNickname(jb.getString("nickname"));
+								elcid.setUportrait(jb.getString("uportrait"));
+								elcid.setComment(jb.getString("comment"));
+								elcid.setFloor(jb.getString("floor"));
+								elcid.setComments(jb.getString("comments"));
+								elcid.setTimeline(jb.getString("timeline"));
+								
+								listTemp.add(elcid);
+							}
+							mListItems.addAll(listTemp);
+							
+							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
+						}
+					}
+				} else {
+					Toast.makeText(PizzaDiscovertemDeatilActivity.this, ""
+							+ jsonObject.getString("errmsg"),
+							Toast.LENGTH_SHORT).show();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
 	private void initCommentsData(JSONObject jsonObject, int flag) {
 		if (jsonObject != null) {
 			try {
@@ -450,12 +505,12 @@ public class PizzaDiscovertemDeatilActivity extends BaseActivity implements
 						JSONObject data = jsonObject.getJSONObject("data");
 						if(data.has("list")){
 							JSONArray list = data.getJSONArray("list");
-							LinkedList<EssayListCommentsItemDetail> listTemp = new LinkedList<EssayListCommentsItemDetail>();
+							LinkedList<PiazzaQuestionCommentItem> listTemp = new LinkedList<PiazzaQuestionCommentItem>();
 							for (int i = 0, j = list.length(); i < j; i++) {
 								JSONObject jb = list.getJSONObject(i);
-								EssayListCommentsItemDetail elcid = new EssayListCommentsItemDetail();
+								PiazzaQuestionCommentItem elcid = new PiazzaQuestionCommentItem();
 								elcid.setId(jb.getString("id"));
-								elcid.setArticleid(jb.getString("articleid"));
+								elcid.setTopicid(jb.getString("topicid"));
 								elcid.setUid(jb.getString("uid"));
 								elcid.setNickname(jb.getString("nickname"));
 								elcid.setUportrait(jb.getString("uportrait"));
@@ -463,14 +518,13 @@ public class PizzaDiscovertemDeatilActivity extends BaseActivity implements
 								elcid.setFloor(jb.getString("floor"));
 								elcid.setComments(jb.getString("comments"));
 								elcid.setTimeline(jb.getString("timeline"));
-								elcid.setRowtype("commentOne");
 								
 								listTemp.add(elcid);
-								if(data.has("comment_items")){
+								if(data.has("comment_items")){/*
 									JSONArray secondCommentlist = data.getJSONArray("comment_items");
 									for(int k = 0, t = secondCommentlist.length(); k < t; k++){
 										JSONObject commentjb = secondCommentlist.getJSONObject(k);
-										EssayListCommentsItemDetail secondComment = new EssayListCommentsItemDetail();
+										PiazzaQuestionCommentItem secondComment = new PiazzaQuestionCommentItem();
 										secondComment.setId(commentjb.getString("id"));
 										secondComment.setArticleid(commentjb.getString("articleid"));
 										secondComment.setCommentid(commentjb.getString("commentid"));
@@ -482,22 +536,7 @@ public class PizzaDiscovertemDeatilActivity extends BaseActivity implements
 										secondComment.setRowtype("commentTwo");
 										elcid.getComment_items().add(secondComment);
 									}
-								}else{
-									for(int k = 0, t = 2; k < t; k++){
-										EssayListCommentsItemDetail secondComment = new EssayListCommentsItemDetail();
-										secondComment.setId("");
-										secondComment.setArticleid("");
-										secondComment.setCommentid("");
-										secondComment.setUid("");
-										secondComment.setNickname("");
-										secondComment.setUportrait("");
-										secondComment.setComment("用户A 评论 用户B ：你是个大傻。。。");
-										secondComment.setTimeline("");
-										secondComment.setRowtype("commentTwo");
-										// elcid.getComment_items().add(secondComment);
-										listTemp.add(secondComment);
-									}
-								}
+								*/}
 							}
 							mListItems.addAll(listTemp);
 							

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:leui="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white" >
+
+    <include layout="@layout/wenyi_common_header"/>
+    
+    <com.shecook.wenyi.common.pulltorefresh.SwitchPullToRefreshListView
+        android:id="@id/pull_refresh_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true"
+        leui:leListViewMode="leSwipe"
+        leui:leSwipeActionLeft="reveal"
+        leui:leSwipeAnimationTime="200"
+        leui:leSwipeBackView="@+id/back"
+        leui:leSwipeCloseAllItemsWhenMoveList="true"
+        leui:leSwipeFrontView="@+id/front"
+        leui:leSwipeMode="left"
+        leui:leSwipeOffsetLeft="120dp"
+        leui:leSwipeOpenOnLongPress="true" />
+</LinearLayout>

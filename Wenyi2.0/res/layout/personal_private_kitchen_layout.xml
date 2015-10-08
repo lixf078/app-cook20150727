@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white" >
+
+    <include layout="@layout/wenyi_common_header" />
+
+    <RelativeLayout
+        android:id="@+id/personal_kitchen_material"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wenyi_common_header"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:paddingTop="5dip" >
+
+        <TextView
+            android:id="@+id/presonal_kitchen_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/personal_select_str"
+            android:textSize="16dp" />
+
+        <LinearLayout
+            android:id="@+id/personal_select_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/presonal_kitchen_select"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/personal_select_one"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@drawable/textview_border_circle"
+                android:gravity="center"
+                android:text="@string/personal_kitchen_food"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/personal_select_one_plus"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="+"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/personal_select_two"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@drawable/textview_border_circle"
+                android:gravity="center"
+                android:text="@string/personal_kitchen_food"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/personal_select_two_plus"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="+"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/personal_select_three"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@drawable/textview_border_circle"
+                android:gravity="center"
+                android:text="@string/personal_kitchen_food"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/personal_select_start"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/personal_select_layout"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/orange"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:text="开始烹饪"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/personal_cookbook_catalog"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/personal_kitchen_material"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip" >
+
+        <TextView
+            android:id="@+id/personal_cookbook_catalog_tip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:text="菜谱关键字"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <GridView
+            android:id="@+id/personal_cookbook_catalog_hotword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/personal_cookbook_catalog_tip"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:cacheColorHint="#00000000"
+            android:horizontalSpacing="8dp"
+            android:listSelector="#00000000"
+            android:numColumns="3"
+            android:verticalSpacing="12dp" >
+        </GridView>
+        <!--
+        <LinearLayout
+            android:id="@+id/personal_cookbook_catalog_firstlayer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/personal_cookbook_catalog_tip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/personal_cookbook_catalog_tip1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/textview_border"
+                android:gravity="center_horizontal"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="减肥餐"
+                android:textColor="@color/orange"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/personal_cookbook_catalog_tip2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/textview_border"
+                android:gravity="center_horizontal"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="下酒菜"
+                android:textColor="@color/orange"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/personal_cookbook_catalog_tip3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/textview_border"
+                android:gravity="center_horizontal"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="快手菜"
+                android:textColor="@color/orange"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/personal_cookbook_catalog_twolayer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/personal_cookbook_catalog_firstlayer"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/personal_cookbook_catalog_tip4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/textview_border"
+                android:gravity="center_horizontal"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="早餐"
+                android:textColor="@color/orange"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/personal_cookbook_catalog_tip5"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/textview_border"
+                android:gravity="center_horizontal"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="午饭"
+                android:textColor="@color/orange"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/personal_cookbook_catalog_tip6"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/textview_border"
+                android:gravity="center_horizontal"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="煲汤"
+                android:textColor="@color/orange"
+                android:textSize="20sp" />
+        </LinearLayout>
+        -->
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/personal_food_catalog_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="100dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone" >
+        <TextView
+            android:id="@+id/personal_cookbook_food_selected_ok"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="29dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="29dp"
+            android:background="@color/orange"
+            android:gravity="center"
+            android:text="确 定 "
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/personal_cookbook_catalog_selected"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="食材类别："
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <GridView
+            android:id="@+id/food_category"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_below="@id/personal_cookbook_catalog_selected"
+            android:cacheColorHint="#00000000"
+            android:horizontalSpacing="8dp"
+            android:listSelector="#00000000"
+            android:scrollbars="none"
+            android:numColumns="3"
+            android:verticalSpacing="12dp" >
+        </GridView>
+
+        <TextView
+            android:id="@+id/personal_cookbook_food_select"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_below="@id/food_category"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="选取素材"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <GridView
+            android:layout_below="@id/personal_cookbook_food_select"
+            android:layout_above="@id/personal_cookbook_food_selected_ok"
+            android:id="@+id/shicai_gride"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="29dp"
+            android:layout_marginRight="29dp"
+            android:cacheColorHint="#00000000"
+            android:horizontalSpacing="11dp"
+            android:listSelector="#00000000"
+            android:numColumns="3"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="17dp" >
+        </GridView>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

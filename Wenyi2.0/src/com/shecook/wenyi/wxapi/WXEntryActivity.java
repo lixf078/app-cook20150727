@@ -1,7 +1,5 @@
-
 package com.shecook.wenyi.wxapi;
 
-import com.shecook.wenyi.R;
 import com.tencent.mm.sdk.openapi.BaseReq;
 import com.tencent.mm.sdk.openapi.BaseResp;
 import com.tencent.mm.sdk.platformtools.Log;

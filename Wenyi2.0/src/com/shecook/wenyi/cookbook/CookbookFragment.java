@@ -123,7 +123,7 @@ public class CookbookFragment extends Fragment implements
 
 						// Do work to refresh the list here.
 						if (shouldLoad) {
-							getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null,
+							getCatalogList(HttpUrls.COOKBOOK_LIST, null,
 									listResultListener, listErrorListener);
 						}else{
 							Toast.makeText(mActivity, "End of List!", Toast.LENGTH_SHORT).show();
@@ -139,7 +139,7 @@ public class CookbookFragment extends Fragment implements
 					@Override
 					public void onLastItemVisible() {
 						if (shouldLoad) {
-							getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null,
+							getCatalogList(HttpUrls.COOKBOOK_LIST, null,
 									listResultListener, listErrorListener);
 						} else {
 							Toast.makeText(mActivity, "End of List!",
@@ -487,7 +487,7 @@ public class CookbookFragment extends Fragment implements
 		Log.d(TAG, "updateFragment");
 		index = 0;
 		catalogid = cataId;
-		getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null,
+		getCatalogList(HttpUrls.COOKBOOK_LIST, null,
 				listResultListener, listErrorListener);
 	}
 }

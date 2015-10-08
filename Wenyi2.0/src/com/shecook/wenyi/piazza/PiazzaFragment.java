@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.cookbook.PiazzaCookbookHomeworkList;
 import com.shecook.wenyi.mainpackage.FragmentTabAdapter;
 import com.shecook.wenyi.util.WenyiLog;
 
@@ -30,8 +31,8 @@ public class PiazzaFragment extends Fragment {
 	private RadioGroup rgs;
 	public List<Fragment> fragments = new ArrayList<Fragment>();
 	PiazzaDiscoverFragment discoverFragment;
-	PiazzaDiscoverFragment questionFragment;
-	PiazzaDiscoverFragment foodFragment;
+	PiazzaQuestionFragment questionFragment;
+	PiazzaCookbookHomeworkList foodFragment;
 	PiazzaDiscoverFragment friendFragment;
 
 	@Override
@@ -45,8 +46,8 @@ public class PiazzaFragment extends Fragment {
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		discoverFragment = new PiazzaDiscoverFragment();
-		questionFragment = new PiazzaDiscoverFragment();
-		foodFragment = new PiazzaDiscoverFragment();
+		questionFragment = new PiazzaQuestionFragment();
+		foodFragment = new PiazzaCookbookHomeworkList();
 		friendFragment = new PiazzaDiscoverFragment();
 
 	}
@@ -63,7 +64,6 @@ public class PiazzaFragment extends Fragment {
 	}
 
 	private void initView(View rootView) {
-//		rootView.findViewById(R.id.wenyi_common_header).setBackgroundColor(mActivity.getResources().getColor(R.color.white));
 		right_img = (ImageView) rootView.findViewById(R.id.right_img);
 		return_img = (ImageView) rootView.findViewById(R.id.return_img);
 		middle_title = (TextView) rootView.findViewById(R.id.middle_title);

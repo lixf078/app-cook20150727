@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
@@ -81,9 +82,9 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 			@Override
 			public void onClick(View arg0) {
 				
-				if(11 == (Integer.parseInt(arg0.getTag(R.id.wenyi_common_tag_id1) + ""))){
+				if(HttpStatus.REQUEST_CODE_COOKBOOK == (Integer.parseInt(arg0.getTag(R.id.wenyi_common_tag_id1) + ""))){
 					Intent intent = new Intent(context, CookbookHomeworkList.class);
-					intent.putExtra("recipeid", "" + arg0.getTag(R.id.wenyi_common_tag_id3));
+					intent.putExtra("recipeid", "" + arg0.getTag(R.id.wenyi_common_tag_id2));
 					context.startActivity(intent);
 					return;
 				}

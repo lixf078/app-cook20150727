@@ -12,6 +12,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -33,6 +34,7 @@ import com.shecook.wenyi.BaseActivity;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.common.AddCommentActivity;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
@@ -188,7 +190,13 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 		super.onDestroy();
 		System.gc();
 	}
-
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if(resultCode == RESULT_OK){
+			handler.sendEmptyMessage(HttpStatus.STATUS_LOAD_OTHER);
+		}
+	};
+	
 	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
@@ -201,8 +209,8 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 			case HttpStatus.STATUS_LOAD_OTHER:
 				JSONObject paramsub = new JSONObject();
 				try {
-//					paramsub.put("articleid", articleid);
-					paramsub.put("articleid", "2071");
+					paramsub.put("articleid", articleid);
+//					paramsub.put("articleid", "2071");
 					paramsub.put("commentid", "");
 					paramsub.put("pindex", "1");
 					paramsub.put("count", 3);
@@ -238,7 +246,11 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 				}
 				break;
 			case Util.SHOW_DIALOG_COMMENTS:
-				if (null == commentsAlertDialog) {
+				Intent commentIntent = new Intent(EssayItemDeatilActivity.this, AddCommentActivity.class);
+				commentIntent.putExtra("commentFor", "" + articleid);
+				commentIntent.putExtra("flag", HttpStatus.COMMENT_FOR_ESSAY);
+				startActivityForResult(commentIntent, HttpStatus.REQUEST_CODE_ESSAY);
+				/*if (null == commentsAlertDialog) {
 					commentsAlertDialog = Util
 							.showAddCommentDialog(EssayItemDeatilActivity.this);
 				}
@@ -255,7 +267,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 				comment = (EditText) commentsAlertDialog
 						.findViewById(R.id.add_comments_content);
 
-				handler.sendEmptyMessage(Util.DISMISS_DIALOG_INPUT);
+				handler.sendEmptyMessage(Util.DISMISS_DIALOG_INPUT);*/
 				break;
 			case Util.DISMISS_DIALOG_INPUT:
 				InputMethodManager inputMethodManager = (InputMethodManager) comment
@@ -484,7 +496,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 										secondComment.setRowtype("commentTwo");
 										elcid.getComment_items().add(secondComment);
 									}
-								}else{
+								}else{/*
 									for(int k = 0, t = 2; k < t; k++){
 										EssayListCommentsItemDetail secondComment = new EssayListCommentsItemDetail();
 										secondComment.setId("");
@@ -499,7 +511,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 										// elcid.getComment_items().add(secondComment);
 										listTemp.add(secondComment);
 									}
-								}
+								*/}
 							}
 							mListItems.addAll(listTemp);
 							

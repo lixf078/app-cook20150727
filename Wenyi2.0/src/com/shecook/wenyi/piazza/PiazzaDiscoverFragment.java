@@ -1,7 +1,5 @@
 package com.shecook.wenyi.piazza;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.json.JSONArray;
@@ -10,15 +8,14 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -28,6 +25,7 @@ import com.shecook.wenyi.BaseFragmeng;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.common.WebViewActivity;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
@@ -39,29 +37,20 @@ import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
-import com.shecook.wenyi.essay.adapter.ViewPagerAdapter;
-import com.shecook.wenyi.essay.view.AutoScrollViewPager;
-import com.shecook.wenyi.essay.view.CirclePageIndicator;
-import com.shecook.wenyi.model.WenyiGallery;
-import com.shecook.wenyi.model.WenyiImage;
+import com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity;
+import com.shecook.wenyi.cookbook.CookbookItemDeatilActivity;
+import com.shecook.wenyi.essay.EssayItemDeatilActivity;
 import com.shecook.wenyi.model.piazza.PiazzaDiscoverItem;
 import com.shecook.wenyi.piazza.adapter.PiazzaDiscoverListAdapter;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
-import com.shecook.wenyi.view.FixedSpeedScroller;
-import com.shecook.wenyi.view.PageIndicator;
 
 public class PiazzaDiscoverFragment extends BaseFragmeng {
 	private static final String TAG = "PiazzaFragment";
 
 	private Activity mActivity = null;
-	
-	private AutoScrollViewPager viewPager;
-	private PageIndicator mIndicator;
-	private ArrayList<WenyiGallery> mPageViews;
-	private ViewPagerAdapter adapter;
 	
 	private PullToRefreshListView mPullRefreshListView;
 	PiazzaDiscoverListAdapter mAdapter = null;
@@ -79,7 +68,6 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		mActivity = getActivity();
-		mPageViews = new ArrayList<WenyiGallery>();
 	}
 
 	
@@ -90,37 +78,18 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 		View rootView = inflater.inflate(R.layout.piazza_discover_fragment,
 				container, false);
 		initView(rootView);
-		getDiscoverList(HttpUrls.PIZZA_TOPIC_LIST, null, listResultListener,
+		JSONObject paramsub = new JSONObject();
+		try {
+			paramsub.put("count", "20");
+		}catch(Exception e){
+			
+		}
+		getDiscoverList(HttpUrls.PIZZA_DISCOVER_LIST_NEW, paramsub, listResultListener,
 				listErrorListener);
 		return rootView;
 	}
 	
 	public void initView(View rootView) {
-		
-		// view pager init start
-/*		viewPager = (AutoScrollViewPager) rootView
-				.findViewById(R.id.view_pager_advert);
-		mIndicator = (CirclePageIndicator) rootView
-				.findViewById(R.id.indicator);
-		
-		WenyiGallery eg = new WenyiGallery();
-		eg.setId(1000);
-		eg.setTitle(getResources().getString(R.string.app_name));
-		eg.setImgUrl("");
-		eg.setEvent_type(10);
-		eg.setEvent_content("www.baidu.com");
-		mPageViews.add(eg);
-		
-		adapter = new ViewPagerAdapter(mActivity, mPageViews);
-		viewPager.setAdapter(adapter);
-		mIndicator.setViewPager(viewPager);
-
-		viewPager.setInterval(4000);
-		viewPager.setCurrentItem(0);
-		viewPager.setStopScrollWhenTouch(true);
-		setViewPagerScrollSpeed(viewPager);*/
-		// view pager init end
-		
 		
 		mPullRefreshListView = (PullToRefreshListView) rootView
 				.findViewById(R.id.pull_refresh_list);
@@ -141,9 +110,14 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 						// Update the LastUpdatedLabel
 						refreshView.getLoadingLayoutProxy()
 								.setLastUpdatedLabel(label);
-
-						// Do work to refresh the list here.
-						// getCatalogList(HttpUrls.ESSAY_WENYI_LIST,null,listResultListener,listErrorListener);
+						JSONObject paramsub = new JSONObject();
+						try {
+							paramsub.put("count", "20");
+						}catch(Exception e){
+							
+						}
+						getDiscoverList(HttpUrls.PIZZA_DISCOVER_LIST_NEW, paramsub, listResultListener,
+								listErrorListener);
 					}
 				});
 
@@ -153,34 +127,78 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 
 					@Override
 					public void onLastItemVisible() {
-						if (shouldLoad) {
-							getDiscoverList(HttpUrls.PIZZA_TOPIC_LIST, null,
-									piazzaDiscoverResultListener,
-									piazzaDiscoverErrorListener);
-						} else {
-							Toast.makeText(mActivity, "End of List!",
-									Toast.LENGTH_SHORT).show();
+						JSONObject paramsub = new JSONObject();
+						try {
+							paramsub.put("count", "20");
+							paramsub.put("timeline", "" + mListItems.get(mListItems.size() -1).getTimeline());
+						}catch(Exception e){
+							
 						}
+						getDiscoverList(HttpUrls.PIZZA_DISCOVER_LIST_HISTORY, paramsub, historylistResultListener,
+								listErrorListener);
 					}
 				});
-
-		// ListView actualListView = mPullRefreshListView.getRefreshableView();
-
 		mListItems = new LinkedList<PiazzaDiscoverItem>();
 		mAdapter = new PiazzaDiscoverListAdapter(mActivity, mListItems);
 
-		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
-		// You can also just use setListAdapter(mAdapter) or
+		mPullRefreshListView.setMode(Mode.BOTH);
 		mPullRefreshListView.setAdapter(mAdapter);
 		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
-				Intent intent = new Intent(mActivity,
-						PizzaDiscovertemDeatilActivity.class);
-				intent.putExtra("essaytitle", "");
-				startActivity(intent);
+				
+				PiazzaDiscoverItem pdi = mListItems.get((int) position);
+				int event_type = Integer.parseInt(pdi.getEvent_type());
+				String event_content = pdi.getEvent_content();
+				Intent intent = null;
+				switch (event_type) {
+				case 10000:
+
+					break;
+				case 10001:
+					intent = new Intent(Intent.ACTION_VIEW, Uri.parse(event_content));
+					startActivity(intent);
+					startActivity(intent);
+					break;
+				case 10002:
+					intent = new Intent(mActivity, EssayItemDeatilActivity.class);
+					intent.putExtra("essaytitle", "" + mListItems.get((int) position).getTitle());
+					intent.putExtra("catalogtitle", "文怡随笔");
+					intent.putExtra("articleid", "" + event_content);
+					startActivity(intent);
+
+					break;
+				case 10003:
+					intent = new Intent(mActivity, CookbookItemDeatilActivity.class);
+					intent.putExtra("cookbooktitle", "" + mListItems.get((int) position).getTitle());
+					intent.putExtra("recipeid", "" + event_content);
+					startActivity(intent);
+
+					break;
+				case 10004:
+					intent = new Intent(mActivity, WebViewActivity.class);
+					intent.putExtra("weburl", "" + event_content);
+					startActivity(intent);
+
+					break;
+				case 10005:
+					/*intent = new Intent(Intent.ACTION_VIEW, Uri.parse(event_content));
+					startActivity(intent);*/
+					break;
+				case 10006:
+					intent = new Intent(mActivity, PizzaQuestionDeatilActivity.class);
+					intent.putExtra("topicid", "" + event_content);
+					startActivity(intent);
+				case 10007:
+					intent = new Intent(mActivity, CookbookHomeworkDeatilActivity.class);
+					intent.putExtra("followid", "" + event_content);
+					startActivity(intent);
+					break;
+				default:
+					break;
+				}
 			}
 		});
 		
@@ -195,7 +213,7 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 		Button header = new Button(mActivity);
 		header.setBackgroundColor(mActivity.getResources().getColor(R.color.blue));
         */
-		View header = mActivity.getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
+		/*View header = mActivity.getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
 		
 		viewPager = (AutoScrollViewPager) header
 				.findViewById(R.id.view_pager_advert);
@@ -222,7 +240,7 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 		AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
         header.setLayoutParams(layoutParams);
         ListView lv = mPullRefreshListView.getRefreshableView();
-        lv.addHeaderView(header);
+        lv.addHeaderView(header);*/
 	}
 
 	@Override
@@ -241,14 +259,12 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 	public void onResume() {
 		super.onResume();
 		WenyiLog.logv(TAG, "onResume");
-		viewPager.startAutoScroll();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		WenyiLog.logv(TAG, "onPause");
-		viewPager.stopAutoScroll();
 	}
 
 	@Override
@@ -284,16 +300,6 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 				// Call onRefreshComplete when the list has been refreshed.
 				mPullRefreshListView.onRefreshComplete();
 				
-				// test
-				
-				WenyiGallery eg = new WenyiGallery();
-				eg.setId(1000);
-				eg.setTitle(getResources().getString(R.string.app_name));
-				eg.setImgUrl("");
-				eg.setEvent_type(10);
-				eg.setEvent_content("www.baidu.com");
-				mPageViews.add(eg);
-				mPageViews.add(eg);
 				break;
 
 			default:
@@ -302,20 +308,11 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 		};
 	};
 
-	private int index = 0;
-
-	public void getDiscoverList(String url, JSONObject jsonObject,
+	public void getDiscoverList(String url, JSONObject paramsub,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		if (null == jsonObject) {
-			jsonObject = new JSONObject();
-		}
+		JSONObject jsonObject = new JSONObject();
 		JSONObject commonsub = Util.getCommonParam(mActivity);
-		JSONObject paramsub = new JSONObject();
 		try {
-			jsonObject.put("common", commonsub);
-			paramsub.put("pindex", "" + ++index);
-			paramsub.put("count", "20");
-
 			jsonObject.put("param", paramsub);
 			jsonObject.put("common", commonsub);
 		} catch (JSONException e) {
@@ -341,6 +338,16 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 			initData(result, 0);
 		}
 	};
+	
+	Listener<JSONObject> historylistResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.d(TAG,
+					"catalogResultListener onResponse -> " + result.toString());
+			initData(result, 1);
+		}
+	};
 
 	ErrorListener listErrorListener = new Response.ErrorListener() {
 		@Override
@@ -349,7 +356,54 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 		}
 	};
 
+	private void initList(JSONArray entrylist, boolean istop) throws JSONException{
+
+		LinkedList<PiazzaDiscoverItem> listTemp = new LinkedList<PiazzaDiscoverItem>();
+		for (int i = 0, j = entrylist.length(); i < j; i++) {
+			JSONObject jb = entrylist.getJSONObject(i);
+			PiazzaDiscoverItem pdi = new PiazzaDiscoverItem();
+			if(jb.has("entry")){
+				JSONObject entry = jb.getJSONObject("entry"); 
+				pdi.setTitle(entry.getString("title"));
+				pdi.setImageurl(entry.getString("imageurl"));
+				pdi.setDesc(entry.getString("desc"));
+				pdi.setImg_width(entry.getInt("img_width"));
+				pdi.setImg_height(entry.getInt("img_height"));
+				if(entry.has("image_items")){
+					JSONArray imagelist = entry.getJSONArray("image_items");
+					int length = imagelist.length();
+					String[] tempimages = new String[length];
+					for (int k = 0, t = length; k < t; k++) {
+						JSONObject imageentry = imagelist.getJSONObject(k);
+						tempimages[k]= imageentry.getString("url");
+					}
+					pdi.setImage_items(tempimages);
+				}
+			}
+			
+			pdi.set_id(jb.getString("_id"));
+			pdi.setObjid(jb.getString("objid"));
+			pdi.setTemplate(jb.getString("template"));
+			pdi.setEvent_type(jb.getString("event_type"));
+			pdi.setEvent_content(jb.getString("event_content"));
+			pdi.setIstop(jb.getBoolean("istop"));
+			pdi.setKeyword(jb.getString("keyword"));
+			pdi.setTimeline(jb.getString("timeline"));
+			
+			if(istop){
+				listTemp.add(0,pdi);
+			}else{
+				listTemp.add(pdi);
+			}
+		}
+		mListItems.addAll(listTemp);
+	}
+	
 	private void initData(JSONObject jsonObject, int flag) {
+		if(flag == 0){
+			mListItems.clear();
+			shouldLoad = true;
+		}
 		if (jsonObject != null) {
 			try {
 				if (!jsonObject.isNull("statuscode")
@@ -357,41 +411,16 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
 
-						JSONArray list = data.getJSONArray("list");
-						LinkedList<PiazzaDiscoverItem> listTemp = new LinkedList<PiazzaDiscoverItem>();
-						for (int i = 0, j = list.length(); i < j; i++) {
-							JSONObject jb = list.getJSONObject(i);
-							PiazzaDiscoverItem pdi = new PiazzaDiscoverItem();
-							pdi.setId(jb.getString("id"));
-							pdi.setUid(jb.getString("uid"));
-							pdi.setUgid(jb.getString("ugid"));
-							pdi.setNickname(jb.getString("nickname"));
-							pdi.setUportrait(jb.getString("uportrait"));
-							pdi.setBody(jb.getString("body"));
-							pdi.setTags(jb.getString("tags"));
-							pdi.setComments(jb.getString("comments"));
-							pdi.setTimeline(jb.getString("timeline"));
-							JSONArray imagelist = jb.getJSONArray("images");
-							LinkedList<WenyiImage> toplistTemp = new LinkedList<WenyiImage>();
-							for (int k = 0, t = imagelist.length(); k < t; k++) {
-								JSONObject imagejb = imagelist.getJSONObject(k);
-								WenyiImage homeWorkImage = new WenyiImage();
-								homeWorkImage.setId(imagejb.getString("id"));
-								homeWorkImage.setFollowid(imagejb
-										.getString("followid"));
-								homeWorkImage.setImageurl(imagejb
-										.getString("imageurl"));
-								pdi.getImages().add(homeWorkImage);
-							}
-							listTemp.add(pdi);
+						if(data.has("toplist")){
+							JSONArray toplist = data.getJSONArray("toplist");
+							initList(toplist, true);
 						}
-						mListItems.addAll(listTemp);
+						
+						if(data.has("list")){
+							JSONArray list = data.getJSONArray("list");
+							initList(list, false);
+						}
 
-						index = data.getInt("pindex");
-						int core_status = data.getInt("core_status");
-						if (core_status == 0 && index == 0) {
-							shouldLoad = false;
-						}
 						handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 					}
 				} else {
@@ -421,21 +450,4 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 					"catalogResultListener onResponse -> " + result.toString());
 		}
 	};
-	
-	private void setViewPagerScrollSpeed(AutoScrollViewPager mViewPager) {
-		try {
-			Field mScroller = null;
-			mScroller = ViewPager.class.getDeclaredField("mScroller");
-			mScroller.setAccessible(true);
-			FixedSpeedScroller scroller = new FixedSpeedScroller(
-					mViewPager.getContext());
-			mScroller.set(mViewPager, scroller);
-		} catch (NoSuchFieldException e) {
-
-		} catch (IllegalArgumentException e) {
-
-		} catch (IllegalAccessException e) {
-
-		}
-	}
 }

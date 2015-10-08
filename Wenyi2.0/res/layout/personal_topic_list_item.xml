@@ -1,37 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/back"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="15dip"
-    android:layout_marginRight="15dip"
-    android:layout_marginTop="3dip"
-    android:id="@+id/back"
-    android:tag="back"
-    android:layout_marginBottom="3dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:tag="back" >
 
-    <ImageView
-        android:id="@+id/example_row_b_action_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dip"
-        android:layout_centerVertical="true"
-        android:src="@android:drawable/ic_delete" />
     <RelativeLayout
-        android:tag="front"
+        android:id="@+id/personal_outside_info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="@color/item_background_color"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:tag="front" >
+
+        <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+            android:id="@+id/item_img_1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:focusable="false"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/personal_topic_item_title_1"
+            android:layout_toRightOf="@id/item_img_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/personal_outside_info"
         android:id="@+id/front"
         android:layout_width="fill_parent"
-        android:padding="20dip"
         android:layout_height="wrap_content"
-        android:background="@color/item_background_color"
-        android:orientation="horizontal" >
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:tag="front" >
 
         <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
             android:id="@+id/item_img"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
@@ -39,57 +59,30 @@
             android:scaleType="fitXY" />
 
         <RelativeLayout
-            android:id="@+id/go_icon_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true" >
-
-            <TextView
-                android:id="@+id/set_on_top"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dip"
-                android:background="@drawable/set_top"
-                android:visibility="invisible" />
-
-            <!--
-                 <ImageView
-                android:id="@+id/essay_item_go"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/set_on_top"
-                android:layout_centerInParent="true"
-                android:paddingRight="10dip"
-                android:src="@drawable/ico_next" />
-            -->
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/essay_item_info"
+            android:id="@+id/personal_topic_item_info"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dip"
-            android:layout_toLeftOf="@id/go_icon_layout"
-            android:layout_toRightOf="@id/item_img"
-            android:orientation="vertical" >
+            android:layout_toRightOf="@id/item_img" >
 
             <TextView
-                android:id="@+id/essay_item_title"
+                android:id="@+id/personal_topic_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color" />
 
             <TextView
-                android:id="@+id/essay_item_time"
-                android:layout_width="wrap_content"
+                android:id="@+id/personal_topic_item_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dip"
+                android:layout_below="@id/personal_topic_item_title"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:textColor="@color/date_color" />
-        </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

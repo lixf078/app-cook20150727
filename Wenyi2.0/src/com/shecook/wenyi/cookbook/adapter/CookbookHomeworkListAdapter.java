@@ -108,13 +108,6 @@ public class CookbookHomeworkListAdapter extends BaseAdapter {
 			
 			if(item.getImageList().size() > 0){
 				holder.homeworkImage.setImageUrl(item.getImageList().get(0).getImageurl(), homeworkImageLoader);
-				holder.homeworkImage.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View arg0) {
-						
-					}
-				});
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

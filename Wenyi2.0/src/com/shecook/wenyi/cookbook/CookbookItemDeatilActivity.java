@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnKeyListener;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,8 +35,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shecook.wenyi.BaseActivity;
+import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.common.AddCommentActivity;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
@@ -48,6 +51,7 @@ import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.cookbook.adapter.CookbookListDetailAdapter;
+import com.shecook.wenyi.essay.EssayItemDeatilActivity;
 import com.shecook.wenyi.essay.adapter.ViewPagerAdapter;
 import com.shecook.wenyi.essay.view.AutoScrollViewPager;
 import com.shecook.wenyi.essay.view.CirclePageIndicator;
@@ -252,69 +256,11 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 					adapter.notifyDataSetChanged();
 				}
 				break;
-			case Util.SHOW_DIALOG:
-				if (null == alertDialog) {
-					alertDialog = Util
-							.showLoadDataDialog(CookbookItemDeatilActivity.this);
-				}
-				if (!alertDialog.isShowing()) {
-					alertDialog.show();
-				}
-				break;
-			case Util.DISMISS_DIALOG:
-				if (null == alertDialog) {
-					alertDialog = Util
-							.showLoadDataDialog(CookbookItemDeatilActivity.this);
-				}
-				if (alertDialog.isShowing()) {
-					alertDialog.cancel();
-				}
-				break;
-			case Util.DISMISS_DIALOG_COMMENTS:
-				if (commentsAlertDialog.isShowing()) {
-					commentsAlertDialog.cancel();
-				}
-				if (alertDialog != null && alertDialog.isShowing()) {
-					alertDialog.cancel();
-				}
-				break;
 			case Util.SHOW_DIALOG_COMMENTS:
-				if (null == commentsAlertDialog) {
-					commentsAlertDialog = Util
-							.showAddCommentDialog(CookbookItemDeatilActivity.this);
-				}
-
-				if (!commentsAlertDialog.isShowing()) {
-					commentsAlertDialog.show();
-				}
-				ImageView cancel = (ImageView) commentsAlertDialog
-						.findViewById(R.id.add_comments_cancel);
-				cancel.setOnClickListener(CookbookItemDeatilActivity.this);
-				ImageView ok = (ImageView) commentsAlertDialog
-						.findViewById(R.id.add_comments_ok);
-				ok.setOnClickListener(CookbookItemDeatilActivity.this);
-				comment = (EditText) commentsAlertDialog
-						.findViewById(R.id.add_comments_content);
-
-				handler.sendEmptyMessage(Util.DISMISS_DIALOG_INPUT);
-				break;
-			case Util.DISMISS_DIALOG_INPUT:
-				InputMethodManager inputMethodManager = (InputMethodManager) comment
-						.getContext().getSystemService(
-								Context.INPUT_METHOD_SERVICE);
-				inputMethodManager.toggleSoftInput(0,
-						InputMethodManager.HIDE_NOT_ALWAYS);
-				commentsAlertDialog.setOnKeyListener(new OnKeyListener() {
-
-					@Override
-					public boolean onKey(DialogInterface dialog, int keyCode,
-							KeyEvent event) {
-						if (keyCode == KeyEvent.KEYCODE_BACK) {
-							commentsAlertDialog.dismiss();
-						}
-						return false;
-					}
-				});
+				Intent commentIntent = new Intent(CookbookItemDeatilActivity.this, AddCommentActivity.class);
+				commentIntent.putExtra("commentFor", "" + recipeid);
+				commentIntent.putExtra("flag", HttpStatus.COMMENT_FOR_COOKBOOK);
+				startActivityForResult(commentIntent, HttpStatus.REQUEST_CODE_COOKBOOK);
 				break;
 			default:
 				break;
@@ -473,28 +419,9 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 								eg.setId(Integer.parseInt(jb.getString("id")));
 								eg.setTitle(jb.getString("description"));
 								eg.setImgUrl(jb.getJSONArray("images").getJSONObject(0).getString("imageurl"));
-								eg.setEvent_type(11);
-								eg.setEvent_content("www.baidu.com");
+								eg.setEvent_type(HttpStatus.REQUEST_CODE_COOKBOOK);
+								eg.setEvent_content(recipeid);
 								mPageViews.add(eg);
-								/*CookbookHomeworkListItem chli = new CookbookHomeworkListItem();
-								chli.setId(jb.getString("id"));
-								chli.setRecipeid(jb.getString("recipeid"));
-								chli.setUid(jb.getString("uid"));
-								chli.setNickname(jb.getString("nickname"));
-								chli.setUportrait(jb.getString("uportrait"));
-								chli.setDescription(jb.getString("description"));
-								chli.setComments(jb.getString("comments"));
-								chli.setTimeline(jb.getString("timeline"));
-								
-								JSONArray imagchlist = data.getJSONArray("images");
-								for(int k = 0, t = imagchlist.length(); k < t; k++){
-									JSONObject imagejb = imagchlist.getJSONObject(k);
-									WenyiImage homeWorkImage = new WenyiImage();
-									homeWorkImage.setId(imagejb.getString("id"));
-									homeWorkImage.setFollowid(imagejb.getString("followid"));
-									homeWorkImage.setImageurl(imagejb.getString("imageurl"));
-									chli.getImageList().add(homeWorkImage);
-								}*/
 							}
 						}
 						// ********************************
@@ -560,7 +487,7 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 			map.put("image", ownerIconUrl);
 			map.put("url", HttpUrls.COOKBOOK_LIST_ITEM_DETAIL);
 			map.put("from", "book");
-			openShare(map);
+			openShareForCookbook(map,recipeid);
 		default:
 			break;
 		}

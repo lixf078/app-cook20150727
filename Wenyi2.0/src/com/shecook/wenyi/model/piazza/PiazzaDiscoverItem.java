@@ -1,104 +1,153 @@
 package com.shecook.wenyi.model.piazza;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
-import com.shecook.wenyi.model.WenyiImage;
 
 public class PiazzaDiscoverItem {
-	private String id; // 主Id,删除需传递此参数
-	private String uid; // 用户主标识
-	private String ugid;
-	private String tags;
-	private String nickname; // 昵称
-	private String uportrait; // 头像
-	private String body; // 内容
-	private String comments; // 评论数
-	private String timeline; // 时间
-	private ArrayList<WenyiImage> images; // 图片集合，默认第一张
+
+	private String title;
+	private String imageurl;
+	private String desc;
+	private int img_width;
+	private int img_height;
+	private String[] image_items;
+
+	private String _id;
+	private String objid;
+	private String template;
+	private String event_type;
+	private String event_content;
+	private boolean istop;
+	private String keyword;
+	private String timeline;
 
 	public PiazzaDiscoverItem() {
 		super();
-		images = new ArrayList<WenyiImage>();
 	}
 
-	public PiazzaDiscoverItem(String id, String uid, String ugid,
-			String tags, String nickname, String uportrait, String body,
-			String comments, String timeline, ArrayList<WenyiImage> images) {
+	public PiazzaDiscoverItem(String title, String imageurl, String desc,
+			int img_width, int img_height, String[] image_items, String _id,
+			String objid, String template, String event_type, boolean istop,
+			String keyword, String timeline, String event_content) {
 		super();
-		this.id = id;
-		this.uid = uid;
-		this.ugid = ugid;
-		this.tags = tags;
-		this.nickname = nickname;
-		this.uportrait = uportrait;
-		this.body = body;
-		this.comments = comments;
+		this.title = title;
+		this.imageurl = imageurl;
+		this.desc = desc;
+		this.img_width = img_width;
+		this.img_height = img_height;
+		this.image_items = image_items;
+		this._id = _id;
+		this.objid = objid;
+		this.template = template;
+		this.event_type = event_type;
+		this.istop = istop;
+		this.keyword = keyword;
 		this.timeline = timeline;
-		this.images = images;
+		this.event_content = event_content;
 	}
 
-	public String getId() {
-		return id;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public String getUid() {
-		return uid;
+	public String getImageurl() {
+		return imageurl;
 	}
 
-	public void setUid(String uid) {
-		this.uid = uid;
+	public void setImageurl(String imageurl) {
+		this.imageurl = imageurl;
 	}
 
-	public String getUgid() {
-		return ugid;
+	public String getDesc() {
+		return desc;
 	}
 
-	public void setUgid(String ugid) {
-		this.ugid = ugid;
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 
-	public String getTags() {
-		return tags;
+	public int getImg_width() {
+		return img_width;
 	}
 
-	public void setTags(String tags) {
-		this.tags = tags;
+	public void setImg_width(int img_width) {
+		this.img_width = img_width;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public int getImg_height() {
+		return img_height;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setImg_height(int img_height) {
+		this.img_height = img_height;
 	}
 
-	public String getUportrait() {
-		return uportrait;
+	public String[] getImage_items() {
+		return image_items;
 	}
 
-	public void setUportrait(String uportrait) {
-		this.uportrait = uportrait;
+	public void setImage_items(String[] image_items) {
+		this.image_items = image_items;
 	}
 
-	public String getBody() {
-		return body;
+	public String get_id() {
+		return _id;
 	}
 
-	public void setBody(String body) {
-		this.body = body;
+	public void set_id(String _id) {
+		this._id = _id;
 	}
 
-	public String getComments() {
-		return comments;
+	public String getObjid() {
+		return objid;
 	}
 
-	public void setComments(String comments) {
-		this.comments = comments;
+	public void setObjid(String objid) {
+		this.objid = objid;
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+
+	public String getEvent_type() {
+		return event_type;
+	}
+
+	public void setEvent_type(String event_type) {
+		this.event_type = event_type;
+	}
+
+	public String getEvent_content() {
+		return event_content;
+	}
+
+	public void setEvent_content(String event_content) {
+		this.event_content = event_content;
+	}
+
+	public boolean isIstop() {
+		return istop;
+	}
+
+	public void setIstop(boolean istop) {
+		this.istop = istop;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 
 	public String getTimeline() {
@@ -109,21 +158,16 @@ public class PiazzaDiscoverItem {
 		this.timeline = timeline;
 	}
 
-	public ArrayList<WenyiImage> getImages() {
-		return images;
-	}
-
-	public void setImages(ArrayList<WenyiImage> images) {
-		this.images = images;
-	}
-
 	@Override
 	public String toString() {
-		return "PersonalHomeworkItem [id=" + id + ", uid=" + uid + ", ugid="
-				+ ugid + ", tags=" + tags + ", nickname=" + nickname
-				+ ", uportrait=" + uportrait + ", body=" + body + ", comments="
-				+ comments + ", timeline=" + timeline + ", images=" + images
-				+ "]";
+		return "PiazzaDiscoverItem [title=" + title + ", imageurl=" + imageurl
+				+ ", desc=" + desc + ", img_width=" + img_width
+				+ ", img_height=" + img_height + ", image_items="
+				+ Arrays.toString(image_items) + ", _id=" + _id + ", objid="
+				+ objid + ", template=" + template + ", event_type="
+				+ event_type + ", istop=" + istop + ", keyword=" + keyword
+				+ ", timeline=" + timeline + "]";
 	}
 
+	
 }

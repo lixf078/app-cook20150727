@@ -33,6 +33,7 @@ import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
+import com.shecook.wenyi.cookbook.CookbookCollectionActivity;
 import com.shecook.wenyi.model.WenyiUser;
 import com.shecook.wenyi.util.RequestHttpUtil;
 import com.shecook.wenyi.util.Util;
@@ -48,7 +49,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 	private TextView user_level, personal_gold, personal_email, personal_experience;
 	
 	private NetworkImageRoundView userIconView;
-	LinearLayout personal_my_edit;
+	LinearLayout personal_my_collection, personal_my_topic, personal_my_edit,personal_my_kitchen;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -89,9 +90,18 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		personal_email = (TextView) rootView.findViewById(R.id.personal_email);
 		personal_experience = (TextView) rootView.findViewById(R.id.personal_experience);
 		
+		personal_my_collection = (LinearLayout) rootView.findViewById(R.id.personal_my_collection);
+		personal_my_collection.setOnClickListener(this);
+		
+		personal_my_topic = (LinearLayout) rootView.findViewById(R.id.personal_my_topic);
+		personal_my_topic.setOnClickListener(this);
 		
 		personal_my_edit = (LinearLayout) rootView.findViewById(R.id.personal_my_edit);
 		personal_my_edit.setOnClickListener(this);
+		
+		personal_my_kitchen = (LinearLayout) rootView.findViewById(R.id.personal_my_kitchen);
+		personal_my_kitchen.setOnClickListener(this);
+		
 	}
 
 	@Override
@@ -152,9 +162,24 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 					PersonalSettings.class);
 			startActivity(intent);
 			break;
+		case R.id.personal_my_collection:
+			intent = new Intent(PersonalFragment.this.getActivity(),
+					CookbookCollectionActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.personal_my_topic:
+			intent = new Intent(PersonalFragment.this.getActivity(),
+					PersonalTopicListActivity.class);
+			startActivity(intent);
+			break;
 		case R.id.personal_my_edit:
 			 intent = new Intent(PersonalFragment.this.getActivity(),
 					PersonalEdition.class);
+			startActivity(intent);
+			break;
+		case R.id.personal_my_kitchen:
+			 intent = new Intent(PersonalFragment.this.getActivity(),
+					PersonalPrivateKitchen.class);
 			startActivity(intent);
 		default:
 			break;

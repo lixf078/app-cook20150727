@@ -199,6 +199,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/personal_my_collection"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
@@ -231,6 +232,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/personal_my_topic"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
@@ -296,6 +298,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/personal_my_kitchen"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"

@@ -22,9 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 import com.letv.shared.widget.BaseSwipeHelper;
-import com.letv.shared.widget.BaseSwipeListViewListener;
 import com.letv.shared.widget.LeListView;
-import com.letv.shared.widget.SwipeListViewHelper;
 import com.letv.shared.widget.pulltorefresh.PullToRefreshBase;
 import com.letv.shared.widget.pulltorefresh.PullToRefreshBase.Mode;
 import com.letv.shared.widget.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
@@ -41,7 +39,7 @@ import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.essay.EssayItemDeatilActivity;
 import com.shecook.wenyi.model.EssayListItem;
-import com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter;
+import com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter2;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
@@ -52,7 +50,7 @@ public class PersonalEditionTopic extends Fragment {
 	
 	private Activity mActivity = null;
 	private SwitchPullToRefreshListView mPullRefreshListView;
-	com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter mAdapter = null;
+	com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter2 mAdapter = null;
 	LinkedList<EssayListItem> mListItems;
 	private boolean shouldLoad = true;
 	@Override
@@ -117,7 +115,7 @@ public class PersonalEditionTopic extends Fragment {
 //		ListView actualListView = mPullRefreshListView.getRefreshableView();
 
 		mListItems = new LinkedList<EssayListItem>();
-		mAdapter = new PersonalTopicListAdapter(mActivity, mListItems);
+		mAdapter = new PersonalTopicListAdapter2(mActivity, mListItems);
 
 		/**
 		 * Add Sound Event Listener
@@ -150,70 +148,6 @@ public class PersonalEditionTopic extends Fragment {
 			}
 		});
 	}
-	class MyBaseSwipeListViewListener extends BaseSwipeListViewListener {
-
-        @Override
-        public void onDismiss(int[] reverseSortedPositions) {
-            Log.i("swipeLog", "onDismiss");
-            for (int position : reverseSortedPositions) {
-            }
-            mAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onOpened(int position, boolean toRight) {
-            Log.i("swipeLog", "onOpened");
-        }
-
-        @Override
-        public void onClosed(int position, boolean fromRight) {
-            Log.i("swipeLog", "onClosed");
-        }
-
-        @Override
-        public void onListChanged() {
-            Log.i("swipeLog", "onListChanged");
-        }
-
-        @Override
-        public void onMove(int position, float x) {
-            Log.i("swipeLog", "onMove");
-        }
-
-        @Override
-        public void onStartOpen(int position, int action, boolean right) {
-            Log.i("swipeLog", "onStartOpen");
-        }
-
-        @Override
-        public void onStartClose(int position, boolean right) {
-            Log.i("swipeLog", "onStartClose");
-        }
-
-        @Override
-        public int onChangeSwipeMode(int position) {
-            Log.i("swipeLog", "onChangeSwipeMode");
-            if (position == 5) {
-                return SwipeListViewHelper.SWIPE_MODE_NONE;
-            }
-            
-            if (position == mPullRefreshListView.getRefreshableView().getAdapter().getCount() - 5) {
-                return SwipeListViewHelper.SWIPE_MODE_NONE;
-            }
-            return super.onChangeSwipeMode(position);
-        }
-
-        @Override
-        public void onFirstListItem() {
-            Log.i("swipeLog", "onFirstListItem");
-        }
-
-        @Override
-        public void onLastListItem() {
-            Log.i("swipeLog", "onLastListItem");
-        }
-
-    }
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -346,22 +280,17 @@ public class PersonalEditionTopic extends Fragment {
 	
 	
 	private void initData(JSONObject jsonObject, int flag){
-		WenyiLog.logv(TAG, "initData 1111");
 		if(jsonObject != null){
 			try {
-				WenyiLog.logv(TAG, "initData 22222");
 				if(!jsonObject.isNull("statuscode") && 200 == jsonObject.getInt("statuscode")){
-					WenyiLog.logv(TAG, "initData 33333");
 					if(!jsonObject.isNull("data")){
 						JSONObject data = jsonObject.getJSONObject("data");
 						
 						if(data.has("list")){
 							JSONArray list = data.getJSONArray("list");
-							WenyiLog.logv(TAG, "initData 44444 length " + list.length());
 							LinkedList<EssayListItem> listTemp = new LinkedList<EssayListItem>();
 							for(int i = 0,j = list.length(); i < j; i++){
 								JSONObject jb = list.getJSONObject(i);
-								WenyiLog.logv(TAG, "initData 5555 jb " + jb.toString());
 								EssayListItem eli = new EssayListItem();
 								eli.setId(jb.getString("id"));
 								eli.setCataid(jb.getString("cataid"));
@@ -383,7 +312,6 @@ public class PersonalEditionTopic extends Fragment {
 							LinkedList<EssayListItem> toplistTemp = new LinkedList<EssayListItem>();
 							for(int i = 0,j = toplist.length(); i < j; i++){
 								JSONObject topjb = toplist.getJSONObject(i);
-								WenyiLog.logv(TAG, "initData toplist topjb " + topjb.toString());
 								EssayListItem topeli = new EssayListItem();
 								topeli.setId(topjb.getString("id"));
 								topeli.setCataid(topjb.getString("cataid"));
