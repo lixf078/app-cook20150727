@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <add-resource type="color" name="le_tabwidget_background" />
+    <color name="le_tabwidget_background">#f5f5f5</color>
+    
+    <add-resource type="color" name="le_tab_indicator_top_strip_color" />
+    <color name="le_tab_indicator_top_strip_color">#ffb4b9bd</color>
+    
+    <add-resource type="color" name="le_bottom_tab_title_textcolor" />
+    <color name="le_bottom_tab_title_textcolor">#2395ee</color>
+    
+    <add-resource type="color" name="le_bottom_widget_title_textcolor" />
+    <color name="le_bottom_widget_title_textcolor">#2395ee</color>
+    
+    <add-resource type="color" name="le_bottom_widget_top_strip_color" />
+    <color name="le_bottom_widget_top_strip_color">#ffb4b9bd</color>
+    
+    <!-- LeTitleEditText color res start -->
+    <add-resource type="color" name="le_edit_text_color" />
+    <color name="le_edit_text_color">#525e66</color>
+    <add-resource type="color" name="le_edit_text_color_hint" />
+    <color name="le_edit_text_color_hint">#aaaaaa</color>
+    <add-resource type="color" name="le_edit_text_line" />
+    <color name="le_edit_text_line">#cc525e66</color>
+    <add-resource type="color" name="le_edit_text_title_color" />
+    <color name="le_edit_text_title_color">#b4b9bd</color>
+    <!-- LeTitleEditText color res End -->
+    
+    <!-- LeTextView color start -->
+    <add-resource type="color" name="le_popup_item_color_press" />
+    <color name="le_popup_item_color_press">@color/le_color_default_blue</color>
+    <add-resource type="color" name="le_popup_text_color_press" />
+    <color name="le_popup_text_color_press">#ffffff</color>
+    <add-resource type="color" name="le_popup_text_color" />
+    <color name="le_popup_text_color">#000000</color>
+    <add-resource type="color" name="le_popup_text_color_disabled" />
+    <color name="le_popup_text_color_disabled">#66000000</color>
+    <add-resource type="color" name="le_popup_divider_color" />
+    <color name="le_popup_divider_color">#daddde</color>
+    <add-resource type="color" name="le_select_hightlight_color" />
+    <color name="le_select_hightlight_color">#802395ee</color>
+    <add-resource type="color" name="le_default_text_link_color" />
+    <color name="le_default_text_link_color">@color/le_color_default_blue</color>
+    <add-resource type="color" name="le_select_popup_bg_color" />
+    <color name="le_select_popup_bg_color">#525e66</color>
+    <add-resource type="color" name="le_text_selection_popup_text_color" />
+    <color name="le_text_selection_popup_text_color">#ffffff</color>
+    <add-resource type="color" name="le_popup_holo_item_color_press" />
+    <color name="le_popup_holo_item_color_press">#4ddaddde</color>
+    
+    <!-- LeTextView color end -->
+    
+    <!-- Preference item background start -->
+    <add-resource type="color" name="le_preference_item_pressed" />
+    <color name="le_preference_item_pressed">#7fffffff</color>
+    <add-resource type="color" name="le_preference_item_normal" />
+    <color name="le_preference_item_normal">#ffffff</color>
+    <!-- Preference item background start -->
+    <add-resource type="color" name="preference_focus_color"/>
+    <color name="preference_focus_color">#2395ee</color>
+    
+    <!-- dialog start -->
+    <add-resource type="color" name="le_dialog_bg" />
+    <color name="le_dialog_bg">#ffffff</color>
+    <add-resource type="color" name="le_dialog_bg_dark" />
+    <color name="le_dialog_bg_dark">#38454f</color>
+    <add-resource type="color" name="le_dialog_title_text" />
+    <color name="le_dialog_title_text">#1e2d38</color>
+    <add-resource type="color" name="le_dialog_center_text" />
+    <color name="le_dialog_center_text">#8c9499</color>
+    <add-resource type="color" name="le_dialog_button_default" />
+    <color name="le_dialog_button_default">#00ffffff</color>
+    <add-resource type="color" name="le_dialog_button_pressed" />
+    <color name="le_dialog_button_pressed">#f3f4f4</color>
+    <add-resource type="color" name="le_dialog_button_pressed_dark" />
+    <color name="le_dialog_button_pressed_dark">#2a3943</color>
+    <add-resource type="color" name="le_dialog_button_text" />
+    <color name="le_dialog_button_text">#2395ee</color>
+    <add-resource type="color" name="le_dialog_button_text_expect" />
+    <color name="le_dialog_button_text_expect">#2395ee</color>
+    <add-resource type="color" name="le_dialog_button_text_warn" />
+    <color name="le_dialog_button_text_warn">#eb3e2e</color>
+    <add-resource type="color" name="le_dialog_button_text_dark" />
+    <color name="le_dialog_button_text_dark">#b4b9bd</color>
+    <add-resource type="color" name="le_dialog_button_text_expect_dark" />
+    <color name="le_dialog_button_text_expect_dark">#2395ee</color>
+    <add-resource type="color" name="le_dialog_button_text_warn_dark" />
+    <color name="le_dialog_button_text_warn_dark">#e73c40</color>
+    <add-resource type="color" name="le_dialog_divider" />
+    <color name="le_dialog_divider">#ececec</color>
+    <!-- dialog end -->
+
+    <!-- LeTopWidget -->
+    <add-resource type="color" name="leTopWidget_bg_color" />
+    <color name="leTopWidget_bg_color">#ffffff</color>
+    <add-resource type="color" name="le_color_default_topwidget" />
+    <color name="le_color_default_topwidget">#000000</color>
+    <add-resource type="color" name="le_color_default_left_right_topwidget" />
+    <color name="le_color_default_left_right_topwidget">#2395ee</color>
+    <!-- Leui default color blue by dongshangyong -->
+    <add-resource type="color" name="le_color_default_blue" />
+    <color name="le_color_default_blue">#2395ee</color>
+    
+    <!-- LeCheckbox by dongshangyong -->
+    <add-resource type="color" name="le_color_default_checkbox_track_on" />
+    <color name="le_color_default_checkbox_track_on">@color/le_color_default_blue</color>
+    <add-resource type="color" name="le_color_default_checkbox_track_border" />
+    <color name="le_color_default_checkbox_track_border">#d2d4d6</color>
+    <add-resource type="color" name="le_color_default_checkbox_track" />
+    <color name="le_color_default_checkbox_track">#f0f2f3</color>
+    <add-resource type="color" name="le_color_default_checkbox_arrow" />
+    <color name="le_color_default_checkbox_arrow">#ffffff</color>
+
+    <!-- LeSwitch by dongshangyong -->
+    <add-resource type="color" name="le_color_default_switch_on" />
+    <color name="le_color_default_switch_on">@color/le_color_default_blue</color>
+    
+    <!-- LeActivationEditText by dongshangyong -->
+    <add-resource type="color" name="le_default_color_activation_title" />
+    <color name="le_default_color_activation_title">#525e66</color>
+    <add-resource type="color" name="le_default_color_activation_input_text" />
+    <color name="le_default_color_activation_input_text">#525e66</color>
+    
+    <!-- colors for LeQuickContactBudge -->
+    <add-resource type="color" name="le_color_budge_0" />
+    <color name="le_color_budge_0">#ed5754</color>
+    <add-resource type="color" name="le_color_budge_1" />
+    <color name="le_color_budge_1">#ff7345</color>
+    <add-resource type="color" name="le_color_budge_2" />
+    <color name="le_color_budge_2">#ffa32c</color>
+    <add-resource type="color" name="le_color_budge_3" />
+    <color name="le_color_budge_3">#ffc830</color>
+    <add-resource type="color" name="le_color_budge_4" />
+    <color name="le_color_budge_4">#7dc654</color>
+    <add-resource type="color" name="le_color_budge_5" />
+    <color name="le_color_budge_5">#25a799</color>
+    <add-resource type="color" name="le_color_budge_6" />
+    <color name="le_color_budge_6">#26c6d8</color>
+    <add-resource type="color" name="le_color_budge_7" />
+    <color name="le_color_budge_7">#2ab6f7</color>
+    <add-resource type="color" name="le_color_budge_8" />
+    <color name="le_color_budge_8">#6286ec</color>
+    <add-resource type="color" name="le_color_budge_9" />
+    <color name="le_color_budge_9">#936cd9</color>
+
+    <add-resource type="color" name="le_list_title_color_normal" />
+    <color name="le_list_title_color_normal">#1e2d38</color>
+    <add-resource type="color" name="le_list_title_color_selected" />
+    <color name="le_list_title_color_selected">#2395ee</color>
+
+
+    <add-resource type="color" name="le_color_wheel_picker_center" />
+    <color name="le_color_wheel_picker_center">#ff2395ee</color>
+    <add-resource type="color" name="le_color_wheel_picker_normal" />
+    <color name="le_color_wheel_picker_normal">#FFA7ACB1</color>
+
+    <!-- LeTopTabWidget -->
+    <add-resource type="color" name="le_color_tab_widget_text_normal" />
+    <color name="le_color_tab_widget_text_normal">#ffffff</color>
+    <add-resource type="color" name="le_color_tab_widget_text_press" />
+    <color name="le_color_tab_widget_text_press">#636aab</color>
+
+
+	<!-- For search-view default UIs -->
+    <add-resource type="color" name="lc_search_view_query_text_color_light" />
+    <color name="lc_search_view_query_text_color_light">#000000</color>
+    <add-resource type="color" name="lc_search_view_query_hint_text_color_light" />
+    <color name="lc_search_view_query_hint_text_color_light">#33000000</color>
+
+    <!-- LeProgressBar default color-->
+    <add-resource type="color" name="le_progress_bar_background_color" />
+    <color name="le_progress_bar_background_color">#66bcbcbc</color>
+    <add-resource type="color" name="le_progress_bar_progress_color" />
+    <color name="le_progress_bar_progress_color">#22c266</color>
+    <add-resource type="color" name="le_progress_bar_loading_color" />
+    <color name="le_progress_bar_loading_color">#2395ee</color>
+    <add-resource type="color" name="le_progress_bar_zebra_color" />
+    <color name="le_progress_bar_zebra_color">#26ffffff</color>
+
+
+    <add-resource type="color" name="lc_search_view_query_text_color" />
+    <color name="lc_search_view_query_text_color">#ffffff</color>
+    <add-resource type="color" name="lc_search_view_query_hint_text_color" />
+    <color name="lc_search_view_query_hint_text_color">#4dffffff</color>
+
+    <add-resource type="color" name="lc_search_track_color" />
+    <color name="lc_search_track_color">#000000</color>
+
+    <add-resource type="color" name="lc_search_drop_down_item_text_color_light" />
+    <color name="lc_search_drop_down_item_text_color_light">#000000</color>
+    <add-resource type="color" name="lc_search_drop_down_item_sub_text_color_light" />
+    <color name="lc_search_drop_down_item_sub_text_color_light">#a7acb1</color>
+    <add-resource type="color" name="lc_search_view_drop_down_match_text_color_light" />
+    <color name="lc_search_view_drop_down_match_text_color_light">#2395ee</color>
+
+    <add-resource type="color" name="lc_search_drop_down_item_text_color" />
+    <color name="lc_search_drop_down_item_text_color">#ffffff</color>
+    <add-resource type="color" name="lc_search_drop_down_item_sub_text_color" />
+    <color name="lc_search_drop_down_item_sub_text_color">#a7acb1</color>
+    <add-resource type="color" name="lc_search_view_drop_down_match_text_color" />
+    <color name="lc_search_view_drop_down_match_text_color">#2395ee</color>
+
+    <add-resource type="color" name="lc_search_url_text_normal" />
+    <color name="lc_search_url_text_normal">#7fa87f</color>
+    <add-resource type="color" name="lc_search_url_text_selected" />
+    <color name="lc_search_url_text_selected">@android:color/black</color>
+    <add-resource type="color" name="lc_search_url_text_pressed" />
+    <color name="lc_search_url_text_pressed">@android:color/black</color>
+    <add-resource type="color" name="lc_search_widget_corpus_item_background" />
+    <color name="lc_search_widget_corpus_item_background">@color/lc_lighter_gray</color>
+    <add-resource type="color" name="lc_lighter_gray" />
+    <color name="lc_lighter_gray">#ddd</color>
+    
+    <add-resource type="color" name="lc_search_drop_down_pressed_color" />
+    <color name="lc_search_drop_down_pressed_color">#0a000000</color>
+    <add-resource type="color" name="lc_search_drop_down_bg_color" />
+    <color name="lc_search_drop_down_bg_color">#99ffffff</color>
+    <add-resource type="color" name="lc_search_drop_down_bg_color_transparent" />
+    <color name="lc_search_drop_down_bg_color_transparent">#26ffffff</color>
+    
+    <add-resource type="color" name="le_drawable_shadow" />
+    <color name="le_drawable_shadow">#000000</color>
+
+    
+    <!-- global action conver color -->
+    <add-resource type="color" name="global_action_cover_color" />
+    <color name="global_action_cover_color">#00000000</color>
+    <!-- global action handler color -->
+    <add-resource type="color" name="global_action_handler_tri_color" />
+    <color name="global_action_handler_tri_color">#55FFFFFF</color>
+    <add-resource type="color" name="global_action_handler_tip_color" />
+    <color name="global_action_handler_tip_color">#FFFFFFFF</color>
+    <!-- global action bottombar color -->
+    <add-resource type="color" name="global_action_bottombar_line_normal_color" />
+    <color name="global_action_bottombar_line_normal_color">#FFFFFFFF</color>
+    <add-resource type="color" name="global_action_bottombar_line_press_color" />
+    <color name="global_action_bottombar_line_press_color">#FF33FF33</color>
+    <add-resource type="color" name="global_action_bottombar_arc_color" />
+    <color name="global_action_bottombar_arc_color">#FFFFFFFF</color>
+    <add-resource type="color" name="global_action_bottombar_scalearc_color" />
+    <color name="global_action_bottombar_scalearc_color">#77FFFFFF</color>
+    <add-resource type="color" name="global_action_bottombar_tip_color" />
+    <color name="global_action_bottombar_tip_color">#FFFFFFFF</color>
+    <!-- shutdow welcome view -->
+    <add-resource type="color" name="shutdown_welcome_text_color" />
+    <color name="shutdown_welcome_text_color">#FF76797C</color>
+
+
+    <add-resource type="color" name="le_bright_foreground_disabled_leui_light"/>
+    <color name="le_bright_foreground_disabled_leui_light">#8038454f</color>
+    <add-resource type="color" name="le_bright_foreground_leui_light"/>
+    <color name="le_bright_foreground_leui_light">#000000</color>
+    <add-resource type="color" name="le_dim_foreground_leui_light"/>
+    <color name="le_dim_foreground_leui_light">#747474</color>
+    <add-resource type="color" name="le_dim_foreground_disabled_leui_light"/>
+    <color name="le_dim_foreground_disabled_leui_light">#8091999e</color>
+
+    <!-- DialFloatButtonView -->
+    <add-resource type="color" name="le_dial_float_button_view_start_color"/>
+    <color name="le_dial_float_button_view_start_color">#2395ee</color>
+    <add-resource type="color" name="le_dial_float_button_view_end_color"/>
+    <color name="le_dial_float_button_view_end_color">#E73C40</color>
+    
+    <!-- Scroll Strip TabWidget -->
+    <add-resource type="color" name="le_scroll_strip_tab_widget_text_color_selected"/>
+    <color name="le_scroll_strip_tab_widget_text_color_selected">#2395ee</color>
+    <add-resource type="color" name="le_scroll_strip_tab_widget_text_color_unselected"/>
+    <color name="le_scroll_strip_tab_widget_text_color_unselected">#91999e</color>
+    <add-resource type="color" name="le_scroll_strip_tab_widget_scroll_strip_color"/>
+    <color name="le_scroll_strip_tab_widget_scroll_strip_color">#2395ee</color>
+    <add-resource type="color" name="le_scroll_strip_tab_widget_fixed_strip_color"/>
+    <color name="le_scroll_strip_tab_widget_fixed_strip_color">#cbd0d1</color>
+
+    <!-- share -->
+    <add-resource type="color" name="le_share_gv_bg_color"/>
+    <color name="le_share_gv_bg_color">#08162126</color>
+    <add-resource type="color" name="le_share_layout_item_press_bg"/>
+    <color name="le_share_layout_item_press_bg">#f2f2f2</color>
+
+    <!-- LeBlankPage start-->
+    <add-resource type="color" name="le_blank_page_btn_pressed_color"/>
+    <color name="le_blank_page_btn_pressed_color">#2395ee</color>
+    <add-resource type="color" name="le_blank_page_btn_color"/>
+    <color name="le_blank_page_btn_color">#2395ee</color>
+    <add-resource type="color" name="le_blank_page_btn_color_disable"/>
+    <color name="le_blank_page_btn_color_disable">#7f2395ee</color>
+    <add-resource type="color" name="le_blank_page_btn_solid_color"/>
+    <color name="le_blank_page_btn_solid_color">#00000000</color>
+    <add-resource type="color" name="le_blank_page_btn_text_pressed_color"/>
+    <color name="le_blank_page_btn_text_pressed_color">#ffffff</color>
+    <add-resource type="color" name="le_blank_page_btn_text_color_normal"/>
+    <color name="le_blank_page_btn_text_color_normal">#2395ee</color>
+    <add-resource type="color" name="le_blank_page_btn_text_color_disable"/>
+    <color name="le_blank_page_btn_text_color_disable">#7f2395ee</color>
+    <add-resource type="color" name="le_blank_page_common_gray"/>
+    <color name="le_blank_page_common_gray">#CCCCCC</color>
+    <!-- LeBlankPage end-->
+
+    <!-- LeLicenceDialog -->
+    <add-resource type="color" name="le_licence_dialog_divider_color"/>
+    <color name="le_licence_dialog_divider_color">#ececec</color>
+    <add-resource type="color" name="le_licence_dialog_content_text_color"/>
+    <color name="le_licence_dialog_content_text_color">#9d9d9d</color>
+    <add-resource type="color" name="le_licence_dialog_text_blue_color"/>
+    <color name="le_licence_dialog_text_blue_color">#2395ee</color>
+    <add-resource type="color" name="le_licence_dialog_cb_text_color"/>
+    <color name="le_licence_dialog_cb_text_color">#414141</color>
+    <!-- LeLicenceDialog -->
+
+    <!-- LeSelectSim -->
+    <add-resource type="color" name="le_select_sim_label_text_color"/>
+    <color name="le_select_sim_label_text_color">#414141</color>
+    <add-resource type="color" name="le_select_sim_sim_label_text_color"/>
+    <color name="le_select_sim_sim_label_text_color">#445963</color>
+    <add-resource type="color" name="le_select_sim_cancel_text_color"/>
+    <color name="le_select_sim_cancel_text_color">#000000</color>
+    <add-resource type="color" name="le_select_sim_divider_color"/>
+    <color name="le_select_sim_divider_color">#ececec</color>
+    
+    <!-- [+LEUI] [REQ][LEUI-6400] [wangziming] add LeItemView-->
+    <add-resource type="color" name="le_item_title_text_color" />
+    <color name="le_item_title_text_color">#000000</color>
+    <add-resource type="color" name="le_item_subtitle_text_color" />
+    <color name="le_item_subtitle_text_color">#747474</color>
+    <add-resource type="color" name="le_item_value_text_color" />
+    <color name="le_item_value_text_color">#747474</color>
+    <!-- [-LEUI] -->
+    <add-resource type="color" name="le_header_title_bg" />
+    <color name="le_header_title_bg">#ffffff</color>
+
+</resources>
+

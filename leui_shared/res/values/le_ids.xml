@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- <item type="id" name="lc_galleryflow_album_image" /> -->
+  
+  	<add-resource name="lc_search_frame" type="id" />
+    <item name="lc_search_frame" type="id"/>
+    <add-resource name="lc_search_plate" type="id" />
+    <item name="lc_search_plate" type="id"/>
+    <add-resource name="lc_search_icon" type="id" />
+    <item name="lc_search_icon" type="id"/>
+    <add-resource name="lc_search_src_text" type="id" />
+    <item name="lc_search_src_text" type="id"/>
+    <add-resource name="lc_search_clear_btn" type="id" />
+    <item name="lc_search_clear_btn" type="id"/>
+    <add-resource name="lc_edit_query" type="id" />
+    <item name="lc_edit_query" type="id"/>
+    
+    <add-resource name="lc_search_text_cancel" type="id" />
+    <item type="id" name="lc_search_text_cancel" />
+    
+    <add-resource name="le_ptr_webview" type="id" />
+    <item type="id" name="le_ptr_webview" />
+
+    <add-resource name="le_ptr_gridview" type="id" />
+    <item type="id" name="le_ptr_gridview" />
+
+    <!-- package install AppSecurityPermission layout -->
+    <!-- id -->
+    <add-resource name="control_title" type="id" />
+    <item type="id" name="control_title" />
+    <add-resource name="permission_title" type="id" />
+    <item type="id" name="permission_title" />
+    <add-resource name="permission_info" type="id" />    
+    <item type="id" name="permission_info" />
+
+    <add-resource name="select" type="id" />
+    <item type="id" name="select"/>
+    <add-resource name="setup_le_switch" type="id" />
+    <item type="id" name="setup_le_switch"/>
+    <add-resource name="maybe_cost" type="id" />
+    <item type="id" name="maybe_cost" />
+    <add-resource name="le_image_permission" type="id" />
+    <item type="id" name="le_image_permission" />
+    <add-resource name="control_title_item" type="id" />
+    <item type="id" name="control_title_item" />
+    <add-resource name="bottemsheet_perm_title" type="id" />
+    <item type="id" name="bottemsheet_perm_title" />
+    <add-resource name="bottemsheet_perm_viewgroup" type="id" />
+    <item type="id" name="bottemsheet_perm_viewgroup" />
+    <add-resource name="bottemsheet_perm_info" type="id" />
+    <item type="id" name="bottemsheet_perm_info" />
+    <add-resource name="bottemsheet_perm_des" type="id" />
+    <item type="id" name="bottemsheet_perm_des" />
+    <add-resource name="simple_permission_title" type="id" />
+    <item type="id" name="simple_permission_title" />
+    <add-resource name="setup_name" type="id" />
+    <item type="id" name="setup_name" />
+    <!-- end package install AppSecurityPermission layout -->
+    
+    <!-- LeListView -->
+    <add-resource name="le_listview_front_id" type="id" />
+    <item name="le_listview_front_id" type="id"/>
+    <add-resource name="le_listview_back_id" type="id" />
+    <item name="le_listview_back_id" type="id"/>
+    <!-- LeListView -->
+    
+    <!-- [+LEUI] [REQ][LEUI-6400] [wangziming] add LeItemView-->
+    <add-resource name="le_item_image" type="id" />
+    <item name="le_item_image" type="id"/>
+    <add-resource name="le_item_title" type="id" />
+    <item name="le_item_title" type="id"/>
+    <add-resource name="le_item_subtitle" type="id" />
+    <item name="le_item_subtitle" type="id"/>
+    <add-resource name="le_item_value" type="id" />
+    <item name="le_item_value" type="id"/>
+    <add-resource name="le_item_checkbox" type="id" />
+    <item name="le_item_checkbox" type="id"/>
+    <add-resource name="le_item_switch" type="id" />
+    <item name="le_item_switch" type="id"/>
+    <add-resource name="le_item_arrow" type="id" />
+    <item name="le_item_arrow" type="id"/>
+    <!-- [-LEUI] -->
+    <add-resource name="le_header_title" type="id" />
+    <item name="le_header_title" type="id"/>
+	<!-- [+LEUI][REQ][LEUI-1079][dongshangyong] for text selectin item -->
+	<add-resource name="le_section_select" type="id" />
+	<item name="le_section_select" type="id"/>
+	<add-resource name="le_undo" type="id" />
+	<item name="le_undo" type="id"/>
+	<!-- [-LEUI] -->
+</resources>

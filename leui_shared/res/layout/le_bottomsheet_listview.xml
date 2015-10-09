@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/le_bottomsheet_gapline_color" />
+
+    <ListView
+        android:id="@+id/le_bottomsheet_list_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay" >
+    </ListView>
+
+    <ImageView
+        android:id="@+id/le_bottomsheet_listview_gap"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/le_bottomsheet_gapline_color" />
+
+    <Button
+        android:id="@+id/le_bottomsheet_listview_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        android:ellipsize="end"
+        android:paddingBottom="14dp"
+        android:paddingTop="14dp"
+        android:singleLine="true"
+        android:textAllCaps="false"
+        android:textColor="@color/le_bottomsheet_title_color_default"
+        android:textSize="18sp"
+        android:textStyle="normal" />
+
+    <ImageView
+        android:id="@+id/le_bottomsheet_listview_gap1"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/le_bottomsheet_gapline_color"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/le_bottomsheet_listview_title_btn_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        android:ellipsize="end"
+        android:paddingBottom="14dp"
+        android:paddingTop="14dp"
+        android:singleLine="true"
+        android:textAllCaps="false"
+        android:textColor="@color/le_bottomsheet_title_color_default"
+        android:textSize="18sp"
+        android:textStyle="normal" />
+
+</LinearLayout>

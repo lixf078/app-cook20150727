@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Pull-To-Refresh begin -->
+    <add-resource type="string" name="le_ptr_pull_label" />
+    <string name="le_ptr_pull_label">Pull to refresh…</string>
+    <add-resource type="string" name="le_ptr_release_label" />
+    <string name="le_ptr_release_label">Release to refresh…</string>
+    <add-resource type="string" name="le_ptr_refreshing_label" />
+    <string name="le_ptr_refreshing_label">Loading…</string>
+    <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
+    <add-resource type="string" name="le_ptr_from_bottom_pull_label" />
+    <string name="le_ptr_from_bottom_pull_label">@string/le_ptr_pull_label</string>
+    <add-resource type="string" name="le_ptr_from_bottom_release_label" />
+    <string name="le_ptr_from_bottom_release_label">@string/le_ptr_release_label</string>
+    <add-resource type="string" name="le_ptr_from_bottom_refreshing_label" />
+    <string name="le_ptr_from_bottom_refreshing_label">@string/le_ptr_refreshing_label</string>
+    <!-- Pull-To-Refresh end -->
+    <!-- Lunar -->
+    <string name="data_usage_limit_warn_text">"You have used 90% of your data limit"</string>
+    <add-resource type="string" name="disconnect_data_connection"/>
+    <string name="disconnect_data_connection">"Disconnect data connection"</string>
+    <add-resource type="string" name="detail"/>
+    <string name="detail">"detail"</string>
+
+    <add-resource name="le_text_section_select" type="string" />
+    <string name="le_text_section_select">Line Select</string>
+    <add-resource name="le_text_word_select" type="string" />
+    <string name="le_text_word_select">Word Select</string>
+    <add-resource name="le_text_undo" type="string" />
+    <string name="le_text_undo">Undo</string>
+    <add-resource name="le_text_redo" type="string" />
+    <string name="le_text_redo">Redo</string>
+    <add-resource name="le_select" type="string" />
+    <string name="le_select">Select</string>
+    <add-resource name="le_login_hint" type="string" />
+    <string name="le_login_hint">Please Login a Email Account First</string>
+    <add-resource name="le_url_phone_list" type="array" />
+    <string-array name="le_url_phone_list">
+        <item>Make Call</item>
+        <item>Send Message</item>
+        <item>Save as New</item>
+        <item>Copy Number</item>
+        <item>Save to Exist</item>
+    </string-array>
+
+    <add-resource name="le_url_email_list" type="array" />
+    <string-array name="le_url_email_list">
+        <item>Copy Email</item>
+        <item>Send Email</item>
+        <item>Save Email</item>
+    </string-array>
+
+    <add-resource name="le_url_web_list" type="array" />
+    <string-array name="le_url_web_list">
+        <item>Copy</item>
+        <item>Open</item>
+        <item>Save</item>
+    </string-array>
+
+    <add-resource type="string" name="data_usage_background_forbid_notification_title"/>
+    <string name="data_usage_background_forbid_notification_title">"Background data usage disabled"</string>
+    <add-resource type="string" name="data_usage_background_forbid_notification_msg"/>
+    <string name="data_usage_background_forbid_notification_msg">"To enable background data, go to settings"</string>
+    <!-- //LEUI-START [REQ][LEUI-] [fengzihua] added -->
+    <add-resource type="string" name="perm_wakeLock_stats"/>
+    <string name="perm_wakeLock_stats">Read app power usage log</string>
+    <add-resource type="string" name="permdesc_wakeLock_stats"/>
+    <string name="permdesc_wakeLock_stats">Read app power usage log</string>
+    <!-- //LEUI-END [REQ][LEUI-] [fengzihua] -->
+    <!-- Date&Time format Tool begin [nietong] -->
+    <add-resource type="string" name="pattern_group_today"/>
+    <string name="pattern_group_today">Today</string>
+    <add-resource type="string" name="pattern_group_yesterday"/>
+    <string name="pattern_group_yesterday">Yesterday</string>
+    <add-resource type="string" name="pattern_group_within_week"/>
+    <string name="pattern_group_within_week">This week</string>
+    <add-resource type="string" name="pattern_group_within_month"/>
+    <string name="pattern_group_within_month">This month</string>
+    <add-resource type="string" name="pattern_group_over_month"/>
+    <string name="pattern_group_over_month">month %-m</string>
+    <add-resource type="string" name="pattern_group_over_year"/>
+    <string name="pattern_group_over_year">%y%-m</string>
+    <add-resource type="string" name="pattern_group_over_century"/>
+    <string name="pattern_group_over_century">%Y/%-m</string>
+    <add-resource type="string" name="pattern_group_future"/>
+    <string name="pattern_group_future">%Y/%-m</string>
+    <add-resource type="string" name="pattern_list_today"/>
+    <string name="pattern_list_today">%H:%M</string>
+    <add-resource type="string" name="pattern_list_today_12"/>
+    <string name="pattern_list_today_12">%I:%M%p</string>
+    <add-resource type="string" name="pattern_list_yesterday"/>
+    <string name="pattern_list_yesterday">Yesterday</string>
+    <add-resource type="string" name="pattern_list_within_week"/>
+    <string name="pattern_list_within_week">%a</string>
+    <add-resource type="string" name="pattern_list_over_week"/>
+    <string name="pattern_list_over_week">%-m/%-e</string>
+    <add-resource type="string" name="pattern_list_over_year"/>
+    <string name="pattern_list_over_year">%y/%-m/%-e</string>
+    <add-resource type="string" name="pattern_list_over_century"/>
+    <string name="pattern_list_over_century">%Y/%-m/%-e</string>
+    <add-resource type="string" name="pattern_list_future"/>
+    <string name="pattern_list_future">%Y/%-m/%-e</string>
+    <add-resource type="string" name="pattern_detail_today"/>
+    <string name="pattern_detail_today">%H:%M</string>
+    <add-resource type="string" name="pattern_detail_today_12"/>
+    <string name="pattern_detail_today_12">%I:%M%p</string>
+    <add-resource type="string" name="pattern_detail_yesterday"/>
+    <string name="pattern_detail_yesterday">Yesterday %H:%M</string>
+    <add-resource type="string" name="pattern_detail_yesterday_12"/>
+    <string name="pattern_detail_yesterday_12">Yesterday %I:%M%p</string>
+    <add-resource type="string" name="pattern_detail_within_week"/>
+    <string name="pattern_detail_within_week">%H:%M %a</string>
+    <add-resource type="string" name="pattern_detail_within_week_12"/>
+    <string name="pattern_detail_within_week_12">%I:%M%p %a</string>
+    <add-resource type="string" name="pattern_detail_over_week"/>
+    <string name="pattern_detail_over_week">%H:%M %-m/%-e</string>
+    <add-resource type="string" name="pattern_detail_over_week_12"/>
+    <string name="pattern_detail_over_week_12">%I:%M%p %-m/%-e</string>
+    <add-resource type="string" name="pattern_detail_over_year"/>
+    <string name="pattern_detail_over_year">%H:%M %y/%-m/%-e</string>
+    <add-resource type="string" name="pattern_detail_over_year_12"/>
+    <string name="pattern_detail_over_year_12">%I:%M%p %y/%-m/%-e </string>
+    <add-resource type="string" name="pattern_detail_over_century"/>
+    <string name="pattern_detail_over_century">%H:%M %Y/%-m/%-e</string>
+    <add-resource type="string" name="pattern_detail_over_century_12"/>
+    <string name="pattern_detail_over_century_12">%I:%M%p %Y/%-m/%-e</string>
+    <add-resource type="string" name="pattern_detail_future"/>
+    <string name="pattern_detail_future">%H:%M %Y/%-m/%-e</string>
+    <add-resource type="string" name="pattern_detail_future_12"/>
+    <string name="pattern_detail_future_12">%I:%M%p %Y/%-m/%-e</string>
+    <add-resource type="string" name="pattern_date_simple"/>
+    <string name="pattern_date_simple">%-m-%-d</string>
+    <add-resource type="string" name="pattern_date_complete"/>
+    <string name="pattern_date_complete">%m-%d</string>
+    <add-resource type="string" name="pattern_time_simple"/>
+    <string name="pattern_time_simple">%k:%M</string>
+    <add-resource type="string" name="pattern_time_simple_12"/>
+    <string name="pattern_time_simple_12">%p%l:%M</string>
+    <add-resource type="string" name="pattern_time_complete"/>
+    <string name="pattern_time_complete">%H:%M</string>
+    <add-resource type="string" name="pattern_time_complete_12"/>
+    <string name="pattern_time_complete_12">%p%I:%M</string>
+    <add-resource type="string" name="pattern_today"/>
+    <string name="pattern_today">Today</string>
+    <add-resource type="string" name="pattern_yesterday"/>
+    <string name="pattern_yesterday">Yesterday</string>
+    <add-resource type="string" name="pattern_tomorrow"/>
+    <string name="pattern_tomorrow">Tomorrow</string>
+    <add-resource type="string" name="pattern_day"/>
+    <string name="pattern_day">Day</string>
+    <add-resource type="string" name="pattern_hour"/>
+    <string name="pattern_hour">hour</string>
+    <add-resource type="string" name="pattern_minute"/>
+    <string name="pattern_minute">minute</string>
+    <add-resource type="string" name="pattern_second"/>
+    <string name="pattern_second">second</string>
+    <add-resource type="string" name="pattern_month_day"/>
+    <string name="pattern_month_day">%-m/%-e</string>
+    <add-resource type="string" name="pattern_week_complete"/>
+    <string name="pattern_week_complete">%A</string>
+    <!-- Date&Time format Tool end [nietong]-->
+    
+    <!-- LeActivationEditText by dongshangyong -->
+    <add-resource type="string" name="le_default_activation_title_text"/>
+    <string name="le_default_activation_title_text">激活码:</string>
+
+    <!-- replace 3rd labelName start -->
+    <add-resource type="string" name="le_map_name"/>
+    <string name="le_map_name">Map</string>
+    <!-- replace 3rd labelName end -->
+
+    <!-- LetvBugReporter error dialog message begin [tongtiancheng] -->
+    <add-resource type="string" name="le_aerr_application"/>
+    <string name="le_aerr_application">"%1$s has encountered a problem."</string>
+    <add-resource type="string" name="le_aerr_process"/>
+    <string name="le_aerr_process">"%1$s has encountered a problem."</string>
+    <add-resource type="string" name="le_force_close"/>
+    <string name="le_force_close">"Confirm"</string>
+    <add-resource type="string" name="le_anr_activity_application"/>
+    <string name="le_anr_activity_application">"No response from %2$s."</string>
+    <add-resource type="string" name="le_anr_application_process"/>
+    <string name="le_anr_application_process">"No response from %1$s."</string>
+    <add-resource type="string" name="le_anr_activity_process"/>
+    <string name="le_anr_activity_process">"Activities from %1$s are not responding."</string>
+    <add-resource type="string" name="le_anr_process"/>
+    <string name="le_anr_process">"%1$s process isn\'t responding."</string>
+    <!-- LetvBugReporter error dialog message end [tongtiancheng] -->
+    
+    <!--LETVREBOOT strings start-->
+    <add-resource type="string" name="global_action_reboot"/>
+    <string name="global_action_reboot">Reboot</string>
+    <add-resource type="string" name="reboot"/>
+    <string name="reboot">Reboot</string>
+    <add-resource type="string" name="reboot_confirm"/>
+    <string name="reboot_confirm" product="tablet">Your tablet will be rebooted.</string>
+    <string name="reboot_confirm" product="default">Your phone will be rebooted.</string>
+    <add-resource type="string" name="reboot_confirm_question"/>
+    <string name="reboot_confirm_question">Reboot now?</string>
+    <!--LETVREBOOT strings end-->
+    
+    <!--LETVRE_GLOBALACTION strings start added by fengzihua-->
+    <add-resource type="string" name="shutdow_btn"/>
+    <string name="shutdow_btn">"Shutdown"</string>
+    <add-resource type="string" name="shutdown_tip"/>
+    <string name="shutdown_tip">"Because of you, I grew up every day"</string>
+    <add-resource type="string" name="reboot_btn"/>
+    <string name="reboot_btn">"Swipe down to power off"</string>
+    <add-resource type="string" name="reboot_tip"/>
+    <string name="reboot_tip">"Because of you, I grew up every day"</string>
+    <add-resource type="string" name="reboot_btn_v2"/>
+    <string name="reboot_btn_v2">"Reboot"</string>
+    <add-resource type="string" name="cancel_btn_v2"/>
+    <string name="cancel_btn_v2">"Cancel"</string>
+    <add-resource type="string" name="locked_tip"/>
+    <string name="locked_tip">"phone has locked"</string>
+    <!--LETV_GLOBALACTION strings end-->
+
+    <add-resource type="string" name="placeholder_symbol_4"/>
+    <string name="placeholder_symbol_4">aaaa</string>
+    <!--DATETIMEPICKER-->
+    <add-resource type="string" name="date_format"/>
+    <string name="date_format">EE MMMMMMM dd</string>
+    <add-resource type="string" name="hour"/>
+    <string name="hour">H</string>
+    <add-resource type="string" name="minute"/>
+    <string name="minute">M</string>
+
+    <!-- leshare strings start -->
+    <add-resource type="string" name="share_title"/>
+    <string name="share_title">Share or send to</string>
+    <add-resource type="string" name="share_cancel"/>
+    <string name="share_cancel">Cancel</string>
+    <add-resource type="string" name="share_show_more"/>
+    <string name="share_show_more">More</string>
+    <add-resource type="string" name="share_browser_add_bookmark"/>
+    <string name="share_browser_add_bookmark">Collection</string>
+    <add-resource type="string" name="share_browser_send_deskTop"/>
+    <string name="share_browser_send_deskTop">Usual use</string>
+    <add-resource type="string" name="share_browser_copy_link"/>
+    <string name="share_browser_copy_link">Copy</string>
+    <add-resource type="string" name="share_browser_search"/>
+    <string name="share_browser_search">Search</string>
+    <add-resource type="string" name="share_gallery_set_contact_photo"/>
+    <string name="share_gallery_set_contact_photo">Contact</string>
+    <add-resource type="string" name="share_gallery_set_wallpaper"/>
+    <string name="share_gallery_set_wallpaper">Wallpaper</string>
+    <add-resource type="string" name="share_gallery_set_ppt"/>
+    <string name="share_gallery_set_ppt">Slideshow</string>
+    <add-resource type="string" name="share_to"/>
+    <string name="share_to">Share to</string>
+    <add-resource type="string" name="send_to"/>
+    <string name="send_to">Send to</string>
+    <add-resource type="string" name="send_give"/>
+    <string name="send_give">Send to</string>
+    <add-resource type="string" name="add_to"/>
+    <string name="add_to">Add to</string>
+    <add-resource type="string" name="share_gallery_detail"/>
+    <string name="share_gallery_detail">Details</string>
+    <add-resource type="string" name="share_gallery_download"/>
+    <string name="share_gallery_download">Download</string>
+    <add-resource type="string" name="share_email_share_to_letv_cloud"/>
+    <string name="share_email_share_to_letv_cloud">shareToLetvCloud</string>
+    <add-resource type="string" name="share_send_to"/>
+    <string name="share_send_to">Send to</string>
+    <add-resource type="string" name="weibo_name"/>
+    <string name="weibo_name">Weibo</string>
+    <add-resource type="string" name="share_browser_add_collect"/>
+    <string name="share_browser_add_collect">addToFavourate</string>
+    <add-resource type="string" name="share_browser_save_page"/>
+    <string name="share_browser_save_page">Save</string>
+    <add-resource type="string" name="share_gallery_to_dlna"/>
+    <string name="share_gallery_to_dlna">TV</string>
+    <add-resource type="string" name="share_browser_add_home"/>
+    <string name="share_browser_add_home">Add home</string>
+
+
+
+    <add-resource type="string" name="lepinned"/>
+    <string name="lepinned">pinned</string>
+    
+    <!--appops added by gaozhipeng-->
+    <add-resource type="string" name="app_ops_access_camera"/>
+    <string name="app_ops_access_camera">Access camera</string>
+    <add-resource type="string" name="app_ops_access_location"/>
+    <string name="app_ops_access_location">Access location</string>
+    <add-resource type="string" name="app_ops_access_notifications"/>
+    <string name="app_ops_access_notifications">Read notifications</string>
+    <add-resource type="string" name="app_ops_alarm_wakeup"/>
+    <string name="app_ops_alarm_wakeup">Timed wake</string>
+    <add-resource type="string" name="app_ops_draw_on_top"/>
+    <string name="app_ops_draw_on_top">Alert window display</string>
+    <add-resource type="string" name="app_ops_keep_device_awake"/>
+    <string name="app_ops_keep_device_awake">Keep screen awake</string>
+    <add-resource type="string" name="app_ops_make_phone_call"/>
+    <string name="app_ops_make_phone_call">Make calls</string>
+    <add-resource type="string" name="app_ops_modify_calendar"/>
+    <string name="app_ops_modify_calendar">Write/delete calendar</string>
+    <add-resource type="string" name="app_ops_modify_call_log"/>
+    <string name="app_ops_modify_call_log">Write/delete call log</string>
+    <add-resource type="string" name="app_ops_modify_clipboard"/>
+    <string name="app_ops_modify_clipboard">Write/delete clipboard</string>
+    <add-resource type="string" name="app_ops_modify_contacts"/>
+    <string name="app_ops_modify_contacts">Write/delete contacts</string>
+    <add-resource type="string" name="app_ops_modify_settings"/>
+    <string name="app_ops_modify_settings">Modify settings</string>
+    <add-resource type="string" name="app_ops_play_audio"/>
+    <string name="app_ops_play_audio">Play audio</string>
+    <add-resource type="string" name="app_ops_post_notification"/>
+    <string name="app_ops_post_notification">Send notifications</string>
+    <add-resource type="string" name="app_ops_read_calendar"/>
+    <string name="app_ops_read_calendar">Read calendar</string>
+    <add-resource type="string" name="app_ops_read_call_log"/>
+    <string name="app_ops_read_call_log">Read call log</string>
+    <add-resource type="string" name="app_ops_read_clipboard"/>
+    <string name="app_ops_read_clipboard">Read clipboard</string>
+    <add-resource type="string" name="app_ops_read_contacts"/>
+    <string name="app_ops_read_contacts">Read contacts</string>
+    <add-resource type="string" name="app_ops_read_mms"/>
+    <string name="app_ops_read_mms">Read MMS</string>
+    <add-resource type="string" name="app_ops_read_sms"/>
+    <string name="app_ops_read_sms">Read SMS</string>
+    <add-resource type="string" name="app_ops_receive_sms"/>
+    <string name="app_ops_receive_sms">Receive SMS</string>
+    <add-resource type="string" name="app_ops_record_audio"/>
+    <string name="app_ops_record_audio">Record audio</string>
+    <add-resource type="string" name="app_ops_send_mms"/>
+    <string name="app_ops_send_mms">Send MMS</string>
+    <add-resource type="string" name="app_ops_send_sms"/>
+    <string name="app_ops_send_sms">Send SMS</string>
+    <add-resource type="string" name="app_ops_start_at_bootup"/>
+    <string name="app_ops_start_at_bootup">Start at boot up</string>
+    <add-resource type="string" name="app_ops_toggle_bluetooth"/>
+    <string name="app_ops_toggle_bluetooth">Enable/disable Bluetooth</string>
+    <add-resource type="string" name="app_ops_nfc"/>
+    <string name="app_ops_nfc">Enable/disable NFC</string>
+    <add-resource type="string" name="app_ops_read_phone_state"/>
+    <string name="app_ops_read_phone_state">Read phone info</string>
+    <add-resource type="string" name="app_ops_notification_sound"/>
+    <string name="app_ops_notification_sound">Enable/disable notifications</string>
+    <add-resource type="string" name="app_ops_toggle_mobile_data"/>
+    <string name="app_ops_toggle_mobile_data">Enable/disable mobile data</string>
+    <add-resource type="string" name="app_ops_toggle_wifi"/>
+    <string name="app_ops_toggle_wifi">Enable/disable WLAN</string>
+    <add-resource type="string" name="app_ops_use_alarm_volume"/>
+    <string name="app_ops_use_alarm_volume">Control alarm volume</string>
+    <add-resource type="string" name="app_ops_use_audio_focus"/>
+    <string name="app_ops_use_audio_focus">Audio focus</string>
+    <add-resource type="string" name="app_ops_use_bluetooth_volume"/>
+    <string name="app_ops_use_bluetooth_volume">Control Bluetooth volume</string>
+    <add-resource type="string" name="app_ops_use_master_volume"/>
+    <string name="app_ops_use_master_volume">Control master volume</string>
+    <add-resource type="string" name="app_ops_use_media_buttons"/>
+    <string name="app_ops_use_media_buttons">Use volume keys</string>
+    <add-resource type="string" name="app_ops_use_media_volume"/>
+    <string name="app_ops_use_media_volume">Control media volume</string>
+    <add-resource type="string" name="app_ops_use_notification_volume"/>
+    <string name="app_ops_use_notification_volume">Control notification volume</string>
+    <add-resource type="string" name="app_ops_use_ring_volume"/>
+    <string name="app_ops_use_ring_volume">Control ringtone volume</string>
+    <add-resource type="string" name="app_ops_use_vibrate"/>
+    <string name="app_ops_use_vibrate">use haptic feedback</string>
+    <add-resource type="string" name="app_ops_use_voice_volume"/>
+    <string name="app_ops_use_voice_volume">Control voice volume</string>
+    <add-resource type="string" name="app_ops_write_mms"/>
+    <string name="app_ops_write_mms">write MMS message</string>
+    <add-resource type="string" name="app_ops_write_sms"/>
+    <string name="app_ops_write_sms">write SMS message</string>
+    <add-resource type="string" name="app_ops_notification_favourite"/>
+    <string name="app_ops_notification_favourite">Access notification bar priority</string>
+    <add-resource type="string" name="app_ops_three_way_calling"/>
+    <string name="app_ops_three_way_calling">Make 3-way calls</string>
+    <add-resource type="string" name="app_ops_usage_stats"/>
+    <string name="app_ops_usage_stats">Usage stats</string>
+    <add-resource type="string" name="app_ops_mute_microphone"/>
+    <string name="app_ops_mute_microphone">Mute microphone</string>
+    <add-resource type="string" name="app_ops_toast_window"/>
+    <string name="app_ops_toast_window">Show toast window</string>
+    <add-resource type="string" name="app_ops_project_media"/>
+    <string name="app_ops_project_media">Cast media</string>
+    <add-resource type="string" name="app_ops_activate_vpn"/>
+    <string name="app_ops_activate_vpn">Activate VPN</string>
+    <add-resource type="string" name="privacy_guard_dialog_title"/>
+    <string name="privacy_guard_dialog_title">Privacy Guard</string>
+    <add-resource type="string" name="privacy_guard_dialog_summary"/>
+    <string name="privacy_guard_dialog_summary">%1$s requests %2$s.</string>
+    <add-resource type="string" name="permission_remember_choice"/>
+    <string name="permission_remember_choice">Remember my choice</string>
+    <add-resource type="string" name="allow"/>
+    <string name="allow">Allow</string>
+    <add-resource type="string" name="deny"/>
+    <string name="deny">Deny</string>
+    <add-resource type="string" name="always"/>
+    <string name="always">always</string>
+    
+    
+    <!--LETVSAFE strings begine-->
+    <add-resource type="string" name="appops_conmunicate"/>
+    <string name="appops_conmunicate">communicate</string>
+    <add-resource type="string" name="appops_internet"/>
+    <string name="appops_internet">Internet</string>
+    <add-resource type="string" name="appops_media"/>
+    <string name="appops_media">Media</string>
+    <add-resource type="string" name="appops_tool"/>
+    <string name="appops_tool">Tool</string>
+    <add-resource type="string" name="appops_device"/>
+    <string name="appops_device">Device</string>
+    <add-resource type="string" name="appops_system"/>
+    <string name="appops_system">System</string>
+    <add-resource type="string" name="appops_other"/>
+    <string name="appops_other">Other</string>
+    <add-resource type="string" name="appops_privacy"/>
+    <string name="appops_privacy">Privacy</string>
+    <add-resource type="string" name="appops_location"/>
+    <string name="appops_location">Location</string>
+    <add-resource type="string" name="appops_location_desc"/>
+    <string name="appops_location_desc">Allow to access location</string>
+    <add-resource type="string" name="appops_contact_log"/>
+    <string name="appops_contact_log">Contacts log</string>
+    <add-resource type="string" name="appops_contact_log_desc"/>
+    <string name="appops_contact_log_desc">Allow to read/write contacts log</string>
+    <add-resource type="string" name="appops_call_log"/>
+    <string name="appops_call_log">Call log</string>
+    <add-resource type="string" name="appops_call_log_desc"/>
+    <string name="appops_call_log_desc">Allow to read/write call log</string>
+    <add-resource type="string" name="appops_calendar"/>
+    <string name="appops_calendar">allowed access call log</string>
+    <add-resource type="string" name="appops_calendar_desc"/>
+    <string name="appops_calendar_desc">Allow to read/write calendar log</string>
+    <add-resource type="string" name="appops_call_phone"/>
+    <string name="appops_call_phone">call phone</string>
+    <add-resource type="string" name="appops_call_phone_desc"/>
+    <string name="appops_call_phone_desc">Allow to make, receive and end phone calls</string>
+    <add-resource type="string" name="appops_sms_log"/>
+    <string name="appops_sms_log">SMS log</string>
+    <add-resource type="string" name="appops_sms_log_desc"/>
+    <string name="appops_sms_log_desc">Allow to read SMS log</string>
+    <add-resource type="string" name="appops_mms_log"/>
+    <string name="appops_mms_log">MMS log</string>
+    <add-resource type="string" name="appops_mms_log_desc"/>
+    <string name="appops_mms_log_desc">Allow to read/write MMS log</string>
+    <add-resource type="string" name="appops_receive_sms"/>
+    <string name="appops_receive_sms">receive SMS</string>
+    <add-resource type="string" name="appops_receive_sms_desc"/>
+    <string name="appops_receive_sms_desc">allowed receive SMS</string>
+    <add-resource type="string" name="appops_send_sms"/>
+    <string name="appops_send_sms">Send SMS</string>
+    <add-resource type="string" name="appops_send_sms_desc"/>
+    <string name="appops_send_sms_desc">Allow to send SMS</string>
+    <add-resource type="string" name="appops_send_mms"/>
+    <string name="appops_send_mms">Send MMS</string>
+    <add-resource type="string" name="appops_send_mms_desc"/>
+    <string name="appops_send_mms_desc">Allow to send MMS</string>
+    <add-resource type="string" name="appops_write_settings"/>
+    <string name="appops_write_settings">System settings</string>
+    <add-resource type="string" name="appops_write_settings_desc"/>
+    <string name="appops_write_settings_desc">Allow to change system settings</string>
+    <add-resource type="string" name="appops_access_notification"/>
+    <string name="appops_access_notification">Read notification log</string>
+    <add-resource type="string" name="appops_access_notification_desc"/>
+    <string name="appops_access_notification_desc">Allow to read notification log</string>
+    <add-resource type="string" name="appops_camera"/>
+    <string name="appops_camera">camera</string>
+    <add-resource type="string" name="appops_camera_desc"/>
+    <string name="appops_camera_desc">allowed use camera</string>
+    <add-resource type="string" name="appops_record_audio"/>
+    <string name="appops_record_audio">record audio</string>
+    <add-resource type="string" name="appops_record_audio_desc"/>
+    <string name="appops_record_audio_desc">allowed record audio</string>
+    <add-resource type="string" name="appops_wifi"/>
+    <string name="appops_wifi">Enable/disable WLAN</string>
+    <add-resource type="string" name="appops_wifi_desc"/>
+    <string name="appops_wifi_desc">Allow to enable/disable WLAN</string>
+    <add-resource type="string" name="appops_bluetooth"/>
+    <string name="appops_bluetooth">Enable/disable Bluetooth</string>
+    <add-resource type="string" name="appops_bluetooth_desc"/>
+    <string name="appops_bluetooth_desc">Allow to enable/disable Bluetooth</string>
+    <add-resource type="string" name="appops_dataconnect"/>
+    <string name="appops_dataconnect">turn on/off dataconnect</string>
+    <add-resource type="string" name="appops_dataconnect_desc"/>
+    <string name="appops_dataconnect_desc">allow to turn on/off dataconnect</string>
+    <add-resource type="string" name="appops_autoboot"/>
+    <string name="appops_autoboot">Auto boot</string>
+    <add-resource type="string" name="appops_autoboot_desc"/>
+    <string name="appops_autoboot_desc">allowed autoboot</string>
+    <add-resource type="string" name="appops_nfc"/>
+    <string name="appops_nfc">nfc</string>
+    <add-resource type="string" name="appops_nfc_desc"/>
+    <string name="appops_nfc_desc">Allow to enable/disable NFC</string>
+    <add-resource type="string" name="appops_phoneinfo"/>
+    <string name="appops_phoneinfo">phone info</string>
+    <add-resource type="string" name="appops_phoneinfo_desc"/>
+    <string name="appops_phoneinfo_desc">allowed read phone info</string>
+    <add-resource type="string" name="appops_clipboard"/>
+    <string name="appops_clipboard">clipboard</string>
+    <add-resource type="string" name="appops_clipboard_desc"/>
+    <string name="appops_clipboard_desc">allowed access clipboard</string>
+    <add-resource type="string" name="appops_notification"/>
+    <string name="appops_notification">notification</string>
+    <add-resource type="string" name="appops_notification_desc"/>
+    <string name="appops_notification_desc">allowed to post notification</string>
+    <add-resource type="string" name="appops_system_alert_window"/>
+    <string name="appops_system_alert_window">system alert window</string>
+    <add-resource type="string" name="appops_system_alert_window_desc"/>
+    <string name="appops_system_alert_window_desc">allowed to show system alert window</string>
+    <add-resource type="string" name="appops_three_way_calling"/>
+    <string name="appops_three_way_calling">3-way calling</string>
+    <add-resource type="string" name="appops_three_way_calling_desc"/>
+    <string name="appops_three_way_calling_desc">Allow to make 3-way calls</string>
+    <add-resource type="string" name="le_share_default_select_tips"/>
+    <string name="le_share_default_select_tips">Choose this setting by default, do not show again</string>
+    <!--LETVSAFE strings ends-->
+
+    <!-- package install AppSecurityPermission layout -->
+    <!-- String -->
+    <add-resource type="string" name="always_allow"/>
+    <string name="always_allow">"Always ask"</string>
+    <add-resource type="string" name="prohibit"/>
+    <string name="prohibit">"Deny"</string>
+    <add-resource type="string" name="all_allow"/>
+    <string name="all_allow">"Allow"</string>
+    <add-resource type="string" name="always_allow_value"/>
+    <string name="always_allow_value">3</string>
+    <add-resource type="string" name="allow_value"/>
+    <string name="allow_value">0</string>
+    <add-resource type="string" name="prohibit_value"/>
+    <string name="prohibit_value">1</string>
+
+    <add-resource type="string" name="on"/>
+    <string name= "on"> "On" </string>
+    <add-resource type="string" name="off"/>
+    <string name= "off"> "Off" </string>
+    <add-resource type="string" name="setup_self"/>
+    <string name= "setup_self" > "Auto setup" </string>
+    <add-resource type="string" name="cost"/>
+    <string name= "cost" >"Maybe cause cost"</string>
+
+    <!-- end package install AppSecurityPermission layout -->
+    <!-- end add-->
+
+    <!-- adb install app by adb start-->
+    <add-resource type="string" name="apply_adb_install"/>
+    <string name= "apply_adb_install" >"Apply for install the app by The ADB command ?"</string>
+    <add-resource type="string" name="adb_prompt_info"/>
+    <string name= "adb_prompt_info" >"Please select on your phone whether can install the app by The ADB command?"</string>
+    <add-resource type="string" name="refuse_adb_install"/>
+    <string name= "refuse_adb_install" >"refused to install the app by The ADB command !"</string>
+    <!-- end -->
+    <!-- Add Start Show dialog when SD plug in -->
+    <add-resource type="string" name="open_storage"/>
+    <string name= "open_storage" >"Open"</string>
+    <add-resource type="string" name="cancel_storage"/>
+    <string name= "cancel_storage" >"Cancel"</string>
+    <add-resource type="string" name="open_storage_text"/>
+    <string name= "open_storage_text" >"Are you ready to open The Storage Device ?"</string>
+    <add-resource type="string" name="open_otg_text"/>
+    <string name= "open_otg_text" >"Are you ready to open The OTG Storage Device ?"</string>
+    <!-- Add end -->
+
+    <add-resource type="string" name="blue_value"/>
+    <string name="blue_value">#FF1D87E4</string>
+    <add-resource type="string" name="green_value"/>
+    <string name="green_value">#FF1C9D17</string>
+    <add-resource type="string" name="orange_value"/>
+    <string name="orange_value">#FFFDA728</string>
+    <add-resource type="string" name="red_value"/>
+    <string name="red_value">#FFE94C38</string>
+    <!-- LETV_VOLUME_ADJUST strings start -->
+    <add-resource type="string" name="leui_volume_icon_description_ringer"/>
+    <string name="leui_volume_icon_description_ringer">Ringtone</string>
+    <add-resource type="string" name="leui_volume_icon_description_incall"/>
+    <string name="leui_volume_icon_description_incall">Call</string>
+    <add-resource type="string" name="leui_volume_icon_description_incall_outspeak"/>
+    <string name="leui_volume_icon_description_incall_outspeak">Speaker</string>
+    <add-resource type="string" name="leui_volume_icon_description_media"/>
+    <string name="leui_volume_icon_description_media">Media</string>
+    <add-resource type="string" name="leui_smart_sound_name"/>
+    <string name="leui_smart_sound_name">Smart Sound</string>
+    <add-resource type="string" name="mute_key_silent"/>
+    <string name="mute_key_silent">Adjust volume while turn it off</string>
+    <add-resource type="string" name="leui_safe_volume_title"/>
+    <string name="leui_safe_volume_title">Continue to increase the volume is easy to damage hearing</string>
+    <add-resource type="string" name="leui_safe_volume_continue"/>
+    <string name="leui_safe_volume_continue">continue</string>
+    <add-resource type="string" name="leui_safe_volume_cancle"/>
+    <string name="leui_safe_volume_cancle">cancle</string>
+    <!-- LETV_VOLUME_ADJUST strings end -->
+
+    <!-- LeSelectSim -->
+    <add-resource type="string" name="le_dialpad_select_sim_card"/>
+    <string name="le_dialpad_select_sim_card">Select SIM card to use</string>
+    <add-resource type="string" name="le_dialpad_select_sim_card_cancel"/>
+    <string name="le_dialpad_select_sim_card_cancel">Cancel</string>
+    <add-resource type="string" name="le_dialpad_select_sim_card_sim1"/>
+    <string name="le_dialpad_select_sim_card_sim1">SIM1</string>
+    <add-resource type="string" name="le_dialpad_select_sim_card_sim2"/>
+    <string name="le_dialpad_select_sim_card_sim2">SIM2</string>
+    <add-resource type="string" name="le_display_sim_name"/>
+    <string name="le_display_sim_name">SIM 0%1$s</string>
+
+    <!--lepai_share -->
+    <add-resource type="string" name="le_pai_voice_share"/>
+    <string name="le_pai_voice_share">VoiceShare</string>
+
+
+    <!-- Lunar -->
+    <add-resource type="string" name="le_special_holiday_mother"/>
+    <string name="le_special_holiday_mother" >母亲节</string>
+    <add-resource type="string" name="le_special_holiday_father"/>
+    <string name="le_special_holiday_father" >父亲节</string>
+    <add-resource type="string" name="le_status_format1" />
+    <string name="le_status_format1" >yyyy年MM月dd日</string>
+    <add-resource type="string" name="le_status_format2" />
+    <string name="le_status_format2" >1900年1月31日</string>
+    <add-resource type="string" name="le_status_leap" />
+    <string name="le_status_leap">闰</string>
+    <add-resource type="string" name="le_status_year" />
+    <string name="le_status_year" >年</string>
+    <add-resource type="string" name="le_status_month" />
+    <string name="le_status_month" >月</string>
+    <add-resource type="string" name="le_status_day" />
+    <string name="le_status_day" >日</string>
+    <add-resource type="string" name="le_status_chushi" />
+    <string name="le_status_chushi" >初十</string>
+    <add-resource type="string" name="le_status_ershi" />
+    <string name="le_status_ershi" >二十</string>
+    <add-resource type="string" name="le_status_sanshi" />
+    <string name="le_status_sanshi" >三十</string>
+
+    <!-- WifiConnectView -->
+    <add-resource type="string" name="scale_x" />
+    <string name="scale_x">scaleX</string>
+    <add-resource type="string" name="scale_y" />
+    <string name="scale_y">scaleY</string>
+
+     <!-- //+LEUI [REQ][LEUI-6586][fengzihua] added: add for phone bind permission-->
+    <add-resource type="string" name="permlab_read_phone_bind_key"/>
+    <string name="permlab_read_phone_bind_key">“Access security KEY”</string>
+    <add-resource type="string" name="permdesc_read_phone_bind_key"/>
+    <string name="permdesc_read_phone_bind_key">”Allows applications to access security KEY.“</string>
+    <!-- //-LEUI -->
+
+    <!-- LeLicenceDialog -->
+    <add-resource name="le_licence_dialog_title" type="string"/>
+    <string name="le_licence_dialog_title">Statements and terms</string>
+    <add-resource name="le_licence_dialog_content" type="string"/>
+    <string name="le_licence_dialog_content">
+        You will be using %1$s provided by Letv, please read the %2$s. %3$s during use?
+    </string>
+    <add-resource name="le_licence_dialog_permission_net" type="string"/>
+    <string name="le_licence_dialog_permission_net">Allow %1$s to access your network information</string>
+    <add-resource name="le_licence_dialog_permission_location_net" type="string"/>
+    <string name="le_licence_dialog_permission_location_net">Allow %1$s to access your location and network information</string>
+    <add-resource name="le_licence_dialog_permission_contacts_location_net" type="string"/>
+    <string name="le_licence_dialog_permission_contacts_location_net">Allow %1$s to access your contacts, location and network information</string>
+    <add-resource name="le_licence_dialog_cb_text" type="string"/>
+    <string name="le_licence_dialog_cb_text">Do not show again</string>
+    <add-resource name="le_licence_dialog_btn_exit" type="string"/>
+    <string name="le_licence_dialog_btn_exit">Exit</string>
+    <add-resource name="le_licence_dialog_btn_agree" type="string"/>
+    <string name="le_licence_dialog_btn_agree">Agree and continue</string>
+    <add-resource name="le_licence_dialog_user" type="string"/>
+    <string name="le_licence_dialog_user">
+        <![CDATA[
+            <a href="http://xpage.scloud.letv.com/api/agree/user/en">User Agreement</a>
+        ]]>
+    </string>
+    <add-resource name="le_licence_dialog_privacy" type="string"/>
+    <string name="le_licence_dialog_privacy">
+        <![CDATA[
+            <a href="http://xpage.scloud.letv.com/api/agree/privacy/en">Privacy Agreement</a>
+        ]]>
+    </string>
+    <add-resource name="le_licence_dialog_user_privacy" type="string"/>
+    <string name="le_licence_dialog_user_privacy">
+        <![CDATA[
+            <a href="http://xpage.scloud.letv.com/api/agree/user/en">User Agreement</a> and
+            <a href="http://xpage.scloud.letv.com/api/agree/privacy/en">Privacy Agreement</a>
+        ]]>
+    </string>
+    <!-- LeLicenceDialog -->
+
+    <!-- LeLicenceDialog oversea -->
+    <add-resource name="le_licence_dialog_user_oversea" type="string"/>
+    <string name="le_licence_dialog_user_oversea">
+        <![CDATA[
+            <a href="http://xpage.hk.scloud.letv.com/api/agree/user/en">User Agreement</a>
+        ]]>
+    </string>
+    <add-resource name="le_licence_dialog_privacy_oversea" type="string"/>
+    <string name="le_licence_dialog_privacy_oversea">
+        <![CDATA[
+            <a href="http://xpage.hk.scloud.letv.com/api/agree/privacy/en">Privacy Agreement</a>
+        ]]>
+    </string>
+    <add-resource name="le_licence_dialog_user_privacy_oversea" type="string"/>
+    <string name="le_licence_dialog_user_privacy_oversea">
+        <![CDATA[
+            <a href="http://xpage.hk.scloud.letv.com/api/agree/user/en">User Agreement</a> and
+            <a href="http://xpage.hk.scloud.letv.com/api/agree/privacy/en">Privacy Agreement</a>
+        ]]>
+    </string>
+    <!-- LeLicenceDialog oversea -->
+
+    <!-- LETV_VOLUME_ADJUST strings start -->
+    <add-resource type="string" name="ringtone_silent"/>
+    <string name="ringtone_silent">Mute</string>
+    <!--zhangyd port fort temp.the string should be translated in the future-->
+    <string name="le_recipient_edit_imeActionLabel">确定</string>
+    <string name="le_share_give">傳送給</string>
+    <add-resource type="string" name="le_share_to"/>
+    <string name="le_share_to">傳送至</string>
+    <string name="app_name">thirdpart_support</string>
+</resources>

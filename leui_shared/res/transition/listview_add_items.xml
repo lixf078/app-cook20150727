@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+     android:transitionOrdering="sequential">
+
+    <transitionSet android:duration="300" android:transitionOrdering="together">
+        <changeBounds />
+        <slide android:slideEdge="bottom" android:transitionVisibilityMode="mode_out"/>
+    </transitionSet>
+    
+    <fade android:duration="200" android:fadingMode="fade_in" />
+
+</transitionSet>
