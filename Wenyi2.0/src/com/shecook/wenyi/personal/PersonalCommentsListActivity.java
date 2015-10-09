@@ -19,7 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.letv.shared.widget.LeListView;
+import com.letv.shared.widget.LeBottomSheet;
 import com.shecook.wenyi.BaseActivity;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
@@ -35,25 +35,24 @@ import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
-import com.shecook.wenyi.model.personal.PersonalTopicModel;
-import com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter;
-import com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter.OnSwipeOperator;
+import com.shecook.wenyi.model.personal.PersonalCommentModel;
+import com.shecook.wenyi.personal.adapter.PersonalCommentListAdapter;
+import com.shecook.wenyi.personal.adapter.PersonalCommentListAdapter.OnSwipeOperator;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class PersonalTopicListActivity extends BaseActivity implements
+public class PersonalCommentsListActivity extends BaseActivity implements
 		OnClickListener, OnSwipeOperator {
 
 	static final String TAG = "PersonalTopicListActivity";
-	public static final int STATUS_OK_TOPIC_GROUP = 1;
-	public static final int STATUS_OK_TOPIC_CREATE = 2;
-	public static final int STATUS_OK_TOPIC_COLLECTED = 3;
-	private LinkedList<PersonalTopicModel> collectionList;
+	public static final int STATUS_OK_COMMENT_GROUP = 1;
+	public static final int STATUS_OK_COMMENT_CREATE = 2;
+	public static final int STATUS_OK_COMMENT_COLLECTED = 3;
+	private LinkedList<PersonalCommentModel> commentList;
 	private PullToRefreshListView mPullRefreshListView;
-	private PersonalTopicListAdapter mAdapter;
+	private PersonalCommentListAdapter mAdapter;
 
-	private String groupid = "";
 	private boolean shouldLoad = true;
 	private int pindex = 0;
 
@@ -67,15 +66,14 @@ public class PersonalTopicListActivity extends BaseActivity implements
 
 	private void initView() {
 
-		groupid = getIntent().getStringExtra("groupid");
-		collectionList = new LinkedList<PersonalTopicModel>();
+		commentList = new LinkedList<PersonalCommentModel>();
 
 		ImageView returnImage = (ImageView) findViewById(R.id.return_img);
 		returnImage.setOnClickListener(this);
 		ImageView settingImage = (ImageView) findViewById(R.id.right_img);
 		settingImage.setOnClickListener(this);
 		TextView titleView = (TextView) findViewById(R.id.middle_title);
-		titleView.setText("我的收藏");
+		titleView.setText("我的评论");
 
 		mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
 
@@ -85,7 +83,7 @@ public class PersonalTopicListActivity extends BaseActivity implements
 					public void onRefresh(
 							PullToRefreshBase<ListView> refreshView) {
 						String label = DateUtils.formatDateTime(
-								PersonalTopicListActivity.this.getApplicationContext(),
+								PersonalCommentsListActivity.this.getApplicationContext(),
 								System.currentTimeMillis(),
 								DateUtils.FORMAT_SHOW_TIME
 										| DateUtils.FORMAT_SHOW_DATE
@@ -109,7 +107,7 @@ public class PersonalTopicListActivity extends BaseActivity implements
 					}
 				});
 
-		mAdapter = new PersonalTopicListAdapter(this, collectionList);
+		mAdapter = new PersonalCommentListAdapter(this, commentList);
 		mAdapter.setOnSwipeOperator(this);
 		
 		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
@@ -121,7 +119,7 @@ public class PersonalTopicListActivity extends BaseActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
-				
+				showBottomSheet((int) position);
 			}
 		});
 	}
@@ -154,11 +152,11 @@ public class PersonalTopicListActivity extends BaseActivity implements
 				mAdapter.notifyDataSetChanged();
 				mPullRefreshListView.onRefreshComplete();
 				break;
-			case STATUS_OK_TOPIC_COLLECTED:
+			case STATUS_OK_COMMENT_COLLECTED:
 				mAdapter.notifyDataSetChanged();
 				mPullRefreshListView.onRefreshComplete();
 				break;
-			case STATUS_OK_TOPIC_CREATE:
+			case STATUS_OK_COMMENT_CREATE:
 				break;
 			default:
 				break;
@@ -181,6 +179,37 @@ public class PersonalTopicListActivity extends BaseActivity implements
 		}
 	}
 
+	LeBottomSheet mBottomSheet;
+	public void showBottomSheet(final int position){
+		mBottomSheet = new LeBottomSheet(PersonalCommentsListActivity.this,R.style.wenyi_bottom_dialog);
+		
+		mBottomSheet.setWenyiStyle(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				onDeleteItem(position);
+			}
+		}, new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(mBottomSheet.isShowing()){
+					mBottomSheet.dismiss();
+				}
+			}
+		}, new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Util.dispatchClickEvent(PersonalCommentsListActivity.this, commentList.get(position).getClickto(), commentList.get(position).getMainid(), new String[]{commentList.get(position).getCommentid()});
+			}
+		}, new String[]{"删除", "取消", "查看"}, null, "请选择", R.color.blue);
+		mBottomSheet.setContentAtCenter(true);
+		mBottomSheet.show();
+	}
+	
+	
+	
 	@Override
 	public void onChangeGroup(int position) {
 		
@@ -188,7 +217,16 @@ public class PersonalTopicListActivity extends BaseActivity implements
 
 	@Override
 	public void onDeleteItem(int position) {
-		
+		Log.e("lixufeng", "onDeleteItem position " + position + ", commentList " + commentList.size());
+		/*JSONObject paramObject = new JSONObject();
+		try {
+			paramObject.put("topicid", commentList.get(position).get_id());
+			getPersonalCollectionInfo(
+					HttpUrls.PERSONAL_COLLECTION_DELECT_COOKBOOK, paramObject, delectResultListener,
+					delectErrorListener);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}*/
 	}
 
 	Listener<JSONObject> delectResultListener = new Listener<JSONObject>() {
@@ -206,8 +244,8 @@ public class PersonalTopicListActivity extends BaseActivity implements
 							int core_status = data.getInt("core_status");
 							Log.e(TAG, "collectedResultListener core_status -> " + core_status);
 							if (core_status == 200) {
-								handler.sendEmptyMessage(STATUS_OK_TOPIC_COLLECTED);
-								msg = "" + "删除收藏成功！";
+								handler.sendEmptyMessage(STATUS_OK_COMMENT_COLLECTED);
+								msg = "" + "删除评论成功！";
 							} else {
 								msg = "" + data.getString("msg");
 							}
@@ -219,7 +257,7 @@ public class PersonalTopicListActivity extends BaseActivity implements
 					e.printStackTrace();
 				}
 			}
-			Toast.makeText(PersonalTopicListActivity.this, msg,
+			Toast.makeText(PersonalCommentsListActivity.this, msg,
 					Toast.LENGTH_SHORT).show();
 		}
 	};
@@ -235,10 +273,9 @@ public class PersonalTopicListActivity extends BaseActivity implements
 		if (shouldLoad) {
 			JSONObject paramObject = new JSONObject();
 			try {
-				paramObject.put("groupid", groupid);
 				paramObject.put("pindex", "" + ++pindex);
 				getPersonalCollectionInfo(
-						HttpUrls.PERSONAL_TOPIC_LIST,
+						HttpUrls.PERSONAL_MY_COMMENTS_LIST,
 						paramObject, listResultListener,
 						listErrorListener);
 			} catch (JSONException e) {
@@ -246,7 +283,7 @@ public class PersonalTopicListActivity extends BaseActivity implements
 				e.printStackTrace();
 			}
 		}else{
-			Toast.makeText(PersonalTopicListActivity.this, "End of List!",
+			Toast.makeText(PersonalCommentsListActivity.this, "End of List!",
 					Toast.LENGTH_SHORT).show();
 			handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 		}
@@ -256,7 +293,7 @@ public class PersonalTopicListActivity extends BaseActivity implements
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		JSONObject jsonObject = new JSONObject();
 		JSONObject commonsub = Util
-				.getCommonParam(PersonalTopicListActivity.this);
+				.getCommonParam(PersonalCommentsListActivity.this);
 		try {
 			if (paramsub != null) {
 				jsonObject.put("param", paramsub);
@@ -302,10 +339,10 @@ public class PersonalTopicListActivity extends BaseActivity implements
 						
 						if(data.has("list")){
 							JSONArray list = data.getJSONArray("list");
-							LinkedList<PersonalTopicModel> listTemp = new LinkedList<PersonalTopicModel>();
+							LinkedList<PersonalCommentModel> listTemp = new LinkedList<PersonalCommentModel>();
 							for(int i = 0,j = list.length(); i < j; i++){
 								JSONObject jb = list.getJSONObject(i);
-								PersonalTopicModel eli = new PersonalTopicModel();
+								PersonalCommentModel eli = new PersonalCommentModel();
 								eli.set_id(jb.getString("_id"));
 								eli.setUid(jb.getString("uid"));
 								eli.setClickto(jb.getString("clickto"));
@@ -319,7 +356,7 @@ public class PersonalTopicListActivity extends BaseActivity implements
 								eli.setBottom_desc(jb.getString("bottom_desc"));
 								listTemp.add(eli);
 							}
-							collectionList.addAll(listTemp);
+							commentList.addAll(listTemp);
 						}
 						
 						pindex = data.getInt("pindex");
@@ -329,7 +366,7 @@ public class PersonalTopicListActivity extends BaseActivity implements
 						}
 					}
 				}else{
-					Toast.makeText(PersonalTopicListActivity.this, "" + jsonObject.getString("errmsg"), Toast.LENGTH_SHORT).show();
+					Toast.makeText(PersonalCommentsListActivity.this, "" + jsonObject.getString("errmsg"), Toast.LENGTH_SHORT).show();
 				}
 				handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 			} catch (JSONException e) {

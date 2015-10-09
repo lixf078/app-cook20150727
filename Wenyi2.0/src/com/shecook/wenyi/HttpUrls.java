@@ -44,7 +44,8 @@ public class HttpUrls {
 	
 	public static final String PERSONAL_MYCARD = BASE_URL + "user/mycard";
 	
-	public static final String PERSONAL_TOPIC_LIST = BASE_URL + "user/mycomment";
+	public static final String PERSONAL_MY_COMMENTS_LIST = BASE_URL + "user/mycomment";
+	
 	public static final String PERSONAL_TOPIC_LIST_DEL_ITEM = BASE_URL + "topic/del";
 	
 	public static final String PERSONAL_EDITION_HOMEWORK = BASE_URL + "follow/mylist";

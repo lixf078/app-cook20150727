@@ -29,7 +29,7 @@
             android:scaleType="fitXY" />
 
         <TextView
-            android:id="@+id/personal_topic_item_title_1"
+            android:id="@+id/personal_comment_item_title_1"
             android:layout_toRightOf="@id/item_img_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
             android:scaleType="fitXY" />
 
         <RelativeLayout
-            android:id="@+id/personal_topic_item_info"
+            android:id="@+id/personal_comment_item_info"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -67,18 +67,18 @@
             android:layout_toRightOf="@id/item_img" >
 
             <TextView
-                android:id="@+id/personal_topic_item_title"
+                android:id="@+id/personal_comment_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color" />
 
             <TextView
-                android:id="@+id/personal_topic_item_content"
+                android:id="@+id/personal_comment_item_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dip"
-                android:layout_below="@id/personal_topic_item_title"
+                android:layout_below="@id/personal_comment_item_title"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:textColor="@color/date_color" />

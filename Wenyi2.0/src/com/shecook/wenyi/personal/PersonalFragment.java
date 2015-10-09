@@ -169,7 +169,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 			break;
 		case R.id.personal_my_topic:
 			intent = new Intent(PersonalFragment.this.getActivity(),
-					PersonalTopicListActivity.class);
+					PersonalCommentsListActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.personal_my_edit:

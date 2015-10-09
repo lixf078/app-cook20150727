@@ -110,6 +110,9 @@
      <string name="bottom_line">----------------------</string>
      <string name="cookbook_summary">做大米时，你试着要加一点点盐，味道会更好...</string>
      
+     <!-- group string -->
+     <string name="group_hot_str">热门圈子</string>
+     <string name="group_personal_str">我的圈子</string>
      <!-- piazza string -->
       <string name="piazza_discover_str">发现</string>
       <string name="piazza_question_str">提问</string>

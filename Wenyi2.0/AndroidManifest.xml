@@ -172,7 +172,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.shecook.wenyi.personal.PersonalTopicListActivity"
+            android:name="com.shecook.wenyi.personal.PersonalCommentsListActivity"
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>

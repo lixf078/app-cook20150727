@@ -16,6 +16,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -42,7 +43,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.common.WebViewActivity;
+import com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity;
+import com.shecook.wenyi.cookbook.CookbookItemDeatilActivity;
+import com.shecook.wenyi.essay.EssayItemDeatilActivity;
 import com.shecook.wenyi.model.WenyiUser;
+import com.shecook.wenyi.model.piazza.PiazzaDiscoverItem;
+import com.shecook.wenyi.piazza.PizzaQuestionDeatilActivity;
 
 public class Util {
 
@@ -813,4 +820,96 @@ public class Util {
 		return dataObject;
 	}
 
+	
+	
+	public static void dispatchClickEvent(Context context,String event_type, String event_content,String[] info){
+		int type = -1;
+		try {
+			type = Integer.parseInt(event_type);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			type = -1;
+		}
+		Intent intent = null;
+		if(type != -1){
+			switch (type) {
+			case 10000:
+
+				break;
+			case 10001:
+				intent = new Intent(Intent.ACTION_VIEW, Uri.parse(event_content));
+				context.startActivity(intent);
+				context.startActivity(intent);
+				break;
+			case 10002:
+				intent = new Intent(context, EssayItemDeatilActivity.class);
+				intent.putExtra("essaytitle", "" + info[0]);
+				intent.putExtra("catalogtitle", "文怡随笔");
+				intent.putExtra("articleid", "" + event_content);
+				context.startActivity(intent);
+
+				break;
+			case 10003:
+				intent = new Intent(context, CookbookItemDeatilActivity.class);
+				intent.putExtra("cookbooktitle", "" + info[0]);
+				intent.putExtra("recipeid", "" + event_content);
+				context.startActivity(intent);
+
+				break;
+			case 10004:
+				intent = new Intent(context, WebViewActivity.class);
+				intent.putExtra("weburl", "" + event_content);
+				context.startActivity(intent);
+
+				break;
+			case 10005:
+				/*intent = new Intent(Intent.ACTION_VIEW, Uri.parse(event_content));
+				context.startActivity(intent);*/
+				break;
+			case 10006:
+				intent = new Intent(context, PizzaQuestionDeatilActivity.class);
+				intent.putExtra("topicid", "" + event_content);
+				context.startActivity(intent);
+			case 10007:
+				intent = new Intent(context, CookbookHomeworkDeatilActivity.class);
+				intent.putExtra("followid", "" + event_content);
+				context.startActivity(intent);
+				break;
+			default:
+				break;
+			}
+		}else{
+			if(event_type.equals("article")){
+				intent = new Intent(context, EssayItemDeatilActivity.class);
+				intent.putExtra("essaytitle", "");
+				intent.putExtra("catalogtitle", "文怡随笔");
+				intent.putExtra("articleid", "" + event_content);
+				context.startActivity(intent);
+			}else if(event_type.equals("article_comment")){
+				
+			}else if(event_type.equals("recipe")){
+				intent = new Intent(context, CookbookItemDeatilActivity.class);
+				intent.putExtra("cookbooktitle", "家常菜谱");
+				intent.putExtra("recipeid", "" + event_content);
+				context.startActivity(intent);
+			}else if(event_type.equals("recipe_comment")){
+				
+			}else if(event_type.equals("follow")){
+				intent = new Intent(context, CookbookHomeworkDeatilActivity.class);
+				intent.putExtra("followid", "" + event_content);
+				context.startActivity(intent);
+			}else if(event_type.equals("follow_comment")){
+				
+			}else if(event_type.equals("topic")){
+				intent = new Intent(context, PizzaQuestionDeatilActivity.class);
+				intent.putExtra("topicid", "" + event_content);
+				context.startActivity(intent);
+			}else if(event_type.equals("topic_comment")){
+				
+			}
+		}
+		
+	
+	}
+	
 }

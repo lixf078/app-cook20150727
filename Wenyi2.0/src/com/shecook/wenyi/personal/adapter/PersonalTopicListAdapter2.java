@@ -54,7 +54,7 @@ public class PersonalTopicListAdapter2 extends BaseAdapter {
 		EssayListItem eli = mListItems.get(position);
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(
-     				R.layout.personal_topic_list_item, null);
+     				R.layout.personal_comment_list_item, null);
 			holder = new ViewHolder();
 			holder.advTitle = (TextView) view.findViewById(R.id.essay_item_title);
 			holder.advTime = (TextView) view.findViewById(R.id.essay_item_time);

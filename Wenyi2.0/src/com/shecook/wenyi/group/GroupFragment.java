@@ -1,155 +1,94 @@
 package com.shecook.wenyi.group;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.shecook.wenyi.R;
+import com.shecook.wenyi.cookbook.PiazzaCookbookHomeworkList;
+import com.shecook.wenyi.mainpackage.FragmentTabAdapter;
+import com.shecook.wenyi.piazza.PiazzaDiscoverFragment;
+import com.shecook.wenyi.piazza.PiazzaQuestionFragment;
+import com.shecook.wenyi.util.WenyiLog;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.text.format.DateUtils;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import com.shecook.wenyi.HttpStatus;
-import com.shecook.wenyi.HttpUrls;
-import com.shecook.wenyi.R;
-import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
-import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
-import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
-import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnRefreshListener;
-import com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView;
-import com.shecook.wenyi.common.volley.Request.Method;
-import com.shecook.wenyi.common.volley.Response;
-import com.shecook.wenyi.common.volley.Response.ErrorListener;
-import com.shecook.wenyi.common.volley.Response.Listener;
-import com.shecook.wenyi.common.volley.VolleyError;
-import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
-import com.shecook.wenyi.cookbook.adapter.CookbookHomeworkListAdapter;
-import com.shecook.wenyi.model.CookbookHomeworkListItem;
-import com.shecook.wenyi.model.WenyiImage;
-import com.shecook.wenyi.util.AppException;
-import com.shecook.wenyi.util.Util;
-import com.shecook.wenyi.util.WenyiLog;
-import com.shecook.wenyi.util.volleybox.VolleyUtils;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 public class GroupFragment extends Fragment {
+	private static final String TAG = "PiazzaFragment";
 
-	private static final String TAG = "GroupFragment";
-	
-	private Activity mActivity;
-	
-	NetworkImageView networkImageView = null;
-	
-	private LinkedList<CookbookHomeworkListItem> mListItems;
-	private PullToRefreshListView mPullRefreshListView;
-	private CookbookHomeworkListAdapter mAdapter;
-	private boolean shouldLoad = true;
-	
+	private FragmentActivity mActivity;
+
+	private ImageView return_img, right_img;
+	private TextView middle_title;
+
+	private RadioGroup rgs;
+	public List<Fragment> fragments = new ArrayList<Fragment>();
+	PiazzaDiscoverFragment discoverFragment;
+	PiazzaQuestionFragment questionFragment;
+	PiazzaCookbookHomeworkList foodFragment;
+	PiazzaDiscoverFragment friendFragment;
+
 	@Override
 	public void onAttach(Activity activity) {
 		WenyiLog.logv(TAG, "onAttach");
 		super.onAttach(activity);
-		mActivity = activity;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
+		discoverFragment = new PiazzaDiscoverFragment();
+		questionFragment = new PiazzaQuestionFragment();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		mActivity = getActivity();
 		WenyiLog.logv(TAG, "onCreateView");
-		View rootView = inflater.inflate(R.layout.cookbook_homework_list, container, false);
+		View rootView = inflater.inflate(R.layout.group_fragment, container,
+				false);
 		initView(rootView);
-		getHomeworkList(HttpUrls.COOKBOOK_HOMEWORK_LIST,null,listResultListener,listErrorListener);
 		return rootView;
 	}
 
-	public void initView(View rootView){
-		networkImageView = (NetworkImageView) rootView.findViewById(R.id.main_layout_fillparent);
-		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.pull_refresh_list);
+	private void initView(View rootView) {
+		right_img = (ImageView) rootView.findViewById(R.id.right_img);
+		return_img = (ImageView) rootView.findViewById(R.id.return_img);
+		middle_title = (TextView) rootView.findViewById(R.id.middle_title);
 
-		// Set a listener to be invoked when the list should be refreshed.
-		mPullRefreshListView
-				.setOnRefreshListener(new OnRefreshListener<ListView>() {
+		right_img.setBackgroundResource(R.drawable.edit);
+		return_img.setVisibility(View.INVISIBLE);
+		middle_title.setText(R.string.piazza);
+
+		fragments.add(discoverFragment);
+		fragments.add(questionFragment);
+
+		rgs = (RadioGroup) rootView.findViewById(R.id.tabs_rg);
+
+		FragmentTabAdapter tabAdapter = new FragmentTabAdapter(mActivity,
+				fragments, R.id.personal_edition_content, rgs);
+		tabAdapter
+				.setOnRgsExtraCheckedChangedListener(new FragmentTabAdapter.OnRgsExtraCheckedChangedListener() {
 					@Override
-					public void onRefresh(
-							PullToRefreshBase<ListView> refreshView) {
-						String label = DateUtils.formatDateTime(
-								GroupFragment.this.getActivity().getApplicationContext(),
-								System.currentTimeMillis(),
-								DateUtils.FORMAT_SHOW_TIME
-										| DateUtils.FORMAT_SHOW_DATE
-										| DateUtils.FORMAT_ABBREV_ALL);
-
-						// Update the LastUpdatedLabel
-						refreshView.getLoadingLayoutProxy()
-								.setLastUpdatedLabel(label);
-
-						// Do work to refresh the list here.
-						if(shouldLoad){
-							getHomeworkList(HttpUrls.COOKBOOK_HOMEWORK_LIST, null, listResultListener, listErrorListener);
-						}else{
-							Toast.makeText(mActivity, "End of List!",
-									Toast.LENGTH_SHORT).show();
-							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
-						}
+					public void OnRgsExtraCheckedChanged(RadioGroup radioGroup,
+							int checkedId, int index) {
+						Log.d(TAG, "OnRgsExtraCheckedChanged -> " + index);
 					}
 				});
 
-		// Add an end-of-list listener
-		mPullRefreshListView
-				.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
-
-					@Override
-					public void onLastItemVisible() {
-						// Do work to refresh the list here.
-						if(shouldLoad){
-							getHomeworkList(HttpUrls.COOKBOOK_HOMEWORK_LIST, null, listResultListener, listErrorListener);
-						}else{
-							Toast.makeText(mActivity, "End of List!",
-									Toast.LENGTH_SHORT).show();
-							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
-						}
-					}
-				});
-
-//		ListView actualListView = mPullRefreshListView.getRefreshableView();
-
-		mListItems = new LinkedList<CookbookHomeworkListItem>();
-		Log.d("lixufeng111", "onCreate mListItems " + mListItems.toString());
-		mAdapter = new CookbookHomeworkListAdapter(GroupFragment.this.getActivity(),mListItems);
-
-		/**
-		 * Add Sound Event Listener
-		 */
-		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
-		// You can also just use setListAdapter(mAdapter) or
-		mPullRefreshListView.setAdapter(mAdapter);
-		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long position) {
-			}
-		});
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onActivityCreated");
@@ -196,200 +135,5 @@ public class GroupFragment extends Fragment {
 	public void onDetach() {
 		WenyiLog.logv(TAG, "onDetach");
 		super.onDetach();
-	}
-	
-	
-	Handler handler = new Handler(){
-		public void handleMessage(android.os.Message msg) {
-			int what = msg.what;
-			switch (what) {
-			case HttpStatus.STATUS_OK:
-				mAdapter.notifyDataSetChanged();
-				// Call onRefreshComplete when the list has been refreshed.
-				mPullRefreshListView.onRefreshComplete();
-				testData();
-				if(mListItems.size() == 0){
-					networkImageView.setVisibility(View.VISIBLE);
-				}else{
-					networkImageView.setVisibility(View.GONE);
-				}
-				break;
-
-			default:
-				break;
-			}
-		};
-	};
-	
-	private int index = 0;
-	public void getHomeworkList(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		if(null == jsonObject){
-			jsonObject = new JSONObject();
-		}
-		JSONObject commonsub = Util.getCommonParam(mActivity);
-		JSONObject paramsub = new JSONObject();
-		try {
-			jsonObject.put("common", commonsub);
-			String recipeid = mActivity.getIntent().getStringExtra("recipeid");
-			if(TextUtils.isEmpty(recipeid)){
-				recipeid = "3133";
-			}
-			paramsub.put("recipeid", recipeid);
-			paramsub.put("pindex", "" + ++index);
-			paramsub.put("count", "20");
-			
-			jsonObject.put("param", paramsub);
-			jsonObject.put("common", commonsub);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		
-		JsonObjectRequest wenyiRequest = new JsonObjectRequest(
-				Method.POST, url, jsonObject, resultListener, errorListener);
-
-		try {
-			VolleyUtils.getInstance().addReequest(wenyiRequest);
-		} catch (AppException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	Listener<JSONObject> listResultListener = new Listener<JSONObject>() {
-
-		@Override
-		public void onResponse(JSONObject result) {
-			Log.d(TAG, "catalogResultListener onResponse -> " + result.toString());
-			initData(result, 0);
-			
-		}
-	};
-	
-	ErrorListener listErrorListener = new Response.ErrorListener() {
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			Log.e(TAG, error.getMessage(), error);
-		}
-	};
-	
-	
-	private void initData(JSONObject jsonObject, int flag){
-		if(jsonObject != null){
-			try {
-				if(!jsonObject.isNull("statuscode") && 200 == jsonObject.getInt("statuscode")){
-					if(!jsonObject.isNull("data")){
-						JSONObject data = jsonObject.getJSONObject("data");
-						
-						if(data.has("list")){
-							JSONArray list = data.getJSONArray("list");
-							LinkedList<CookbookHomeworkListItem> listTemp = new LinkedList<CookbookHomeworkListItem>();
-							for(int i = 0,j = list.length(); i < j; i++){
-								JSONObject jb = list.getJSONObject(i);
-								CookbookHomeworkListItem chli = new CookbookHomeworkListItem();
-								chli.setId(jb.getString("id"));
-								chli.setRecipeid(jb.getString("recipeid"));
-								chli.setUid(jb.getString("uid"));
-								chli.setNickname(jb.getString("nickname"));
-								chli.setUportrait(jb.getString("uportrait"));
-								chli.setDescription(jb.getString("description"));
-								chli.setComments(jb.getString("comments"));
-								chli.setTimeline(jb.getString("timeline"));
-								
-								JSONArray imagchlist = data.getJSONArray("images");
-								for(int k = 0, t = imagchlist.length(); k < t; k++){
-									JSONObject imagejb = imagchlist.getJSONObject(k);
-									WenyiImage homeWorkImage = new WenyiImage();
-									homeWorkImage.setId(imagejb.getString("id"));
-									homeWorkImage.setFollowid(imagejb.getString("followid"));
-									homeWorkImage.setImageurl(imagejb.getString("imageurl"));
-									chli.getImageList().add(homeWorkImage);
-								}
-								listTemp.add(chli);
-							}
-							mListItems.addAll(listTemp);
-						}
-						/*
-						if(data.has("toplist")){
-							JSONArray toplist = data.getJSONArray("toplist");
-							LinkedList<CookbookHomeworkListItem> toplistTemp = new LinkedList<CookbookHomeworkListItem>();
-							for(int i = 0,j = toplist.length(); i < j; i++){
-								JSONObject topjb = toplist.getJSONObject(i);
-								WenyiLog.logv(TAG, "initData toplist topjb " + topjb.toString());
-								CookbookHomeworkListItem topchli = new CookbookHomeworkListItem();
-								topchli.setId(topjb.getString("id"));
-								topchli.setCataid(topjb.getString("cataid"));
-								topchli.setTitle(topjb.getString("title"));
-								topchli.setSumm(topjb.getString("summ"));
-								topchli.setIconurl(topjb.getString("iconurl"));
-								topchli.setOntop(topjb.getBoolean("ontop"));
-								topchli.setEvent_type(topjb.getString("event_type"));
-								topchli.setEvent_content(topjb.getString("event_content"));
-								topchli.setQkey(topjb.getString("qkey"));
-								topchli.setTimchline(topjb.getString("timchline"));
-								toplistTemp.add(topchli);
-							}
-							mListItems.addAll(0, toplistTemp);
-						}*/
-						
-						index = data.getInt("pindex");
-						int core_status = data.getInt("core_status");
-						if(core_status == 200 && index == 0){
-							Log.e(TAG, "has not some item");
-							shouldLoad = false;
-						}
-						handler.sendEmptyMessage(HttpStatus.STATUS_OK);
-					}
-				}else{
-					Toast.makeText(mActivity, "" + jsonObject.getString("errmsg"), Toast.LENGTH_SHORT).show();
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void testData(){
-		LinkedList<CookbookHomeworkListItem> listTemp = new LinkedList<CookbookHomeworkListItem>();
-		for(int i = 0,j = 10; i < j; i++){
-			CookbookHomeworkListItem chli = new CookbookHomeworkListItem();
-			chli.setId("27650");
-			chli.setRecipeid("3133");
-			chli.setUid("0");
-			chli.setNickname("玫瑰色人生");
-			chli.setUportrait("http://img2.shecook.com/members/558631d1cf6044699e6d92ba562ff8e0/normal/0.jpg");
-			chli.setDescription("作业描述");
-			chli.setComments("5");
-			chli.setTimeline("1分钟前");
-			if(i == 1){
-				for(int k = 0, t =2; k < t; k++){
-					WenyiImage homeWorkImage = new WenyiImage();
-					homeWorkImage.setId("27649");
-					homeWorkImage.setFollowid("27650");
-					homeWorkImage.setImageurl("http://static.wenyijcc.com/submit/201501/5f6aef0fb78245169d6583173e37e35b.jpg");
-					chli.getImageList().add(homeWorkImage);
-				}
-			}else if (i == 2){
-				chli.setNickname("丛中笑9166");
-				chli.setUportrait("http://img2.shecook.com/members/29c4da0f62954d8291fa340d6e804e1b/normal/0.jpg");
-				for(int k = 0, t =2; k < t; k++){
-					WenyiImage homeWorkImage = new WenyiImage();
-					homeWorkImage.setId("27649");
-					homeWorkImage.setFollowid("27650");
-					homeWorkImage.setImageurl("http://static.wenyijcc.com/submit/201501/5f6aef0fb78245169d6583173e37e35b.jpg");
-					chli.getImageList().add(homeWorkImage);
-				}
-			}else{
-				chli.setNickname("五彩水晶冻儿成功");
-				chli.setUportrait("http://img2.shecook.com/members/f24785b18936469db6433dc8c44e9440/normal/0.jpg");
-				for(int k = 0, t =2; k < t; k++){
-					WenyiImage homeWorkImage = new WenyiImage();
-					homeWorkImage.setId("27649");
-					homeWorkImage.setFollowid("27650");
-					homeWorkImage.setImageurl("http://static.wenyijcc.com/submit/201412/6bd86dbef6b8464cbabb84e3aa4fea50.jpg");
-					chli.getImageList().add(homeWorkImage);
-				}
-			}
-			listTemp.add(chli);
-		}
-		mListItems.addAll(listTemp);
 	}
 }

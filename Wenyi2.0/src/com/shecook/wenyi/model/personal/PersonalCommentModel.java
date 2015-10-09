@@ -21,7 +21,7 @@ package com.shecook.wenyi.model.personal;
  *         "2015-09-20 18:46:47"//时间戳 }, ],
  */
 
-public class PersonalTopicModel {
+public class PersonalCommentModel {
 	private String _id;
 	private String uid;
 	private String clickto;
@@ -36,11 +36,11 @@ public class PersonalTopicModel {
 	private String groupname;
 	private String timeline;
 
-	public PersonalTopicModel() {
+	public PersonalCommentModel() {
 		super();
 	}
 
-	public PersonalTopicModel(String _id, String uid, String clickto,
+	public PersonalCommentModel(String _id, String uid, String clickto,
 			String mainid, String commentid, String top_nickname,
 			String top_imageurl, String top_desc, String bottom_nickname,
 			String bottom_imageurl, String bottom_desc, String groupname, String timeline) {
@@ -165,7 +165,7 @@ public class PersonalTopicModel {
 
 	@Override
 	public String toString() {
-		return "PersonalTopicModel [_id=" + _id + ", uid=" + uid + ", clickto="
+		return "PersonalCommentModel [_id=" + _id + ", uid=" + uid + ", clickto="
 				+ clickto + ", mainid=" + mainid + ", commentid=" + commentid
 				+ ", top_nickname=" + top_nickname + ", top_imageurl="
 				+ top_imageurl + ", top_desc=" + top_desc

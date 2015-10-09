@@ -39,7 +39,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:background="@drawable/textview_border_circle"
+                android:background="@drawable/wenyi_border_circle"
                 android:gravity="center"
                 android:text="@string/personal_kitchen_food"
                 android:textColor="@color/black" />
@@ -61,7 +61,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:background="@drawable/textview_border_circle"
+                android:background="@drawable/wenyi_border_circle"
                 android:gravity="center"
                 android:text="@string/personal_kitchen_food"
                 android:textColor="@color/black" />
@@ -83,7 +83,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:background="@drawable/textview_border_circle"
+                android:background="@drawable/wenyi_border_circle"
                 android:gravity="center"
                 android:text="@string/personal_kitchen_food"
                 android:textColor="@color/black" />

@@ -12,23 +12,23 @@ import android.widget.TextView;
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
-import com.shecook.wenyi.model.personal.PersonalTopicModel;
+import com.shecook.wenyi.model.personal.PersonalCommentModel;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class PersonalTopicListAdapter extends BaseAdapter {
+public class PersonalCommentListAdapter extends BaseAdapter {
 	
 	
-	private LinkedList<PersonalTopicModel> mListItems;
+	private LinkedList<PersonalCommentModel> mListItems;
 	private Context context;
 	
 	OnSwipeOperator operator;
 	
-	public PersonalTopicListAdapter() {
+	public PersonalCommentListAdapter() {
 		super();
 	}
 
-	public PersonalTopicListAdapter(Context context, LinkedList<PersonalTopicModel> list) {
+	public PersonalCommentListAdapter(Context context, LinkedList<PersonalCommentModel> list) {
 		super();
 		this.context = context;
 		mListItems = list;
@@ -53,14 +53,14 @@ public class PersonalTopicListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View view, ViewGroup arg2) {
 		ViewHolder holder;
-		PersonalTopicModel eli = mListItems.get(position);
+		PersonalCommentModel eli = mListItems.get(position);
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(
-     				R.layout.personal_topic_list_item, null);
+     				R.layout.personal_comment_list_item, null);
 			holder = new ViewHolder();
-			holder.personal_topic_item_title_1 = (TextView) view.findViewById(R.id.personal_topic_item_title_1);
-			holder.personal_topic_item_title = (TextView) view.findViewById(R.id.personal_topic_item_title);
-			holder.personal_topic_item_content = (TextView) view.findViewById(R.id.personal_topic_item_content);
+			holder.personal_comment_item_title_1 = (TextView) view.findViewById(R.id.personal_comment_item_title_1);
+			holder.personal_comment_item_title = (TextView) view.findViewById(R.id.personal_comment_item_title);
+			holder.personal_comment_item_content = (TextView) view.findViewById(R.id.personal_comment_item_content);
 			holder.item_img_1 = (NetworkImageView) view.findViewById(R.id.item_img_1);
 			holder.item_img = (NetworkImageView) view.findViewById(R.id.item_img);
 			view.setTag(holder);
@@ -81,16 +81,16 @@ public class PersonalTopicListAdapter extends BaseAdapter {
 	    
 	    holder.item_img.setImageUrl(eli.getBottom_imageurl(), imageLoader);
 	    
-	    holder.personal_topic_item_title_1.setText(eli.getTop_desc());
-		holder.personal_topic_item_title.setText(eli.getBottom_nickname());
-		holder.personal_topic_item_content.setText(eli.getBottom_desc());
+	    holder.personal_comment_item_title_1.setText(eli.getTop_desc());
+		holder.personal_comment_item_title.setText(eli.getBottom_nickname());
+		holder.personal_comment_item_content.setText(eli.getBottom_desc());
 
 		return view ;
 	}
 	
 	private static class ViewHolder {
-		TextView personal_topic_item_title_1, personal_topic_item_title;
-		TextView personal_topic_item_content;
+		TextView personal_comment_item_title_1, personal_comment_item_title;
+		TextView personal_comment_item_content;
 		NetworkImageView item_img_1,item_img;
 	}
 	
