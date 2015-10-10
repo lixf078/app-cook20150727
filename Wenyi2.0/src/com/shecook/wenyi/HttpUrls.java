@@ -42,6 +42,10 @@ public class HttpUrls {
 	public static final String PIZZA_TOPIC_LIST_ITEM_DETAIL_ADD_COMMENT = BASE_URL + "topic/comment_add";
 	
 	
+	public static final String GROUP_HOT_LIST = BASE_URL + "circle/list";
+	public static final String GROUP_MY_LIST = BASE_URL + "circle/mylist";
+	
+	
 	public static final String PERSONAL_MYCARD = BASE_URL + "user/mycard";
 	
 	public static final String PERSONAL_MY_COMMENTS_LIST = BASE_URL + "user/mycomment";

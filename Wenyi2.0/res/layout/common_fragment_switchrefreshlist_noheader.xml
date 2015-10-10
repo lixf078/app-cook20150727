@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:leui="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <include layout="@layout/wenyi_common_header"
-        android:id="@+id/wenyi_common_header_id" />
+    <include layout="@layout/wenyi_common_header" />
 
-    <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
-        android:id="@+id/main_layout_fillparent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dip"
-        android:background="@drawable/wenyi_06"
-        android:gravity="center"
-        android:scaleType="fitXY"
-        android:visibility="gone" />
-    <!-- The PullToRefreshListView replaces a standard ListView widget. -->
-
-    <com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView
+    <com.shecook.wenyi.common.pulltorefresh.SwitchPullToRefreshListView
         android:id="@id/pull_refresh_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -30,6 +19,15 @@
         android:fastScrollEnabled="false"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
-        android:smoothScrollbar="true" />
+        android:smoothScrollbar="true"
+        leui:leListViewMode="leSwipe"
+        leui:leSwipeActionLeft="reveal"
+        leui:leSwipeAnimationTime="200"
+        leui:leSwipeBackView="@+id/back"
+        leui:leSwipeCloseAllItemsWhenMoveList="true"
+        leui:leSwipeFrontView="@+id/front"
+        leui:leSwipeMode="left"
+        leui:leSwipeOffsetLeft="120dp"
+        leui:leSwipeOpenOnLongPress="true" />
 
 </LinearLayout>

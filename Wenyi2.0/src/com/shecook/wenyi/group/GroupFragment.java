@@ -3,13 +3,6 @@ package com.shecook.wenyi.group;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.shecook.wenyi.R;
-import com.shecook.wenyi.cookbook.PiazzaCookbookHomeworkList;
-import com.shecook.wenyi.mainpackage.FragmentTabAdapter;
-import com.shecook.wenyi.piazza.PiazzaDiscoverFragment;
-import com.shecook.wenyi.piazza.PiazzaQuestionFragment;
-import com.shecook.wenyi.util.WenyiLog;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +15,12 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.shecook.wenyi.R;
+import com.shecook.wenyi.mainpackage.FragmentTabAdapter;
+import com.shecook.wenyi.piazza.PiazzaDiscoverFragment;
+import com.shecook.wenyi.piazza.PiazzaQuestionFragment;
+import com.shecook.wenyi.util.WenyiLog;
+
 public class GroupFragment extends Fragment {
 	private static final String TAG = "PiazzaFragment";
 
@@ -32,10 +31,8 @@ public class GroupFragment extends Fragment {
 
 	private RadioGroup rgs;
 	public List<Fragment> fragments = new ArrayList<Fragment>();
-	PiazzaDiscoverFragment discoverFragment;
-	PiazzaQuestionFragment questionFragment;
-	PiazzaCookbookHomeworkList foodFragment;
-	PiazzaDiscoverFragment friendFragment;
+	GroupHotFragment groupHotFragment;
+	GroupMyFragment myGroupFragment;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -47,8 +44,8 @@ public class GroupFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
-		discoverFragment = new PiazzaDiscoverFragment();
-		questionFragment = new PiazzaQuestionFragment();
+		groupHotFragment = new GroupHotFragment();
+		myGroupFragment = new GroupMyFragment();
 	}
 
 	@Override
@@ -71,8 +68,8 @@ public class GroupFragment extends Fragment {
 		return_img.setVisibility(View.INVISIBLE);
 		middle_title.setText(R.string.piazza);
 
-		fragments.add(discoverFragment);
-		fragments.add(questionFragment);
+		fragments.add(groupHotFragment);
+		fragments.add(myGroupFragment);
 
 		rgs = (RadioGroup) rootView.findViewById(R.id.tabs_rg);
 

@@ -460,6 +460,7 @@ public class Util {
 		userInfo = null;
 		if ("".equals(mid)) {
 			mid = UUID.randomUUID().toString();
+			updateStringData(context, "_mid", mid);
 		}
 		return mid;
 	}
@@ -502,6 +503,7 @@ public class Util {
 			String value) {
 		SharedPreferences userInfo = null;
 		try {
+			Log.e("lixufeng", "updateStringData key " + key + ", value " + value);
 			userInfo = context.getSharedPreferences("user_info", 0);
 			SharedPreferences.Editor editor = userInfo.edit();
 			editor.putString(key, value);

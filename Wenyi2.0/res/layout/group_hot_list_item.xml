@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="8dip"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@color/white"
+    android:paddingTop="8dp" >
+
+    <RelativeLayout
+        android:id="@+id/group_item_rl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/item_background_color"
+        android:orientation="horizontal" >
+
+        <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+            android:id="@+id/item_img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:focusable="false"
+            android:scaleType="fitXY" />
+
+        <RelativeLayout
+            android:id="@+id/group_hot_item_info"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:layout_toRightOf="@id/item_img"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/group_hot_item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/group_hot_item_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/group_hot_item_title"
+                android:layout_marginTop="10dip"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:textColor="@color/date_color" />
+
+            <TextView
+                android:id="@+id/group_hot_item_shared"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/group_hot_item_class"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dip"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:textColor="@color/date_color" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/group_hot_tiem_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_below="@id/group_item_rl"
+        android:textColor="@color/date_color" />
+
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package com.shecook.wenyi.personal;
+package com.shecook.wenyi.group;
 
 import java.util.LinkedList;
 
@@ -9,17 +9,20 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shecook.wenyi.BaseFragmeng;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
@@ -34,26 +37,25 @@ import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
-import com.shecook.wenyi.cookbook.adapter.CookbookHomeworkListAdapter;
-import com.shecook.wenyi.model.CookbookHomeworkListItem;
-import com.shecook.wenyi.model.WenyiImage;
+import com.shecook.wenyi.group.adapter.GroupHotListAdapter;
+import com.shecook.wenyi.model.group.GroupHotListItem;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class PersonalEditionHomework extends Fragment {
-	private static final String TAG = "PiazzaFragment";
-	
+public class GroupMyFragment extends BaseFragmeng implements OnClickListener{
+	private static final String TAG = "GroupMyFragment";
+
 	private Activity mActivity = null;
-	NetworkImageView networkImageView = null;
 	
-	private LinkedList<CookbookHomeworkListItem> mListItems;
 	private PullToRefreshListView mPullRefreshListView;
-	private CookbookHomeworkListAdapter mAdapter;
-	
+	GroupHotListAdapter mAdapter = null;
+	LinkedList<GroupHotListItem> mListItems;
 	private boolean shouldLoad = true;
+
+	private LinearLayout common_tip_info_layout;
+	private TextView common_tip_info, common_tip_info_button;
 	@Override
 	public void onAttach(Activity activity) {
 		WenyiLog.logv(TAG, "onAttach");
@@ -65,26 +67,33 @@ public class PersonalEditionHomework extends Fragment {
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		mActivity = getActivity();
-		
 	}
 
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onCreateView");
-		View rootView = inflater.inflate(R.layout.cookbook_homework_list, container, false);
+		View rootView = inflater.inflate(R.layout.common_fragment_polltorefreshlist_noheader,
+				container, false);
 		initView(rootView);
-		getHomeworkList(HttpUrls.PERSONAL_EDITION_HOMEWORK, null,
-				homeworkResultListener, homeworkErrorListener);
+		getDiscoverList(HttpUrls.GROUP_MY_LIST, null, listResultListener,
+				listErrorListener);
 		return rootView;
 	}
 	
-	public void initView(View rootView){
+	public void initView(View rootView) {
 		
-		rootView.findViewById(R.id.wenyi_common_header_id).setVisibility(View.GONE);
+		common_tip_info_layout = (LinearLayout) rootView.findViewById(R.id.common_tip_info_layout);
+		common_tip_info = (TextView) rootView.findViewById(R.id.common_tip_info);
+		common_tip_info_button = (TextView) rootView.findViewById(R.id.common_tip_info_button);
 		
-		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.pull_refresh_list);
+		common_tip_info.setOnClickListener(this);
+		
+		mPullRefreshListView = (PullToRefreshListView) rootView
+				.findViewById(R.id.pull_refresh_list);
 
+		// Set a listener to be invoked when the list should be refreshed.
 		mPullRefreshListView
 				.setOnRefreshListener(new OnRefreshListener<ListView>() {
 					@Override
@@ -100,13 +109,9 @@ public class PersonalEditionHomework extends Fragment {
 						// Update the LastUpdatedLabel
 						refreshView.getLoadingLayoutProxy()
 								.setLastUpdatedLabel(label);
-						if(shouldLoad){
-							getHomeworkList(HttpUrls.PERSONAL_EDITION_HOMEWORK, null, homeworkResultListener, homeworkErrorListener);
-						}else{
-							Toast.makeText(mActivity, "End of List!",
-									Toast.LENGTH_SHORT).show();
-							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
-						}
+
+						// Do work to refresh the list here.
+						// getCatalogList(HttpUrls.ESSAY_WENYI_LIST,null,listResultListener,listErrorListener);
 					}
 				});
 
@@ -116,34 +121,36 @@ public class PersonalEditionHomework extends Fragment {
 
 					@Override
 					public void onLastItemVisible() {
-						if(shouldLoad){
-							getHomeworkList(HttpUrls.PERSONAL_EDITION_HOMEWORK, null, homeworkResultListener, homeworkErrorListener);
-						}else{
-							Toast.makeText(mActivity, "End of List!", Toast.LENGTH_SHORT).show();
-							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
+						if (shouldLoad) {
+							getDiscoverList(HttpUrls.GROUP_MY_LIST, null,
+									groupHotResultListener,
+									groupHotErrorListener);
+						} else {
+							Toast.makeText(mActivity, "End of List!",
+									Toast.LENGTH_SHORT).show();
 						}
 					}
 				});
 
-//		ListView actualListView = mPullRefreshListView.getRefreshableView();
+		// ListView actualListView = mPullRefreshListView.getRefreshableView();
 
-		mListItems = new LinkedList<CookbookHomeworkListItem>();
-		mAdapter = new CookbookHomeworkListAdapter(mActivity, mListItems);
+		mListItems = new LinkedList<GroupHotListItem>();
+		mAdapter = new GroupHotListAdapter(mActivity, mListItems);
 
-		/**
-		 * Add Sound Event Listener
-		 */
-		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
+		mPullRefreshListView.setMode(Mode.BOTH);
+		// You can also just use setListAdapter(mAdapter) or
 		mPullRefreshListView.setAdapter(mAdapter);
 		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
+				
 			}
 		});
+		
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onActivityCreated");
@@ -158,14 +165,14 @@ public class PersonalEditionHomework extends Fragment {
 
 	@Override
 	public void onResume() {
-		WenyiLog.logv(TAG, "onResume");
 		super.onResume();
+		WenyiLog.logv(TAG, "onResume");
 	}
 
 	@Override
 	public void onPause() {
-		WenyiLog.logv(TAG, "onPause");
 		super.onPause();
+		WenyiLog.logv(TAG, "onPause");
 	}
 
 	@Override
@@ -191,9 +198,8 @@ public class PersonalEditionHomework extends Fragment {
 		WenyiLog.logv(TAG, "onDetach");
 		super.onDetach();
 	}
-	
-	
-	Handler handler = new Handler(){
+
+	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
 			switch (what) {
@@ -201,6 +207,13 @@ public class PersonalEditionHomework extends Fragment {
 				mAdapter.notifyDataSetChanged();
 				// Call onRefreshComplete when the list has been refreshed.
 				mPullRefreshListView.onRefreshComplete();
+				if(mListItems == null || mListItems.size() == 0){
+					common_tip_info_layout.setVisibility(View.VISIBLE);
+					common_tip_info.setText("您还没有创建和加入任何圈子");
+					common_tip_info_button.setText("创建圈子");
+				}else{
+					common_tip_info_layout.setVisibility(View.GONE);
+				}
 				break;
 
 			default:
@@ -208,25 +221,42 @@ public class PersonalEditionHomework extends Fragment {
 			}
 		};
 	};
-	
+
+	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+		switch (id) {
+		case R.id.common_tip_info_button:
+			
+			break;
+
+		default:
+			break;
+		}
+	}
+
 	private int index = 0;
-	public void getHomeworkList(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		if(null == jsonObject){
+
+	public void getDiscoverList(String url, JSONObject jsonObject,
+			Listener<JSONObject> resultListener, ErrorListener errorListener) {
+		if (null == jsonObject) {
 			jsonObject = new JSONObject();
 		}
 		JSONObject commonsub = Util.getCommonParam(mActivity);
 		JSONObject paramsub = new JSONObject();
 		try {
+			jsonObject.put("common", commonsub);
 			paramsub.put("pindex", "" + ++index);
 			paramsub.put("count", "20");
+
 			jsonObject.put("param", paramsub);
 			jsonObject.put("common", commonsub);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
-		JsonObjectRequest wenyiRequest = new JsonObjectRequest(
-				Method.POST, url, jsonObject, resultListener, errorListener);
+
+		JsonObjectRequest wenyiRequest = new JsonObjectRequest(Method.POST,
+				url, jsonObject, resultListener, errorListener);
 
 		try {
 			VolleyUtils.getInstance().addReequest(wenyiRequest);
@@ -234,67 +264,63 @@ public class PersonalEditionHomework extends Fragment {
 			e.printStackTrace();
 		}
 	}
-	
+
 	Listener<JSONObject> listResultListener = new Listener<JSONObject>() {
 
 		@Override
 		public void onResponse(JSONObject result) {
-			Log.d(TAG, "catalogResultListener onResponse -> " + result.toString());
+			Log.d(TAG,
+					"catalogResultListener onResponse -> " + result.toString());
 			initData(result, 0);
 		}
 	};
-	
+
 	ErrorListener listErrorListener = new Response.ErrorListener() {
 		@Override
 		public void onErrorResponse(VolleyError error) {
 			Log.e(TAG, error.getMessage(), error);
 		}
 	};
-	
-	
-	private void initData(JSONObject jsonObject, int flag){
-		if(jsonObject != null){
+
+	private void initData(JSONObject jsonObject, int flag) {
+		if (jsonObject != null) {
 			try {
-				if(!jsonObject.isNull("statuscode") && 200 == jsonObject.getInt("statuscode")){
-					if(!jsonObject.isNull("data")){
+				if (!jsonObject.isNull("statuscode")
+						&& 200 == jsonObject.getInt("statuscode")) {
+					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
-						
+
 						JSONArray list = data.getJSONArray("list");
-						LinkedList<CookbookHomeworkListItem> listTemp = new LinkedList<CookbookHomeworkListItem>();
-						for(int i = 0,j = list.length(); i < j; i++){
+						LinkedList<GroupHotListItem> listTemp = new LinkedList<GroupHotListItem>();
+						for (int i = 0, j = list.length(); i < j; i++) {
 							JSONObject jb = list.getJSONObject(i);
-							CookbookHomeworkListItem phi = new CookbookHomeworkListItem();
-							phi.setId(jb.getString("id"));
-							phi.setRecipeid(jb.getString("recipeid"));
-							phi.setUid(jb.getString("uid"));
-							phi.setNickname(jb.getString("nickname"));
-							phi.setUportrait(jb.getString("uportrait"));
-							phi.setDescription(jb.getString("description"));
-							phi.setComments(jb.getString("comments"));
-							phi.setTimeline(jb.getString("timeline"));
-							if(jb.has("images")){
-								JSONArray imagelist = jb.getJSONArray("images");
-								for(int k = 0, t = imagelist.length(); k < t; k++){
-									JSONObject imagejb = imagelist.getJSONObject(k);
-									WenyiImage homeWorkImage = new WenyiImage();
-									homeWorkImage.setId(imagejb.getString("id"));
-									homeWorkImage.setFollowid(imagejb.getString("followid"));
-									homeWorkImage.setImageurl(imagejb.getString("imageurl"));
-									phi.getImageList().add(homeWorkImage);
-								}
-							}
-							listTemp.add(phi);
+							GroupHotListItem pdi = new GroupHotListItem();
+							pdi.setId(jb.getString("id"));
+							pdi.setUid(jb.getString("uid"));
+							pdi.setUfounder(jb.getString("ufounder"));
+							pdi.setUportrait(jb.getString("uportrait"));
+							pdi.setTitle(jb.getString("title"));
+							pdi.setDescription(jb.getString("description"));
+							pdi.setIconurl(jb.getString("iconurl"));
+							pdi.setTotalnum(jb.getString("totalnum"));
+							pdi.setShare(jb.getString("share"));
+							pdi.setCurrentnum(jb.getString("currentnum"));
+							pdi.setDatecreated(jb.getString("datecreated"));
+							pdi.setDateupd(jb.getString("dateupd"));
+							listTemp.add(pdi);
 						}
 						mListItems.addAll(listTemp);
-						
+
 						index = data.getInt("pindex");
 						int core_status = data.getInt("core_status");
-						if(core_status == 0 && index == 0){
+						if (core_status == 0 && index == 0) {
 							shouldLoad = false;
 						}
 					}
-				}else{
-					Toast.makeText(mActivity, "" + jsonObject.getString("errmsg"), Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(mActivity,
+							"" + jsonObject.getString("errmsg"),
+							Toast.LENGTH_SHORT).show();
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -302,20 +328,21 @@ public class PersonalEditionHomework extends Fragment {
 		}
 		handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 	}
-	
-	ErrorListener homeworkErrorListener = new Response.ErrorListener() {
+
+	ErrorListener groupHotErrorListener = new Response.ErrorListener() {
 		@Override
 		public void onErrorResponse(VolleyError error) {
 			Log.e(TAG, error.getMessage(), error);
 		}
 	};
-	
-	Listener<JSONObject> homeworkResultListener = new Listener<JSONObject>() {
+
+	Listener<JSONObject> groupHotResultListener = new Listener<JSONObject>() {
 
 		@Override
 		public void onResponse(JSONObject result) {
-			Log.d(TAG, "catalogResultListener onResponse -> " + result.toString());
 			initData(result, 0);
+			Log.d(TAG,
+					"catalogResultListener onResponse -> " + result.toString());
 		}
 	};
 }

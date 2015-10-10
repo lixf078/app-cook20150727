@@ -39,7 +39,7 @@ import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.essay.EssayItemDeatilActivity;
 import com.shecook.wenyi.model.EssayListItem;
-import com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter2;
+import com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
@@ -50,7 +50,7 @@ public class PersonalEditionTopic extends Fragment {
 	
 	private Activity mActivity = null;
 	private SwitchPullToRefreshListView mPullRefreshListView;
-	com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter2 mAdapter = null;
+	com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter mAdapter = null;
 	LinkedList<EssayListItem> mListItems;
 	private boolean shouldLoad = true;
 	@Override
@@ -115,7 +115,7 @@ public class PersonalEditionTopic extends Fragment {
 //		ListView actualListView = mPullRefreshListView.getRefreshableView();
 
 		mListItems = new LinkedList<EssayListItem>();
-		mAdapter = new PersonalTopicListAdapter2(mActivity, mListItems);
+		mAdapter = new PersonalTopicListAdapter(mActivity, mListItems);
 
 		/**
 		 * Add Sound Event Listener
@@ -154,7 +154,7 @@ public class PersonalEditionTopic extends Fragment {
 			Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onCreateView");
 		View rootView = inflater.inflate(R.layout.personal_edition_topiclist, container, false);
-		initView(rootView);
+		// initView(rootView);
 		if(shouldLoad){
 			getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null, listResultListener, listErrorListener);
 		}else{

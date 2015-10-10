@@ -17,16 +17,16 @@ import com.shecook.wenyi.model.EssayListItem;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class PersonalTopicListAdapter2 extends BaseAdapter {
+public class PersonalTopicListAdapter extends BaseAdapter {
 	
 	
 	private LinkedList<EssayListItem> mListItems;
 	private Context context;
-	public PersonalTopicListAdapter2() {
+	public PersonalTopicListAdapter() {
 		super();
 	}
 
-	public PersonalTopicListAdapter2(Context context, LinkedList<EssayListItem> list) {
+	public PersonalTopicListAdapter(Context context, LinkedList<EssayListItem> list) {
 		super();
 		this.context = context;
 		mListItems = list;

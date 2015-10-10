@@ -80,6 +80,7 @@
             android:layout_marginRight="15dp"
             android:background="@color/brown2"
             android:layout_alignParentBottom="true"
+            android:visibility="gone"
             android:layout_below="@id/cookbook_homework_item_comments"/>
     </RelativeLayout>
 
