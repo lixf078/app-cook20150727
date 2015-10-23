@@ -1,6 +1,10 @@
 package com.shecook.wenyi;
 
 public class HttpUrls {
+	
+	public static final String BASE_IMG_URL = "http://img.wenyijcc.com/";
+	public static final String UPLOAD_IMG = BASE_IMG_URL + "sys/postpicture";
+	
 	public static final String BASE_URL = "http://api.wenyijcc.com/";
 	public static final String GET_TOKEN = BASE_URL + "user/get_token";
 
@@ -16,8 +20,6 @@ public class HttpUrls {
 	
 	public static final String ESSAY_WENYILIST_ITEM_DETAIL_COMMENT = BASE_URL + "article/comment_list";
 	public static final String ESSAY_WENYI_ITEM_DETAI_ADD_COMMENT = BASE_URL + "article/comment_add";
-	
-	
 	
 	public static final String COOKBOOK_LIST_CATALOG = BASE_URL + "recipe/catalog";
 	public static final String COOKBOOK_LIST = BASE_URL + "recipe/list";
@@ -44,12 +46,22 @@ public class HttpUrls {
 	
 	public static final String GROUP_HOT_LIST = BASE_URL + "circle/list";
 	public static final String GROUP_MY_LIST = BASE_URL + "circle/mylist";
+	public static final String GROUP_MEM_KICK = BASE_URL + "circle/kick";
+	public static final String GROUP_ITEM_DETAIL = BASE_URL + "circle/detail";
+	public static final String GROUP_ITEM_SHARED_LIST = BASE_URL + "circle/share_list";
+	public static final String GROUP_ITEM_MEM_LIST = BASE_URL + "circle/mem_list";
+	public static final String GROUP_ITEM_MEM_AUDITING = BASE_URL + "circle/auditing";
+	public static final String GROUP_ITEM_MEM_AUDIT_list = BASE_URL + "circle/auditlist";
+	public static final String GROUP_CREATE_CIRCLE = BASE_URL + "circle/circie_new";
+	
 	
 	
 	public static final String PERSONAL_MYCARD = BASE_URL + "user/mycard";
 	
 	public static final String PERSONAL_MY_COMMENTS_LIST = BASE_URL + "user/mycomment";
 	
+	
+	public static final String PERSONAL_TOPIC_MY_LIST = BASE_URL + "topic/mylist";
 	public static final String PERSONAL_TOPIC_LIST_DEL_ITEM = BASE_URL + "topic/del";
 	
 	public static final String PERSONAL_EDITION_HOMEWORK = BASE_URL + "follow/mylist";

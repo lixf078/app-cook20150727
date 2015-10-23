@@ -17,6 +17,7 @@
 package com.shecook.wenyi.common.volley.toolbox;
 
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
@@ -25,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -43,6 +45,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.BasicHttpEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicHttpResponse;
@@ -51,6 +55,8 @@ import org.apache.http.message.BasicStatusLine;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.os.Environment;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.activeandroid.util.Log;
@@ -312,8 +318,26 @@ public class HurlStack implements HttpStack {
 		httpRequest.setHeader("sign", "ABESDSGTESFSFSFSAVBGA");
 		HttpEntity httpentity;
 		try {
-			httpentity = new UrlEncodedFormEntity(adapterParams(new String(request.getBody())),
-					"utf-8");
+			List<NameValuePair> params = adapterParams(new String(request.getBody()));
+			// upload file start
+			if(params.size() >= 3){
+				// upload file
+				MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+				builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);// 设置浏览器兼容模式
+				builder.addTextBody(params.get(0).getName(), params.get(0).getValue());//设置请求参数
+				builder.addTextBody(params.get(1).getName(), params.get(1).getValue());//设置请求参数
+				int count = 0;
+				String[] files = params.get(2).getValue().split(";");
+				Log.e("lixufeng", "file value " + params.get(2).getValue());
+				for (String tempfile : files) {
+					builder.addBinaryBody("file" + count, new File(tempfile));
+					count++;
+				}
+				httpentity = builder.build();// 生成 HTTP POST 实体 
+				// upload file end
+			}else{
+				httpentity = new UrlEncodedFormEntity(params, "utf-8");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -340,11 +364,15 @@ public class HurlStack implements HttpStack {
 			if (!json.isNull("common")) {
 				params.add(new BasicNameValuePair("common", json.getString("common")));
 			}
+			if (!json.isNull("files")) {
+				params.add(new BasicNameValuePair("files", json.getString("files")));
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
 		return params;
 	}
+	
 
 }

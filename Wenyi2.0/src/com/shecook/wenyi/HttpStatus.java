@@ -4,6 +4,8 @@ public class HttpStatus {
 	
 	public static final int STATUS_OK = 200;
 	public static final int STATUS_OK_2 = 201;
+	public static final int STATUS_SHOWPROGRESS = 202;
+	public static final int STATUS_ERROR = 300;
 	
 	public static final int STATUS_LOAD_OTHER = 21;
 	

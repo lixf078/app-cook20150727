@@ -5,31 +5,33 @@ import java.util.LinkedList;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
-import com.shecook.wenyi.model.EssayListItem;
+import com.shecook.wenyi.model.personal.PersonalTopicModel;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
 public class PersonalTopicListAdapter extends BaseAdapter {
 	
-	
-	private LinkedList<EssayListItem> mListItems;
+	LruImageCache lruImageCache = null;
+	private LinkedList<PersonalTopicModel> mListItems;
 	private Context context;
 	public PersonalTopicListAdapter() {
 		super();
+		lruImageCache = LruImageCache.instance();
 	}
 
-	public PersonalTopicListAdapter(Context context, LinkedList<EssayListItem> list) {
+	public PersonalTopicListAdapter(Context context, LinkedList<PersonalTopicModel> list) {
 		super();
 		this.context = context;
 		mListItems = list;
+		lruImageCache = LruImageCache.instance();
 	}
 	
 	@Override
@@ -51,39 +53,82 @@ public class PersonalTopicListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View view, ViewGroup arg2) {
 		ViewHolder holder;
-		EssayListItem eli = mListItems.get(position);
+		PersonalTopicModel eli = mListItems.get(position);
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(
-     				R.layout.personal_comment_list_item, null);
+     				R.layout.personal_topic_list_item, null);
 			holder = new ViewHolder();
-			holder.advTitle = (TextView) view.findViewById(R.id.essay_item_title);
-			holder.advTime = (TextView) view.findViewById(R.id.essay_item_time);
-			holder.imageUrl = (NetworkImageView) view.findViewById(R.id.item_img);
+			holder.personal_topic_item_title = (TextView) view.findViewById(R.id.personal_topic_item_title);
+			holder.personal_topic_item_content = (TextView) view.findViewById(R.id.personal_topic_item_content);
+			
+			holder.personal_topic_item_image_info = (RelativeLayout) view.findViewById(R.id.personal_topic_item_image_info);
+			holder.personal_topic_item_image_info_1 = (NetworkImageView) view.findViewById(R.id.personal_topic_item_image_info_1);
+			holder.personal_topic_item_image_info_2 = (NetworkImageView) view.findViewById(R.id.personal_topic_item_image_info_2);
+			holder.personal_topic_item_image_info_3 = (NetworkImageView) view.findViewById(R.id.personal_topic_item_image_info_3);
+			holder.personal_topic_item_image_info_4 = (NetworkImageView) view.findViewById(R.id.personal_topic_item_image_info_4);
+			
+			holder.item_img = (NetworkImageView) view.findViewById(R.id.item_img);
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
 		}
 
+		holder.personal_topic_item_image_info_4.setVisibility(View.GONE);
+		holder.personal_topic_item_image_info_3.setVisibility(View.GONE);
+		holder.personal_topic_item_image_info_2.setVisibility(View.GONE);
+		holder.personal_topic_item_image_info_1.setVisibility(View.GONE);
+		
+		holder.personal_topic_item_image_info.setVisibility(View.GONE);
+		if(eli.getImages() != null && eli.getImages().size() > 0){
+			holder.personal_topic_item_image_info.setVisibility(View.VISIBLE);
+
+			switch (eli.getImages().size()) {
+			case 4:
+				holder.personal_topic_item_image_info_4.setVisibility(View.VISIBLE);
+
+			    ImageLoader imageLoader4 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+			    holder.personal_topic_item_image_info_4.setDefaultImageResId(R.drawable.welcome_homework);
+			    holder.personal_topic_item_image_info_4.setErrorImageResId(R.drawable.welcome_homework);
+			    holder.personal_topic_item_image_info_4.setImageUrl(eli.getImages().get(3).getImageurl(), imageLoader4);
+			case 3:
+				holder.personal_topic_item_image_info_3.setVisibility(View.VISIBLE);
+
+			    ImageLoader imageLoader3 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+			    holder.personal_topic_item_image_info_3.setDefaultImageResId(R.drawable.welcome_homework);
+			    holder.personal_topic_item_image_info_3.setErrorImageResId(R.drawable.welcome_homework);
+			    holder.personal_topic_item_image_info_3.setImageUrl(eli.getImages().get(2).getImageurl(), imageLoader3);
+			case 2:
+				holder.personal_topic_item_image_info_2.setVisibility(View.VISIBLE);
+
+			    ImageLoader imageLoader2 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+			    holder.personal_topic_item_image_info_2.setDefaultImageResId(R.drawable.welcome_homework);
+			    holder.personal_topic_item_image_info_2.setErrorImageResId(R.drawable.welcome_homework);
+			    holder.personal_topic_item_image_info_2.setImageUrl(eli.getImages().get(1).getImageurl(), imageLoader2);
+			case 1:
+				holder.personal_topic_item_image_info_1.setVisibility(View.VISIBLE);
+			    ImageLoader imageLoader1 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+			    holder.personal_topic_item_image_info_1.setDefaultImageResId(R.drawable.welcome_homework);
+			    holder.personal_topic_item_image_info_1.setErrorImageResId(R.drawable.welcome_homework);
+			    holder.personal_topic_item_image_info_1.setImageUrl(eli.getImages().get(0).getImageurl(), imageLoader1);
+			default:
+				break;
+			}
+		}
+
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
-	    holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
+	    holder.item_img.setDefaultImageResId(R.drawable.icon);
+	    holder.item_img.setErrorImageResId(R.drawable.icon);
 	    
-	    holder.imageUrl.setImageUrl(eli.getIconurl(), imageLoader);
-	    holder.imageUrl.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-			}
-		});
-		holder.advTitle.setText(eli.getTitle());
-		holder.advTime.setText(eli.getTimeline());
+	    holder.item_img.setImageUrl(eli.getUportrait(), imageLoader);
+		holder.personal_topic_item_title.setText(eli.getNickname());
+		holder.personal_topic_item_content.setText(eli.getBody());
 		return view ;
 	}
-	
+
 	private static class ViewHolder {
-		TextView advTitle;
-		TextView advTime;
-		NetworkImageView imageUrl;
+		TextView personal_topic_item_title,personal_topic_item_content;
+		NetworkImageView item_img, personal_topic_item_image_info_1,personal_topic_item_image_info_2,personal_topic_item_image_info_3,personal_topic_item_image_info_4;
+		RelativeLayout personal_topic_item_image_info;
 	}
 }

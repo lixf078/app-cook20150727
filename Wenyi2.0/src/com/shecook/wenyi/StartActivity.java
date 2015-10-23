@@ -260,6 +260,7 @@ public class StartActivity extends BaseActivity{
 							user.set_flag(statuscode);
 							user.set_isLogin(true);
 							user.set_token(dataJson.getString("token"));
+							
 							Util.saveUserData(StartActivity.this, user);
 							handler.sendEmptyMessage(1);
 						}else{

@@ -237,6 +237,7 @@ public class PiazzaQuestionFragment extends BaseFragmeng {
 			int what = msg.what;
 			switch (what) {
 			case HttpStatus.STATUS_OK:
+				Log.e(TAG, "handleMessage");
 				mAdapter.notifyDataSetChanged();
 				// Call onRefreshComplete when the list has been refreshed.
 				mPullRefreshListView.onRefreshComplete();

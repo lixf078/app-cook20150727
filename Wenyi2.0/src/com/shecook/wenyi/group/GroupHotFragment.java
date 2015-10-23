@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.DateUtils;
@@ -135,6 +136,9 @@ public class GroupHotFragment extends BaseFragmeng {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
+				Intent intent = new Intent(mActivity, GroupItemDetailActivity.class);
+				intent.putExtra("circleid", "" + mListItems.get((int) position).getId());
+				startActivity(intent);
 				
 			}
 		});
@@ -281,11 +285,12 @@ public class GroupHotFragment extends BaseFragmeng {
 							listTemp.add(pdi);
 						}
 						mListItems.addAll(listTemp);
-
-						index = data.getInt("pindex");
-						int core_status = data.getInt("core_status");
-						if (core_status == 0 && index == 0) {
-							shouldLoad = false;
+						if(data.has("pindex")){
+							index = data.getInt("pindex");
+							int core_status = data.getInt("core_status");
+							if (core_status == 0 && index == 0) {
+								shouldLoad = false;
+							}
 						}
 					}
 				} else {

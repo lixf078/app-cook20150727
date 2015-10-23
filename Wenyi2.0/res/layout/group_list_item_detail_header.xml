@@ -3,11 +3,9 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="8dip"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:background="@color/white"
-    android:paddingTop="8dp" >
+    android:paddingLeft="14dp"
+    android:paddingRight="14dp"
+    android:background="@color/white" >
 
     <RelativeLayout
         android:id="@+id/group_item_rl"
@@ -24,6 +22,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
             android:focusable="false"
+            android:background="@drawable/icon"
             android:scaleType="fitXY" />
 
         <RelativeLayout
@@ -38,9 +37,9 @@
             <TextView
                 android:id="@+id/group_hot_item_title"
                 android:layout_width="wrap_content"
-                android:text="用户名"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_color" />
+                android:textColor="@color/text_color"
+                android:text="我是中国人" />
 
             <TextView
                 android:id="@+id/group_hot_item_class"
@@ -50,7 +49,8 @@
                 android:layout_marginTop="10dip"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
-                android:textColor="@color/date_color" />
+                android:textColor="@color/date_color"
+                android:text="加入我们吧" />
 
             <TextView
                 android:id="@+id/group_hot_item_shared"
@@ -61,7 +61,8 @@
                 android:layout_marginTop="10dip"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
-                android:textColor="@color/date_color" />
+                android:textColor="@color/date_color"
+                android:text="哈哈哈哈" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -70,8 +71,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingTop="4dp"
-        android:paddingBottom="4dp"
+        android:paddingBottom="2dp"
         android:layout_below="@id/group_item_rl"
-        android:textColor="@color/date_color" />
+        android:textColor="@color/date_color" 
+        android:text="你来不来，我们都在这里。。。。哈哈"/>
 
 </RelativeLayout>

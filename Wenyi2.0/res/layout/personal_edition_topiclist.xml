@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:leui="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white"
@@ -8,7 +7,7 @@
 
     <!-- The PullToRefreshListView replaces a standard ListView widget. <com.shecook.wenyi.common.pulltorefresh.CopyOfRefreshAndMoreListView -->
 
-    <com.shecook.wenyi.common.pulltorefresh.SwitchPullToRefreshListView
+    <com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView
         android:id="@id/pull_refresh_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -18,15 +17,6 @@
         android:fastScrollEnabled="false"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
-        android:smoothScrollbar="true"
-        leui:leListViewMode="leSwipe"
-        leui:leSwipeActionLeft="reveal"
-        leui:leSwipeAnimationTime="200"
-        leui:leSwipeBackView="@+id/back"
-        leui:leSwipeCloseAllItemsWhenMoveList="true"
-        leui:leSwipeFrontView="@+id/front"
-        leui:leSwipeMode="left"
-        leui:leSwipeOffsetLeft="60dip"
-        leui:leSwipeOpenOnLongPress="true" />
+        android:smoothScrollbar="true" />
 
 </LinearLayout>

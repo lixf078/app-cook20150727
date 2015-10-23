@@ -77,10 +77,10 @@ public class PiazzaFragment extends Fragment {
 		fragments.add(foodFragment);
 		fragments.add(friendFragment);
 
-		rgs = (RadioGroup) rootView.findViewById(R.id.tabs_rg);
+		rgs = (RadioGroup) rootView.findViewById(R.id.piazza_tabs_rg);
 
 		FragmentTabAdapter tabAdapter = new FragmentTabAdapter(mActivity,
-				fragments, R.id.personal_edition_content, rgs);
+				fragments, R.id.piazza_personal_edition_content, rgs);
 		tabAdapter
 				.setOnRgsExtraCheckedChangedListener(new FragmentTabAdapter.OnRgsExtraCheckedChangedListener() {
 					@Override

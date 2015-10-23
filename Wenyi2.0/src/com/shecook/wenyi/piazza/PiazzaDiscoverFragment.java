@@ -48,7 +48,7 @@ import com.shecook.wenyi.util.WenyiLog;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
 public class PiazzaDiscoverFragment extends BaseFragmeng {
-	private static final String TAG = "PiazzaFragment";
+	private static final String TAG = "PiazzaDiscoverFragment";
 
 	private Activity mActivity = null;
 	
@@ -203,44 +203,6 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 		});
 		
 		
-		// ******************************************************************
-		
-		/*AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
-        header.setLayoutParams(layoutParams);
-        ListView lv = mInviteRecordLv.getRefreshableView();
-        View header = mActivity.getLayoutInflater().inflate(R.layout.invite_record_header, mInviteRecordLv, false);
-        lv.addHeaderView(header);
-		Button header = new Button(mActivity);
-		header.setBackgroundColor(mActivity.getResources().getColor(R.color.blue));
-        */
-		/*View header = mActivity.getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
-		
-		viewPager = (AutoScrollViewPager) header
-				.findViewById(R.id.view_pager_advert);
-		mIndicator = (CirclePageIndicator) header
-				.findViewById(R.id.indicator);
-		
-		WenyiGallery eg = new WenyiGallery();
-		eg.setId(1000);
-		eg.setTitle(getResources().getString(R.string.app_name));
-		eg.setImgUrl("");
-		eg.setEvent_type(10);
-		eg.setEvent_content("www.baidu.com");
-		mPageViews.add(eg);
-		
-		adapter = new ViewPagerAdapter(mActivity, mPageViews);
-		viewPager.setAdapter(adapter);
-		mIndicator.setViewPager(viewPager);
-
-		viewPager.setInterval(4000);
-		viewPager.setCurrentItem(0);
-		viewPager.setStopScrollWhenTouch(true);
-		setViewPagerScrollSpeed(viewPager);
-		
-		AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
-        header.setLayoutParams(layoutParams);
-        ListView lv = mPullRefreshListView.getRefreshableView();
-        lv.addHeaderView(header);*/
 	}
 
 	@Override
@@ -297,9 +259,7 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 			switch (what) {
 			case HttpStatus.STATUS_OK:
 				mAdapter.notifyDataSetChanged();
-				// Call onRefreshComplete when the list has been refreshed.
 				mPullRefreshListView.onRefreshComplete();
-				
 				break;
 
 			default:
@@ -357,7 +317,7 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 	};
 
 	private void initList(JSONArray entrylist, boolean istop) throws JSONException{
-
+		Log.e(TAG, "initList " + entrylist);
 		LinkedList<PiazzaDiscoverItem> listTemp = new LinkedList<PiazzaDiscoverItem>();
 		for (int i = 0, j = entrylist.length(); i < j; i++) {
 			JSONObject jb = entrylist.getJSONObject(i);
@@ -421,7 +381,6 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 							initList(list, false);
 						}
 
-						handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 					}
 				} else {
 					Toast.makeText(mActivity,
@@ -431,6 +390,7 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
+			handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 		}
 	}
 

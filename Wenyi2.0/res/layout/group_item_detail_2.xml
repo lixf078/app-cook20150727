@@ -5,8 +5,21 @@
     android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <include layout="@layout/wenyi_common_header"
-        android:background="@android:color/white" />
+    <!--
+         <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+        android:id="@+id/main_layout_fillparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dip"
+        android:background="@drawable/wenyi_06"
+        android:gravity="center"
+        android:visibility="gone"
+        android:scaleType="fitXY" />
+    -->
+
+    <include layout="@layout/wenyi_common_header" />
+
+    <include layout="@layout/group_list_item_detail_header" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -14,50 +27,51 @@
         android:orientation="vertical" >
 
         <RadioGroup
-            android:id="@+id/tabs_rg"
+            android:id="@+id/group_tabs_rg"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
             android:gravity="center"
             android:orientation="horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp" >
+            android:paddingBottom="7dp"
+            android:paddingTop="7dp" >
 
             <RadioButton
-                android:id="@+id/group_hot_rb"
-                android:layout_width="wrap_content"
+                android:id="@+id/group_item_detail_shared_rb"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1.0"
                 android:background="@drawable/background_selector"
                 android:button="@null"
                 android:checked="true"
                 android:drawableTop="@null"
                 android:gravity="center"
-                android:layout_weight="1.0"
                 android:singleLine="true"
-                android:text="@string/group_hot_str"
+                android:text="分 享"
                 android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <RadioButton
-                android:id="@+id/group_personal_rb"
-                android:layout_width="wrap_content"
+                android:id="@+id/group_item_detail_mem_rb"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1.0"
                 android:background="@drawable/background_selector"
                 android:button="@null"
                 android:drawableTop="@null"
-                android:layout_weight="1.0"
                 android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
                 android:singleLine="true"
-                android:text="@string/group_personal_str"
+                android:text="成员"
                 android:textColor="#000000"
-                android:textSize="18sp" />
-
+                android:textSize="20sp" />
         </RadioGroup>
 
         <FrameLayout
-            android:id="@+id/personal_edition_content"
+            android:id="@+id/group_personal_edition_content"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1.0" />

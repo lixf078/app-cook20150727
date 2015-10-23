@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,18 +18,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.letv.shared.widget.BaseSwipeHelper;
-import com.letv.shared.widget.LeListView;
-import com.letv.shared.widget.pulltorefresh.PullToRefreshBase;
-import com.letv.shared.widget.pulltorefresh.PullToRefreshBase.Mode;
-import com.letv.shared.widget.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
-import com.letv.shared.widget.pulltorefresh.PullToRefreshBase.OnRefreshListener;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
-import com.shecook.wenyi.common.pulltorefresh.SwitchPullToRefreshListView;
+import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
+import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
+import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
+import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnRefreshListener;
+import com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView;
 import com.shecook.wenyi.common.volley.Request.Method;
 import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
@@ -38,7 +37,8 @@ import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.essay.EssayItemDeatilActivity;
-import com.shecook.wenyi.model.EssayListItem;
+import com.shecook.wenyi.model.WenyiImage;
+import com.shecook.wenyi.model.personal.PersonalTopicModel;
 import com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
@@ -49,15 +49,10 @@ public class PersonalEditionTopic extends Fragment {
 	private static final String TAG = "PersonalEditionTopic";
 	
 	private Activity mActivity = null;
-	private SwitchPullToRefreshListView mPullRefreshListView;
+	private PullToRefreshListView mPullRefreshListView;
 	com.shecook.wenyi.personal.adapter.PersonalTopicListAdapter mAdapter = null;
-	LinkedList<EssayListItem> mListItems;
+	LinkedList<PersonalTopicModel> mListItems;
 	private boolean shouldLoad = true;
-	@Override
-	public void onAttach(Activity activity) {
-		WenyiLog.logv(TAG, "onAttach");
-		super.onAttach(activity);
-	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,16 +60,29 @@ public class PersonalEditionTopic extends Fragment {
 		super.onCreate(savedInstanceState);
 		mActivity = getActivity();
 	}
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		WenyiLog.logv(TAG, "onCreateView");
+		View rootView = inflater.inflate(R.layout.personal_edition_topiclist, container, false);
+		initView(rootView);
+		if(shouldLoad){
+			getMyTopicList(HttpUrls.PERSONAL_TOPIC_MY_LIST, null, listResultListener, listErrorListener);
+		}else{
+			Toast.makeText(mActivity, "End of List!", Toast.LENGTH_SHORT).show();
+		}
+		return rootView;
+	}
 
 	public void initView(View rootView){
-		mPullRefreshListView = (SwitchPullToRefreshListView) rootView.findViewById(R.id.pull_refresh_list);
+		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.pull_refresh_list);
 		
 		// Set a listener to be invoked when the list should be refreshed.
 		mPullRefreshListView
-				.setOnRefreshListener(new OnRefreshListener<LeListView>() {
+				.setOnRefreshListener(new OnRefreshListener<ListView>() {
 					@Override
 					public void onRefresh(
-							PullToRefreshBase<LeListView> refreshView) {
+							PullToRefreshBase<ListView> refreshView) {
 						String label = DateUtils.formatDateTime(
 								mActivity.getApplicationContext(),
 								System.currentTimeMillis(),
@@ -86,10 +94,8 @@ public class PersonalEditionTopic extends Fragment {
 						refreshView.getLoadingLayoutProxy()
 								.setLastUpdatedLabel(label);
 
-						// Do work to refresh the list here.
-//						getCatalogList(HttpUrls.ESSAY_WENYI_LIST,null,listResultListener,listErrorListener);
 						if(shouldLoad){
-							getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null, listResultListener, listErrorListener);
+							getMyTopicList(HttpUrls.PERSONAL_TOPIC_MY_LIST, null, listResultListener, listErrorListener);
 						}else{
 							Toast.makeText(mActivity, "End of List!",
 									Toast.LENGTH_SHORT).show();
@@ -104,7 +110,7 @@ public class PersonalEditionTopic extends Fragment {
 					@Override
 					public void onLastItemVisible() {
 						if(shouldLoad){
-							getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null, listResultListener, listErrorListener);
+							getMyTopicList(HttpUrls.PERSONAL_TOPIC_MY_LIST, null, listResultListener, listErrorListener);
 						}else{
 							Toast.makeText(mActivity, "End of List!",
 									Toast.LENGTH_SHORT).show();
@@ -112,57 +118,20 @@ public class PersonalEditionTopic extends Fragment {
 					}
 				});
 
-//		ListView actualListView = mPullRefreshListView.getRefreshableView();
-
-		mListItems = new LinkedList<EssayListItem>();
+		mListItems = new LinkedList<PersonalTopicModel>();
 		mAdapter = new PersonalTopicListAdapter(mActivity, mListItems);
 
-		/**
-		 * Add Sound Event Listener
-		 */
 		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
-//		mPullRefreshListView.getRefreshableView().setOffsetLeft(Util.getWidth(mActivity) * 4 / 5);
-//		mPullRefreshListView.getRefreshableView().setSwipeListViewListener(new MyBaseSwipeListViewListener());
 		
-		mPullRefreshListView.getRefreshableView().setSwipeActionLeft(BaseSwipeHelper.SWIPE_ACTION_REVEAL);
-		mPullRefreshListView.getRefreshableView().setSwipeActionRight(BaseSwipeHelper.SWIPE_ACTION_DISMISS);
-		mPullRefreshListView.getRefreshableView().setDismissAnimationTime(500);
-//		mPullRefreshListView.getRefreshableView().setSwipeMode(BaseSwipeHelper.SWIPE_MODE_LEFT);
-		
-//		mPullRefreshListView.getRefreshableView().setSwipeMode(BaseSwipeHelper.SWIPE_MODE_LEFT);
-//		mPullRefreshListView.getRefreshableView().setSwipeActionLeft(BaseSwipeHelper.SWIPE_ACTION_REVEAL);
-//		mPullRefreshListView.getRefreshableView().setOffsetLeft(1000);
-		
-//		mPullRefreshListView.setSwipeMode(BaseSwipeHelper.SWIPE_MODE_LEFT);
-		// You can also just use setListAdapter(mAdapter) or
 		mPullRefreshListView.setAdapter(mAdapter);
-		mPullRefreshListView.getRefreshableView().setSwipeEnabled(true);
 		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
-				Intent intent = new Intent(mActivity,EssayItemDeatilActivity.class);
-				intent.putExtra("essaytitle", "");
-				startActivity(intent);
 			}
 		});
 	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		WenyiLog.logv(TAG, "onCreateView");
-		View rootView = inflater.inflate(R.layout.personal_edition_topiclist, container, false);
-		// initView(rootView);
-		if(shouldLoad){
-			getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null, listResultListener, listErrorListener);
-		}else{
-			Toast.makeText(mActivity, "End of List!", Toast.LENGTH_SHORT).show();
-		}
-		return rootView;
-	}
-
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onActivityCreated");
@@ -229,19 +198,13 @@ public class PersonalEditionTopic extends Fragment {
 	};
 	
 	private int index = 0;
-	public void getCatalogList(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
+	public void getMyTopicList(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		if(null == jsonObject){
 			jsonObject = new JSONObject();
 		}
 		JSONObject commonsub = Util.getCommonParam(mActivity);
 		JSONObject paramsub = new JSONObject();
 		try {
-			jsonObject.put("common", commonsub);
-			String catalogid = mActivity.getIntent().getStringExtra("catalogid");
-			if(TextUtils.isEmpty(catalogid)){
-				catalogid = "14";
-			}
-			paramsub.put("catalogid", catalogid);
 			paramsub.put("pindex", "" + ++index);
 			paramsub.put("count", "20");
 			
@@ -288,44 +251,38 @@ public class PersonalEditionTopic extends Fragment {
 						
 						if(data.has("list")){
 							JSONArray list = data.getJSONArray("list");
-							LinkedList<EssayListItem> listTemp = new LinkedList<EssayListItem>();
+							LinkedList<PersonalTopicModel> listTemp = new LinkedList<PersonalTopicModel>();
 							for(int i = 0,j = list.length(); i < j; i++){
 								JSONObject jb = list.getJSONObject(i);
-								EssayListItem eli = new EssayListItem();
+								PersonalTopicModel eli = new PersonalTopicModel();
 								eli.setId(jb.getString("id"));
-								eli.setCataid(jb.getString("cataid"));
-								eli.setTitle(jb.getString("title"));
-								eli.setSumm(jb.getString("summ"));
-								eli.setIconurl(jb.getString("iconurl"));
-								eli.setOntop(jb.getBoolean("ontop"));
-								eli.setEvent_type(jb.getString("event_type"));
-								eli.setEvent_content(jb.getString("event_content"));
-								eli.setQkey(jb.getString("qkey"));
+								eli.setUid(jb.getString("uid"));
+								eli.setUgid(jb.getString("ugid"));
+								eli.setNickname(jb.getString("nickname"));
+								eli.setUportrait(jb.getString("uportrait"));
+								eli.setBody(jb.getString("body"));
+								eli.setTags(jb.getString("tags"));
+								eli.setComments(jb.getString("comments"));
 								eli.setTimeline(jb.getString("timeline"));
-								listTemp.add(eli);
+								if(jb.has("images")){
+									JSONArray imagelist = jb.getJSONArray("images");
+									LinkedList<WenyiImage> images = new LinkedList<WenyiImage>();
+									for(int k = 0,t = imagelist.length();k<t;k++){
+										try {
+											JSONObject imageobj = imagelist.getJSONObject(k);
+											WenyiImage img = new WenyiImage();
+											img.setImageurl(imageobj.getString("url"));
+										} catch (Exception e) {
+											e.printStackTrace();
+											images = null;
+										}
+									}
+									if(images != null){
+										eli.setImages(images);
+									}
+								}
 							}
 							mListItems.addAll(listTemp);
-						}
-						
-						if(data.has("toplist")){
-							JSONArray toplist = data.getJSONArray("toplist");
-							LinkedList<EssayListItem> toplistTemp = new LinkedList<EssayListItem>();
-							for(int i = 0,j = toplist.length(); i < j; i++){
-								JSONObject topjb = toplist.getJSONObject(i);
-								EssayListItem topeli = new EssayListItem();
-								topeli.setId(topjb.getString("id"));
-								topeli.setCataid(topjb.getString("cataid"));
-								topeli.setTitle(topjb.getString("title"));
-								topeli.setSumm(topjb.getString("summ"));
-								topeli.setIconurl(topjb.getString("iconurl"));
-								topeli.setOntop(topjb.getBoolean("ontop"));
-								topeli.setEvent_type(topjb.getString("event_type"));
-								topeli.setEvent_content(topjb.getString("event_content"));
-								topeli.setQkey(topjb.getString("qkey"));
-								topeli.setTimeline(topjb.getString("timeline"));
-								toplistTemp.add(topeli);
-							}
-							mListItems.addAll(0, toplistTemp);
 						}
 						
 						index = data.getInt("pindex");
@@ -334,7 +291,6 @@ public class PersonalEditionTopic extends Fragment {
 							Log.e(TAG, "has not some item");
 							shouldLoad = false;
 						}
-						handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 					}
 				}else{
 					Toast.makeText(mActivity, "" + jsonObject.getString("errmsg"), Toast.LENGTH_SHORT).show();
@@ -343,5 +299,6 @@ public class PersonalEditionTopic extends Fragment {
 				e.printStackTrace();
 			}
 		}
+		handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 	}
 }

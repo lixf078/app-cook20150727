@@ -289,32 +289,34 @@ public class GroupMyFragment extends BaseFragmeng implements OnClickListener{
 						&& 200 == jsonObject.getInt("statuscode")) {
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
-
-						JSONArray list = data.getJSONArray("list");
-						LinkedList<GroupHotListItem> listTemp = new LinkedList<GroupHotListItem>();
-						for (int i = 0, j = list.length(); i < j; i++) {
-							JSONObject jb = list.getJSONObject(i);
-							GroupHotListItem pdi = new GroupHotListItem();
-							pdi.setId(jb.getString("id"));
-							pdi.setUid(jb.getString("uid"));
-							pdi.setUfounder(jb.getString("ufounder"));
-							pdi.setUportrait(jb.getString("uportrait"));
-							pdi.setTitle(jb.getString("title"));
-							pdi.setDescription(jb.getString("description"));
-							pdi.setIconurl(jb.getString("iconurl"));
-							pdi.setTotalnum(jb.getString("totalnum"));
-							pdi.setShare(jb.getString("share"));
-							pdi.setCurrentnum(jb.getString("currentnum"));
-							pdi.setDatecreated(jb.getString("datecreated"));
-							pdi.setDateupd(jb.getString("dateupd"));
-							listTemp.add(pdi);
+						if(data.has("list")){
+							JSONArray list = data.getJSONArray("list");
+							LinkedList<GroupHotListItem> listTemp = new LinkedList<GroupHotListItem>();
+							for (int i = 0, j = list.length(); i < j; i++) {
+								JSONObject jb = list.getJSONObject(i);
+								GroupHotListItem pdi = new GroupHotListItem();
+								pdi.setId(jb.getString("id"));
+								pdi.setUid(jb.getString("uid"));
+								pdi.setUfounder(jb.getString("ufounder"));
+								pdi.setUportrait(jb.getString("uportrait"));
+								pdi.setTitle(jb.getString("title"));
+								pdi.setDescription(jb.getString("description"));
+								pdi.setIconurl(jb.getString("iconurl"));
+								pdi.setTotalnum(jb.getString("totalnum"));
+								pdi.setShare(jb.getString("share"));
+								pdi.setCurrentnum(jb.getString("currentnum"));
+								pdi.setDatecreated(jb.getString("datecreated"));
+								pdi.setDateupd(jb.getString("dateupd"));
+								listTemp.add(pdi);
+							}
+							mListItems.addAll(listTemp);
 						}
-						mListItems.addAll(listTemp);
-
-						index = data.getInt("pindex");
-						int core_status = data.getInt("core_status");
-						if (core_status == 0 && index == 0) {
-							shouldLoad = false;
+						if(data.has("pindex")){
+							index = data.getInt("pindex");
+							int core_status = data.getInt("core_status");
+							if (core_status == 200 && index == 0) {
+								shouldLoad = false;
+							}
 						}
 					}
 				} else {

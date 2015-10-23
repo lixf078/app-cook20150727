@@ -17,8 +17,6 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.mainpackage.FragmentTabAdapter;
-import com.shecook.wenyi.piazza.PiazzaDiscoverFragment;
-import com.shecook.wenyi.piazza.PiazzaQuestionFragment;
 import com.shecook.wenyi.util.WenyiLog;
 
 public class GroupFragment extends Fragment {

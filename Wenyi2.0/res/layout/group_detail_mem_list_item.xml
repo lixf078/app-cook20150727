@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/back"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:tag="back" >
+
+    <TextView
+        android:id="@+id/group_shared_item_delete"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/red"
+        android:gravity="center"
+        android:text="删  除"
+        android:textColor="@color/white"
+        android:layout_marginRight="15dp"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/front"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/item_background_color"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
+        android:tag="front" >
+
+        <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+            android:id="@+id/item_img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:focusable="false"
+            android:scaleType="fitXY" />
+
+        <RelativeLayout
+            android:id="@+id/group_shared_item_info"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dip"
+            android:layout_toRightOf="@id/item_img" >
+
+            <TextView
+                android:id="@+id/group_shared_item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/group_shared_item_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/group_shared_item_title"
+                android:gravity="right|center_vertical" />
+
+            <TextView
+                android:id="@+id/group_shared_item_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:layout_below="@id/group_shared_item_title"
+                android:textColor="@color/text_color" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -15,7 +15,7 @@
         android:orientation="vertical" >
 
         <RadioGroup
-            android:id="@+id/tabs_rg"
+            android:id="@+id/piazza_tabs_rg"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -62,7 +62,6 @@
                 android:layout_weight="1.0"
                 android:background="@drawable/background_selector"
                 android:button="@null"
-                android:checked="true"
                 android:drawableTop="@null"
                 android:gravity="center"
                 android:singleLine="true"
@@ -86,7 +85,7 @@
         </RadioGroup>
 
         <FrameLayout
-            android:id="@+id/personal_edition_content"
+            android:id="@+id/piazza_personal_edition_content"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1.0" />

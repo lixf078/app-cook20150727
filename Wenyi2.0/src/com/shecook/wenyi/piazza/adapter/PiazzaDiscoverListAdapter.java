@@ -17,6 +17,7 @@ import com.shecook.wenyi.model.piazza.PiazzaDiscoverItem;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
+import com.umeng.socom.Log;
 
 public class PiazzaDiscoverListAdapter extends BaseAdapter {
 	
@@ -38,13 +39,13 @@ public class PiazzaDiscoverListAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
+		Log.e("lixufeng", "getCount " + mListItems.size());
 		return mListItems.size();
 	}
 
 	@Override
 	public Object getItem(int arg0) {
-		mListItems.get(arg0);
-		return null;
+		return mListItems.get(arg0);
 	}
 
 	@Override
@@ -56,6 +57,7 @@ public class PiazzaDiscoverListAdapter extends BaseAdapter {
 	public View getView(int position, View view, ViewGroup arg2) {
 		ViewHolder holder;
 		PiazzaDiscoverItem pdi = mListItems.get(position);
+		Log.e("lixufeng", "getView " + pdi);
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(
      				R.layout.piazza_discover_list_item, null);

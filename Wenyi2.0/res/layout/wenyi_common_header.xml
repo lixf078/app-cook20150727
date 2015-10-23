@@ -13,7 +13,7 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:paddingBottom="3dip"
-        android:paddingTop="5dip" >
+        android:paddingTop="8dip" >
 
         <ImageView
             android:id="@id/return_img"
@@ -29,7 +29,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@id/right_img"

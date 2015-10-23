@@ -14,16 +14,16 @@ public class GroupHotListItem {
 	private String datecreated;
 	private String dateupd;
 	private boolean ontop;
+	private int status;
 
 	public GroupHotListItem() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public GroupHotListItem(String id, String uid, String ufounder,String uportrait,
 			String title, String description, String iconurl, String totalnum,
 			String currentnum, String share, String datecreated,
-			String dateupd, boolean ontop) {
+			String dateupd, boolean ontop, int status) {
 		super();
 		this.id = id;
 		this.uid = uid;
@@ -38,6 +38,15 @@ public class GroupHotListItem {
 		this.datecreated = datecreated;
 		this.dateupd = dateupd;
 		this.ontop = ontop;
+		this.status = status;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public String getId() {

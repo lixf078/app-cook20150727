@@ -13,7 +13,7 @@ public class WenyiLog {
 	
 	public static void logv(String tag, String log){
 		if(LOGV){
-			Log.v(TAG + tag, log);
+			Log.e(TAG + tag, log);
 		}
 	}
 	
