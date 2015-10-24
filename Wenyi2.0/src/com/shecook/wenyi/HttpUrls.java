@@ -52,7 +52,7 @@ public class HttpUrls {
 	public static final String GROUP_ITEM_MEM_LIST = BASE_URL + "circle/mem_list";
 	public static final String GROUP_ITEM_MEM_AUDITING = BASE_URL + "circle/auditing";
 	public static final String GROUP_ITEM_MEM_AUDIT_list = BASE_URL + "circle/auditlist";
-	public static final String GROUP_CREATE_CIRCLE = BASE_URL + "circle/circie_new";
+	public static final String GROUP_CREATE_CIRCLE = BASE_URL + "circle/circle_new";
 	
 	
 	

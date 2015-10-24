@@ -5,7 +5,7 @@
     android:versionName="1.0.4" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="19"
         android:targetSdkVersion="19" />
 
     <!-- 读取联系人权限 -->
@@ -27,6 +27,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
 
     <!-- 【可选】如果需要设置前台是否显示通知，需要设置这个权限 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
