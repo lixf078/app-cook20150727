@@ -34,6 +34,13 @@ import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
 public class CommonUpload {
+	
+	private static CommonUpload commonUpload;
+	public static final int UPLOAD_SUCESS = 1;
+	public static final int UPLOAD_FAILED = 2;
+	public static final int GROUP_CREATE_SUCESS = 3;
+	public static final int GROUP_CREATE_FAILED = 4;
+	
 	public static final String TAG = "CommonUpload";
 	public static final int CAMERA_WITH_DATA = 0x11;// 请求相机功能
 	public static final int CAMERA_PICK_PHOTO = 0x13;// 请求相机功能
@@ -44,6 +51,17 @@ public class CommonUpload {
 	public static String imageString = "file:///sdcard/";
 
 	private static Activity mContext;
+	
+	private CommonUpload(){
+		
+	}
+	
+	public static CommonUpload getInstance(){
+		if(commonUpload == null){
+			commonUpload = new CommonUpload();
+		}
+		return commonUpload;
+	}
 	
 	public static void commonMethod(Activity context, String url, JSONObject paramsub,
 			Listener<JSONObject> resultListener, ErrorListener errorListener,
@@ -96,7 +114,6 @@ public class CommonUpload {
 				.setNegativeButton("相册", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// getPhotoPickIntent();
 						startPickPhotoActivity();
 					}
 				}).create();

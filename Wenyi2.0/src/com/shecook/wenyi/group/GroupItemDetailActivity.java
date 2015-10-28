@@ -6,6 +6,9 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,15 +16,18 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.letv.shared.widget.LeBottomSheet;
 import com.shecook.wenyi.BaseActivity;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.common.CreatePersonalInfoActivity;
 import com.shecook.wenyi.common.volley.Request.Method;
 import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
@@ -37,19 +43,21 @@ import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class GroupItemDetailActivity extends BaseActivity implements OnClickListener{
-	
+public class GroupItemDetailActivity extends BaseActivity implements
+		OnClickListener {
+
 	private RadioGroup rgs;
 	public List<Fragment> fragments = new ArrayList<Fragment>();
 	public ImageView return_img, right_img;
 	public TextView middle_title;
-	
+
 	GroupItemDetailSharedFragment sharedFragment;
 	GroupItemDetailMemFragment memFragment;
-	private TextView group_hot_item_title,group_hot_item_class,group_hot_item_shared,group_hot_tiem_content;
+	private TextView group_hot_item_title, group_hot_item_class,
+			group_hot_item_shared, group_hot_tiem_content;
 	private NetworkImageView item_img;
 	private String circleid;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,27 +67,26 @@ public class GroupItemDetailActivity extends BaseActivity implements OnClickList
 		processParam();
 	}
 
-	public void initView(){
+	public void initView() {
 		right_img = (ImageView) findViewById(R.id.right_img);
 		right_img.setVisibility(View.VISIBLE);
 		right_img.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(GroupItemDetailActivity.this, GroupCreateActivity.class);
-				startActivity(intent);
+				getBottomDialog();
 			}
 		});
-		
+
 		return_img = (ImageView) findViewById(R.id.return_img);
 		return_img.setOnClickListener(GroupItemDetailActivity.this);
-		
+
 		item_img = (NetworkImageView) findViewById(R.id.item_img);
 		group_hot_item_title = (TextView) findViewById(R.id.group_hot_item_title);
 		group_hot_item_class = (TextView) findViewById(R.id.group_hot_item_class);
 		group_hot_item_shared = (TextView) findViewById(R.id.group_hot_item_shared);
 		group_hot_tiem_content = (TextView) findViewById(R.id.group_hot_tiem_content);
-		
+
 		sharedFragment = new GroupItemDetailSharedFragment();
 		memFragment = new GroupItemDetailMemFragment();
 		fragments.add(sharedFragment);
@@ -99,7 +106,6 @@ public class GroupItemDetailActivity extends BaseActivity implements OnClickList
 				});
 	}
 
-
 	@Override
 	public void onClick(View view) {
 		int id = view.getId();
@@ -112,43 +118,213 @@ public class GroupItemDetailActivity extends BaseActivity implements OnClickList
 			break;
 		}
 	}
-	
+
 	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
 			switch (what) {
 			case HttpStatus.STATUS_OK:
 				LruImageCache lruImageCache = LruImageCache.instance();
-			    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-			    item_img.setDefaultImageResId(R.drawable.icon_dialog);
-			    item_img.setErrorImageResId(R.drawable.icon_dialog);
-			    
-			    item_img.setImageUrl(pdi.getUportrait(), imageLoader);
-			    group_hot_item_title.setText(pdi.getUfounder());
+				ImageLoader imageLoader = new ImageLoader(VolleyUtils
+						.getInstance().getRequestQueue(), lruImageCache);
+				item_img.setDefaultImageResId(R.drawable.icon_dialog);
+				item_img.setErrorImageResId(R.drawable.icon_dialog);
+
+				item_img.setImageUrl(pdi.getUportrait(), imageLoader);
+				group_hot_item_title.setText(pdi.getUfounder());
 				group_hot_item_class.setText("成员：" + pdi.getCurrentnum());
 				group_hot_item_shared.setText("分享：" + pdi.getShare());
 				group_hot_tiem_content.setText(pdi.getDescription());
-				
-				break;
 
+				break;
+			case STATUS_DISBAND:
+				getDisbandDialog();
+				break;
+			case STATUS_DISBAND_OK:
+				if(alertdialog.isShowing()){
+					alertdialog.dismiss();
+				}
+				break;
 			default:
 				break;
 			}
 		};
 	};
+
+	private static final int STATUS_DISBAND = 100;
+	private static final int STATUS_DISBAND_OK = 101;
+	AlertDialog alertdialog;
+	private void getDisbandDialog(){
+		alertdialog = Util.showDialog(GroupItemDetailActivity.this, null, "确定要解散圈子吗?",new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				disbandGroup();
+			}
+		}, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				arg0.dismiss();
+			}
+		});
+		alertdialog.show();
+	}
 	
-	public void processParam(){
+	Dialog dialog = null;
+	private void getBottomDialog() {
+		dialog = Util.getBottomDialog(GroupItemDetailActivity.this,
+				R.layout.a_common_bottom_dialog_layout);
+		ImageView img3 = null;
+		Button button3 = null;
+		ImageView img4 = null;
+		Button button4 = null;
+		ImageView img5 = null;
+		Button button5 = null;
+
+		switch (status) {
+		case 10000: // 创建人
+			img3 = (ImageView) dialog
+					.findViewById(R.id.wenyi_bottomsheet_img_3);
+			button3 = (Button) dialog
+					.findViewById(R.id.wenyi_bottomsheet_btn_3);
+			img3.setVisibility(View.VISIBLE);
+			button3.setVisibility(View.VISIBLE);
+			button3.setText("解散圈子");
+			img4 = (ImageView) dialog
+					.findViewById(R.id.wenyi_bottomsheet_img_4);
+			button4 = (Button) dialog
+					.findViewById(R.id.wenyi_bottomsheet_btn_4);
+			img4.setVisibility(View.VISIBLE);
+			button4.setVisibility(View.VISIBLE);
+			button4.setText("修改群信息");
+			img5 = (ImageView) dialog
+					.findViewById(R.id.wenyi_bottomsheet_img_5);
+			button5 = (Button) dialog
+					.findViewById(R.id.wenyi_bottomsheet_btn_5);
+			img5.setVisibility(View.VISIBLE);
+			button5.setVisibility(View.VISIBLE);
+			button5.setText("发布群分享");
+			button3.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					dialog.dismiss();
+					handler.sendEmptyMessage(STATUS_DISBAND);
+				}
+			});
+			button4.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					Intent intent = new Intent(GroupItemDetailActivity.this, GroupCreateActivity.class);
+					intent.putExtra("circleid", circleid);
+					intent.putExtra("title", pdi.getTitle());
+					intent.putExtra("desc", pdi.getDescription());
+					intent.putExtra("image", pdi.getUfounder());
+					startActivity(intent);
+				}
+			});
+
+			button5.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					Intent intent = new Intent(GroupItemDetailActivity.this, CreatePersonalInfoActivity.class);
+					startActivity(intent);
+					dialog.dismiss();
+				}
+			});
+			break;
+		case 10001:// 管理员
+			img3 = (ImageView) dialog
+					.findViewById(R.id.wenyi_bottomsheet_img_3);
+			button3 = (Button) dialog
+					.findViewById(R.id.wenyi_bottomsheet_btn_3);
+			img3.setVisibility(View.VISIBLE);
+			button3.setVisibility(View.VISIBLE);
+			button3.setText("修改群信息");
+			img4 = (ImageView) dialog
+					.findViewById(R.id.wenyi_bottomsheet_img_4);
+			button4 = (Button) dialog
+					.findViewById(R.id.wenyi_bottomsheet_btn_4);
+			img4.setVisibility(View.VISIBLE);
+			button4.setVisibility(View.VISIBLE);
+			button4.setText("发布群分享");
+			img5 = (ImageView) dialog
+					.findViewById(R.id.wenyi_bottomsheet_img_5);
+			button5 = (Button) dialog
+					.findViewById(R.id.wenyi_bottomsheet_btn_5);
+			img5.setVisibility(View.VISIBLE);
+			button5.setVisibility(View.VISIBLE);
+			button5.setText("退出圈子");
+			break;
+		case 10002:// 圈子成员
+			img4 = (ImageView) dialog
+					.findViewById(R.id.wenyi_bottomsheet_img_4);
+			button4 = (Button) dialog
+					.findViewById(R.id.wenyi_bottomsheet_btn_4);
+			img4.setVisibility(View.VISIBLE);
+			button4.setVisibility(View.VISIBLE);
+			button4.setText("发布群分享");
+			
+			img5 = (ImageView) dialog
+					.findViewById(R.id.wenyi_bottomsheet_img_5);
+			button5 = (Button) dialog
+					.findViewById(R.id.wenyi_bottomsheet_btn_5);
+			img5.setVisibility(View.VISIBLE);
+			button5.setVisibility(View.VISIBLE);
+			button5.setText("退出圈子");
+			break;
+		case 10004:// 非圈子成员
+			img5 = (ImageView) dialog
+					.findViewById(R.id.wenyi_bottomsheet_img_5);
+			button5 = (Button) dialog
+					.findViewById(R.id.wenyi_bottomsheet_btn_5);
+			img5.setVisibility(View.VISIBLE);
+			button5.setVisibility(View.VISIBLE);
+			button5.setText("申请加入");
+			break;
+		default:
+			break;
+		}
+		dialog.show();
+	}
+
+	LeBottomSheet mBottomSheet;
+
+	public void disbandGroup() {
 		JSONObject paramObject = new JSONObject();
 		try {
 			paramObject.put("circleid", circleid);
-			getGroupInfo(HttpUrls.GROUP_ITEM_DETAIL, paramObject, listResultListener, listErrorListener);
+			getGroupInfo(HttpUrls.GROUP_CIRCLE_DISBAND, paramObject,
+					disbandResultListener, listErrorListener);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	Listener<JSONObject> disbandResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.d(TAG,
+					"disbandResultListener onResponse -> " + result.toString());
+			
+		}
+	};
+	
+	public void processParam() {
+		JSONObject paramObject = new JSONObject();
+		try {
+			paramObject.put("circleid", circleid);
+			getGroupInfo(HttpUrls.GROUP_ITEM_DETAIL, paramObject,
+					listResultListener, listErrorListener);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
-	
+
 	public void getGroupInfo(String url, JSONObject paramsub,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		JSONObject jsonObject = new JSONObject();
@@ -191,9 +367,10 @@ public class GroupItemDetailActivity extends BaseActivity implements OnClickList
 			Log.e(TAG, error.getMessage(), error);
 		}
 	};
+
 	GroupHotListItem pdi = null;
 	public int status;
-	
+
 	public int getStatus() {
 		return status;
 	}
@@ -209,7 +386,7 @@ public class GroupItemDetailActivity extends BaseActivity implements OnClickList
 						&& 200 == jsonObject.getInt("statuscode")) {
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
-						if(data.has("detail")){
+						if (data.has("detail")) {
 							JSONObject jb = data.getJSONObject("detail");
 							pdi = new GroupHotListItem();
 							pdi.setId(jb.getString("id"));
@@ -225,7 +402,7 @@ public class GroupItemDetailActivity extends BaseActivity implements OnClickList
 							pdi.setDatecreated(jb.getString("datecreated"));
 							pdi.setDateupd(jb.getString("dateupd"));
 						}
-						if(pdi != null){
+						if (pdi != null) {
 							status = data.getInt("circle_status");
 							pdi.setStatus(status);
 						}
@@ -241,5 +418,5 @@ public class GroupItemDetailActivity extends BaseActivity implements OnClickList
 		}
 		handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 	}
-	
+
 }

@@ -283,6 +283,8 @@ public class PersonalEditionTopic extends Fragment {
 								}
 							}
 							mListItems.addAll(listTemp);
+						}else{
+							Toast.makeText(mActivity, "" + jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
 						}
 						
 						index = data.getInt("pindex");

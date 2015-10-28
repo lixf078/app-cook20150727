@@ -58,6 +58,7 @@ public class GroupCreateActivity extends BaseActivity {
 	private String circleImage = "";
 	private String photoPath = "";
 
+	private String circleid = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,6 +78,7 @@ public class GroupCreateActivity extends BaseActivity {
 			}
 		});
 		name = (EditText) findViewById(R.id.group_create_name);
+		
 		content = (EditText) findViewById(R.id.group_create_content);
 
 		right_img = (ImageView) findViewById(R.id.right_img);
@@ -94,6 +96,11 @@ public class GroupCreateActivity extends BaseActivity {
 				processParam(filePath);
 			}
 		});
+		
+		circleid = getIntent().getStringExtra("circleid");
+		name.setText("" + getIntent().getStringExtra("title"));
+		content.setText("" + getIntent().getStringExtra("desc"));
+		
 	}
 
 	Handler handler = new Handler() {
@@ -128,13 +135,6 @@ public class GroupCreateActivity extends BaseActivity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		/*
-		 * String dir = Environment.getExternalStorageDirectory() + ""; String
-		 * files = dir + "/text1.png;" + dir + "/text2.png;" + dir +
-		 * "/20151022202319.jpg;" + dir + "/20151022204753.jpg"; String files2 =
-		 * dir + "/text1.png;" + dir + "/text2.png;" + dir + "/text1.png;" + dir
-		 * + "/text1.png";
-		 */
 		commonMethod(HttpUrls.UPLOAD_IMG, paramObject, listResultListener,
 				listErrorListener, filepath);
 	}
@@ -148,11 +148,17 @@ public class GroupCreateActivity extends BaseActivity {
 			paramObject.put("desc", circleContent);
 			paramObject.put("image", circleImage);
 			paramObject.put("title", circleName);
+			paramObject.put("circleid", "" + circleid);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		commonMethod(HttpUrls.GROUP_CREATE_CIRCLE, paramObject,
-				crtateResultListener, crtateErrorListener, "");
+		if(TextUtils.isEmpty(circleid)){
+			commonMethod(HttpUrls.GROUP_CIRCLE_EDIT, paramObject,
+					crtateResultListener, crtateErrorListener, "");
+		}else{
+			commonMethod(HttpUrls.GROUP_CREATE_CIRCLE, paramObject,
+					crtateResultListener, crtateErrorListener, "");
+		}
 	}
 
 	Listener<JSONObject> crtateResultListener = new Listener<JSONObject>() {
@@ -171,7 +177,11 @@ public class GroupCreateActivity extends BaseActivity {
 							JSONObject data = jsonObject.getJSONObject("data");
 							int core_status = data.getInt("core_status");
 							if (core_status == 200) {
-								msg = "" + "圈子创建成功！";
+								if(TextUtils.isEmpty(circleid)){
+									msg = "" + "圈子创建成功！";
+								}else{
+									msg = "" + "圈子修改成功！";
+								}
 								Toast.makeText(GroupCreateActivity.this, msg,
 										Toast.LENGTH_SHORT).show();
 								handler.sendEmptyMessage(GROUP_CREATE_SUCESS);
@@ -372,7 +382,6 @@ public class GroupCreateActivity extends BaseActivity {
 			imgType = 0;
 			Bitmap bitmap3 = null;
 			String mFileName3 = getPath(GroupCreateActivity.this, data.getData());
-			Log.e("lixufeng", "mFileName: " + mFileName3);
 			bitmap3 = getBitmap(mFileName3);
 			camera.setImageBitmap(bitmap3);
 			break;

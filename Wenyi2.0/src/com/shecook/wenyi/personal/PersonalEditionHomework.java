@@ -259,33 +259,37 @@ public class PersonalEditionHomework extends Fragment {
 					if(!jsonObject.isNull("data")){
 						JSONObject data = jsonObject.getJSONObject("data");
 						
-						JSONArray list = data.getJSONArray("list");
-						LinkedList<CookbookHomeworkListItem> listTemp = new LinkedList<CookbookHomeworkListItem>();
-						for(int i = 0,j = list.length(); i < j; i++){
-							JSONObject jb = list.getJSONObject(i);
-							CookbookHomeworkListItem phi = new CookbookHomeworkListItem();
-							phi.setId(jb.getString("id"));
-							phi.setRecipeid(jb.getString("recipeid"));
-							phi.setUid(jb.getString("uid"));
-							phi.setNickname(jb.getString("nickname"));
-							phi.setUportrait(jb.getString("uportrait"));
-							phi.setDescription(jb.getString("description"));
-							phi.setComments(jb.getString("comments"));
-							phi.setTimeline(jb.getString("timeline"));
-							if(jb.has("images")){
-								JSONArray imagelist = jb.getJSONArray("images");
-								for(int k = 0, t = imagelist.length(); k < t; k++){
-									JSONObject imagejb = imagelist.getJSONObject(k);
-									WenyiImage homeWorkImage = new WenyiImage();
-									homeWorkImage.setId(imagejb.getString("id"));
-									homeWorkImage.setFollowid(imagejb.getString("followid"));
-									homeWorkImage.setImageurl(imagejb.getString("imageurl"));
-									phi.getImageList().add(homeWorkImage);
+						if(data.has("list")){
+							JSONArray list = data.getJSONArray("list");
+							LinkedList<CookbookHomeworkListItem> listTemp = new LinkedList<CookbookHomeworkListItem>();
+							for(int i = 0,j = list.length(); i < j; i++){
+								JSONObject jb = list.getJSONObject(i);
+								CookbookHomeworkListItem phi = new CookbookHomeworkListItem();
+								phi.setId(jb.getString("id"));
+								phi.setRecipeid(jb.getString("recipeid"));
+								phi.setUid(jb.getString("uid"));
+								phi.setNickname(jb.getString("nickname"));
+								phi.setUportrait(jb.getString("uportrait"));
+								phi.setDescription(jb.getString("description"));
+								phi.setComments(jb.getString("comments"));
+								phi.setTimeline(jb.getString("timeline"));
+								if(jb.has("images")){
+									JSONArray imagelist = jb.getJSONArray("images");
+									for(int k = 0, t = imagelist.length(); k < t; k++){
+										JSONObject imagejb = imagelist.getJSONObject(k);
+										WenyiImage homeWorkImage = new WenyiImage();
+										homeWorkImage.setId(imagejb.getString("id"));
+										homeWorkImage.setFollowid(imagejb.getString("followid"));
+										homeWorkImage.setImageurl(imagejb.getString("imageurl"));
+										phi.getImageList().add(homeWorkImage);
+									}
 								}
+								listTemp.add(phi);
 							}
-							listTemp.add(phi);
+							mListItems.addAll(listTemp);
+						}else{
+							Toast.makeText(mActivity, "" + jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
 						}
-						mListItems.addAll(listTemp);
 						
 						index = data.getInt("pindex");
 						int core_status = data.getInt("core_status");

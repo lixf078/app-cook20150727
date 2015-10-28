@@ -76,6 +76,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.shecook.wenyi.common.CreatePersonalInfoActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        
+        <activity
             android:name="com.shecook.wenyi.essay.EssayListActivity"
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Black.NoTitleBar" >

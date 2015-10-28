@@ -47,6 +47,7 @@ import com.shecook.wenyi.common.WebViewActivity;
 import com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity;
 import com.shecook.wenyi.cookbook.CookbookItemDeatilActivity;
 import com.shecook.wenyi.essay.EssayItemDeatilActivity;
+import com.shecook.wenyi.group.GroupItemDetailActivity;
 import com.shecook.wenyi.model.WenyiUser;
 import com.shecook.wenyi.model.piazza.PiazzaDiscoverItem;
 import com.shecook.wenyi.piazza.PizzaQuestionDeatilActivity;
@@ -101,27 +102,30 @@ public class Util {
 	}
 
 	public static int getWidth(Context context) {
-		if(width == 0){
+		if (width == 0) {
 			Display display = ((Activity) context).getWindowManager()
 					.getDefaultDisplay();
 			width = display.getWidth();
 		}
-//		height = display.getHeight();
-//		Log.d(TAG, "width " + width + ",height " + height);
+		// height = display.getHeight();
+		// Log.d(TAG, "width " + width + ",height " + height);
 		return width;
 	}
 
-	public static int getHeight(Context context, int sourceWidth, int sourceHeight) {
+	public static int getHeight(Context context, int sourceWidth,
+			int sourceHeight) {
 
 		Display display = ((Activity) context).getWindowManager()
 				.getDefaultDisplay();
 		width = display.getWidth();
 		height = display.getHeight();
 		float descHeight = (sourceHeight / sourceWidth) * width;
-		Log.d(TAG, "getHeight width " + width + ",sourceWidth " + sourceWidth + ", sourceHeight " + sourceHeight + ",descHeight " + descHeight);
+		Log.d(TAG, "getHeight width " + width + ",sourceWidth " + sourceWidth
+				+ ", sourceHeight " + sourceHeight + ",descHeight "
+				+ descHeight);
 		return width;
 	}
-	
+
 	public static int getMetricsWidth(Context context) {
 		if (mScreenWidth != 0) {
 
@@ -133,17 +137,20 @@ public class Util {
 		return mScreenWidth;
 	}
 
-	public static int getMetricsHeigh(Context context, int sourceWidth, int sourceHeight) {
+	public static int getMetricsHeigh(Context context, int sourceWidth,
+			int sourceHeight) {
 		if (mScreenWidth == 0) {
 			DisplayMetrics dm = new DisplayMetrics();
 			((Activity) context).getWindowManager().getDefaultDisplay()
-			.getMetrics(dm);
+					.getMetrics(dm);
 			mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
 		}
 		// int mScreenHeight = dm.heightPixels;
 		float descHeight = mScreenWidth * sourceHeight / sourceWidth;
-//		Log.d(TAG, "getMetricsHeigh mScreenWidth " + mScreenWidth + ",sourceWidth " + sourceWidth + ",sourceHeight " + sourceHeight + ", descHeight " + descHeight);
-		return (int)descHeight;
+		// Log.d(TAG, "getMetricsHeigh mScreenWidth " + mScreenWidth +
+		// ",sourceWidth " + sourceWidth + ",sourceHeight " + sourceHeight +
+		// ", descHeight " + descHeight);
+		return (int) descHeight;
 	}
 
 	public static int getAdapterMetricsWidth(Context context, float scale) {
@@ -154,25 +161,29 @@ public class Util {
 		((Activity) context).getWindowManager().getDefaultDisplay()
 				.getMetrics(dm);
 		int mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
-		return (int)(mScreenWidth * scale);
+		return (int) (mScreenWidth * scale);
 	}
-	public static int getAdapterMetricsHeigh(Context context, int sourceWidth, int sourceHeight, float scale) {
+
+	public static int getAdapterMetricsHeigh(Context context, int sourceWidth,
+			int sourceHeight, float scale) {
 		if (mScreenWidth == 0) {
 			DisplayMetrics dm = new DisplayMetrics();
 			((Activity) context).getWindowManager().getDefaultDisplay()
-			.getMetrics(dm);
+					.getMetrics(dm);
 			mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
 		}
 		// int mScreenHeight = dm.heightPixels;
-		if(sourceWidth == 0){
+		if (sourceWidth == 0) {
 			sourceWidth = (int) mScreenWidth;
 			sourceHeight = (int) mScreenWidth;
 		}
 		float descHeight = scale * mScreenWidth * sourceHeight / sourceWidth;
-//		Log.d(TAG, "getMetricsHeigh mScreenWidth " + mScreenWidth + ",sourceWidth " + sourceWidth + ",sourceHeight " + sourceHeight + ", descHeight " + descHeight);
-		return (int)descHeight;
+		// Log.d(TAG, "getMetricsHeigh mScreenWidth " + mScreenWidth +
+		// ",sourceWidth " + sourceWidth + ",sourceHeight " + sourceHeight +
+		// ", descHeight " + descHeight);
+		return (int) descHeight;
 	}
-	
+
 	public static void setWidth(int width) {
 		Util.width = width;
 	}
@@ -184,7 +195,20 @@ public class Util {
 	public static void setHeight(int height) {
 		Util.height = height;
 	}
-
+	
+	public static AlertDialog showDialog(Context context,String title, String message, android.content.DialogInterface.OnClickListener listener, android.content.DialogInterface.OnClickListener cancleListener) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context/*,R.style.maskDialog2*/);
+		if(title != null){
+			builder.setTitle(title);
+		}
+		if(message != null){
+			builder.setMessage(message);
+		}
+		builder.setPositiveButton("确定", listener);
+		builder.setNegativeButton("取消", cancleListener);
+		return builder.create();
+	}
+	
 	public static AlertDialog showLoadDataDialog(Context context) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -218,6 +242,20 @@ public class Util {
 		Dialog dialog = new Dialog(context);
 		View view = inflater.inflate(layout, null);
 		dialog.setContentView(view);
+		return dialog;
+	}
+
+	public static Dialog getBottomDialog(Context context, int layout) {
+		int width = ((Activity) context).getWindowManager().getDefaultDisplay()
+				.getWidth();
+		LayoutInflater inflater = LayoutInflater.from(context);
+		Dialog dialog = new Dialog(context,R.style.maskDialog);
+		View view = inflater.inflate(layout, null);
+		Window window = dialog.getWindow();
+		window.setGravity(Gravity.BOTTOM); // 此处可以设置dialog显示的位置
+		window.setWindowAnimations(R.style.mybottomdialog); // 添加动画
+		dialog.setContentView(view, new LinearLayout.LayoutParams(width,
+				LayoutParams.WRAP_CONTENT));
 		return dialog;
 	}
 
@@ -503,7 +541,8 @@ public class Util {
 			String value) {
 		SharedPreferences userInfo = null;
 		try {
-			Log.e("lixufeng", "updateStringData key " + key + ", value " + value);
+			Log.e("lixufeng", "updateStringData key " + key + ", value "
+					+ value);
 			userInfo = context.getSharedPreferences("user_info", 0);
 			SharedPreferences.Editor editor = userInfo.edit();
 			editor.putString(key, value);
@@ -822,9 +861,8 @@ public class Util {
 		return dataObject;
 	}
 
-	
-	
-	public static void dispatchClickEvent(Context context,String event_type, String event_content,String[] info){
+	public static void dispatchClickEvent(Context context, String event_type,
+			String event_content, String[] info) {
 		int type = -1;
 		try {
 			type = Integer.parseInt(event_type);
@@ -833,13 +871,14 @@ public class Util {
 			type = -1;
 		}
 		Intent intent = null;
-		if(type != -1){
+		if (type != -1) {
 			switch (type) {
 			case 10000:
 
 				break;
 			case 10001:
-				intent = new Intent(Intent.ACTION_VIEW, Uri.parse(event_content));
+				intent = new Intent(Intent.ACTION_VIEW,
+						Uri.parse(event_content));
 				context.startActivity(intent);
 				context.startActivity(intent);
 				break;
@@ -865,53 +904,56 @@ public class Util {
 
 				break;
 			case 10005:
-				/*intent = new Intent(Intent.ACTION_VIEW, Uri.parse(event_content));
-				context.startActivity(intent);*/
+				/*
+				 * intent = new Intent(Intent.ACTION_VIEW,
+				 * Uri.parse(event_content)); context.startActivity(intent);
+				 */
 				break;
 			case 10006:
 				intent = new Intent(context, PizzaQuestionDeatilActivity.class);
 				intent.putExtra("topicid", "" + event_content);
 				context.startActivity(intent);
 			case 10007:
-				intent = new Intent(context, CookbookHomeworkDeatilActivity.class);
+				intent = new Intent(context,
+						CookbookHomeworkDeatilActivity.class);
 				intent.putExtra("followid", "" + event_content);
 				context.startActivity(intent);
 				break;
 			default:
 				break;
 			}
-		}else{
-			if(event_type.equals("article")){
+		} else {
+			if (event_type.equals("article")) {
 				intent = new Intent(context, EssayItemDeatilActivity.class);
 				intent.putExtra("essaytitle", "");
 				intent.putExtra("catalogtitle", "文怡随笔");
 				intent.putExtra("articleid", "" + event_content);
 				context.startActivity(intent);
-			}else if(event_type.equals("article_comment")){
-				
-			}else if(event_type.equals("recipe")){
+			} else if (event_type.equals("article_comment")) {
+
+			} else if (event_type.equals("recipe")) {
 				intent = new Intent(context, CookbookItemDeatilActivity.class);
 				intent.putExtra("cookbooktitle", "家常菜谱");
 				intent.putExtra("recipeid", "" + event_content);
 				context.startActivity(intent);
-			}else if(event_type.equals("recipe_comment")){
-				
-			}else if(event_type.equals("follow")){
-				intent = new Intent(context, CookbookHomeworkDeatilActivity.class);
+			} else if (event_type.equals("recipe_comment")) {
+
+			} else if (event_type.equals("follow")) {
+				intent = new Intent(context,
+						CookbookHomeworkDeatilActivity.class);
 				intent.putExtra("followid", "" + event_content);
 				context.startActivity(intent);
-			}else if(event_type.equals("follow_comment")){
-				
-			}else if(event_type.equals("topic")){
+			} else if (event_type.equals("follow_comment")) {
+
+			} else if (event_type.equals("topic")) {
 				intent = new Intent(context, PizzaQuestionDeatilActivity.class);
 				intent.putExtra("topicid", "" + event_content);
 				context.startActivity(intent);
-			}else if(event_type.equals("topic_comment")){
-				
+			} else if (event_type.equals("topic_comment")) {
+
 			}
 		}
-		
-	
+
 	}
-	
+
 }

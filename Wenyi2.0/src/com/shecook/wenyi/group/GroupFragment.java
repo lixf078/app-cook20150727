@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -63,6 +65,17 @@ public class GroupFragment extends Fragment {
 		middle_title = (TextView) rootView.findViewById(R.id.middle_title);
 
 		right_img.setBackgroundResource(R.drawable.edit);
+		
+		right_img = (ImageView) rootView.findViewById(R.id.right_img);
+		right_img.setVisibility(View.VISIBLE);
+		right_img.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mActivity, GroupCreateActivity.class);
+				startActivity(intent);
+			}
+		});
 		return_img.setVisibility(View.INVISIBLE);
 		middle_title.setText(R.string.piazza);
 

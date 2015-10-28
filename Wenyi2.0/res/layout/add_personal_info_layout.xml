@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white" >
+
+    <include layout="@layout/wenyi_common_header_textview" />
+
+    <RelativeLayout
+        android:id="@+id/want_comments"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wenyi_common_header"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:orientation="horizontal"
+        android:paddingTop="5dip" >
+
+        <EditText
+            android:id="@+id/content_text_id"
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="top"
+            android:hint="@string/want_add_comment"
+            android:minLines="3"
+            android:padding="8dp"
+            android:scrollbarThumbVertical="@color/transparent"
+            android:scrollbars="vertical"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tip_text_id"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/content_text_id"
+            android:padding="10dp"
+            android:text="添加图片:"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/image_1_id"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/tip_text_id"
+            android:layout_margin="8dp"
+            android:background="@drawable/icon"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/image_2_id"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/tip_text_id"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@id/image_1_id"
+            android:background="@drawable/icon"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/image_3_id"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/tip_text_id"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@id/image_2_id"
+            android:background="@drawable/icon"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/image_4_id"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/tip_text_id"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@id/image_3_id"
+            android:background="@drawable/icon"
+            android:scaleType="fitXY" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -95,6 +95,9 @@
     <item name="middle_title" type="id"/>
     <item name="right_img" type="id"/>
     <item name="wenyi_common_head_rl" type="id"/>
+    <item name="right_textview" type="id"/>
+    <item name="return_textview" type="id"/>
+    
     <!-- essay id -->
     <item name="essay_listitem_detail_text" type="id"/>
     <item name="item_img" type="id"/>
