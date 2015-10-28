@@ -114,7 +114,7 @@ public class GroupMemAuditListAdapter extends BaseAdapter {
 			
 			@Override
 			public void onClick(View v) {
-				int position = (Integer) v.getTag(R.id.personal_collection_item_title);
+				int position = (Integer) v.getTag(R.id.group_mem_audit_item_delete);
 				operator.onDeleteItem(position);
 			}
 		});

@@ -6,20 +6,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -121,15 +116,7 @@ public class GroupItemDetailMemAuditActivity extends BaseActivity implements OnC
 		mPullRefreshListView.getRefreshableView().setSwipeActionLeft(BaseSwipeHelper.SWIPE_ACTION_REVEAL);
 		mPullRefreshListView.getRefreshableView().setSwipeActionRight(BaseSwipeHelper.SWIPE_ACTION_DISMISS);
 		mPullRefreshListView.getRefreshableView().setDismissAnimationTime(500);
-		
 		mPullRefreshListView.setAdapter(mAdapter);
-		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long position) {
-			}
-		});
 	}
 
 	@Override
@@ -202,7 +189,7 @@ public class GroupItemDetailMemAuditActivity extends BaseActivity implements OnC
 	@Override
 	public void onDeleteItem(int position) {
 		Log.e("lixufeng", "onDeleteItem position " + position + ", groupMemList " + groupMemList.size());
-		position = position;
+		this.position = position;
 		JSONObject paramObject = new JSONObject();
 		try {
 			paramObject.put("uid", groupMemList.get(position).getUid());
@@ -218,9 +205,55 @@ public class GroupItemDetailMemAuditActivity extends BaseActivity implements OnC
 
 	@Override
 	public void onJoinGroup(int position) {
-		
+		Log.e("lixufeng", "onJoinGroup position " + position + ", groupMemList " + groupMemList.size());
+		this.position = position;
+		JSONObject paramObject = new JSONObject();
+		try {
+			paramObject.put("uid", groupMemList.get(position).getUid());
+			paramObject.put("circleid", groupMemList.get(position).getCircleid());
+			paramObject.put("atype", 1);
+			getGroupSharedInfo(
+					HttpUrls.GROUP_ITEM_MEM_AUDITING, paramObject, allowResultListener,
+					delectErrorListener);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 
+	Listener<JSONObject> allowResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			Log.d(TAG, "catalogResultListener onResponse -> " + jsonObject.toString());
+			String msg = "";
+			if (jsonObject != null) {
+				try {
+					if (!jsonObject.isNull("statuscode")
+							&& 200 == jsonObject.getInt("statuscode")) {
+						if (!jsonObject.isNull("data")) {
+							JSONObject data = jsonObject.getJSONObject("data");
+							int core_status = data.getInt("core_status");
+							Log.e(TAG, "collectedResultListener core_status -> " + core_status);
+							if (core_status == 200) {
+								groupMemList.remove(position);
+								msg = "" + "添加成员成功！";
+							} else {
+								msg = "" + data.getString("msg");
+							}
+						}
+					} else {
+						msg = "" + jsonObject.getString("errmsg");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			Toast.makeText(GroupItemDetailMemAuditActivity.this, msg,
+					Toast.LENGTH_SHORT).show();
+			handler.sendEmptyMessage(STATUS_OK_AUDITING_NOT);
+		}
+	};
+	
 	Listener<JSONObject> delectResultListener = new Listener<JSONObject>() {
 
 		@Override

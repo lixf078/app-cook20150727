@@ -114,6 +114,9 @@ public class AddCommentActivity extends BaseActivity implements OnClickListener{
 				}else if(flag == HttpStatus.COMMENT_FOR_TOPIC){
 					paramsub.put("topicid", commentFor);
 					postComment(HttpUrls.PIZZA_TOPIC_LIST_ITEM_DETAIL_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
+				}else if(flag == HttpStatus.COMMENT_FOR_CIRCLE){
+					paramsub.put("shareid", commentFor);
+					postComment(HttpUrls.GROUP_CIRCLE_SHARE_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dip"
+    android:layout_marginRight="20dip"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:id="@+id/group_share_list_item_info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/item_background_color"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" >
+
+        <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+            android:id="@+id/item_img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:focusable="false"
+            android:scaleType="fitXY" />
+
+        <RelativeLayout
+            android:id="@+id/group_share_item_info"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_toRightOf="@id/item_img"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/group_share_item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/group_share_item_time"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/group_share_item_title"
+                android:layout_marginTop="10dip"
+                android:layout_toRightOf="@id/group_share_item_title"
+                android:ellipsize="marquee"
+                android:gravity="right"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:textColor="@color/date_color" />
+
+            <TextView
+                android:id="@+id/group_share_item_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/group_share_item_title"
+                android:textColor="@color/text_color" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/group_share_list_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/group_share_list_item_info"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="20sp"
+        android:visibility="gone" />
+
+<!--     <TextView
+        android:id="@+id/group_share_from"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/group_share_list_content"
+        android:background="@drawable/wenyi_border_circle"
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/orange"
+        android:textSize="20sp" /> -->
+
+</RelativeLayout>

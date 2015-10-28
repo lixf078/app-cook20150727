@@ -88,7 +88,7 @@ public class GroupCreateActivity extends BaseActivity {
 			public void onClick(View v) {
 				String filePath = null;
 				if (imgType == 0) {
-					filePath = imageUri.getPath();
+					filePath = photoPath;
 				} else if (imgType == 1) {
 					filePath = cameraImageUri.getPath();
 				}
@@ -98,8 +98,12 @@ public class GroupCreateActivity extends BaseActivity {
 		});
 		
 		circleid = getIntent().getStringExtra("circleid");
-		name.setText("" + getIntent().getStringExtra("title"));
-		content.setText("" + getIntent().getStringExtra("desc"));
+		if(!TextUtils.isEmpty(getIntent().getStringExtra("title"))){
+			name.setText("" + getIntent().getStringExtra("title"));
+		}
+		if(!TextUtils.isEmpty(getIntent().getStringExtra("desc"))){
+			content.setText("" + getIntent().getStringExtra("desc"));
+		}
 		
 	}
 
@@ -354,11 +358,10 @@ public class GroupCreateActivity extends BaseActivity {
 			imgType = 0;
 			Bitmap bitmap2 = null;
 
-			String mFileName = null;
-			mFileName = getDataColumn(getApplicationContext(), data.getData(),
+			photoPath = getDataColumn(getApplicationContext(), data.getData(),
 					null, null);
-			Log.e("lixufeng", "mFileName: " + mFileName);
-			bitmap2 = getBitmap(mFileName);
+			Log.e("lixufeng", "mFileName: " + photoPath);
+			bitmap2 = getBitmap(photoPath);
 			camera.setImageBitmap(bitmap2);
 
 			/*
@@ -381,8 +384,9 @@ public class GroupCreateActivity extends BaseActivity {
 		case SELECT_PIC_KITKAT:
 			imgType = 0;
 			Bitmap bitmap3 = null;
-			String mFileName3 = getPath(GroupCreateActivity.this, data.getData());
-			bitmap3 = getBitmap(mFileName3);
+			photoPath = getPath(GroupCreateActivity.this, data.getData());
+			Log.e("lixufeng", "photoPath: " + photoPath);
+			bitmap3 = getBitmap(photoPath);
 			camera.setImageBitmap(bitmap3);
 			break;
 		}

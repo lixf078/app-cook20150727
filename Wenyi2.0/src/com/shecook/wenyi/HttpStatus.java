@@ -8,6 +8,7 @@ public class HttpStatus {
 	public static final int STATUS_ERROR = 300;
 	
 	public static final int STATUS_LOAD_OTHER = 21;
+	public static final int STATUS_LOAD_OTHER_OK = 22;
 	
 	public static final int USER_NOT_LOGIN = 10002;
 	
@@ -16,9 +17,12 @@ public class HttpStatus {
 	public static final int REQUEST_CODE_ESSAY = 1;
 	public static final int REQUEST_CODE_COOKBOOK = 2;
 	public static final int REQUEST_CODE_TOPIC = 3;
+	public static final int REQUEST_CODE_CIRCLE = 3;
 	
 	public static final int COMMENT_FOR_ESSAY = 1;
 	public static final int COMMENT_FOR_COOKBOOK = 2;
 	public static final int COMMENT_FOR_TOPIC = 3;
+	public static final int COMMENT_FOR_CIRCLE = 4;
+	
 	public static final int PUBLIC_FOR_CIRCLE = 4;
 }

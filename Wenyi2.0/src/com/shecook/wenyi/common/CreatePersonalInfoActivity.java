@@ -1,7 +1,5 @@
 package com.shecook.wenyi.common;
 
-import java.util.Iterator;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +29,6 @@ import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
-import com.shecook.wenyi.group.GroupCreateActivity;
 import com.shecook.wenyi.personal.PersonalLoginCommon;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
@@ -83,7 +80,7 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 		commentFor = getIntent().getStringExtra("commentFor");
 		titleView.setText("");
 		
-		commentEdit = (EditText) findViewById(R.id.comment_text_id);
+		commentEdit = (EditText) findViewById(R.id.content_text_id);
 		
 		flag = getIntent().getIntExtra("flag", -1);
 		ententId = getIntent().getStringExtra("ententId");
@@ -115,7 +112,7 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 	public void onClick(View v) {
 		int id = v.getId();
 		switch (id) {
-		case R.id.right_img:
+		case R.id.right_textview:
 			String comment = commentEdit.getEditableText().toString();
 			if(TextUtils.isEmpty(comment)){
 				Log.d(TAG, "onClick -> " + flag + " 想跟我说点什么呢？");
@@ -136,14 +133,15 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 					paramsub.put("topicid", commentFor);
 					postComment(HttpUrls.PIZZA_TOPIC_LIST_ITEM_DETAIL_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
 				}else if(flag == HttpStatus.PUBLIC_FOR_CIRCLE){
-					paramsub.put("topicid", commentFor);
+					paramsub.put("uptype", "circle");
 					StringBuffer str = new StringBuffer();
 					for (String path : photos) {
-						if(TextUtils.isEmpty(path)){
+						Log.d(TAG, "path" + path);
+						if(!TextUtils.isEmpty(path)){
 							str.append(path + ";");
 						}
 					}
-					CommonUpload.commonMethod(CreatePersonalInfoActivity.this, HttpUrls.UPLOAD_IMG, paramsub, listResultListener, listErrorListener, str.subSequence(0, str.length() - 2) + "");
+					CommonUpload.commonMethod(CreatePersonalInfoActivity.this, HttpUrls.UPLOAD_IMG, paramsub, listResultListener, listErrorListener, str.subSequence(0, str.length() - 1) + "");
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -182,7 +180,7 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 		switch (requestCode) {
 		case CommonUpload.CAMERA_WITH_DATA:
 			mFileName = commonUpload.cameraImageUri.getPath();
-			Log.e("lixufeng", "onActivityResult mFileName " + mFileName);
+			Log.e("lixufeng", "onActivityResult CAMERA_WITH_DATA mFileName " + mFileName);
 			bitmap = BitmapFactory.decodeFile(mFileName);
 			if(photoId == 0){
 				image_1_id.setImageBitmap(bitmap);
@@ -199,6 +197,7 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 			}
 			break;
 		case CommonUpload.PHOTO_PICKED_WITH_DATA:
+			Log.e("lixufeng", "PHOTO_PICKED_WITH_DATA mFileName: " + mFileName + ", photoId " + photoId);
 			mFileName = CommonUpload.getDataColumn(getApplicationContext(), data.getData(),
 					null, null);
 			bitmap = CommonUpload.getBitmap(mFileName);
@@ -220,7 +219,7 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 			break;
 		case CommonUpload.SELECT_PIC_KITKAT:
 			mFileName = CommonUpload.getPath(CreatePersonalInfoActivity.this, data.getData());
-			Log.e("lixufeng", "mFileName: " + mFileName);
+			Log.e("lixufeng", "SELECT_PIC_KITKAT mFileName: " + mFileName);
 			bitmap = CommonUpload.getBitmap(mFileName);
 			if(photoId == 0){
 				image_1_id.setImageBitmap(bitmap);
@@ -249,6 +248,9 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 				break;
 			case CommonUpload.UPLOAD_SUCESS:
 				createInfo();
+				break;
+			case CommonUpload.GROUP_CREATE_SUCESS:
+				finish();
 				break;
 			default:
 				break;
@@ -353,14 +355,10 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 							JSONObject data = jsonObject.getJSONObject("data");
 							int core_status = data.getInt("core_status");
 							if (core_status == 200) {
-								if(TextUtils.isEmpty(circleid)){
-									msg = "" + "圈子创建成功！";
-								}else{
-									msg = "" + "圈子修改成功！";
-								}
-								Toast.makeText(GroupCreateActivity.this, msg,
+								msg = "" + "圈子分享成功！";
+								Toast.makeText(CreatePersonalInfoActivity.this, msg,
 										Toast.LENGTH_SHORT).show();
-								handler.sendEmptyMessage(GROUP_CREATE_SUCESS);
+								handler.sendEmptyMessage(CommonUpload.GROUP_CREATE_SUCESS);
 								return;
 							} else {
 								msg = "" + data.getString("msg");
@@ -373,9 +371,9 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 					e.printStackTrace();
 				}
 			}
-			Toast.makeText(GroupCreateActivity.this, msg, Toast.LENGTH_SHORT)
+			Toast.makeText(CreatePersonalInfoActivity.this, msg, Toast.LENGTH_SHORT)
 					.show();
-			handler.sendEmptyMessage(GROUP_CREATE_FAILED);
+			handler.sendEmptyMessage(CommonUpload.GROUP_CREATE_FAILED);
 		}
 	};
 

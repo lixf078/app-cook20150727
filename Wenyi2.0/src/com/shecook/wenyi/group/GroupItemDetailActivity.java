@@ -145,6 +145,12 @@ public class GroupItemDetailActivity extends BaseActivity implements
 					alertdialog.dismiss();
 				}
 				break;
+			case STATUS_EXIT:
+				exitGroup();
+				break;
+			case STATUS_EXIT_OK:
+				finish();
+				break;
 			default:
 				break;
 			}
@@ -153,9 +159,30 @@ public class GroupItemDetailActivity extends BaseActivity implements
 
 	private static final int STATUS_DISBAND = 100;
 	private static final int STATUS_DISBAND_OK = 101;
+	
+	private static final int STATUS_EXIT = 102;
+	private static final int STATUS_EXIT_OK = 103;
+	
 	AlertDialog alertdialog;
 	private void getDisbandDialog(){
 		alertdialog = Util.showDialog(GroupItemDetailActivity.this, null, "确定要解散圈子吗?",new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				disbandGroup();
+			}
+		}, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				arg0.dismiss();
+			}
+		});
+		alertdialog.show();
+	}
+	
+	private void getExitDialog(){
+		alertdialog = Util.showDialog(GroupItemDetailActivity.this, null, "确定要退出圈子吗?",new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
@@ -231,6 +258,8 @@ public class GroupItemDetailActivity extends BaseActivity implements
 				@Override
 				public void onClick(View arg0) {
 					Intent intent = new Intent(GroupItemDetailActivity.this, CreatePersonalInfoActivity.class);
+					intent.putExtra("ententId", circleid);
+					intent.putExtra("flag", HttpStatus.PUBLIC_FOR_CIRCLE);
 					startActivity(intent);
 					dialog.dismiss();
 				}
@@ -244,6 +273,20 @@ public class GroupItemDetailActivity extends BaseActivity implements
 			img3.setVisibility(View.VISIBLE);
 			button3.setVisibility(View.VISIBLE);
 			button3.setText("修改群信息");
+			
+			button3.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					Intent intent = new Intent(GroupItemDetailActivity.this, GroupCreateActivity.class);
+					intent.putExtra("circleid", circleid);
+					intent.putExtra("title", pdi.getTitle());
+					intent.putExtra("desc", pdi.getDescription());
+					intent.putExtra("image", pdi.getUfounder());
+					startActivity(intent);
+				}
+			});
+			
 			img4 = (ImageView) dialog
 					.findViewById(R.id.wenyi_bottomsheet_img_4);
 			button4 = (Button) dialog
@@ -251,6 +294,18 @@ public class GroupItemDetailActivity extends BaseActivity implements
 			img4.setVisibility(View.VISIBLE);
 			button4.setVisibility(View.VISIBLE);
 			button4.setText("发布群分享");
+			button4.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					Intent intent = new Intent(GroupItemDetailActivity.this, CreatePersonalInfoActivity.class);
+					intent.putExtra("ententId", circleid);
+					intent.putExtra("flag", HttpStatus.PUBLIC_FOR_CIRCLE);
+					startActivity(intent);
+					dialog.dismiss();
+				}
+			});
+			
 			img5 = (ImageView) dialog
 					.findViewById(R.id.wenyi_bottomsheet_img_5);
 			button5 = (Button) dialog
@@ -258,6 +313,14 @@ public class GroupItemDetailActivity extends BaseActivity implements
 			img5.setVisibility(View.VISIBLE);
 			button5.setVisibility(View.VISIBLE);
 			button5.setText("退出圈子");
+			button4.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					dialog.dismiss();
+					handler.sendEmptyMessage(STATUS_EXIT);
+				}
+			});
 			break;
 		case 10002:// 圈子成员
 			img4 = (ImageView) dialog
@@ -306,12 +369,79 @@ public class GroupItemDetailActivity extends BaseActivity implements
 	Listener<JSONObject> disbandResultListener = new Listener<JSONObject>() {
 
 		@Override
-		public void onResponse(JSONObject result) {
-			Log.d(TAG,
-					"disbandResultListener onResponse -> " + result.toString());
-			
+		public void onResponse(JSONObject jsonObject) {
+			Log.d(TAG, "catalogResultListener onResponse -> " + jsonObject.toString());
+			String msg = "";
+			if (jsonObject != null) {
+				try {
+					if (!jsonObject.isNull("statuscode")
+							&& 200 == jsonObject.getInt("statuscode")) {
+						if (!jsonObject.isNull("data")) {
+							JSONObject data = jsonObject.getJSONObject("data");
+							int core_status = data.getInt("core_status");
+							Log.e(TAG, "collectedResultListener core_status -> " + core_status);
+							if (core_status == 200) {
+								msg = "" + "解散圈子成功！";
+							} else {
+								msg = "" + data.getString("msg");
+							}
+						}
+					} else {
+						msg = "" + jsonObject.getString("errmsg");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			Toast.makeText(GroupItemDetailActivity.this, msg,
+					Toast.LENGTH_SHORT).show();
+			handler.sendEmptyMessage(STATUS_EXIT_OK);
 		}
 	};
+	
+	public void exitGroup() {
+		JSONObject paramObject = new JSONObject();
+		try {
+			paramObject.put("circleid", circleid);
+			getGroupInfo(HttpUrls.GROUP_CIRCLE_EXIT, paramObject,
+					exitResultListener, listErrorListener);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	Listener<JSONObject> exitResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			Log.d(TAG, "catalogResultListener onResponse -> " + jsonObject.toString());
+			String msg = "";
+			if (jsonObject != null) {
+				try {
+					if (!jsonObject.isNull("statuscode")
+							&& 200 == jsonObject.getInt("statuscode")) {
+						if (!jsonObject.isNull("data")) {
+							JSONObject data = jsonObject.getJSONObject("data");
+							int core_status = data.getInt("core_status");
+							Log.e(TAG, "collectedResultListener core_status -> " + core_status);
+							if (core_status == 200) {
+								msg = "" + "退出圈子成功！";
+							} else {
+								msg = "" + data.getString("msg");
+							}
+						}
+					} else {
+						msg = "" + jsonObject.getString("errmsg");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			Toast.makeText(GroupItemDetailActivity.this, msg,
+					Toast.LENGTH_SHORT).show();
+			handler.sendEmptyMessage(HttpStatus.STATUS_OK_2);
+		}
+	};
+	
 	
 	public void processParam() {
 		JSONObject paramObject = new JSONObject();

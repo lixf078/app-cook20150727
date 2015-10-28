@@ -57,8 +57,10 @@ public class HttpUrls {
 	public static final String GROUP_CIRCLE_DISBAND = BASE_URL + "circle/disband";
 	public static final String GROUP_CIRCLE_EDIT = BASE_URL + "circle/circie_edit";
 	public static final String GROUP_CIRCLE_PUB = BASE_URL + "circle/pub";
-	
-	
+	public static final String GROUP_CIRCLE_EXIT = BASE_URL + "circle/quit";
+	public static final String GROUP_CIRCLE_SHARE_DETAIL = BASE_URL + "circle/share_detail";
+	public static final String GROUP_CIRCLE_SHARE_COMMON_LIST = BASE_URL + "circle/comment_list";
+	public static final String GROUP_CIRCLE_SHARE_ADD_COMMENT = BASE_URL + "circle/comment_add";
 	
 	public static final String PERSONAL_MYCARD = BASE_URL + "user/mycard";
 	

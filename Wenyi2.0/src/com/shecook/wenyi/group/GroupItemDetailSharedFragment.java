@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.DateUtils;
@@ -38,6 +39,8 @@ import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
+import com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity;
+import com.shecook.wenyi.cookbook.CookbookHomeworkList;
 import com.shecook.wenyi.group.adapter.GroupSharedListAdapter;
 import com.shecook.wenyi.group.adapter.GroupSharedListAdapter.OnSwipeOperator;
 import com.shecook.wenyi.model.WenyiImage;
@@ -145,6 +148,10 @@ public class GroupItemDetailSharedFragment extends BaseFragmeng implements OnCli
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
+				Intent intent = new Intent(mActivity, GroupShareDeatilActivity.class);
+				intent.putExtra("circleid", "" + groupSharedList.get((int) position).getCircleid());
+				intent.putExtra("shareid", "" + groupSharedList.get((int) position).getId());
+				startActivity(intent);
 			}
 		});
 		
@@ -239,9 +246,9 @@ public class GroupItemDetailSharedFragment extends BaseFragmeng implements OnCli
 		JSONObject paramObject = new JSONObject();
 		try {
 			paramObject.put("recipeid", groupSharedList.get(position).getId());
-			/*getPersonalCollectionInfo(
+			getGroupSharedInfo(
 					HttpUrls.PERSONAL_COLLECTION_DELECT_COOKBOOK, paramObject, delectResultListener,
-					delectErrorListener);*/
+					delectErrorListener);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -263,7 +270,7 @@ public class GroupItemDetailSharedFragment extends BaseFragmeng implements OnCli
 							Log.e(TAG, "collectedResultListener core_status -> " + core_status);
 							if (core_status == 200) {
 								handler.sendEmptyMessage(STATUS_OK_COLLECTION_COLLECTED);
-								msg = "" + "删除收藏成功！";
+								msg = "" + "删除分享成功！";
 							} else {
 								msg = "" + data.getString("msg");
 							}
