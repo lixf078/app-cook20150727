@@ -47,7 +47,7 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 	CommonUpload commonUpload = null;
 	
 	private int flag = -1;
-	private String ententId = ""; // 作业，圈子分享等
+	private String ententId = ""; // 作业，圈子分享等的id
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -123,26 +123,23 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 			JSONObject paramsub = new JSONObject();
 			try {
 				paramsub.put("comment", "" + comment);
-				if(flag == HttpStatus.COMMENT_FOR_ESSAY){
-					paramsub.put("articleid", commentFor);
-					postComment(HttpUrls.ESSAY_WENYI_ITEM_DETAI_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
-				}else if(flag == HttpStatus.COMMENT_FOR_COOKBOOK){
-					paramsub.put("recipeid", commentFor);
-					postComment(HttpUrls.COOKBOOK_WENYI_ITEM_DETAI_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
-				}else if(flag == HttpStatus.COMMENT_FOR_TOPIC){
-					paramsub.put("topicid", commentFor);
-					postComment(HttpUrls.PIZZA_TOPIC_LIST_ITEM_DETAIL_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
+				if(flag == HttpStatus.PUBLIC_FOR_PORTRAIT){
+					paramsub.put("uptype", "portrait");
+				}else if(flag == HttpStatus.PUBLIC_FOR_COOKBOOK){
+					paramsub.put("uptype", "follow");
+				}else if(flag == HttpStatus.PUBLIC_FOR_TOPIC){
+					paramsub.put("uptype", "topic");
 				}else if(flag == HttpStatus.PUBLIC_FOR_CIRCLE){
 					paramsub.put("uptype", "circle");
-					StringBuffer str = new StringBuffer();
-					for (String path : photos) {
-						Log.d(TAG, "path" + path);
-						if(!TextUtils.isEmpty(path)){
-							str.append(path + ";");
-						}
-					}
-					CommonUpload.commonMethod(CreatePersonalInfoActivity.this, HttpUrls.UPLOAD_IMG, paramsub, listResultListener, listErrorListener, str.subSequence(0, str.length() - 1) + "");
 				}
+				StringBuffer str = new StringBuffer();
+				for (String path : photos) {
+					Log.d(TAG, "path" + path);
+					if(!TextUtils.isEmpty(path)){
+						str.append(path + ";");
+					}
+				}
+				CommonUpload.commonMethod(CreatePersonalInfoActivity.this, HttpUrls.UPLOAD_IMG, paramsub, listResultListener, listErrorListener, str.subSequence(0, str.length() - 1) + "");
 			} catch (JSONException e) {
 				e.printStackTrace();
 				finish();
@@ -252,6 +249,9 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 			case CommonUpload.GROUP_CREATE_SUCESS:
 				finish();
 				break;
+			case CommonUpload.GROUP_CREATE_FAILED:
+				finish();
+				break;
 			default:
 				break;
 			}
@@ -316,6 +316,12 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 		try {
 			if(flag == HttpStatus.PUBLIC_FOR_CIRCLE){
 				paramObject.put("circleid", ententId);
+			}else if(flag == HttpStatus.PUBLIC_FOR_COOKBOOK){
+				paramObject.put("recipeid", ententId);
+			}else if(flag == HttpStatus.PUBLIC_FOR_CIRCLE){
+				paramObject.put("circleid", ententId);
+			}else if(flag == HttpStatus.PUBLIC_FOR_CIRCLE){
+				paramObject.put("circleid", ententId);
 			}
 			String info = commentEdit.getEditableText().toString();
 
@@ -336,7 +342,9 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 		if(flag == HttpStatus.PUBLIC_FOR_CIRCLE){
 			CommonUpload.commonMethod(CreatePersonalInfoActivity.this,HttpUrls.GROUP_CIRCLE_PUB, paramObject,
 					crtateResultListener, crtateErrorListener, "");
-		}else{
+		}else if(flag == HttpStatus.PUBLIC_FOR_COOKBOOK){
+			CommonUpload.commonMethod(CreatePersonalInfoActivity.this,HttpUrls.COOKBOOK_WENYI_HOMEWORK_ADD, paramObject,
+					crtateResultListener, crtateErrorListener, "");
 		}
 	}
 	Listener<JSONObject> crtateResultListener = new Listener<JSONObject>() {
@@ -355,7 +363,11 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 							JSONObject data = jsonObject.getJSONObject("data");
 							int core_status = data.getInt("core_status");
 							if (core_status == 200) {
-								msg = "" + "圈子分享成功！";
+								if(flag == HttpStatus.PUBLIC_FOR_CIRCLE){
+									msg = "" + "圈子分享成功！";
+								}else if(flag == HttpStatus.PUBLIC_FOR_COOKBOOK){
+									msg = "" + "作业发布成功！";
+								}
 								Toast.makeText(CreatePersonalInfoActivity.this, msg,
 										Toast.LENGTH_SHORT).show();
 								handler.sendEmptyMessage(CommonUpload.GROUP_CREATE_SUCESS);

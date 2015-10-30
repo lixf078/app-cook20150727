@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="15dip"
-    android:layout_marginRight="15dip"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
     android:orientation="horizontal" >
 
     <com.shecook.wenyi.common.volley.toolbox.NetworkImageView

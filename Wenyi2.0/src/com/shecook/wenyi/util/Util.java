@@ -16,8 +16,8 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnKeyListener;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -44,13 +44,16 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.WebViewActivity;
+import com.shecook.wenyi.common.volley.Request.Method;
+import com.shecook.wenyi.common.volley.Response.ErrorListener;
+import com.shecook.wenyi.common.volley.Response.Listener;
+import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity;
 import com.shecook.wenyi.cookbook.CookbookItemDeatilActivity;
 import com.shecook.wenyi.essay.EssayItemDeatilActivity;
-import com.shecook.wenyi.group.GroupItemDetailActivity;
 import com.shecook.wenyi.model.WenyiUser;
-import com.shecook.wenyi.model.piazza.PiazzaDiscoverItem;
 import com.shecook.wenyi.piazza.PizzaQuestionDeatilActivity;
+import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
 public class Util {
 
@@ -572,6 +575,29 @@ public class Util {
 		return sub;
 	}
 
+	public static void commonHttpMethod(Activity activity, String url, JSONObject paramsub,
+			Listener<JSONObject> resultListener, ErrorListener errorListener) {
+		JSONObject jsonObject = new JSONObject();
+		JSONObject commonsub = Util.getCommonParam(activity);
+		try {
+			if (paramsub != null) {
+				jsonObject.put("param", paramsub);
+			}
+			jsonObject.put("common", commonsub);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		JsonObjectRequest wenyiRequest = new JsonObjectRequest(Method.POST,
+				url, jsonObject, resultListener, errorListener);
+
+		try {
+			VolleyUtils.getInstance().addReequest(wenyiRequest);
+		} catch (AppException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static WenyiUser wenyiUser = null;
 
 	public static WenyiUser getUserData(Context context) {

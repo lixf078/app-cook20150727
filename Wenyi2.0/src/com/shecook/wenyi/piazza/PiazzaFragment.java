@@ -4,23 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.common.CreatePersonalInfoActivity;
 import com.shecook.wenyi.cookbook.PiazzaCookbookHomeworkList;
+import com.shecook.wenyi.group.GroupCreateActivity;
+import com.shecook.wenyi.group.GroupItemDetailActivity;
 import com.shecook.wenyi.mainpackage.FragmentTabAdapter;
+import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
 
-public class PiazzaFragment extends Fragment {
+public class PiazzaFragment extends Fragment implements OnClickListener{
 	private static final String TAG = "PiazzaFragment";
 
 	private FragmentActivity mActivity;
@@ -69,6 +78,8 @@ public class PiazzaFragment extends Fragment {
 		middle_title = (TextView) rootView.findViewById(R.id.middle_title);
 
 		right_img.setBackgroundResource(R.drawable.edit);
+		right_img.setOnClickListener(this);
+		
 		return_img.setVisibility(View.INVISIBLE);
 		middle_title.setText(R.string.piazza);
 
@@ -91,7 +102,79 @@ public class PiazzaFragment extends Fragment {
 				});
 
 	}
+	
+	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+		switch (id) {
+		case R.id.right_img:
+			getBottomDialog();
+			break;
 
+		default:
+			break;
+		}
+	}
+	
+	Dialog dialog = null;
+	private void getBottomDialog() {
+		dialog = Util.getBottomDialog(mActivity,
+				R.layout.a_common_bottom_dialog_layout);
+		ImageView img3 = null;
+		Button button3 = null;
+		ImageView img4 = null;
+		Button button4 = null;
+		ImageView img5 = null;
+		Button button5 = null;
+
+		img3 = (ImageView) dialog.findViewById(R.id.wenyi_bottomsheet_img_3);
+		button3 = (Button) dialog.findViewById(R.id.wenyi_bottomsheet_btn_3);
+		img3.setVisibility(View.VISIBLE);
+		button3.setVisibility(View.VISIBLE);
+		button3.setText("发提问");
+		img4 = (ImageView) dialog.findViewById(R.id.wenyi_bottomsheet_img_4);
+		button4 = (Button) dialog.findViewById(R.id.wenyi_bottomsheet_btn_4);
+		img4.setVisibility(View.VISIBLE);
+		button4.setVisibility(View.VISIBLE);
+		button4.setText("晒美食");
+		img5 = (ImageView) dialog.findViewById(R.id.wenyi_bottomsheet_img_5);
+		button5 = (Button) dialog.findViewById(R.id.wenyi_bottomsheet_btn_5);
+		img5.setVisibility(View.VISIBLE);
+		button5.setVisibility(View.VISIBLE);
+		button5.setText("取消");
+
+		button3.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(mActivity, CreatePersonalInfoActivity.class);
+				intent.putExtra("ententId", "");
+				intent.putExtra("flag", HttpStatus.PUBLIC_FOR_TOPIC);
+				startActivity(intent);
+				dialog.dismiss();
+			}
+		});
+
+		button4.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(mActivity, CreatePersonalInfoActivity.class);
+				intent.putExtra("ententId", "");
+				intent.putExtra("flag", HttpStatus.PUBLIC_FOR_COOKBOOK);
+				startActivity(intent);
+				dialog.dismiss();
+			}
+		});
+
+		button5.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				dialog.dismiss();
+			}
+		});
+		dialog.show();
+	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onActivityCreated");

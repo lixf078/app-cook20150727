@@ -25,6 +25,7 @@ import com.shecook.wenyi.BaseActivity;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.common.CreatePersonalInfoActivity;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
@@ -38,6 +39,7 @@ import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.cookbook.adapter.CookbookHomeworkListAdapter;
+import com.shecook.wenyi.group.GroupItemDetailActivity;
 import com.shecook.wenyi.model.CookbookHomeworkListItem;
 import com.shecook.wenyi.model.WenyiImage;
 import com.shecook.wenyi.util.AppException;
@@ -203,7 +205,10 @@ public class CookbookHomeworkList extends BaseActivity implements OnClickListene
 		int id = v.getId();
 		switch (id) {
 		case R.id.right_img:
-			
+			Intent intent = new Intent(CookbookHomeworkList.this, CreatePersonalInfoActivity.class);
+			intent.putExtra("ententId", recipeid);
+			intent.putExtra("flag", HttpStatus.PUBLIC_FOR_COOKBOOK);
+			startActivity(intent);
 			break;
 
 		default:

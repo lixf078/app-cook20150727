@@ -28,6 +28,7 @@ public class HttpUrls {
 	public static final String COOKBOOK_HOMEWORK_LIST = BASE_URL + "follow/list";
 	public static final String COOKBOOK_HOMEWORK_LIST_ITEM_DETAIL = BASE_URL + "follow/detail";
 	public static final String COOKBOOK_WENYI_ITEM_DETAI_ADD_COMMENT = BASE_URL + "recipe/comment_add";
+	public static final String COOKBOOK_WENYI_HOMEWORK_ADD = BASE_URL + "follow/add";
 	
 	public static final String COOKBOOK_COLLECTION_GROUP_LIST = BASE_URL + "user/group"; // 收藏分组列表
 	public static final String COOKBOOK_COLLECTION_COLLECTED = BASE_URL + "user/collect"; // 收藏
@@ -42,7 +43,7 @@ public class HttpUrls {
 	public static final String PIZZA_TOPIC_LIST_ITEM_DETAIL = BASE_URL + "topic/detail"; // piazza question list
 	public static final String PIZZA_TOPIC_LIST_ITEM_DETAIL_COMMENT_LIST = BASE_URL + "topic/comment_list"; // piazza question list
 	public static final String PIZZA_TOPIC_LIST_ITEM_DETAIL_ADD_COMMENT = BASE_URL + "topic/comment_add";
-	
+	public static final String PIZZA_TOPIC_ADD = BASE_URL + "topic/add";
 	
 	public static final String GROUP_HOT_LIST = BASE_URL + "circle/list";
 	public static final String GROUP_MY_LIST = BASE_URL + "circle/mylist";
@@ -61,16 +62,20 @@ public class HttpUrls {
 	public static final String GROUP_CIRCLE_SHARE_DETAIL = BASE_URL + "circle/share_detail";
 	public static final String GROUP_CIRCLE_SHARE_COMMON_LIST = BASE_URL + "circle/comment_list";
 	public static final String GROUP_CIRCLE_SHARE_ADD_COMMENT = BASE_URL + "circle/comment_add";
+	public static final String GROUP_CIRCLE_SHARE_DEL = BASE_URL + "circle/share_del";
 	
 	public static final String PERSONAL_MYCARD = BASE_URL + "user/mycard";
 	
 	public static final String PERSONAL_MY_COMMENTS_LIST = BASE_URL + "user/mycomment";
 	
 	
-	public static final String PERSONAL_TOPIC_MY_LIST = BASE_URL + "topic/mylist";
+	public static final String PERSONAL_TOPIC_MY_LIST = BASE_URL + "topic/mylist";//　我的提问
 	public static final String PERSONAL_TOPIC_LIST_DEL_ITEM = BASE_URL + "topic/del";
 	
-	public static final String PERSONAL_EDITION_HOMEWORK = BASE_URL + "follow/mylist";
+	public static final String PERSONAL_MY_SHARE_LIST = BASE_URL + "circle/share_mylist";//我的分享
+	
+	public static final String PERSONAL_EDITION_HOMEWORK = BASE_URL + "follow/mylist";// 我的作业
+	public static final String PERSONAL_EDITION_HOMEWORK_DEL = BASE_URL + "follow/del";
 	
 	public static final String PERSONAL_KITCHEN_INIT = BASE_URL + "kitchen/init";
 	public static final String PERSONAL_KITCHTN_FOOD_DATA = BASE_URL + "kitchen/cata";

@@ -24,5 +24,9 @@ public class HttpStatus {
 	public static final int COMMENT_FOR_TOPIC = 3;
 	public static final int COMMENT_FOR_CIRCLE = 4;
 	
-	public static final int PUBLIC_FOR_CIRCLE = 4;
+	
+	public static final int PUBLIC_FOR_PORTRAIT = 10003;
+	public static final int PUBLIC_FOR_TOPIC = 10004;
+	public static final int PUBLIC_FOR_COOKBOOK = 10003;
+	public static final int PUBLIC_FOR_CIRCLE = 10004;
 }

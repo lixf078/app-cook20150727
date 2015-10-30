@@ -39,8 +39,6 @@ import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
-import com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity;
-import com.shecook.wenyi.cookbook.CookbookHomeworkList;
 import com.shecook.wenyi.group.adapter.GroupSharedListAdapter;
 import com.shecook.wenyi.group.adapter.GroupSharedListAdapter.OnSwipeOperator;
 import com.shecook.wenyi.model.WenyiImage;
@@ -221,7 +219,10 @@ public class GroupItemDetailSharedFragment extends BaseFragmeng implements OnCli
 					common_tip_info_layout.setVisibility(View.GONE);
 				}
 				break;
-
+			case STATUS_OK_COLLECTION_COLLECTED:
+				mAdapter.notifyDataSetChanged();
+				mPullRefreshListView.onRefreshComplete();
+				break;
 			default:
 				break;
 			}
@@ -240,14 +241,16 @@ public class GroupItemDetailSharedFragment extends BaseFragmeng implements OnCli
 		}
 	}
 
+	int operPosition = -1;
 	@Override
 	public void onDeleteItem(int position) {
+		operPosition = position;
 		Log.e("lixufeng", "onDeleteItem position " + position + ", groupSharedList " + groupSharedList.size());
 		JSONObject paramObject = new JSONObject();
 		try {
-			paramObject.put("recipeid", groupSharedList.get(position).getId());
+			paramObject.put("shareid", groupSharedList.get(position).getId());
 			getGroupSharedInfo(
-					HttpUrls.PERSONAL_COLLECTION_DELECT_COOKBOOK, paramObject, delectResultListener,
+					HttpUrls.GROUP_CIRCLE_SHARE_DEL, paramObject, delectResultListener,
 					delectErrorListener);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -269,6 +272,7 @@ public class GroupItemDetailSharedFragment extends BaseFragmeng implements OnCli
 							int core_status = data.getInt("core_status");
 							Log.e(TAG, "collectedResultListener core_status -> " + core_status);
 							if (core_status == 200) {
+								groupSharedList.remove(operPosition);
 								handler.sendEmptyMessage(STATUS_OK_COLLECTION_COLLECTED);
 								msg = "" + "删除分享成功！";
 							} else {

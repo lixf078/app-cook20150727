@@ -42,10 +42,13 @@ public class PersonalEdition extends BaseActivity implements OnClickListener{
 		
 		return_img = (ImageView) findViewById(R.id.return_img);
 		return_img.setOnClickListener(PersonalEdition.this);
+		
 		homework = new PersonalEditionHomework();
 		topic = new PersonalEditionTopic();
-		fragments.add(homework);
+		
 		fragments.add(topic);
+		fragments.add(homework);
+		fragments.add(homework);
 
 		rgs = (RadioGroup) findViewById(R.id.tabs_rg);
 

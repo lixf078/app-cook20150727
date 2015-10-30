@@ -94,7 +94,7 @@ public class GroupSharedListAdapter extends BaseAdapter {
 			
 			@Override
 			public void onClick(View v) {
-				int position = (Integer) v.getTag(R.id.personal_collection_item_title);
+				int position = (Integer) v.getTag(R.id.group_shared_item_delete);
 				operator.onDeleteItem(position);
 			}
 		});

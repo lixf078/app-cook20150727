@@ -9,12 +9,15 @@
     <TextView
         android:id="@+id/group_shared_item_delete"
         android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:background="@color/red"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@+id/front"
+        android:layout_alignTop="@+id/front"
         android:gravity="center"
         android:text="删除"
-        android:textColor="@color/red"
+        android:textColor="@color/white"
         android:textSize="16sp" />
 
     <RelativeLayout

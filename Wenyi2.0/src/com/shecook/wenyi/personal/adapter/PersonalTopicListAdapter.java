@@ -16,6 +16,7 @@ import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.model.personal.PersonalTopicModel;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
+import com.umeng.socom.Log;
 
 public class PersonalTopicListAdapter extends BaseAdapter {
 	
@@ -36,13 +37,14 @@ public class PersonalTopicListAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
+		Log.d("lixufeng", "getCount position " + mListItems.size());
 		return mListItems.size();
 	}
 
 	@Override
 	public Object getItem(int arg0) {
-		mListItems.get(arg0);
-		return null;
+		Log.d("lixufeng", "getItem position " + arg0);
+		return mListItems.get(arg0);
 	}
 
 	@Override
@@ -52,6 +54,7 @@ public class PersonalTopicListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View view, ViewGroup arg2) {
+		Log.d("lixufeng", "getView position " + position);
 		ViewHolder holder;
 		PersonalTopicModel eli = mListItems.get(position);
 		if (view == null) {
@@ -114,7 +117,7 @@ public class PersonalTopicListAdapter extends BaseAdapter {
 				break;
 			}
 		}
-
+		holder.item_img.setVisibility(View.VISIBLE);
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
 	    holder.item_img.setDefaultImageResId(R.drawable.icon);

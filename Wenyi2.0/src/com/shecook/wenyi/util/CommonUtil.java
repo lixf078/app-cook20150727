@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.shecook.wenyi.R;
 
 public class CommonUtil {
 

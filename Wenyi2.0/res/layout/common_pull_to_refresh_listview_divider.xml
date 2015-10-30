@@ -14,7 +14,7 @@
         android:layout_height="fill_parent"
         android:cacheColorHint="#00ffffff"
         android:divider="@color/date_color"
-        android:dividerHeight="5dp"
+        android:dividerHeight="1dp"
         android:fadingEdge="none"
         android:fastScrollEnabled="false"
         android:footerDividersEnabled="false"
