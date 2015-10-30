@@ -25,6 +25,7 @@ public class PersonalEdition extends BaseActivity implements OnClickListener{
 	
 	PersonalEditionHomework homework;
 	PersonalEditionTopic topic;
+	GroupPersonalSharedListFragment shared;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +46,11 @@ public class PersonalEdition extends BaseActivity implements OnClickListener{
 		
 		homework = new PersonalEditionHomework();
 		topic = new PersonalEditionTopic();
+		shared = new GroupPersonalSharedListFragment();
 		
 		fragments.add(topic);
 		fragments.add(homework);
-		fragments.add(homework);
+		fragments.add(shared);
 
 		rgs = (RadioGroup) findViewById(R.id.tabs_rg);
 

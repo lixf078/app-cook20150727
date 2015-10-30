@@ -100,6 +100,7 @@ public class PersonalEditionTopic extends Fragment {
 						}else{
 							Toast.makeText(mActivity, "End of List!",
 									Toast.LENGTH_SHORT).show();
+							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
 					}
 				});
@@ -115,6 +116,7 @@ public class PersonalEditionTopic extends Fragment {
 						}else{
 							Toast.makeText(mActivity, "End of List!",
 									Toast.LENGTH_SHORT).show();
+							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
 					}
 				});

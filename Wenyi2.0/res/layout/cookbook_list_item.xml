@@ -5,11 +5,7 @@
     android:layout_marginLeft="10dip"
     android:layout_marginRight="10dip"
     android:layout_marginTop="10dip"
-    android:orientation="horizontal"
-    android:paddingBottom="5dip"
-    android:paddingLeft="10dip"
-    android:paddingRight="10dip"
-    android:paddingTop="5dip" >
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="fill_parent"

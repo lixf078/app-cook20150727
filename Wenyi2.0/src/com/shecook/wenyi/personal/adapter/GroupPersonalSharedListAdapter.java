@@ -1,8 +1,9 @@
-package com.shecook.wenyi.group.adapter;
+package com.shecook.wenyi.personal.adapter;
 
 import java.util.LinkedList;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,18 +18,18 @@ import com.shecook.wenyi.model.group.GroupListItemSharedModel;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class GroupSharedListAdapter extends BaseAdapter {
+public class GroupPersonalSharedListAdapter extends BaseAdapter {
 	
 	private LinkedList<GroupListItemSharedModel> mListItems;
 	private Context context;
 	
 	OnSwipeOperator operator;
 	
-	public GroupSharedListAdapter() {
+	public GroupPersonalSharedListAdapter() {
 		super();
 	}
 
-	public GroupSharedListAdapter(Context context, LinkedList<GroupListItemSharedModel> list) {
+	public GroupPersonalSharedListAdapter(Context context, LinkedList<GroupListItemSharedModel> list) {
 		super();
 		this.context = context;
 		mListItems = list;
@@ -56,7 +57,7 @@ public class GroupSharedListAdapter extends BaseAdapter {
 		GroupListItemSharedModel eli = mListItems.get(position);
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(
-     				R.layout.group_detail_shared_list_item, null);
+     				R.layout.group_personal_shared_list_item, null);
 			holder = new ViewHolder();
 			holder.group_shared_item_title = (TextView) view.findViewById(R.id.group_shared_item_title);
 			holder.group_shared_item_time = (TextView) view.findViewById(R.id.group_shared_item_time);
@@ -81,12 +82,12 @@ public class GroupSharedListAdapter extends BaseAdapter {
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
 	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
 	    holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
-	    
+
 	    holder.imageUrl.setImageUrl(eli.getUportrait(), imageLoader);
 		holder.group_shared_item_title.setText(eli.getNickname());
-		if(!"".equals(eli.getComments())){
-			holder.group_shared_item_time.setText(eli.getComments());
+		if(!"0".equals(eli.getComments()) && TextUtils.isEmpty(eli.getComments())){
 		}
+		holder.group_shared_item_time.setText(eli.getTimeline());
 		holder.group_shared_item_summary.setText(eli.getBody());
 
 		holder.group_shared_item_delete.setOnClickListener(new OnClickListener() {

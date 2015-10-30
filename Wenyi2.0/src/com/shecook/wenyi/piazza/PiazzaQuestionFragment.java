@@ -120,6 +120,7 @@ public class PiazzaQuestionFragment extends BaseFragmeng {
 						} else {
 							Toast.makeText(mActivity, "End of List!",
 									Toast.LENGTH_SHORT).show();
+							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
 					}
 				});
@@ -143,45 +144,6 @@ public class PiazzaQuestionFragment extends BaseFragmeng {
 			}
 		});
 		
-		
-		// ******************************************************************
-		
-		/*AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
-        header.setLayoutParams(layoutParams);
-        ListView lv = mInviteRecordLv.getRefreshableView();
-        View header = mActivity.getLayoutInflater().inflate(R.layout.invite_record_header, mInviteRecordLv, false);
-        lv.addHeaderView(header);
-		Button header = new Button(mActivity);
-		header.setBackgroundColor(mActivity.getResources().getColor(R.color.blue));
-        */
-		/*View header = mActivity.getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
-		
-		viewPager = (AutoScrollViewPager) header
-				.findViewById(R.id.view_pager_advert);
-		mIndicator = (CirclePageIndicator) header
-				.findViewById(R.id.indicator);
-		
-		WenyiGallery eg = new WenyiGallery();
-		eg.setId(1000);
-		eg.setTitle(getResources().getString(R.string.app_name));
-		eg.setImgUrl("");
-		eg.setEvent_type(10);
-		eg.setEvent_content("www.baidu.com");
-		mPageViews.add(eg);
-		
-		adapter = new ViewPagerAdapter(mActivity, mPageViews);
-		viewPager.setAdapter(adapter);
-		mIndicator.setViewPager(viewPager);
-
-		viewPager.setInterval(4000);
-		viewPager.setCurrentItem(0);
-		viewPager.setStopScrollWhenTouch(true);
-		setViewPagerScrollSpeed(viewPager);
-		
-		AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
-        header.setLayoutParams(layoutParams);
-        ListView lv = mPullRefreshListView.getRefreshableView();
-        lv.addHeaderView(header);*/
 	}
 
 	@Override
@@ -346,7 +308,6 @@ public class PiazzaQuestionFragment extends BaseFragmeng {
 						if (core_status == 0 && index == 0) {
 							shouldLoad = false;
 						}
-						handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 					}
 				} else {
 					Toast.makeText(mActivity,
@@ -357,6 +318,7 @@ public class PiazzaQuestionFragment extends BaseFragmeng {
 				e.printStackTrace();
 			}
 		}
+		handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 	}
 
 	ErrorListener piazzaDiscoverErrorListener = new Response.ErrorListener() {

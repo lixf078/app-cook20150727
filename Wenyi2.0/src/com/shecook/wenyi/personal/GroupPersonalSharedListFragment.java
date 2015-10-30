@@ -22,7 +22,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shecook.wenyi.HttpStatus;
@@ -37,25 +39,32 @@ import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
-import com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity;
-import com.shecook.wenyi.cookbook.adapter.CookbookHomeworkListAdapter;
-import com.shecook.wenyi.model.CookbookHomeworkListItem;
+import com.shecook.wenyi.group.GroupShareDeatilActivity;
 import com.shecook.wenyi.model.WenyiImage;
+import com.shecook.wenyi.model.group.GroupListItemSharedModel;
+import com.shecook.wenyi.personal.adapter.GroupPersonalSharedListAdapter;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
 
-public class PersonalEditionHomework extends Fragment {
-	private static final String TAG = "PiazzaFragment";
-	public static final int STATUS_OK_COLLECTION_COLLECTED = 3;
+public class GroupPersonalSharedListFragment extends Fragment implements
+		OnClickListener {
+	private static final String TAG = "GroupItemDetailSharedFragment";
+
 	private Activity mActivity = null;
-	NetworkImageView networkImageView = null;
-	
-	private LinkedList<CookbookHomeworkListItem> mListItems;
+
+	public static final int STATUS_OK_COLLECTION_GROUP = 1;
+	public static final int STATUS_OK_COLLECTION_CREATE = 2;
+	public static final int STATUS_OK_COLLECTION_COLLECTED = 3;
+	private LinkedList<GroupListItemSharedModel> groupSharedList;
 	private PullToRefreshListView mPullRefreshListView;
-	private CookbookHomeworkListAdapter mAdapter;
-	
+	private GroupPersonalSharedListAdapter mAdapter;
+
 	private boolean shouldLoad = true;
+	private int pindex = 0;
+
+	private LinearLayout common_tip_info_layout;
+	private TextView common_tip_info, common_tip_info_button;
+
 	@Override
 	public void onAttach(Activity activity) {
 		WenyiLog.logv(TAG, "onAttach");
@@ -67,26 +76,35 @@ public class PersonalEditionHomework extends Fragment {
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		mActivity = getActivity();
-		
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onCreateView");
-		View rootView = inflater.inflate(R.layout.cookbook_homework_list, container, false);
+		View rootView = inflater.inflate(
+				R.layout.common_fragment_polltorefreshlist_noheader, container,
+				false);
+		groupSharedList = new LinkedList<GroupListItemSharedModel>();
 		initView(rootView);
-		getHomeworkList(HttpUrls.PERSONAL_EDITION_HOMEWORK, null,
-				homeworkResultListener, homeworkErrorListener);
+		getMySharedList();
 		return rootView;
 	}
-	
-	public void initView(View rootView){
-		
-		rootView.findViewById(R.id.wenyi_common_header_id).setVisibility(View.GONE);
-		
-		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.pull_refresh_list);
 
+	public void initView(View rootView) {
+		common_tip_info_layout = (LinearLayout) rootView
+				.findViewById(R.id.common_tip_info_layout);
+		common_tip_info = (TextView) rootView
+				.findViewById(R.id.common_tip_info);
+		common_tip_info_button = (TextView) rootView
+				.findViewById(R.id.common_tip_info_button);
+
+		common_tip_info_button.setOnClickListener(this);
+
+		mPullRefreshListView = (PullToRefreshListView) rootView
+				.findViewById(R.id.pull_refresh_list);
+
+		// Set a listener to be invoked when the list should be refreshed.
 		mPullRefreshListView
 				.setOnRefreshListener(new OnRefreshListener<ListView>() {
 					@Override
@@ -99,12 +117,12 @@ public class PersonalEditionHomework extends Fragment {
 										| DateUtils.FORMAT_SHOW_DATE
 										| DateUtils.FORMAT_ABBREV_ALL);
 
-						// Update the LastUpdatedLabel
 						refreshView.getLoadingLayoutProxy()
 								.setLastUpdatedLabel(label);
-						if(shouldLoad){
-							getHomeworkList(HttpUrls.PERSONAL_EDITION_HOMEWORK, null, homeworkResultListener, homeworkErrorListener);
-						}else{
+
+						if (shouldLoad) {
+							getMySharedList();
+						} else {
 							Toast.makeText(mActivity, "End of List!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
@@ -118,35 +136,32 @@ public class PersonalEditionHomework extends Fragment {
 
 					@Override
 					public void onLastItemVisible() {
-						if(shouldLoad){
-							getHomeworkList(HttpUrls.PERSONAL_EDITION_HOMEWORK, null, homeworkResultListener, homeworkErrorListener);
-						}else{
-							Toast.makeText(mActivity, "End of List!", Toast.LENGTH_SHORT).show();
+						if (shouldLoad) {
+							getMySharedList();
+						} else {
+							Toast.makeText(mActivity, "End of List!",
+									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
 					}
 				});
 
-//		ListView actualListView = mPullRefreshListView.getRefreshableView();
+		mAdapter = new GroupPersonalSharedListAdapter(mActivity, groupSharedList);
 
-		mListItems = new LinkedList<CookbookHomeworkListItem>();
-		mAdapter = new CookbookHomeworkListAdapter(mActivity, mListItems);
-
-		/**
-		 * Add Sound Event Listener
-		 */
 		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
+		
 		mPullRefreshListView.setAdapter(mAdapter);
 		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
-				getBottomDialog((int)position);
+				getBottomDialog(position);
 			}
 		});
+
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onActivityCreated");
@@ -161,14 +176,14 @@ public class PersonalEditionHomework extends Fragment {
 
 	@Override
 	public void onResume() {
-		WenyiLog.logv(TAG, "onResume");
 		super.onResume();
+		WenyiLog.logv(TAG, "onResume");
 	}
 
 	@Override
 	public void onPause() {
-		WenyiLog.logv(TAG, "onPause");
 		super.onPause();
+		WenyiLog.logv(TAG, "onPause");
 	}
 
 	@Override
@@ -194,18 +209,24 @@ public class PersonalEditionHomework extends Fragment {
 		WenyiLog.logv(TAG, "onDetach");
 		super.onDetach();
 	}
-	
-	
-	Handler handler = new Handler(){
+
+	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
 			switch (what) {
 			case HttpStatus.STATUS_OK:
 				mAdapter.notifyDataSetChanged();
+				// Call onRefreshComplete when the list has been refreshed.
 				mPullRefreshListView.onRefreshComplete();
+				if (groupSharedList == null || groupSharedList.size() == 0) {
+					common_tip_info_layout.setVisibility(View.VISIBLE);
+					common_tip_info.setText("该圈子目前还没有人分享");
+					common_tip_info_button.setText("立刻分享");
+				} else {
+					common_tip_info_layout.setVisibility(View.GONE);
+				}
 				break;
 			case STATUS_OK_COLLECTION_COLLECTED:
-				mListItems.remove(operPosition);
 				mAdapter.notifyDataSetChanged();
 				mPullRefreshListView.onRefreshComplete();
 				break;
@@ -214,7 +235,19 @@ public class PersonalEditionHomework extends Fragment {
 			}
 		};
 	};
-	
+
+	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+		switch (id) {
+		case R.id.common_tip_info_button:
+			break;
+
+		default:
+			break;
+		}
+	}
+
 	Dialog dialog = null;
 	private void getBottomDialog(final long position) {
 		dialog = Util.getBottomDialog(mActivity,
@@ -254,8 +287,12 @@ public class PersonalEditionHomework extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				Intent intent = new Intent(mActivity, CookbookHomeworkDeatilActivity.class);
-				intent.putExtra("topicid", "" + mListItems.get((int) position).getId());
+				Intent intent = new Intent(mActivity,
+						GroupShareDeatilActivity.class);
+				intent.putExtra("circleid",
+						"" + groupSharedList.get((int) position).getCircleid());
+				intent.putExtra("shareid",
+						"" + groupSharedList.get((int) position).getId());
 				startActivity(intent);
 				dialog.dismiss();
 			}
@@ -271,115 +308,18 @@ public class PersonalEditionHomework extends Fragment {
 		dialog.show();
 	}
 	
-	private int index = 0;
-	public void getHomeworkList(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
-		try {
-			JSONObject paramsub = new JSONObject();
-			paramsub.put("pindex", "" + ++index);
-			paramsub.put("count", "20");
-			Util.commonHttpMethod(mActivity, url, paramsub, resultListener, errorListener);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	Listener<JSONObject> listResultListener = new Listener<JSONObject>() {
-
-		@Override
-		public void onResponse(JSONObject result) {
-			Log.d(TAG, "catalogResultListener onResponse -> " + result.toString());
-			initData(result, 0);
-		}
-	};
-	
-	ErrorListener listErrorListener = new Response.ErrorListener() {
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			Log.e(TAG, error.getMessage(), error);
-		}
-	};
-
-	private void initData(JSONObject jsonObject, int flag){
-		if(jsonObject != null){
-			try {
-				if(!jsonObject.isNull("statuscode") && 200 == jsonObject.getInt("statuscode")){
-					if(!jsonObject.isNull("data")){
-						JSONObject data = jsonObject.getJSONObject("data");
-						
-						if(data.has("list")){
-							JSONArray list = data.getJSONArray("list");
-							LinkedList<CookbookHomeworkListItem> listTemp = new LinkedList<CookbookHomeworkListItem>();
-							for(int i = 0,j = list.length(); i < j; i++){
-								JSONObject jb = list.getJSONObject(i);
-								CookbookHomeworkListItem phi = new CookbookHomeworkListItem();
-								phi.setId(jb.getString("id"));
-								phi.setRecipeid(jb.getString("recipeid"));
-								phi.setUid(jb.getString("uid"));
-								phi.setNickname(jb.getString("nickname"));
-								phi.setUportrait(jb.getString("uportrait"));
-								phi.setDescription(jb.getString("description"));
-								phi.setComments(jb.getString("comments"));
-								phi.setTimeline(jb.getString("timeline"));
-								if(jb.has("images")){
-									JSONArray imagelist = jb.getJSONArray("images");
-									for(int k = 0, t = imagelist.length(); k < t; k++){
-										JSONObject imagejb = imagelist.getJSONObject(k);
-										WenyiImage homeWorkImage = new WenyiImage();
-										homeWorkImage.setId(imagejb.getString("id"));
-										homeWorkImage.setFollowid(imagejb.getString("followid"));
-										homeWorkImage.setImageurl(imagejb.getString("imageurl"));
-										phi.getImageList().add(homeWorkImage);
-									}
-								}
-								listTemp.add(phi);
-							}
-							mListItems.addAll(listTemp);
-						}else{
-							Toast.makeText(mActivity, "" + data.getString("msg"), Toast.LENGTH_SHORT).show();
-						}
-						
-						index = data.getInt("pindex");
-						int core_status = data.getInt("core_status");
-						if(core_status == 0 && index == 0){
-							shouldLoad = false;
-						}
-					}
-				}else{
-					Toast.makeText(mActivity, "" + jsonObject.getString("errmsg"), Toast.LENGTH_SHORT).show();
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-		handler.sendEmptyMessage(HttpStatus.STATUS_OK);
-	}
-	
-	ErrorListener homeworkErrorListener = new Response.ErrorListener() {
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			Log.e(TAG, error.getMessage(), error);
-		}
-	};
-	
-	Listener<JSONObject> homeworkResultListener = new Listener<JSONObject>() {
-
-		@Override
-		public void onResponse(JSONObject result) {
-			Log.d(TAG, "catalogResultListener onResponse -> " + result.toString());
-			initData(result, 0);
-		}
-	};
 	
 	int operPosition = -1;
+
 	public void onDeleteItem(int position) {
 		operPosition = position;
-		Log.e("lixufeng", "onDeleteItem position " + position + ", groupSharedList " + mListItems.size());
+		Log.e("lixufeng", "onDeleteItem position " + position
+				+ ", groupSharedList " + groupSharedList.size());
 		JSONObject paramObject = new JSONObject();
 		try {
-			paramObject.put("recipeid", mListItems.get(position).getId());
-			Util.commonHttpMethod(mActivity, 
-					HttpUrls.PERSONAL_EDITION_HOMEWORK_DEL, paramObject, delectResultListener,
-					delectErrorListener);
+			paramObject.put("shareid", groupSharedList.get(position).getId());
+			Util.commonHttpMethod(mActivity, HttpUrls.GROUP_CIRCLE_SHARE_DEL, paramObject,
+					delectResultListener, delectErrorListener);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -389,7 +329,9 @@ public class PersonalEditionHomework extends Fragment {
 
 		@Override
 		public void onResponse(JSONObject jsonObject) {
-			Log.d(TAG, "catalogResultListener onResponse -> " + jsonObject.toString());
+			Log.d(TAG,
+					"catalogResultListener onResponse -> "
+							+ jsonObject.toString());
 			String msg = "";
 			if (jsonObject != null) {
 				try {
@@ -398,10 +340,13 @@ public class PersonalEditionHomework extends Fragment {
 						if (!jsonObject.isNull("data")) {
 							JSONObject data = jsonObject.getJSONObject("data");
 							int core_status = data.getInt("core_status");
-							Log.e(TAG, "collectedResultListener core_status -> " + core_status);
+							Log.e(TAG,
+									"collectedResultListener core_status -> "
+											+ core_status);
 							if (core_status == 200) {
+								groupSharedList.remove(operPosition);
 								handler.sendEmptyMessage(STATUS_OK_COLLECTION_COLLECTED);
-								msg = "" + "删除作业成功！";
+								msg = "" + "删除分享成功！";
 							} else {
 								msg = "" + data.getString("msg");
 							}
@@ -413,15 +358,109 @@ public class PersonalEditionHomework extends Fragment {
 					e.printStackTrace();
 				}
 			}
-			Toast.makeText(mActivity, msg,
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
 		}
 	};
-	
+
 	ErrorListener delectErrorListener = new Response.ErrorListener() {
 		@Override
 		public void onErrorResponse(VolleyError error) {
 			Log.e(TAG, error.getMessage(), error);
 		}
 	};
+
+	public void getMySharedList() {
+		if (shouldLoad) {
+			JSONObject paramObject = new JSONObject();
+			try {
+				paramObject.put("pindex", "" + ++pindex);
+				Util.commonHttpMethod(mActivity, HttpUrls.PERSONAL_MY_SHARE_LIST,
+						paramObject, listResultListener, listErrorListener);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		} else {
+			Toast.makeText(mActivity, "End of List!", Toast.LENGTH_SHORT)
+					.show();
+		}
+
+	}
+
+	Listener<JSONObject> listResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.d(TAG,
+					"catalogResultListener onResponse -> " + result.toString());
+			initData(result, 0);
+		}
+	};
+
+	ErrorListener listErrorListener = new Response.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			Log.e(TAG, error.getMessage(), error);
+		}
+	};
+
+	private void initData(JSONObject jsonObject, int flag) {
+		if (jsonObject != null) {
+			try {
+				if (!jsonObject.isNull("statuscode")
+						&& 200 == jsonObject.getInt("statuscode")) {
+					if (!jsonObject.isNull("data")) {
+						JSONObject data = jsonObject.getJSONObject("data");
+						if (data.has("list")) {
+							JSONArray list = data.getJSONArray("list");
+							LinkedList<GroupListItemSharedModel> listTemp = new LinkedList<GroupListItemSharedModel>();
+							for (int i = 0, j = list.length(); i < j; i++) {
+								JSONObject jb = list.getJSONObject(i);
+								GroupListItemSharedModel pdi = new GroupListItemSharedModel();
+								pdi.setId(jb.getString("id"));
+								pdi.setCircleid(jb.getString("circleid"));
+								pdi.setUid(jb.getString("uid"));
+								pdi.setNickname(jb.getString("nickname"));
+								pdi.setUportrait(jb.getString("uportrait"));
+								pdi.setBody(jb.getString("body"));
+								pdi.setComments(jb.getString("comments"));
+								pdi.setTimeline(jb.getString("timeline"));
+								pdi.setDel(jb.getInt("del"));
+								if (jb.has("images")) {
+									JSONArray images = jb
+											.getJSONArray("images");
+									for (int k = 0, t = images.length(); k < t; k++) {
+										JSONObject image = images
+												.getJSONObject(k);
+										WenyiImage im = new WenyiImage();
+										im.setId(image.getString("id"));
+										im.setImageurl(image
+												.getString("imageurl"));
+										// 还有其他字段未使用
+										pdi.getImages().add(im);
+									}
+								}
+								listTemp.add(pdi);
+							}
+							groupSharedList.addAll(listTemp);
+						}
+						if (data.has("pindex")) {
+							pindex = data.getInt("pindex");
+							int core_status = data.getInt("core_status");
+							if (core_status == 200 && pindex == 0) {
+								shouldLoad = false;
+							}
+						}
+					}
+				} else {
+					Toast.makeText(mActivity,
+							"" + jsonObject.getString("errmsg"),
+							Toast.LENGTH_SHORT).show();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		handler.sendEmptyMessage(HttpStatus.STATUS_OK);
+	}
+
 }

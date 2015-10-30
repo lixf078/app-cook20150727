@@ -119,6 +119,7 @@ public class GroupHotFragment extends BaseFragmeng {
 						} else {
 							Toast.makeText(mActivity, "End of List!",
 									Toast.LENGTH_SHORT).show();
+							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
 					}
 				});

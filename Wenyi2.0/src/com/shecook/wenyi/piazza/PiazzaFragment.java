@@ -23,8 +23,6 @@ import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.CreatePersonalInfoActivity;
 import com.shecook.wenyi.cookbook.PiazzaCookbookHomeworkList;
-import com.shecook.wenyi.group.GroupCreateActivity;
-import com.shecook.wenyi.group.GroupItemDetailActivity;
 import com.shecook.wenyi.mainpackage.FragmentTabAdapter;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
@@ -42,7 +40,7 @@ public class PiazzaFragment extends Fragment implements OnClickListener{
 	PiazzaDiscoverFragment discoverFragment;
 	PiazzaQuestionFragment questionFragment;
 	PiazzaCookbookHomeworkList foodFragment;
-	PiazzaDiscoverFragment friendFragment;
+//	PiazzaDiscoverFragment friendFragment;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -57,7 +55,7 @@ public class PiazzaFragment extends Fragment implements OnClickListener{
 		discoverFragment = new PiazzaDiscoverFragment();
 		questionFragment = new PiazzaQuestionFragment();
 		foodFragment = new PiazzaCookbookHomeworkList();
-		friendFragment = new PiazzaDiscoverFragment();
+//		friendFragment = new PiazzaDiscoverFragment();
 
 	}
 
@@ -86,7 +84,7 @@ public class PiazzaFragment extends Fragment implements OnClickListener{
 		fragments.add(discoverFragment);
 		fragments.add(questionFragment);
 		fragments.add(foodFragment);
-		fragments.add(friendFragment);
+//		fragments.add(friendFragment);
 
 		rgs = (RadioGroup) rootView.findViewById(R.id.piazza_tabs_rg);
 

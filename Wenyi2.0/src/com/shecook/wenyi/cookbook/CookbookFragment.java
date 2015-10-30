@@ -1,7 +1,6 @@
 package com.shecook.wenyi.cookbook;
 
 import java.util.LinkedList;
-import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,12 +43,8 @@ import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.cookbook.adapter.CookbookListAdapter;
-import com.shecook.wenyi.essay.EssayItemDeatilActivity;
-import com.shecook.wenyi.essay.EssayListActivity;
 import com.shecook.wenyi.model.CookbookCatalog;
 import com.shecook.wenyi.model.CookbookListItem;
-import com.shecook.wenyi.model.CookbookListItemDetail;
-import com.shecook.wenyi.model.WenyiUser;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
