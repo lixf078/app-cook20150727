@@ -29,6 +29,8 @@ public class HttpUrls {
 	public static final String COOKBOOK_HOMEWORK_LIST_ITEM_DETAIL = BASE_URL + "follow/detail";
 	public static final String COOKBOOK_WENYI_ITEM_DETAI_ADD_COMMENT = BASE_URL + "recipe/comment_add";
 	public static final String COOKBOOK_WENYI_HOMEWORK_ADD = BASE_URL + "follow/add";
+	public static final String COOKBOOK_WENYI_SEARCH = BASE_URL + "recipe/search";
+	
 	
 	public static final String COOKBOOK_COLLECTION_GROUP_LIST = BASE_URL + "user/group"; // 收藏分组列表
 	public static final String COOKBOOK_COLLECTION_COLLECTED = BASE_URL + "user/collect"; // 收藏
@@ -36,7 +38,7 @@ public class HttpUrls {
 	public static final String PERSONAL_COLLECTION_LIST_FOR_GROUP = BASE_URL + "user/collect_list";
 	public static final String PERSONAL_COLLECTION_DELECT_COOKBOOK = BASE_URL + "user/del_collect"; // 删除个人收藏
 	public static final String PERSONAL_COLLECTION_CHANGE_COOKBOOK_GROUP = BASE_URL + "user/change_group"; // 更改收藏分组
-
+	
 	public static final String PIZZA_DISCOVER_LIST_NEW = BASE_URL + "square/list_new";
 	public static final String PIZZA_DISCOVER_LIST_HISTORY = BASE_URL + "square/list_history";
 	public static final String PIZZA_TOPIC_LIST = BASE_URL + "topic/list"; // piazza question list
@@ -81,9 +83,13 @@ public class HttpUrls {
 	public static final String PERSONAL_KITCHTN_FOOD_DATA = BASE_URL + "kitchen/cata";
 	public static final String PERSONAL_KITCHEN_FOOD_KEY = BASE_URL + "kitchen/key";
 	public static final String PERSONAL_KITCHEN_FOOD_COMB = BASE_URL + "kitchen/comb";
+	public static final String PERSONAL_MESSAGE_LIST = BASE_URL + "user/mymsg";
+	public static final String PERSONAL_MESSAGE_LIST_ITEM_DEL = BASE_URL + "user/del_mymsg";
 	
+	public static final String PERSONAL_CHNAGE_EMAIL = BASE_URL + "user/email";
+	public static final String PERSONAL_CHANGE_PASSWD = BASE_URL + "user/pwd";
+	public static final String PERSONAL_CHANGE_BIND = BASE_URL + "user/bind";
+	public static final String PERSONAL_CHANGE_NICK = BASE_URL + "user/nick";
 	
-	
-
 	
 }

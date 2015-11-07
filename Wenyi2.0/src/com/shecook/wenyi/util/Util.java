@@ -889,6 +889,7 @@ public class Util {
 
 	public static void dispatchClickEvent(Context context, String event_type,
 			String event_content, String[] info) {
+		Log.d("lixufeng", "dispatchClickEvent event_type " + event_type + ", event_content " + event_content);
 		int type = -1;
 		try {
 			type = Integer.parseInt(event_type);

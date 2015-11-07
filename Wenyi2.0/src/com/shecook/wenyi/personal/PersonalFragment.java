@@ -88,6 +88,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		user_level = (TextView) rootView.findViewById(R.id.user_level);
 		personal_gold = (TextView) rootView.findViewById(R.id.personal_gold);
 		personal_email = (TextView) rootView.findViewById(R.id.personal_email);
+		personal_email.setOnClickListener(this);
 		personal_experience = (TextView) rootView.findViewById(R.id.personal_experience);
 		
 		personal_my_collection = (LinearLayout) rootView.findViewById(R.id.personal_my_collection);
@@ -181,6 +182,11 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 			 intent = new Intent(PersonalFragment.this.getActivity(),
 					PersonalPrivateKitchen.class);
 			startActivity(intent);
+			break;
+		case R.id.personal_email:
+			intent = new Intent(PersonalFragment.this.getActivity(), PersonalMessageListActivity.class);
+			startActivity(intent);
+			break;
 		default:
 			break;
 		}

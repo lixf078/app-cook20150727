@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -27,29 +29,29 @@ import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.Response;
-import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
+import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.util.Util;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.controller.listener.SocializeListeners.SocializeClientListener;
 
-public class PersonalSettings extends BaseActivity implements OnClickListener{
+public class PersonalSettings extends BaseActivity implements OnClickListener {
 
 	private TextView login;
 	private List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 	private ListView listView;
-	private String[] dates = { "关于文怡", "文怡美食生活馆", "厨蜜网", "版本控制", "清除缓存",
-			"意见反馈", "关于我们"};
+	private String[] dates = { "修改邮箱", "修改密码", "清除缓存", "关于文怡", "文怡美食生活馆",
+			"版本信息" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.center_set);
 		super.onCreate(savedInstanceState);
 
-		login = (TextView) findViewById(R.id.login);
-		if(isLogin()){
+		login = (TextView) findViewById(R.id.exit_login_current_account);
+		if (isLogin()) {
 			login.setText(R.string.user_logout);
 		}
 		listView = (ListView) findViewById(R.id.listView);
@@ -57,7 +59,7 @@ public class PersonalSettings extends BaseActivity implements OnClickListener{
 		// 初始化列表
 		initList();
 
-		//点击登录
+		// 点击登录
 		login.setOnClickListener(this);
 	}
 
@@ -82,23 +84,25 @@ public class PersonalSettings extends BaseActivity implements OnClickListener{
 				switch (id) {
 				case 0:
 					Intent intent = new Intent();
-					// intent.setClass(PersonalSettings.this, CenterAboutWenyiActivity.class);
+					// intent.setClass(PersonalSettings.this,
+					// CenterAboutWenyiActivity.class);
 					startActivity(intent);
 					finish();
 					break;
 				case 1:
 					Intent intent1 = new Intent();
-					// intent1.setClass(PersonalSettings.this, CenterWenyiFoodActivity.class);
+					// intent1.setClass(PersonalSettings.this,
+					// CenterWenyiFoodActivity.class);
 					startActivity(intent1);
 					finish();
 					break;
 				case 2:
-					Intent intent2= new Intent();
-				    intent2.setAction("android.intent.action.VIEW");
-				    Uri content_url = Uri.parse("http://www.shecook.com");
-				    intent2.setData(content_url);
-				    startActivity(intent2);
-				    finish();
+					Intent intent2 = new Intent();
+					intent2.setAction("android.intent.action.VIEW");
+					Uri content_url = Uri.parse("http://www.shecook.com");
+					intent2.setData(content_url);
+					startActivity(intent2);
+					finish();
 					break;
 				case 3:
 					break;
@@ -106,13 +110,15 @@ public class PersonalSettings extends BaseActivity implements OnClickListener{
 					break;
 				case 5:
 					Intent intent5 = new Intent();
-					// intent5.setClass(PersonalSettings.this, CenterIdeaActivity.class);
+					// intent5.setClass(PersonalSettings.this,
+					// CenterIdeaActivity.class);
 					startActivity(intent5);
 					finish();
 					break;
 				case 6:
 					Intent intent6 = new Intent();
-					// intent6.setClass(PersonalSettings.this, CenterAboutMeActivity.class);
+					// intent6.setClass(PersonalSettings.this,
+					// CenterAboutMeActivity.class);
 					startActivity(intent6);
 					finish();
 					break;
@@ -120,24 +126,44 @@ public class PersonalSettings extends BaseActivity implements OnClickListener{
 			}
 		});
 	}
-	
+
+	Handler handler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			int what = msg.what;
+			switch (what) {
+			case HttpStatus.STATUS_OK:
+			case HttpStatus.STATUS_LOAD_OTHER_OK:
+				break;
+			case HttpStatus.STATUS_LOAD_OTHER:
+				break;
+			case Util.SHOW_DIALOG_COMMENTS:
+				break;
+			default:
+				break;
+			}
+		};
+	};
+
 	@Override
 	public void onClick(View view) {
 		int id = view.getId();
 		switch (id) {
-		case R.id.login:
-			if(isLogin()){
+		case R.id.exit_login_current_account:
+			if (isLogin()) {
 				String type = user.get_login_type();
-				if("qq".equals(type)){
-					logout(PersonalSettings.this, PersonalLoginCommon.class,SHARE_MEDIA.QQ);
-				}else if("sina".equals(user.get_login_type())){
-					logout(PersonalSettings.this, PersonalLoginCommon.class,SHARE_MEDIA.SINA);
-				}else{
+				if ("qq".equals(type)) {
+					logout(PersonalSettings.this, PersonalLoginCommon.class,
+							SHARE_MEDIA.QQ);
+				} else if ("sina".equals(user.get_login_type())) {
+					logout(PersonalSettings.this, PersonalLoginCommon.class,
+							SHARE_MEDIA.SINA);
+				} else {
 					logoutSucess();
 				}
-			}else{
+			} else {
 				Intent intent = new Intent();
-				intent.setClass(PersonalSettings.this, PersonalLoginCommon.class);
+				intent.setClass(PersonalSettings.this,
+						PersonalLoginCommon.class);
 				startActivity(intent);
 				finish();
 			}
@@ -146,38 +172,43 @@ public class PersonalSettings extends BaseActivity implements OnClickListener{
 			break;
 		}
 	}
-	public void logout(final Activity from,final Class to,SHARE_MEDIA media){
-		mController.deleteOauth(PersonalSettings.this, media, new SocializeClientListener() {
-			
-			@Override
-			public void onStart() {
-				
-			}
-			
-			@Override
-			public void onComplete(int arg0, SocializeEntity arg1) {
-				
-			}
-		});
-		mController.loginout(PersonalSettings.this, new SocializeClientListener() {
-			
-			@Override
-			public void onStart() {
-				
-			}
-			
-			@Override
-			public void onComplete(int status, SocializeEntity entity) {
-				if(status == 200){
-					logoutSucess();
-				}
-			}
-		});
+
+	public void logout(final Activity from, final Class to, SHARE_MEDIA media) {
+		mController.deleteOauth(PersonalSettings.this, media,
+				new SocializeClientListener() {
+
+					@Override
+					public void onStart() {
+
+					}
+
+					@Override
+					public void onComplete(int arg0, SocializeEntity arg1) {
+
+					}
+				});
+		mController.loginout(PersonalSettings.this,
+				new SocializeClientListener() {
+
+					@Override
+					public void onStart() {
+
+					}
+
+					@Override
+					public void onComplete(int status, SocializeEntity entity) {
+						if (status == 200) {
+							logoutSucess();
+						}
+					}
+				});
 	}
-	private void logoutSucess(){
-		userOperator(HttpUrls.PERSONAL_USER_LOGOUT, null, logoutResultListener, logoutCardErrorListener);
+
+	private void logoutSucess() {
+		userOperator(HttpUrls.PERSONAL_USER_LOGOUT, null, logoutResultListener,
+				logoutCardErrorListener);
 	}
-	
+
 	Listener<JSONObject> logoutResultListener = new Listener<JSONObject>() {
 
 		@Override
@@ -193,9 +224,12 @@ public class PersonalSettings extends BaseActivity implements OnClickListener{
 						JSONObject dataJson = jsonObject.getJSONObject("data");
 						int core_status = dataJson.getInt("core_status");
 						if (core_status == 200) {
-							Toast.makeText(PersonalSettings.this, getString(R.string.user_loginout), Toast.LENGTH_SHORT).show();
+							Toast.makeText(PersonalSettings.this,
+									getString(R.string.user_loginout),
+									Toast.LENGTH_SHORT).show();
 							login.setText(R.string.user_login);
-							Util.updateBooleanData(PersonalSettings.this, "islogin", false);
+							Util.updateBooleanData(PersonalSettings.this,
+									"islogin", false);
 							isLogin = false;
 						} else {
 							// 有错误情况
@@ -220,5 +254,47 @@ public class PersonalSettings extends BaseActivity implements OnClickListener{
 			Log.e(TAG, error.getMessage(), error);
 		}
 	};
-	
+
+	Listener<JSONObject> commentsResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.d(TAG,
+					"catalogResultListener onResponse -> " + result.toString());
+			initCommentsData(result, 0);
+
+		}
+	};
+
+	ErrorListener commentsErrorListener = new Response.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			Log.e(TAG, error.getMessage(), error);
+		}
+	};
+
+	private int account_status = -1;
+
+	private void initCommentsData(JSONObject jsonObject, int flag) {
+
+		if (jsonObject != null) {
+			try {
+				if (!jsonObject.isNull("statuscode")
+						&& 200 == jsonObject.getInt("statuscode")) {
+					if (!jsonObject.isNull("data")) {
+						JSONObject data = jsonObject.getJSONObject("data");
+						account_status = data.getInt("account_status");
+					}
+				} else {
+					Toast.makeText(PersonalSettings.this,
+							"" + jsonObject.getString("errmsg"),
+							Toast.LENGTH_SHORT).show();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			handler.sendEmptyMessage(HttpStatus.STATUS_LOAD_OTHER_OK);
+		}
+	}
+
 }

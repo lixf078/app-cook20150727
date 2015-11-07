@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:leui="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+    
+    <include layout="@layout/wenyi_common_header"
+        android:id="@+id/wenyi_common_header_id" />
+    
+    <com.shecook.wenyi.common.pulltorefresh.SwitchPullToRefreshListView
+        android:layout_below="@id/wenyi_common_header_id"
+        android:id="@id/pull_refresh_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true"
+        leui:leListViewMode="leSwipe"
+        leui:leSwipeActionLeft="reveal"
+        leui:leSwipeAnimationTime="200"
+        leui:leSwipeBackView="@+id/back"
+        leui:leSwipeCloseAllItemsWhenMoveList="true"
+        leui:leSwipeFrontView="@+id/front"
+        leui:leSwipeMode="left"
+        leui:leSwipeOffsetLeft="60dp"
+        leui:leSwipeOpenOnLongPress="true" />
+
+    <LinearLayout
+        android:id="@+id/common_tip_info_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/transparent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/common_tip_info"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/common_tip_info_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/wenyi_circle"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</RelativeLayout>

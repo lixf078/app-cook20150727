@@ -16,6 +16,7 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -180,8 +181,17 @@ public class CookbookFragment extends Fragment implements
 		returnImage.setVisibility(View.GONE);
 
 		ImageView settingImage = (ImageView) view.findViewById(R.id.right_img);
-		settingImage.setVisibility(View.GONE);
-
+		settingImage.setBackgroundResource(R.drawable.search_01);
+		
+		settingImage.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(mActivity, CookbookSearchActivity.class);
+				startActivity(intent);
+			}
+		});
+		
 		TextView titleView = (TextView) view.findViewById(R.id.middle_title);
 		if (TextUtils.isEmpty(title)) {
 			titleView.setText(R.string.caipu);

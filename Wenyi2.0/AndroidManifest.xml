@@ -83,7 +83,6 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="com.shecook.wenyi.essay.EssayListActivity"
             android:screenOrientation="nosensor"
@@ -128,7 +127,6 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity"
             android:screenOrientation="nosensor"
@@ -139,7 +137,7 @@
         </activity>
 
         <!-- piazza -->
-        
+
         <activity
             android:name="com.shecook.wenyi.piazza.PizzaQuestionDeatilActivity"
             android:screenOrientation="nosensor"
@@ -182,7 +180,7 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        
+
         <!-- presonal -->
         <activity
             android:name="com.shecook.wenyi.personal.PersonalRegister"
@@ -248,7 +246,30 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name="com.shecook.wenyi.personal.PersonalMessageListActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shecook.wenyi.personal.PersonalEmailChange"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shecook.wenyi.personal.PersonalNickNameChange"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
         <!-- common -->
         <activity
             android:name="com.shecook.wenyi.common.WebViewActivity"
