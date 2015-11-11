@@ -143,12 +143,19 @@ public class StartActivity extends BaseActivity{
 		menuView = menu.findViewById(R.id.expandable_listview);
 	}
 	
+	public long systemlast = 0;
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		/*if(keyCode == KeyEvent.KEYCODE_BACK){
-			menu.toggle();
-			return true;
-		}*/
+		if(keyCode == KeyEvent.KEYCODE_BACK){
+			if((System.currentTimeMillis() - systemlast) < 2000){
+				return super.onKeyDown(keyCode, event);
+			}else{
+				Toast.makeText(StartActivity.this, "再按一次将退出应用", Toast.LENGTH_SHORT	).show();
+				systemlast = System.currentTimeMillis();
+				return true;
+			}
+		}
 		return super.onKeyDown(keyCode, event);
 	}
 	

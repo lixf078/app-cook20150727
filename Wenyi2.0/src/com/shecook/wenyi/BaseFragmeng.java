@@ -1,7 +1,5 @@
 package com.shecook.wenyi;
 
-import java.util.UUID;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
