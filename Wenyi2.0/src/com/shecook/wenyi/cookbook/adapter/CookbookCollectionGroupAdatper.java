@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.model.cookbook.CookbookCollectionGroup;
+import com.shecook.wenyi.util.Util;
 
 public class CookbookCollectionGroupAdatper extends BaseAdapter {
 	
@@ -59,7 +60,7 @@ public class CookbookCollectionGroupAdatper extends BaseAdapter {
 		}
 	    
 		holder.advTitle.setText(ccg.getGroupname());
-		holder.advTime.setText(ccg.getTimeline());
+		holder.advTime.setText(Util.formatTime2Away(ccg.getTimeline()));
 		return view ;
 	}
 	

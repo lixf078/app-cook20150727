@@ -14,6 +14,7 @@ import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.model.group.GroupShareCommentItem;
+import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
@@ -87,8 +88,8 @@ public class GroupShareItemDetialAdapter extends BaseAdapter {
 		}else{
 			holder.group_share_list_content.setVisibility(View.GONE);
 			holder.group_share_list_item_info.setVisibility(View.VISIBLE);
-			holder.advTitle.setText(pqi.getNickname());
-			holder.advTime.setText(pqi.getTimeline());
+			holder.advTitle.setText(Util.formatTime2Away(pqi.getNickname()));
+			holder.advTime.setText(Util.formatTime2Away(pqi.getTimeline()));
 			holder.group_share_item_level.setText(pqi.getComment());
 		}
 		

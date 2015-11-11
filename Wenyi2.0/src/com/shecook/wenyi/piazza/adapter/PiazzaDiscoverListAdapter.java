@@ -178,7 +178,7 @@ public class PiazzaDiscoverListAdapter extends BaseAdapter {
 				holder.item_img.setImageUrl(pdi.getImageurl(), item_img);
 
 				holder.essay_item_title.setText(pdi.getTitle());
-				holder.essay_item_time.setText(pdi.getTimeline());
+				holder.essay_item_time.setText(Util.formatTime2Away(pdi.getTimeline()));
 				holder.essay_item_content.setText(pdi.getDesc());
 			}else if(template.equals("10002")){
 				holder.discover_common_layout.setVisibility(View.VISIBLE);
@@ -195,7 +195,7 @@ public class PiazzaDiscoverListAdapter extends BaseAdapter {
 			    holder.item_img.setImageUrl(pdi.getImageurl(), item_img);
 				
 				holder.essay_item_title.setText(pdi.getTitle());
-				holder.essay_item_time.setText(pdi.getTimeline());
+				holder.essay_item_time.setText(Util.formatTime2Away(pdi.getTimeline()));
 				holder.essay_item_content.setText(pdi.getDesc());
 			}else if(template.equals("10003")){
 				holder.discover_common_layout.setVisibility(View.VISIBLE);

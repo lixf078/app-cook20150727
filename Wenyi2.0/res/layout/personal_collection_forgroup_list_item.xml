@@ -12,7 +12,7 @@
         android:layout_height="60dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@color/whitesmoke"
+        android:background="@color/gray"
         android:gravity="center"
         android:text="分 组"
         android:textColor="@color/white"
@@ -78,6 +78,8 @@
                 android:id="@+id/personal_collection_item_summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/personal_collection_item_title"
                 android:textColor="@color/text_color" />
         </RelativeLayout>
     </RelativeLayout>

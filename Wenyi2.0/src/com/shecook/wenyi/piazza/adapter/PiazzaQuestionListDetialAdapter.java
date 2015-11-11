@@ -14,6 +14,7 @@ import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.model.piazza.PiazzaQuestionCommentItem;
 import com.shecook.wenyi.model.piazza.PiazzaQuestionItem;
+import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
@@ -84,11 +85,11 @@ public class PiazzaQuestionListDetialAdapter extends BaseAdapter {
 
 		if(pqi.isComment()){
 			holder.advTitle.setText(pqci.getNickname());
-			holder.advTime.setText(pqci.getTimeline());
+			holder.advTime.setText(Util.formatTime2Away(pqci.getTimeline()));
 			holder.pizza_question_list_content.setText(pqci.getComment());
 		}else{
 			holder.advTitle.setText(pqi.getNickname());
-			holder.advTime.setText(pqi.getTimeline());
+			holder.advTime.setText(Util.formatTime2Away(pqi.getTimeline()));
 			holder.pizza_question_list_content.setText(pqi.getBody());
 			holder.pizza_question_item_level.setText(pqi.getNickname());
 		}

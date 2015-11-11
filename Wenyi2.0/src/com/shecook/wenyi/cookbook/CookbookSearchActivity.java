@@ -42,7 +42,7 @@ import com.shecook.wenyi.util.Util;
 
 public class CookbookSearchActivity extends BaseActivity implements OnClickListener{
 
-	private static final String LOGTAG = "CookbookSearchActivity";
+	private static final String TAG = "CookbookSearchActivity";
 	
 	private TextView searchButton;
 	private EditText searchEdit;
@@ -57,7 +57,7 @@ public class CookbookSearchActivity extends BaseActivity implements OnClickListe
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.cookbook_search);
+		setContentView(R.layout.cookbook_essay_search);
 		super.onCreate(savedInstanceState);
 		initView();
 	}
@@ -81,7 +81,7 @@ public class CookbookSearchActivity extends BaseActivity implements OnClickListe
 		TextView titleView = (TextView)findViewById(R.id.middle_title);
 		titleView.setText(R.string.caipu);
 		
-		mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
+		mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.search_cookbook_listview);
 
 		// Set a listener to be invoked when the list should be refreshed.
 		mPullRefreshListView

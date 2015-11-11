@@ -75,7 +75,7 @@ public class PiazzaFragment extends Fragment implements OnClickListener{
 		return_img = (ImageView) rootView.findViewById(R.id.return_img);
 		middle_title = (TextView) rootView.findViewById(R.id.middle_title);
 
-		right_img.setBackgroundResource(R.drawable.edit);
+		right_img.setBackgroundResource(R.drawable.piazza_edit);
 		right_img.setOnClickListener(this);
 		
 		return_img.setVisibility(View.INVISIBLE);

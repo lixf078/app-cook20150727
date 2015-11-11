@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shecook.wenyi"
-    android:versionCode="4"
-    android:versionName="1.0.4" >
+    android:versionCode="5"
+    android:versionName="2.0" >
 
     <uses-sdk
-        android:minSdkVersion="19"
+        android:minSdkVersion="15"
         android:targetSdkVersion="19" />
 
     <!-- 读取联系人权限 -->
@@ -101,7 +101,11 @@
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
-
+        <activity
+            android:name="com.shecook.wenyi.essay.EssaySearchActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
         <!-- cookbook -->
         <activity
             android:name="com.shecook.wenyi.cookbook.CookbookItemDeatilActivity"
@@ -129,6 +133,14 @@
         </activity>
         <activity
             android:name="com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shecook.wenyi.cookbook.CookbookSearchActivity"
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
@@ -264,6 +276,14 @@
         </activity>
         <activity
             android:name="com.shecook.wenyi.personal.PersonalNickNameChange"
+            android:screenOrientation="nosensor"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.shecook.wenyi.personal.PersonalAppVersionActivity"
             android:screenOrientation="nosensor"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>

@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -80,6 +81,8 @@ public class StartActivity extends BaseActivity{
 	private View menuView;
 	CookbookExpandableListAdapter expandAdapter;
 	private LinkedList<CookbookCatalog> mCatalogItems;
+	
+	public int currentFragment;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -158,6 +161,7 @@ public class StartActivity extends BaseActivity{
 					@Override
 					public void OnRgsExtraCheckedChanged(RadioGroup radioGroup,
 							int checkedId, int index) {
+						currentFragment = index;
 						Log.d(TAG, "OnRgsExtraCheckedChanged -> " + index);
 						if(index == 1){
 							menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -402,4 +406,11 @@ public class StartActivity extends BaseActivity{
 		this.updateFragmentListener = updateFragmentListener;
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Log.e(TAG, "onActivityResult ............ currentFragment " + currentFragment + ", object is " + fragments.get(currentFragment));
+		
+		fragments.get(currentFragment).onActivityResult(requestCode, resultCode, data);
+	}
 }

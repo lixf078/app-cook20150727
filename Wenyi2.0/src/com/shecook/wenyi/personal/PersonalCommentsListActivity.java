@@ -71,7 +71,7 @@ public class PersonalCommentsListActivity extends BaseActivity implements
 		ImageView returnImage = (ImageView) findViewById(R.id.return_img);
 		returnImage.setOnClickListener(this);
 		ImageView settingImage = (ImageView) findViewById(R.id.right_img);
-		settingImage.setOnClickListener(this);
+		settingImage.setVisibility(View.GONE);
 		TextView titleView = (TextView) findViewById(R.id.middle_title);
 		titleView.setText("我的评论");
 

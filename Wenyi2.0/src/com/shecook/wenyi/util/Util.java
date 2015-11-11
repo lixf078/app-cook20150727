@@ -1,10 +1,12 @@
 package com.shecook.wenyi.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.zip.DataFormatException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -384,6 +386,48 @@ public class Util {
 		return "";
 	}
 
+	public static String formatTime2Away(String timeline) {
+
+		String format = "yyyy-MM-dd HH:mm";
+		Date ctime = null;
+		SimpleDateFormat sdf = null;
+		try {
+			sdf = new SimpleDateFormat(format);
+			ctime = sdf.parse(timeline);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		String r = "";
+		if (ctime == null)
+			return r;
+		long nowtimelong = System.currentTimeMillis();
+
+		long ctimelong = ctime.getTime();
+		long result = Math.abs(nowtimelong - ctimelong)/1000;
+
+		if (result < 60) {// 一分钟内
+			long seconds = result;
+			if (seconds == 0) {
+				r = "刚刚";
+			} else {
+				r = seconds + "秒前";
+			}
+		} else if (result >= 60 && result < 3600) {// 一小时内
+			long seconds = result / 60;
+			r = seconds + "分钟前";
+		} else if (result >= 3600 && result < 86400) {// 一天内
+			long seconds = result / 3600;
+			r = seconds + "小时前";
+		} else if (result >= 86400 && result < 2592000) {// 三十天内
+			long seconds = result / 86400;
+			r = seconds + "天前";
+		} else {// 日期格式
+			format = "yyyy-MM-dd HH:mm";
+			r = sdf.format(ctime).toString();
+		}
+		return r;
+	}
+	
 	public static int saveUserData(Context context, WenyiUser user) {
 		SharedPreferences userInfo = null;
 		try {

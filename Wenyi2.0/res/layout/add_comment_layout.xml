@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@android:color/white" >
 
-    <include layout="@layout/wenyi_common_header" />
+    <include layout="@layout/wenyi_common_header_textview" />
 
     <RelativeLayout
         android:id="@+id/want_comments"

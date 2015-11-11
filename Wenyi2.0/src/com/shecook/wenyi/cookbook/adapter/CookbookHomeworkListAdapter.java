@@ -83,7 +83,7 @@ public class CookbookHomeworkListAdapter extends BaseAdapter {
 		try {
 			Log.e(TAG, "getView tiem is " + position + ",item " + item + ", holder " + holder);
 			holder.nickname.setText(item.getNickname());
-			holder.timeline.setText(item.getTimeline());
+			holder.timeline.setText(Util.formatTime2Away(item.getTimeline()));
 			holder.comments.setText(" " + item.getComments());
 			
 			

@@ -32,6 +32,7 @@ import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
+import com.tencent.mm.sdk.platformtools.PhoneUtil.MacInfo;
 
 public class CommonUpload {
 	
@@ -40,6 +41,8 @@ public class CommonUpload {
 	public static final int UPLOAD_FAILED = 2;
 	public static final int GROUP_CREATE_SUCESS = 3;
 	public static final int GROUP_CREATE_FAILED = 4;
+	public static final int USERICON_CREATE_SUCESS = 5;
+	public static final int USERICON_CREATE_FAILED = 6;
 	
 	public static final String TAG = "CommonUpload";
 	public static final int CAMERA_WITH_DATA = 0x11;// 请求相机功能
@@ -66,6 +69,7 @@ public class CommonUpload {
 	public static void commonMethod(Activity context, String url, JSONObject paramsub,
 			Listener<JSONObject> resultListener, ErrorListener errorListener,
 			String files) {
+		Log.d("lixufeng", "commonMethod upload file " + ",param " + paramsub + ",files " + files);
 		mContext = context;
 		JSONObject jsonObject = new JSONObject();
 		JSONObject commonsub = Util.getCommonParam(mContext);
@@ -93,10 +97,10 @@ public class CommonUpload {
 		}
 	}
 	
-	public void showCameraDialog(Context context) {
-		mContext = (Activity) context;
+	public void showCameraDialog(Activity context) {
+		mContext = context;
 		// 创建一个对话框
-		Dialog dialog = new AlertDialog.Builder(context)
+		Dialog dialog = new AlertDialog.Builder(mContext)
 				.setTitle("上传照片")
 				// 创建标题
 				.setMessage("我要上传照片")
@@ -121,7 +125,83 @@ public class CommonUpload {
 		dialog.show();
 
 	}
+	
+	public void showCameraDialog2(Activity context) {
+		mContext = context;
+		// 创建一个对话框
+		Dialog dialog = new AlertDialog.Builder(mContext)
+				.setTitle("上传照片")
+				// 创建标题
+				.setMessage("我要上传照片")
+				// 设置对话框中的内容
+				.setPositiveButton("拍照", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						cameraImageUri = getUri();
+						Intent intent = new Intent(
+								MediaStore.ACTION_IMAGE_CAPTURE);// action is capture
+						intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri);
+						mContext.startActivityForResult(intent, CAMERA_WITH_DATA);// or TAKE_SMALL_PICTURE
+					}
+				})
+				.setNegativeButton("相册", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						getPhotoPickIntent();
+					}
+				}).create();
+		// 显示对话框
+		dialog.show();
 
+	}
+
+	// 调用相机拍照截图
+	public void cropImageUri(Activity context, Uri uri, int outputX, int outputY, int requestCode) {
+		mContext = context;
+		Intent intent = new Intent("com.android.camera.action.CROP");
+		intent.setDataAndType(uri, "image/*");
+		intent.putExtra("crop", "true");
+		intent.putExtra("aspectX", 2);
+		intent.putExtra("aspectY", 2);
+		intent.putExtra("outputX", outputX);
+		intent.putExtra("outputY", outputY);
+		intent.putExtra("scale", true);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+		intent.putExtra("return-data", false);
+		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+		intent.putExtra("noFaceDetection", true); // no face detection
+		System.out.println("相机");
+		mContext.startActivityForResult(intent, requestCode);
+	}
+	
+    //调用相册截图
+    public void getPhotoPickIntent(){
+    	
+    	Intent intent = new Intent(Intent.ACTION_PICK, null);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+			mContext.startActivityForResult(intent, SELECT_PIC_KITKAT);
+		} else {
+			mContext.startActivityForResult(intent, PHOTO_PICKED_WITH_DATA);
+		}
+    }
+    
+    public void startPhotoZoom(Uri uri, int size) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // crop为true是设置在开启的intent中设置显示的view可以剪裁
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+
+        // outputX,outputY 是剪裁图片的宽高
+        intent.putExtra("outputX", size);
+        intent.putExtra("outputY", size);
+        intent.putExtra("return-data", true);
+        mContext.startActivityForResult(intent, SELECT_PIC_CROP);
+    }
+	
 	public Uri getUri() {
 		Date date = new Date(System.currentTimeMillis());
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -130,8 +210,8 @@ public class CommonUpload {
 	}
 	
 	
-	public static final int SELECT_PIC_KITKAT = 1;
-	public static final int SELECT_PIC = 1;
+	public static final int SELECT_PIC_KITKAT = 100;
+	public static final int SELECT_PIC_CROP = 102;
 
 	private void startPickPhotoActivity() {
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);// ACTION_OPEN_DOCUMENT
@@ -140,7 +220,7 @@ public class CommonUpload {
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
 			mContext.startActivityForResult(intent, SELECT_PIC_KITKAT);
 		} else {
-			mContext.startActivityForResult(intent, SELECT_PIC);
+			mContext.startActivityForResult(intent, PHOTO_PICKED_WITH_DATA);
 		}
 	}
 
@@ -162,12 +242,12 @@ public class CommonUpload {
 		return bitmap;
 	}
 
-	public static String getPath(final Context context, final Uri uri) {
-
+	public static String getPath(final Activity context, final Uri uri) {
+		mContext = context;
 		final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
 		// DocumentProvider
-		if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+		if (isKitKat && DocumentsContract.isDocumentUri(mContext, uri)) {
 			// ExternalStorageProvider
 			if (isExternalStorageDocument(uri)) {
 				final String docId = DocumentsContract.getDocumentId(uri);
@@ -189,7 +269,7 @@ public class CommonUpload {
 						Uri.parse("content://downloads/public_downloads"),
 						Long.valueOf(id));
 
-				return getDataColumn(context, contentUri, null, null);
+				return getDataColumn(mContext, contentUri, null, null);
 			}
 			// MediaProvider
 			else if (isMediaDocument(uri)) {
@@ -209,7 +289,7 @@ public class CommonUpload {
 				final String selection = "_id=?";
 				final String[] selectionArgs = new String[] { split[1] };
 
-				return getDataColumn(context, contentUri, selection,
+				return getDataColumn(mContext, contentUri, selection,
 						selectionArgs);
 			}
 		}
@@ -220,7 +300,7 @@ public class CommonUpload {
 			if (isGooglePhotosUri(uri))
 				return uri.getLastPathSegment();
 
-			return getDataColumn(context, uri, null, null);
+			return getDataColumn(mContext, uri, null, null);
 		}
 		// File
 		else if ("file".equalsIgnoreCase(uri.getScheme())) {
@@ -244,9 +324,9 @@ public class CommonUpload {
 	 *            (Optional) Selection arguments used in the query.
 	 * @return The value of the _data column, which is typically a file path.
 	 */
-	public static String getDataColumn(Context context, Uri uri,
+	public static String getDataColumn(Activity context, Uri uri,
 			String selection, String[] selectionArgs) {
-
+		mContext = context;
 		Cursor cursor = null;
 		final String column = "_data";
 		final String[] projection = { column };
@@ -305,7 +385,8 @@ public class CommonUpload {
 				.getAuthority());
 	}
 
-	public static String selectImage(Context context, Intent data) {
+	public static String selectImage(Activity context, Intent data) {
+		mContext = context;
 		Uri selectedImage = data.getData();
 		// Log.e(TAG, selectedImage.toString());
 		if (selectedImage != null) {
@@ -318,7 +399,7 @@ public class CommonUpload {
 			}
 		}
 		String[] filePathColumn = { MediaStore.Images.Media.DATA };
-		Cursor cursor = context.getContentResolver().query(selectedImage,
+		Cursor cursor = mContext.getContentResolver().query(selectedImage,
 				filePathColumn, null, null, null);
 		cursor.moveToFirst();
 		int columnIndex = cursor.getColumnIndex(filePathColumn[0]);

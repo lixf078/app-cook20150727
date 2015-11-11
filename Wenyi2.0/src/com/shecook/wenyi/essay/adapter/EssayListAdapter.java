@@ -14,6 +14,7 @@ import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.model.EssayListItem;
+import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
@@ -77,7 +78,7 @@ public class EssayListAdapter extends BaseAdapter {
 			}
 		});
 		holder.advTitle.setText(eli.getTitle());
-		holder.advTime.setText(eli.getTimeline());
+		holder.advTime.setText(Util.formatTime2Away(eli.getTimeline()));
 		return view ;
 	}
 	

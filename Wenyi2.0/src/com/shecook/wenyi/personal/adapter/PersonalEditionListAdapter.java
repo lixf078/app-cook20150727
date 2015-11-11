@@ -14,6 +14,7 @@ import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.model.personal.PersonalHomeworkItem;
+import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
@@ -78,7 +79,7 @@ public class PersonalEditionListAdapter extends BaseAdapter {
 			}
 		});
 		holder.advTitle.setText(phi.getDescription());
-		holder.advTime.setText(phi.getTimeline());
+		holder.advTime.setText(Util.formatTime2Away(phi.getTimeline()));
 		return view ;
 	}
 	

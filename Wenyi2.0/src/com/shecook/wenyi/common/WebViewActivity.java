@@ -7,6 +7,7 @@ import android.webkit.WebViewClient;
 
 import com.shecook.wenyi.BaseActivity;
 import com.shecook.wenyi.R;
+import com.umeng.socom.Log;
 
 public class WebViewActivity extends BaseActivity {
 	private WebView webView;
@@ -25,6 +26,7 @@ public class WebViewActivity extends BaseActivity {
 		settings.setJavaScriptEnabled(true);
 		// WebView加载web资源
 		String weburl = getIntent().getStringExtra("weburl");
+		Log.e("WebViewActivity", "weburl " + weburl);
 		webView.loadUrl(weburl);
 		// 覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
 		webView.setWebViewClient(new WebViewClient() {

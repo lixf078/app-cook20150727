@@ -78,6 +78,7 @@ public class CookbookCollectionActivity extends BaseActivity implements OnClickL
 		returnImage.setOnClickListener(this);
 		ImageView settingImage = (ImageView) findViewById(R.id.right_img);
 		settingImage.setOnClickListener(this);
+		settingImage.setBackgroundResource(R.drawable.add);
 		TextView titleView = (TextView) findViewById(R.id.middle_title);
 		titleView.setText("我的收藏");
 

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bgfile"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:orientation="vertical" >
+    <RelativeLayout
+       	android:id="@id/title"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentTop="true" >
+        
+        <ImageView
+	        android:id="@id/return_img"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:src="@drawable/f53_btn" />
+
+        <TextView
+            android:id="@id/titleFont"
+            style="@style/titleFont"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="关于我们" />
+        
+    </RelativeLayout>
+    
+    <include layout="@layout/public_layout_line"/>
+    
+    <ScrollView
+        style="@style/matchW"
+        android:scrollbars="none"
+        android:layout_below="@id/line_welcome" >
+        
+        <LinearLayout
+            style="@style/macthWH"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical" >
+		    
+		    <ImageView
+		        style="@style/pic"
+		        android:src="@drawable/icon" />
+		    
+		    <TextView
+		        style="@style/fontPic"
+		        android:text="v1.0.4" />
+		    
+		    <TextView
+                style="@style/fontPic"
+                android:text="这不仅仅是美食畅销书作家文怡为您专门打造的免费精选菜谱，还有随笔哦，还有卡通哦，还能聊天哦，还能分享厨房经验哦，还能提问题哦，还能发你的菜谱和留言哦，还能，还能，还能......" />
+                
+		</LinearLayout>
+		
+    </ScrollView>
+</RelativeLayout>

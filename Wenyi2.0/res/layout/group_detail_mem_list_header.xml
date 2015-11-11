@@ -18,7 +18,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginRight="16dp"
-            android:background="@drawable/group_press"
+            android:background="@drawable/user_group_new"
             android:focusable="false"
             android:scaleType="fitXY" />
 

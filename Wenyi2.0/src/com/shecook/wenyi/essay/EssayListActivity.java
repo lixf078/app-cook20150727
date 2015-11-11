@@ -148,8 +148,16 @@ public class EssayListActivity extends BaseActivity {
 				finish();
 			}
 		});
-		ImageView settingImage = (ImageView) findViewById(R.id.right_img);
-		settingImage.setVisibility(View.GONE);
+		ImageView right_img = (ImageView) findViewById(R.id.right_img);
+		right_img.setBackgroundResource(R.drawable.search);
+		right_img.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(EssayListActivity.this, EssaySearchActivity.class);
+				startActivity(intent);
+			}
+		});
+		
 		TextView titleView = (TextView) findViewById(R.id.middle_title);
 		String title = getIntent().getStringExtra("catalogtitle");
 		if(TextUtils.isEmpty(title)){
@@ -247,22 +255,17 @@ public class EssayListActivity extends BaseActivity {
 	
 	
 	private void initData(JSONObject jsonObject, int flag){
-		WenyiLog.logv(TAG, "initData 1111");
 		if(jsonObject != null){
 			try {
-				WenyiLog.logv(TAG, "initData 22222");
 				if(!jsonObject.isNull("statuscode") && 200 == jsonObject.getInt("statuscode")){
-					WenyiLog.logv(TAG, "initData 33333");
 					if(!jsonObject.isNull("data")){
 						JSONObject data = jsonObject.getJSONObject("data");
 						
 						if(data.has("list")){
 							JSONArray list = data.getJSONArray("list");
-							WenyiLog.logv(TAG, "initData 44444 length " + list.length());
 							LinkedList<EssayListItem> listTemp = new LinkedList<EssayListItem>();
 							for(int i = 0,j = list.length(); i < j; i++){
 								JSONObject jb = list.getJSONObject(i);
-								WenyiLog.logv(TAG, "initData 5555 jb " + jb.toString());
 								EssayListItem eli = new EssayListItem();
 								eli.setId(jb.getString("id"));
 								eli.setCataid(jb.getString("cataid"));

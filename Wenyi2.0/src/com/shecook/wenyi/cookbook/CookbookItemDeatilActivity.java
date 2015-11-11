@@ -11,20 +11,15 @@ import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnKeyListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -51,7 +46,6 @@ import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.cookbook.adapter.CookbookListDetailAdapter;
-import com.shecook.wenyi.essay.EssayItemDeatilActivity;
 import com.shecook.wenyi.essay.adapter.ViewPagerAdapter;
 import com.shecook.wenyi.essay.view.AutoScrollViewPager;
 import com.shecook.wenyi.essay.view.CirclePageIndicator;
@@ -195,7 +189,7 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 			}
 		});
 		shareImg = (ImageView) findViewById(R.id.right_img);
-		shareImg.setBackgroundResource(R.drawable.f55_btn);
+		shareImg.setBackgroundResource(R.drawable.share);
 		shareImg.setVisibility(View.VISIBLE);
 		shareImg.setOnClickListener(this);
 		TextView titleView = (TextView) findViewById(R.id.middle_title);

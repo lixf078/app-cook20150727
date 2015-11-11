@@ -148,15 +148,6 @@ public class CookbookFragment extends Fragment implements
 
 		mAdapter = new CookbookListAdapter(mActivity, mListItems);
 
-		/**
-		 * Add Sound Event Listener
-		 */
-		SoundPullEventListener<ListView> soundListener = new SoundPullEventListener<ListView>(
-				mActivity);
-		soundListener.addSoundEvent(State.PULL_TO_REFRESH, R.raw.pull_event);
-		soundListener.addSoundEvent(State.RESET, R.raw.reset_sound);
-		soundListener.addSoundEvent(State.REFRESHING, R.raw.refreshing_sound);
-		// mPullRefreshListView.setOnPullEventListener(soundListener); // 音效
 		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
 		mPullRefreshListView.setAdapter(mAdapter);
 		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
@@ -178,10 +169,9 @@ public class CookbookFragment extends Fragment implements
 
 	private void initView(View view) {
 		ImageView returnImage = (ImageView) view.findViewById(R.id.return_img);
-		returnImage.setVisibility(View.GONE);
-
+		returnImage.setBackgroundResource(R.drawable.setting_alt);
 		ImageView settingImage = (ImageView) view.findViewById(R.id.right_img);
-		settingImage.setBackgroundResource(R.drawable.search_01);
+		settingImage.setBackgroundResource(R.drawable.search);
 		
 		settingImage.setOnClickListener(new OnClickListener() {
 			

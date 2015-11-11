@@ -20,6 +20,7 @@ public class HttpUrls {
 	
 	public static final String ESSAY_WENYILIST_ITEM_DETAIL_COMMENT = BASE_URL + "article/comment_list";
 	public static final String ESSAY_WENYI_ITEM_DETAI_ADD_COMMENT = BASE_URL + "article/comment_add";
+	public static final String ESSAY_WENYI_SEARCH = BASE_URL + "article/search";
 	
 	public static final String COOKBOOK_LIST_CATALOG = BASE_URL + "recipe/catalog";
 	public static final String COOKBOOK_LIST = BASE_URL + "recipe/list";
@@ -90,6 +91,7 @@ public class HttpUrls {
 	public static final String PERSONAL_CHANGE_PASSWD = BASE_URL + "user/pwd";
 	public static final String PERSONAL_CHANGE_BIND = BASE_URL + "user/bind";
 	public static final String PERSONAL_CHANGE_NICK = BASE_URL + "user/nick";
+	public static final String PERSONAL_USER_SET = BASE_URL + "user/set";
 	
 	
 }

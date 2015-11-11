@@ -15,6 +15,7 @@ import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.model.group.GroupListItemSharedModel;
+import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
@@ -87,7 +88,7 @@ public class GroupPersonalSharedListAdapter extends BaseAdapter {
 		holder.group_shared_item_title.setText(eli.getNickname());
 		if(!"0".equals(eli.getComments()) && TextUtils.isEmpty(eli.getComments())){
 		}
-		holder.group_shared_item_time.setText(eli.getTimeline());
+		holder.group_shared_item_time.setText(Util.formatTime2Away(eli.getTimeline()));
 		holder.group_shared_item_summary.setText(eli.getBody());
 
 		holder.group_shared_item_delete.setOnClickListener(new OnClickListener() {

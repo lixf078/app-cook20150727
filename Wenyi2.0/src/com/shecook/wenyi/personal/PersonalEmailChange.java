@@ -32,8 +32,8 @@ public class PersonalEmailChange extends BaseActivity implements
 	public static final int STATUS_OK_COMMENT_COLLECTED = 3;
 
 	public EditText personal_change_edittext1,personal_change_edittext2;
-	public TextView personal_change_textview;
-	private int eventtype = -1;
+	public TextView personal_change_textview,middleTextView;
+	private int eventtype = -1; // 1 修改邮箱，2 修改密码， 3 账号绑定
 	public ImageView right_img;
 	
 	@Override
@@ -45,6 +45,8 @@ public class PersonalEmailChange extends BaseActivity implements
 	}
 
 	private void initView() {
+		middleTextView = (TextView) findViewById(R.id.middle_title);
+		
 		personal_change_edittext1 = (EditText) findViewById(R.id.personal_change_edittext1);
 		personal_change_edittext2 = (EditText) findViewById(R.id.personal_change_edittext2);
 		personal_change_textview = (TextView) findViewById(R.id.personal_change_textview);
@@ -52,18 +54,23 @@ public class PersonalEmailChange extends BaseActivity implements
 		if(eventtype == 1){
 			personal_change_textview.setText("验证邮箱");
 			personal_change_edittext2.setVisibility(View.GONE);
+			middleTextView.setText("更改邮箱");
 		}else if(eventtype == 2){
 			personal_change_edittext1.setHint("原密码");
 			personal_change_edittext2.setHint("新密码");
+			personal_change_edittext2.setVisibility(View.VISIBLE);
 			personal_change_textview.setText("确定修改");
+			middleTextView.setText("更改密码");
 		}else if(eventtype == 3){
 			personal_change_edittext1.setHint("请输入邮箱");
 			personal_change_edittext2.setHint("请输入密码");
+			personal_change_edittext2.setVisibility(View.VISIBLE);
 			personal_change_textview.setText("绑定账号");
 		}
 		
 		right_img = (ImageView) findViewById(R.id.right_img);
 		right_img.setVisibility(View.GONE);
+		
 	}
 
 	@Override

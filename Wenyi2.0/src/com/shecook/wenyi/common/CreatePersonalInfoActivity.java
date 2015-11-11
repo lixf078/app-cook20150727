@@ -195,7 +195,7 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 			break;
 		case CommonUpload.PHOTO_PICKED_WITH_DATA:
 			Log.e("lixufeng", "PHOTO_PICKED_WITH_DATA mFileName: " + mFileName + ", photoId " + photoId);
-			mFileName = CommonUpload.getDataColumn(getApplicationContext(), data.getData(),
+			mFileName = CommonUpload.getDataColumn(CreatePersonalInfoActivity.this, data.getData(),
 					null, null);
 			bitmap = CommonUpload.getBitmap(mFileName);
 			if(photoId == 0){

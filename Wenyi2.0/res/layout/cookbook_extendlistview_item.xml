@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="6dp"
         android:background="@drawable/arrow_normal"
         android:layout_alignBottom="@id/cookbook_listitem_detail_text"
         android:visibility="gone" />

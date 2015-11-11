@@ -14,6 +14,7 @@ import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.model.CookbookHomeworkListItem;
+import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
@@ -137,7 +138,7 @@ public class PiazzaCookbookHomeworkListAdapter extends BaseAdapter {
 		holder.item_img.setImageUrl(chli.getUportrait(), item_img);
 		
 		holder.essay_item_title.setText(chli.getNickname());
-		holder.essay_item_time.setText(chli.getTimeline());
+		holder.essay_item_time.setText(Util.formatTime2Away(chli.getTimeline()));
 		holder.essay_item_content.setText(chli.getDescription());
 		
 		return view ;

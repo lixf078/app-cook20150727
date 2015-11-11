@@ -146,7 +146,7 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 				}
 			});
 			holder.cookbook_item_comment_nickname.setText(elcid.getNickname());
-			holder.cookbook_item_comment_timeline.setText(elcid.getTimeline());
+			holder.cookbook_item_comment_timeline.setText(Util.formatTime2Away(elcid.getTimeline()));
 			holder.cookbook_item_comment_comment.setText(elcid.getComment());
 			
 		} else if("image".equals(rowtype)){

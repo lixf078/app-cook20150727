@@ -10,7 +10,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -28,6 +27,7 @@ import com.shecook.wenyi.BaseActivity;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.common.WebViewActivity;
 import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
@@ -42,8 +42,12 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 	private TextView login;
 	private List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 	private ListView listView;
-	private String[] dates = { "修改邮箱", "修改密码", "清除缓存", "关于文怡", "文怡美食生活馆",
+	private String[] datas1 = { "修改邮箱", "修改密码", "清除缓存", "关于文怡", "文怡美食生活馆",
 			"版本信息" };
+
+	private String[] datas2 = { "账号绑定", "清除缓存", "关于文怡", "文怡美食生活馆", "版本信息" };
+
+	private String[] datas3 = { "清除缓存", "关于文怡", "文怡美食生活馆", "版本信息" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,18 +59,27 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 			login.setText(R.string.user_logout);
 		}
 		listView = (ListView) findViewById(R.id.listView);
-
-		// 初始化列表
-		initList();
+		findViewById(R.id.right_img).setVisibility(View.GONE);
+		TextView middle = (TextView) findViewById(R.id.middle_title);
+		middle.setText("设置");
 
 		// 点击登录
 		login.setOnClickListener(this);
+		userOperator(HttpUrls.PERSONAL_USER_SET, null, userdataResultListener, userdataErrorListener);
 	}
 
 	private void initList() {
-		for (int i = 0; i < dates.length; i++) {
+		String[] datas = null;
+		if(account_status == 10000){
+			datas = datas1;
+		}else if(account_status == 10001){
+			datas = datas2;
+		}else if(account_status == 10002){
+			datas = datas3;
+		}
+		for (int i = 0; i < datas.length; i++) {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("title", dates[i]);
+			map.put("title", datas[i]);
 			map.put("img", R.drawable.ico_pull_03);
 			list.add(map);
 		}
@@ -81,45 +94,80 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int id,
 					long position) {
+				Intent intent = new Intent();
 				switch (id) {
 				case 0:
-					Intent intent = new Intent();
-					// intent.setClass(PersonalSettings.this,
-					// CenterAboutWenyiActivity.class);
+					if(account_status == 10000){
+						 intent.setClass(PersonalSettings.this, PersonalEmailChange.class);
+						 intent.putExtra("eventtype", 1);
+					}else if(account_status == 10001){
+						intent.setClass(PersonalSettings.this, PersonalEmailChange.class);
+						intent.putExtra("eventtype", 3);
+					}else if(account_status == 10002){
+						// 清除缓存
+					}
 					startActivity(intent);
 					finish();
 					break;
 				case 1:
-					Intent intent1 = new Intent();
-					// intent1.setClass(PersonalSettings.this,
-					// CenterWenyiFoodActivity.class);
-					startActivity(intent1);
+					if(account_status == 10000){
+						 intent.setClass(PersonalSettings.this, PersonalEmailChange.class);
+						 intent.putExtra("eventtype", 2);
+					}else if(account_status == 10001){
+						// 清除缓存
+					}else if(account_status == 10002){
+						// 关于文怡
+						intent = new Intent(PersonalSettings.this, WebViewActivity.class);
+						intent.putExtra("weburl", "http://wenyijcc.com/other/wenyi.aspx");
+					}
+					startActivity(intent);
 					finish();
 					break;
 				case 2:
-					Intent intent2 = new Intent();
-					intent2.setAction("android.intent.action.VIEW");
-					Uri content_url = Uri.parse("http://www.shecook.com");
-					intent2.setData(content_url);
-					startActivity(intent2);
+					if(account_status == 10000){
+						// 清除缓存
+					}else if(account_status == 10001){
+						// 关于文怡
+						intent = new Intent(PersonalSettings.this, WebViewActivity.class);
+						intent.putExtra("weburl", "http://wenyijcc.com/other/wenyi.aspx");
+					}else if(account_status == 10002){
+						// 文怡美食生活馆 http://wenyijcc.com/other/kitchen.aspx
+						intent = new Intent(PersonalSettings.this, WebViewActivity.class);
+						intent.putExtra("weburl", "http://wenyijcc.com/other/kitchen.aspx");
+					}
+					startActivity(intent);
 					finish();
 					break;
 				case 3:
+					if(account_status == 10000){
+						// 清除缓存
+					}else if(account_status == 10001){
+						// 文怡美食生活馆
+						intent = new Intent(PersonalSettings.this, WebViewActivity.class);
+						intent.putExtra("weburl", "http://wenyijcc.com/other/kitchen.aspx");
+					}else if(account_status == 10002){
+						// 版本信息
+						intent.setClass(PersonalSettings.this, PersonalAppVersionActivity.class);
+					}
+					startActivity(intent);
 					break;
 				case 4:
+					if(account_status == 10000){
+						// 文怡美食生活馆
+						intent = new Intent(PersonalSettings.this, WebViewActivity.class);
+						intent.putExtra("weburl", "http://wenyijcc.com/other/kitchen.aspx");
+					}else if(account_status == 10001){
+						// 版本信息
+						intent.setClass(PersonalSettings.this, PersonalAppVersionActivity.class);
+					}
+					startActivity(intent);
 					break;
 				case 5:
-					Intent intent5 = new Intent();
-					// intent5.setClass(PersonalSettings.this,
-					// CenterIdeaActivity.class);
-					startActivity(intent5);
-					finish();
-					break;
-				case 6:
-					Intent intent6 = new Intent();
-					// intent6.setClass(PersonalSettings.this,
-					// CenterAboutMeActivity.class);
-					startActivity(intent6);
+					if(account_status == 10000){
+						// 版本信息
+						intent.setClass(PersonalSettings.this, PersonalAppVersionActivity.class);
+					}
+					startActivity(intent);
 					finish();
 					break;
 				}
@@ -132,11 +180,12 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 			int what = msg.what;
 			switch (what) {
 			case HttpStatus.STATUS_OK:
-			case HttpStatus.STATUS_LOAD_OTHER_OK:
-				break;
+				// 初始化列表
+				initList();
 			case HttpStatus.STATUS_LOAD_OTHER:
 				break;
-			case Util.SHOW_DIALOG_COMMENTS:
+			case HttpStatus.STATUS_ERROR:
+				
 				break;
 			default:
 				break;
@@ -255,18 +304,18 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 		}
 	};
 
-	Listener<JSONObject> commentsResultListener = new Listener<JSONObject>() {
+	Listener<JSONObject> userdataResultListener = new Listener<JSONObject>() {
 
 		@Override
 		public void onResponse(JSONObject result) {
 			Log.d(TAG,
 					"catalogResultListener onResponse -> " + result.toString());
-			initCommentsData(result, 0);
+			initUserData(result, 0);
 
 		}
 	};
 
-	ErrorListener commentsErrorListener = new Response.ErrorListener() {
+	ErrorListener userdataErrorListener = new Response.ErrorListener() {
 		@Override
 		public void onErrorResponse(VolleyError error) {
 			Log.e(TAG, error.getMessage(), error);
@@ -275,7 +324,7 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 
 	private int account_status = -1;
 
-	private void initCommentsData(JSONObject jsonObject, int flag) {
+	private void initUserData(JSONObject jsonObject, int flag) {
 
 		if (jsonObject != null) {
 			try {
@@ -284,6 +333,7 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
 						account_status = data.getInt("account_status");
+						handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 					}
 				} else {
 					Toast.makeText(PersonalSettings.this,
@@ -293,7 +343,7 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			handler.sendEmptyMessage(HttpStatus.STATUS_LOAD_OTHER_OK);
+			handler.sendEmptyMessage(HttpStatus.STATUS_ERROR);
 		}
 	}
 

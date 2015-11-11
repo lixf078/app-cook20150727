@@ -76,6 +76,7 @@ public class PersonalEditionTopic extends Fragment {
 	}
 
 	public void initView(View rootView){
+//		rootView.findViewById(R.id.right_img).setVisibility(View.GONE);
 		mPullRefreshListView = (PullToRefreshListView) rootView.findViewById(R.id.pull_refresh_list);
 		
 		// Set a listener to be invoked when the list should be refreshed.

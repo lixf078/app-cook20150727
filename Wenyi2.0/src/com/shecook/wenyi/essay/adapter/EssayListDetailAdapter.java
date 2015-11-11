@@ -145,7 +145,7 @@ public class EssayListDetailAdapter extends BaseAdapter {
 				}
 			});
 			holder.essay_item_comment_nickname.setText(elcid.getNickname());
-			holder.essay_item_comment_timeline.setText(elcid.getTimeline());
+			holder.essay_item_comment_timeline.setText(Util.formatTime2Away(elcid.getTimeline()));
 			holder.essay_item_comment_comment.setText(elcid.getComment());
 			
 		} else if("commentTwo".equals(rowtype)){

@@ -1,11 +1,16 @@
 package com.shecook.wenyi.personal;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,11 +27,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.StartActivity;
+import com.shecook.wenyi.common.CommonUpload;
 import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
@@ -46,10 +53,13 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
 	private Activity mActivity;
 
-	private TextView user_level, personal_gold, personal_email, personal_experience;
+	private TextView user_level, personal_gold, personal_email, personal_experience, personal_username;
 	
 	private NetworkImageRoundView userIconView;
 	LinearLayout personal_my_collection, personal_my_topic, personal_my_edit,personal_my_kitchen;
+	CommonUpload commonUpload;
+	String iconUrl = null;
+	private String iconHttpUrl = null;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -63,6 +73,8 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		mActivity = getActivity();
 		RequestHttpUtil.getHttpData(mActivity, HttpUrls.PERSONAL_MYCARD, null,
 				userCardResultListener, userCardErrorListener);
+		commonUpload = CommonUpload.getInstance();
+		
 		// retrieveContactInfoFromSIM();
 	}
 
@@ -75,15 +87,16 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		initView(rootView);
 		return rootView;
 	}
-
 	public void initView(View rootView) {
 		ImageView settings = (ImageView) rootView
 				.findViewById(R.id.personal_center_settings);
 		settings.setOnClickListener(this);
 		
 		userIconView = (NetworkImageRoundView) rootView.findViewById(R.id.user_icon);
-		userIconView.setDefaultImageResId(R.drawable.icon);
-		userIconView.setErrorImageResId(R.drawable.icon);
+//		userIconView.setDefaultImageResId(R.drawable.icon);
+//		userIconView.setErrorImageResId(R.drawable.icon);
+		personal_username = (TextView) rootView.findViewById(R.id.personal_username);
+		personal_username.setOnClickListener(this);
 		
 		user_level = (TextView) rootView.findViewById(R.id.user_level);
 		personal_gold = (TextView) rootView.findViewById(R.id.personal_gold);
@@ -187,6 +200,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 			intent = new Intent(PersonalFragment.this.getActivity(), PersonalMessageListActivity.class);
 			startActivity(intent);
 			break;
+		case R.id.personal_username:
+			intent = new Intent(PersonalFragment.this.getActivity(), PersonalNickNameChange.class);
+			startActivity(intent);
 		default:
 			break;
 		}
@@ -210,6 +226,8 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 				updateView(user);
 				Log.e(TAG, "update user data " + Util.getUserData(mActivity).toString());
 				break;
+			case CommonUpload.UPLOAD_SUCESS:
+				createInfo();
 			default:
 				break;
 			}
@@ -218,11 +236,11 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
 	
 	public void updateView(WenyiUser user){
+		personal_username.setText(user.get_nickname());
 		user_level.setText(user.get_level());
 		personal_gold.setText(user.get_score());
 		personal_email.setText(user.get_msgcount());
 		personal_experience.setText(user.get_level_core());
-		
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
 	    
@@ -231,7 +249,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 			
 			@Override
 			public void onClick(View arg0) {
-				
+				commonUpload.showCameraDialog(mActivity);
 			}
 		});
 	}
@@ -253,6 +271,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 						user.set_score(dataJson.getString("u_gold"));
 						user.set_level(dataJson.getString("u_lvlname"));
 						user.set_msgcount(dataJson.getString("u_newmsg_count"));
+						user.set_nickname(dataJson.getString("u_nickname"));
 						user.set_level_core(dataJson.getString("u_exp"));
 						user.set_u_newfriends_count(dataJson.getString("u_newfriends_count"));
 						user.set_uimage50(dataJson.getString("u_portrait"));
@@ -325,14 +344,192 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		}
 	};
 	
-	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Log.e(TAG, "onActivityResult requestCode " + requestCode + ",resultCode " + resultCode);
-		if(requestCode == 1 && resultCode == -1){
+		Log.e(TAG, "personalFragment onActivityResult Intent "  + data + ", resultCode " + resultCode + ", requestCode " + requestCode);
+		Bitmap bitmap = null;
+		String mFileName = null;
+		JSONObject paramsub = null;
+		if (resultCode != Activity.RESULT_OK) {
+			return;
+		}
+		
+		switch (requestCode) {
+		case 1:
 			RequestHttpUtil.getHttpData(mActivity, HttpUrls.PERSONAL_MYCARD, null,
 					userCardResultListener, userCardErrorListener);
+			break;
+		case CommonUpload.CAMERA_WITH_DATA:
+			Log.d(TAG, "CAMERA_WITH_DATA");
+			commonUpload.cropImageUri(mActivity, commonUpload.cameraImageUri, 290, 290, CommonUpload.CAMERA_PICK_PHOTO);
+			break;
+		case CommonUpload.CAMERA_PICK_PHOTO:
+			if (commonUpload.cameraImageUri != null) {
+				mFileName = commonUpload.cameraImageUri.getPath();
+				bitmap = BitmapFactory.decodeFile(mFileName);
+				userIconView.setImageBitmap(bitmap);
+				iconUrl = mFileName;
+			}
+			Log.d(TAG, "CAMERA_PICK_PHOTO mFileName " + mFileName);
+			
+			paramsub = new JSONObject();
+			try {
+				paramsub.put("uptype", "portrait");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			CommonUpload.commonMethod(mActivity, HttpUrls.UPLOAD_IMG, paramsub, listResultListener, listErrorListener, iconUrl);
+			break;
+		case CommonUpload.PHOTO_PICKED_WITH_DATA:
+			mFileName = CommonUpload.getDataColumn(mActivity, data.getData(),
+					null, null);
+			bitmap = CommonUpload.getBitmap(mFileName);
+			userIconView.setImageBitmap(bitmap);
+			iconUrl = mFileName;
+			
+			Log.d(TAG, "CAMERA_PICK_PHOTO mFileName " + mFileName);
+			
+			paramsub = new JSONObject();
+			try {
+				paramsub.put("uptype", "portrait");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			CommonUpload.commonMethod(mActivity, HttpUrls.UPLOAD_IMG, paramsub, listResultListener, listErrorListener, iconUrl);
+			break;
+			
+		case CommonUpload.SELECT_PIC_KITKAT:
+			mFileName = CommonUpload.getPath(mActivity, data.getData());
+			bitmap = CommonUpload.getBitmap(mFileName);
+			userIconView.setImageBitmap(bitmap);
+			iconUrl = mFileName;
+			
+			Log.d(TAG, "SELECT_PIC_KITKAT mFileName " + mFileName);
+			LruImageCache lruImageCache2 = LruImageCache.instance();
+		    ImageLoader imageLoader2 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache2);
+		    
+		    userIconView.setImageUrl(iconUrl, imageLoader2);
+			
+			paramsub = new JSONObject();
+			try {
+				paramsub.put("uptype", "portrait");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			CommonUpload.commonMethod(mActivity, HttpUrls.UPLOAD_IMG, paramsub, listResultListener, listErrorListener, iconUrl);
+			break;
 		}
 	}
+	
+	public void createInfo() {
+		/*
+		JSONObject paramObject = new JSONObject();
+		try {
+			paramObject.put("circleid", ententId);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		CommonUpload.commonMethod(mActivity,HttpUrls.COOKBOOK_WENYI_HOMEWORK_ADD, paramObject,
+				crtateResultListener, crtateErrorListener, "");
+		 */
+	}
+	Listener<JSONObject> crtateResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			Log.d(TAG,
+					"catalogResultListener onResponse -> "
+							+ jsonObject.toString());
+			String msg = "";
+			if (jsonObject != null) {
+				try {
+					if (!jsonObject.isNull("statuscode")
+							&& 200 == jsonObject.getInt("statuscode")) {
+						if (!jsonObject.isNull("data")) {
+							JSONObject data = jsonObject.getJSONObject("data");
+							int core_status = data.getInt("core_status");
+							if (core_status == 200) {
+								msg = "头像更改成功！";
+								Toast.makeText(mActivity, msg,
+										Toast.LENGTH_SHORT).show();
+								handler.sendEmptyMessage(CommonUpload.USERICON_CREATE_SUCESS);
+								return;
+							} else {
+								msg = "" + data.getString("msg");
+							}
+						}
+					} else {
+						msg = "" + jsonObject.getString("errmsg");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT)
+					.show();
+			handler.sendEmptyMessage(CommonUpload.USERICON_CREATE_FAILED);
+		}
+	};
+
+	ErrorListener crtateErrorListener = new Response.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			Log.e(TAG, error.getMessage(), error);
+		}
+	};
+	Listener<JSONObject> listResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			Log.d(TAG,
+					"catalogResultListener onResponse -> "
+							+ jsonObject.toString());
+			String msg = "";
+			if (jsonObject != null) {
+				try {
+					if (!jsonObject.isNull("statuscode")
+							&& 200 == jsonObject.getInt("statuscode")) {
+						if (!jsonObject.isNull("data")) {
+							JSONObject data = jsonObject.getJSONObject("data");
+							int core_status = data.getInt("core_status");
+							if (core_status == 200) {
+								msg = "" + "文件上传成功！";
+								Toast.makeText(mActivity, msg,
+										Toast.LENGTH_SHORT).show();
+								if(data.has("imageitems")){
+									JSONArray imagesJson = data
+											.getJSONArray("imageitems");
+									iconHttpUrl = imagesJson.getJSONObject(0).getString("original");
+								}
+								handler.sendEmptyMessage(CommonUpload.UPLOAD_SUCESS);
+								return;
+							} else {
+								msg = "" + data.getString("msg");
+							}
+						}
+					} else {
+						msg = "" + jsonObject.getString("errmsg");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT)
+					.show();
+			handler.sendEmptyMessage(HttpStatus.STATUS_OK_2);
+		}
+	};
+
+	ErrorListener listErrorListener = new Response.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			Log.e(TAG, error.getMessage(), error);
+		}
+	};
+	
+	public String toString() {
+		return "Personal Fragment is coming...";
+	};
 	
 // ***********************************************************
 	// test info

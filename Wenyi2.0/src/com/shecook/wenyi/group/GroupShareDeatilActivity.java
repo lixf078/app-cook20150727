@@ -312,7 +312,7 @@ public class GroupShareDeatilActivity extends BaseActivity implements
         ImageLoader imageLoader;
 		try {
 			advTitle.setText("" + chm.getNickname());
-			advTime.setText(chm.getTimeline());
+			advTime.setText(Util.formatTime2Away(chm.getTimeline()));
 			group_share_item_level.setText(chm.getBody());
 			LruImageCache lruImageCache = LruImageCache.instance();
 			imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);

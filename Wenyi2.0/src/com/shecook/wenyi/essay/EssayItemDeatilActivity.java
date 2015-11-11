@@ -148,7 +148,7 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 			}
 		});
 		shareImg = (ImageView) findViewById(R.id.right_img);
-		shareImg.setBackgroundResource(R.drawable.f55_btn);
+		shareImg.setBackgroundResource(R.drawable.share);
 		shareImg.setVisibility(View.VISIBLE);
 		shareImg.setOnClickListener(this);
 		TextView titleView = (TextView) findViewById(R.id.middle_title);

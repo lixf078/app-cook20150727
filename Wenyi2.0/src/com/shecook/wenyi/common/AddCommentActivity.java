@@ -34,7 +34,7 @@ import com.shecook.wenyi.util.volleybox.VolleyUtils;
 public class AddCommentActivity extends BaseActivity implements OnClickListener{
 	
 	private String commentFor = "";
-	private ImageView addComment;
+	private TextView addComment;
 	private EditText commentEdit;
 	
 	private int flag = -1;
@@ -55,7 +55,7 @@ public class AddCommentActivity extends BaseActivity implements OnClickListener{
 	
 	
 	private void initView() {
-		ImageView returnImage = (ImageView) findViewById(R.id.return_img);
+		TextView returnImage = (TextView) findViewById(R.id.return_textview);
 		returnImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -64,8 +64,7 @@ public class AddCommentActivity extends BaseActivity implements OnClickListener{
 			}
 		});
 		
-		addComment = (ImageView) findViewById(R.id.right_img);
-		addComment.setBackgroundResource(R.drawable.f55_btn);
+		addComment = (TextView) findViewById(R.id.right_textview);
 		addComment.setVisibility(View.VISIBLE);
 		addComment.setOnClickListener(this);
 		TextView titleView = (TextView) findViewById(R.id.middle_title);
@@ -94,7 +93,7 @@ public class AddCommentActivity extends BaseActivity implements OnClickListener{
 	public void onClick(View v) {
 		int id = v.getId();
 		switch (id) {
-		case R.id.right_img:
+		case R.id.right_textview:
 			String comment = commentEdit.getEditableText().toString();
 			if(TextUtils.isEmpty(comment)){
 				Log.d(TAG, "onClick -> " + flag + " 想跟我说点什么呢？");
