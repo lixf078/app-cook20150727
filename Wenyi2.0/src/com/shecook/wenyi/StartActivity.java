@@ -8,7 +8,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnKeyListener;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -41,6 +48,7 @@ import com.shecook.wenyi.model.WenyiUser;
 import com.shecook.wenyi.personal.PersonalFragment;
 import com.shecook.wenyi.piazza.PiazzaFragment;
 import com.shecook.wenyi.util.AppException;
+import com.shecook.wenyi.util.PreferencesUtils;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
@@ -213,7 +221,8 @@ public class StartActivity extends BaseActivity{
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
 			switch (what) {
-			case 1:
+			case HttpStatus.STATUS_OK:
+				Util.commonHttpMethod(StartActivity.this, HttpUrls.WENYI_CHECK_VERSION, null, versionResultListener, tokenErrorListener);
 				getCatalog(HttpUrls.ESSAY_WENYI_LIST_CATALOG, null, catalogResultListener, catalogErrorListener);
 				getCookbookCatalog(HttpUrls.COOKBOOK_LIST_CATALOG, null, cookbookCatalogResultListener, cookbookCatalogErrorListener);
 				break;
@@ -232,11 +241,120 @@ public class StartActivity extends BaseActivity{
 					handler.sendEmptyMessageDelayed(3, 500);
 				}
 				break;
+			case Util.SHOW_VERSION_DIALOG:
+				dialog(getString(R.string.app_name),
+						PreferencesUtils.getString(StartActivity.this,
+								"versionDescription", "有新版本啦，赶紧来更新！"));
+				break;
 			default:
 				break;
 			}
 		};
 	};
+	
+	
+	protected void dialog(String title, String message) {
+		AlertDialog.Builder builder = new Builder(StartActivity.this);
+		builder.setIcon(R.drawable.dialog_icon);
+		builder.setMessage(message);
+		builder.setTitle(title);
+		builder.setPositiveButton(getString(R.string.download_new_version_tip),
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Uri uri = Uri.parse(PreferencesUtils.getString(
+								StartActivity.this, "versionLinkUrl"));
+						Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+						startActivity(intent);
+						dialog.dismiss();
+						finish();
+					}
+				});
+		builder.setNegativeButton(getString(R.string.next_time_tip),
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		builder.setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode,
+					KeyEvent event) {
+				return true;
+			}
+		});
+		builder.setCancelable(false);
+		AlertDialog dialog = builder.create();
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
+	}
+	
+	
+	boolean showVersion = false;
+	
+	Listener<JSONObject> versionResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.d(TAG, "versionResultListener onResponse -> " + result.toString());
+			String response = result.toString();
+			if(!TextUtils.isEmpty(response)){
+				try {
+					JSONObject jsonObject = new JSONObject(response);
+					int statuscode = jsonObject.getInt("statuscode");
+					if(statuscode == 200){
+						JSONObject jsonobject = jsonObject.getJSONObject("data");
+							String newVersion = jsonobject.getString("version");
+							String oldVersion = getVersion();
+							Log.e(TAG, "version oldVersion " + oldVersion + ", newVersion " + newVersion);
+							/*String oldVersion = PreferencesUtils.getString(
+									StartActivity.this, "version", "100");*/
+							oldVersion = oldVersion.replace(".", "");
+							newVersion = newVersion.replace(".", "");
+							if (Integer.parseInt(newVersion) > Integer.parseInt(oldVersion)) {
+								showVersion = true;
+								PreferencesUtils.putString(StartActivity.this, "version", newVersion);
+								if(jsonobject.has("description")){
+									PreferencesUtils.putString(StartActivity.this,
+											"versionDescription",
+											jsonobject.getString("description"));
+								}
+								PreferencesUtils.putString(StartActivity.this,
+										"versionLinkUrl", jsonobject.getString("url"));
+								handler.sendEmptyMessage(Util.SHOW_VERSION_DIALOG);
+								return;
+						}
+					}else{
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else{
+			}
+			
+			
+		}
+	};
+	
+	/**
+	 * 获取版本号
+	 * 
+	 * @return 当前应用的版本号
+	 */
+	public String getVersion() {
+		try {
+			PackageManager manager = this.getPackageManager();
+			PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
+			String version = info.versionName;
+			return version;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
 	
 	public static JSONObject getWelcomeData() {
 		return welcomeData;
@@ -266,7 +384,7 @@ public class StartActivity extends BaseActivity{
 							user.set_token(dataJson.getString("token"));
 							
 							Util.saveUserData(StartActivity.this, user);
-							handler.sendEmptyMessage(1);
+							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}else{
 							// 有错误情况
 						}

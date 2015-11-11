@@ -93,5 +93,6 @@ public class HttpUrls {
 	public static final String PERSONAL_CHANGE_NICK = BASE_URL + "user/nick";
 	public static final String PERSONAL_USER_SET = BASE_URL + "user/set";
 	
+	public static final String WENYI_CHECK_VERSION = BASE_URL + "sys/checkversion";
 	
 }

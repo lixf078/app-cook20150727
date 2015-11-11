@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">应用测试</string>
+    <string name="app_name">文怡家常菜</string>
     <string name="app_name_">文怡家常菜</string>
     <string name="essay">文怡随笔</string>
     <string name="cookbook">菜谱</string>
