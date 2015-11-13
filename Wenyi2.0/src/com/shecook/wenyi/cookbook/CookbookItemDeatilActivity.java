@@ -333,20 +333,27 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 						listTemp.add(imageCbm);
 						
 						JSONArray indredients = detail.has("indredients") ? detail.getJSONArray("indredients") : null;
-						if(null != indredients){
-							CookBookModel indredientCbm = new CookBookModel();
-							indredientCbm.setRowContent("原料：\n");
-							indredientCbm.setRowType("ingredients");
+						if(null != indredients && indredients.length() > 0){
+							CookBookModel indredientCbmType = new CookBookModel();
+							indredientCbmType.setRowContent("原料：");
+							indredientCbmType.setRowType("ingredients");
+							listTemp.add(indredientCbmType);
 							for (int i = 0, j = indredients.length(); i < j; i++) {
 								JSONObject jb = indredients.getJSONObject(i);
+								CookBookModel indredientCbm = new CookBookModel();
+								indredientCbm.setRowType("ingredients");
 								indredientCbm.setId(jb.getString("id"));
 								indredientCbm.setRecipeid(jb.getString("recipeid"));
-								indredientCbm.setRowContent(jb.getString("ingredients"));
+								indredientCbm.setRowContent(jb.getString("ingredients") + ";");
 								indredientCbm.setRowContent(jb.getString("unit"));
+								listTemp.add(indredientCbm);
 							}
-							listTemp.add(indredientCbm);
 						}
 						
+						CookBookModel indredientCbmType = new CookBookModel();
+						indredientCbmType.setRowType("space");
+						listTemp.add(indredientCbmType);
+					
 						JSONArray seasonings = detail.has("seasonings") ? detail.getJSONArray("seasonings") : null;
 						if(null != indredients){
 							CookBookModel seasoningsCbm = new CookBookModel();
@@ -362,8 +369,12 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 							listTemp.add(seasoningsCbm);
 						}
 						
+						
 						JSONArray contents = detail.has("contents") ? detail.getJSONArray("contents") : null;
 						if(null != indredients){
+							
+							listTemp.add(indredientCbmType);
+							
 							CookBookModel contentsCbm1 = new CookBookModel();
 							contentsCbm1.setId("");
 							contentsCbm1.setRecipeid("");
@@ -383,6 +394,7 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 						
 						JSONArray notes = detail.has("notes") ? detail.getJSONArray("notes") : null;
 						if(null != notes){
+							listTemp.add(indredientCbmType);
 							CookBookModel contentsCbm1 = new CookBookModel();
 							contentsCbm1.setId("");
 							contentsCbm1.setRecipeid("");

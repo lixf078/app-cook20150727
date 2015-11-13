@@ -18,6 +18,7 @@
      <item type="color" name="sort_normal">#f0eae1</item><!-- 普通反选后背景色240 234 225 -->
     <item type="color" name="orange_red">#cb0000</item><!-- 普通选择后背景色203 0 0 -->
 	<item type="color" name="cook_book_comments_bg">#f0eae1</item><!-- 菜谱作业列表中comments的背景色240 234 225 -->
+	<item type="color" name="wenyi_common_background_color">#fdfdf2</item><!-- 253,253,242 -->
     <color name="white">#FFFFFF</color>
     <!-- 白色 -->
     <color name="ivory">#FFFFF0</color>

@@ -198,7 +198,7 @@ public class NetworkTextView extends TextView {
                             Drawable drawable = new BitmapDrawable(resultBmp);
                             
                         	// Drawable drawable = new BitmapDrawable(response.getBitmap());
-                        	drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight()); 
+                        	drawable.setBounds(0, 0, width, width);
                             setCompoundDrawables(null, drawable, null, null);
                             // setImageBitmap(response.getBitmap());
 //                            bmp.recycle();

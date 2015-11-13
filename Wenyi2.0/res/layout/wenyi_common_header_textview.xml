@@ -3,7 +3,7 @@
     android:id="@id/wenyi_common_header"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/wenyi_common_background_color"
     android:orientation="vertical" >
 
     <RelativeLayout

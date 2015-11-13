@@ -74,6 +74,7 @@ public class PersonalMessageListActivity extends BaseActivity implements
 		ImageView returnImage = (ImageView) findViewById(R.id.return_img);
 		returnImage.setOnClickListener(this);
 		ImageView settingImage = (ImageView) findViewById(R.id.right_img);
+		settingImage.setVisibility(View.GONE);
 		settingImage.setOnClickListener(this);
 		TextView titleView = (TextView) findViewById(R.id.middle_title);
 		titleView.setText("我的消息");

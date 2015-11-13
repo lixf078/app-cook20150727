@@ -7,16 +7,16 @@
     android:layout_marginTop="10dip"
     android:orientation="horizontal"
     android:paddingBottom="5dip"
-    android:paddingLeft="10dip"
-    android:paddingRight="10dip"
+    android:paddingLeft="15dip"
+    android:paddingRight="15dip"
     android:paddingTop="5dip" >
 
     <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
         android:id="@id/item_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:focusable="false"
         android:scaleType="fitXY"
         android:visibility="gone" />
@@ -25,6 +25,25 @@
         android:id="@id/cookbook_listitem_detail_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/cookbook_listitem_detail_text2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
+        android:text=".........."
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/cookbook_listitem_detail_text3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:textColor="@color/black"
         android:visibility="gone" />
 

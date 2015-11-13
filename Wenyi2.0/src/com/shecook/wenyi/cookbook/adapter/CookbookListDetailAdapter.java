@@ -68,6 +68,11 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 					.findViewById(R.id.item_img);
 			holder.advTitle = (TextView) view
 					.findViewById(R.id.cookbook_listitem_detail_text);
+			holder.cookbook_listitem_detail_text2 = (TextView) view
+					.findViewById(R.id.cookbook_listitem_detail_text2);
+			holder.cookbook_listitem_detail_text3 = (TextView) view
+					.findViewById(R.id.cookbook_listitem_detail_text3);
+			
 			
 			holder.layout = (RelativeLayout) view.findViewById(R.id.cookbook_listdetail_comment_layout);
 			holder.uportraitImage = (NetworkImageView) view.findViewById(R.id.cookbook_item_comment_uportrait);
@@ -83,6 +88,9 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 		if ("imgoriginal".equals(rowtype)) {
 			holder.imageUrl.setVisibility(View.VISIBLE);
 			holder.advTitle.setVisibility(View.GONE);
+			holder.cookbook_listitem_detail_text2.setVisibility(View.GONE);
+			holder.cookbook_listitem_detail_text3.setVisibility(View.GONE);
+			
 			holder.layout.setVisibility(View.GONE);
 			
 			LruImageCache lruImageCache = LruImageCache.instance();
@@ -115,6 +123,8 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 			CookbookComment elcid = (CookbookComment) elid;
 			holder.imageUrl.setVisibility(View.GONE);
 			holder.advTitle.setVisibility(View.GONE);
+			holder.cookbook_listitem_detail_text2.setVisibility(View.GONE);
+			holder.cookbook_listitem_detail_text3.setVisibility(View.GONE);
 			holder.layout.setVisibility(View.VISIBLE);
 			holder.uportraitImage.setVisibility(View.VISIBLE);
 			holder.cookbook_item_comment_nickname.setVisibility(View.VISIBLE);
@@ -152,6 +162,8 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 		} else if("image".equals(rowtype)){
 			holder.imageUrl.setVisibility(View.VISIBLE);
 			holder.advTitle.setVisibility(View.GONE);
+			holder.cookbook_listitem_detail_text2.setVisibility(View.GONE);
+			holder.cookbook_listitem_detail_text3.setVisibility(View.GONE);
 			holder.layout.setVisibility(View.GONE);
 			
 			LruImageCache lruImageCache = LruImageCache.instance();
@@ -187,18 +199,44 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 			if("title".equals(rowtype)){
 				holder.advTitle.setTextSize(24);
 				holder.advTitle.setGravity(Gravity.CENTER_HORIZONTAL);
+				holder.cookbook_listitem_detail_text2.setVisibility(View.GONE);
+				holder.cookbook_listitem_detail_text3.setVisibility(View.GONE);
+				holder.advTitle.setText(elid.getRowContent());
+			}else if("ingredients".equals(rowtype)){
+				holder.advTitle.setTextSize(16);
+				holder.advTitle.setGravity(Gravity.LEFT);
+				String[] rows = elid.getRowContent().split(";");
+				if(rows.length == 2){
+					holder.cookbook_listitem_detail_text2.setVisibility(View.VISIBLE);
+					holder.cookbook_listitem_detail_text3.setTextSize(16);
+					holder.cookbook_listitem_detail_text3.setVisibility(View.VISIBLE);
+					holder.cookbook_listitem_detail_text2.setGravity(Gravity.CENTER_HORIZONTAL);
+					holder.cookbook_listitem_detail_text3.setGravity(Gravity.RIGHT);
+					holder.advTitle.setText(elid.getRowContent().split(";")[0]);
+					holder.cookbook_listitem_detail_text3.setText(elid.getRowContent().split(";")[1]);
+				}else{
+					holder.advTitle.setBackgroundColor(context.getResources().getColor(R.color.wenyi_common_background_color));
+					holder.advTitle.setText(elid.getRowContent().split(";")[0]);
+				}
+			}else if("space".equals(rowtype)){
+				holder.advTitle.setTextSize(16);
+				holder.advTitle.setBackgroundResource(R.color.wenyi_common_background_color);
+				holder.cookbook_listitem_detail_text2.setVisibility(View.GONE);
+				holder.cookbook_listitem_detail_text3.setVisibility(View.GONE);
 			}else{
 				holder.advTitle.setTextSize(16);
 				holder.advTitle.setGravity(Gravity.LEFT);
+				holder.cookbook_listitem_detail_text2.setVisibility(View.GONE);
+				holder.cookbook_listitem_detail_text3.setVisibility(View.GONE);
+				holder.advTitle.setText(elid.getRowContent());
 			}
-			holder.advTitle.setText(elid.getRowContent());
 //			holder.advTitle.setBackgroundColor(context.getResources().getColor(R.color.blue));
 		}
 		return view;
 	}
 
 	private static class ViewHolder {
-		TextView advTitle;
+		TextView advTitle, cookbook_listitem_detail_text2, cookbook_listitem_detail_text3;
 		TextView eventUrl;
 		NetworkImageView imageUrl;
 		
