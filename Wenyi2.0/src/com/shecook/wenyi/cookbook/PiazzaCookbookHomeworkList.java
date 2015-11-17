@@ -108,7 +108,7 @@ public class PiazzaCookbookHomeworkList extends BaseFragmeng implements OnClickL
 						if(shouldLoad){
 							getHomeworkList(HttpUrls.COOKBOOK_HOMEWORK_LIST, null, listResultListener, listErrorListener);
 						}else{
-							Toast.makeText(mActivity, "End of List!",
+							Toast.makeText(mActivity, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
@@ -125,7 +125,7 @@ public class PiazzaCookbookHomeworkList extends BaseFragmeng implements OnClickL
 						if(shouldLoad){
 							getHomeworkList(HttpUrls.COOKBOOK_HOMEWORK_LIST, null, listResultListener, listErrorListener);
 						}else{
-							Toast.makeText(mActivity, "End of List!",
+							Toast.makeText(mActivity, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}

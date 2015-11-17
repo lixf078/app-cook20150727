@@ -11,9 +11,8 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
+import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -26,7 +25,7 @@ public class GroupFragment extends Fragment {
 
 	private FragmentActivity mActivity;
 
-	private ImageView return_img, right_img;
+	private TextView return_img, right_img;
 	private TextView middle_title;
 
 	private RadioGroup rgs;
@@ -60,13 +59,12 @@ public class GroupFragment extends Fragment {
 	}
 
 	private void initView(View rootView) {
-		right_img = (ImageView) rootView.findViewById(R.id.right_img);
-		return_img = (ImageView) rootView.findViewById(R.id.return_img);
+		right_img = (TextView) rootView.findViewById(R.id.right_textview);
+		return_img = (TextView) rootView.findViewById(R.id.return_textview);
 		middle_title = (TextView) rootView.findViewById(R.id.middle_title);
-
-		right_img.setBackgroundResource(R.drawable.edit);
+		right_img.setText("创建圈子");
+		right_img.setTextColor(mActivity.getResources().getColor(R.color.radio_button_textcolor_normal));
 		
-		right_img = (ImageView) rootView.findViewById(R.id.right_img);
 		right_img.setVisibility(View.VISIBLE);
 		right_img.setOnClickListener(new OnClickListener() {
 			
@@ -77,7 +75,7 @@ public class GroupFragment extends Fragment {
 			}
 		});
 		return_img.setVisibility(View.INVISIBLE);
-		middle_title.setText(R.string.piazza);
+		middle_title.setText(R.string.group);
 
 		fragments.add(groupHotFragment);
 		fragments.add(myGroupFragment);

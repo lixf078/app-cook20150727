@@ -70,8 +70,6 @@ public class ViewPagerAdapter extends RecyclingPagerAdapter {
 		if(!TextUtils.isEmpty(wenyiGallery.getImgUrl())){
 			LruImageCache lruImageCache = LruImageCache.instance();
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-			holder.imageUrl.setDefaultImageResId(R.drawable.wenyi_01);
-			holder.imageUrl.setErrorImageResId(R.drawable.wenyi_01);
 			holder.imageUrl.setImageUrl(wenyiGallery.getImgUrl(), imageLoader);
 		}
 	    holder.imageUrl.setTag(R.id.wenyi_common_tag_id1, "" + wenyiGallery.getEvent_type());

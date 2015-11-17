@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="left"
-        android:background="@color/orangered"
+        android:background="@color/menu_frame_bg"
         android:cacheColorHint="#00000000"
         android:childDivider="@color/transparent"
         android:divider="@drawable/list_divider"

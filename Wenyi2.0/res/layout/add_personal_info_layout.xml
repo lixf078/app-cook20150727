@@ -11,8 +11,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/wenyi_common_header"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
         android:orientation="horizontal"
         android:paddingTop="5dip" >
 
@@ -20,10 +18,11 @@
             android:id="@+id/content_text_id"
             android:layout_width="fill_parent"
             android:layout_height="100dp"
+            android:background="@null"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:gravity="top"
-            android:hint="@string/want_add_comment"
+            android:hint="请输入文字内容"
             android:minLines="3"
             android:padding="8dp"
             android:scrollbarThumbVertical="@color/transparent"
@@ -31,10 +30,17 @@
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/tip_text_space_line"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/content_text_id"
+            android:background="@color/date_color" />
+
+        <TextView
             android:id="@+id/tip_text_id"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/content_text_id"
+            android:layout_below="@id/tip_text_space_line"
             android:padding="10dp"
             android:text="添加图片:"
             android:textColor="@color/black"
@@ -46,8 +52,9 @@
             android:layout_height="60dp"
             android:layout_below="@id/tip_text_id"
             android:layout_margin="8dp"
-            android:background="@drawable/icon"
-            android:scaleType="fitXY" />
+            android:layout_marginLeft="10dip"
+            android:background="@drawable/upload_add"
+            android:scaleType="center" />
 
         <ImageView
             android:id="@+id/image_2_id"
@@ -56,8 +63,8 @@
             android:layout_below="@id/tip_text_id"
             android:layout_margin="8dp"
             android:layout_toRightOf="@id/image_1_id"
-            android:background="@drawable/icon"
-            android:scaleType="fitXY" />
+            android:background="@drawable/upload_add"
+            android:scaleType="center" />
 
         <ImageView
             android:id="@+id/image_3_id"
@@ -66,8 +73,8 @@
             android:layout_below="@id/tip_text_id"
             android:layout_margin="8dp"
             android:layout_toRightOf="@id/image_2_id"
-            android:background="@drawable/icon"
-            android:scaleType="fitXY" />
+            android:background="@drawable/upload_add"
+            android:scaleType="center" />
 
         <ImageView
             android:id="@+id/image_4_id"
@@ -76,8 +83,15 @@
             android:layout_below="@id/tip_text_id"
             android:layout_margin="8dp"
             android:layout_toRightOf="@id/image_3_id"
-            android:background="@drawable/icon"
-            android:scaleType="fitXY" />
+            android:background="@drawable/upload_add"
+            android:scaleType="center" />
+
+        <TextView
+            android:id="@+id/tip_text_space_line_"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/image_4_id"
+            android:background="@color/date_color" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -269,7 +269,7 @@ public class PersonalCollectionListActivity extends BaseActivity implements
 				e.printStackTrace();
 			}
 		}else{
-			Toast.makeText(PersonalCollectionListActivity.this, "End of List!",
+			Toast.makeText(PersonalCollectionListActivity.this, "您已翻到底儿了!",
 					Toast.LENGTH_SHORT).show();
 			handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 		}

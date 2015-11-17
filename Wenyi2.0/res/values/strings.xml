@@ -136,4 +136,7 @@
 
      <string name="personal_select_str">请选择食材</string>
      <string name="personal_kitchen_food">食材</string>
+     <string name="return_str">返回</string>
+     
+     <string name="hint_search_event">搜索项</string>
 </resources>

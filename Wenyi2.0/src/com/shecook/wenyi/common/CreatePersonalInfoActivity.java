@@ -113,37 +113,43 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 		int id = v.getId();
 		switch (id) {
 		case R.id.right_textview:
-			String comment = commentEdit.getEditableText().toString();
-			if(TextUtils.isEmpty(comment)){
-				Log.d(TAG, "onClick -> " + flag + " 想跟我说点什么呢？");
-				Toast.makeText(CreatePersonalInfoActivity.this, "想跟我说点什么呢？", Toast.LENGTH_SHORT).show();
-				return;
-			}
-			Log.d(TAG, "onClick -> " + flag + ",comment " + comment);
-			JSONObject paramsub = new JSONObject();
-			try {
-				paramsub.put("comment", "" + comment);
-				if(flag == HttpStatus.PUBLIC_FOR_PORTRAIT){
-					paramsub.put("uptype", "portrait");
-				}else if(flag == HttpStatus.PUBLIC_FOR_COOKBOOK){
-					paramsub.put("uptype", "follow");
-				}else if(flag == HttpStatus.PUBLIC_FOR_TOPIC){
-					paramsub.put("uptype", "topic");
-				}else if(flag == HttpStatus.PUBLIC_FOR_CIRCLE){
-					paramsub.put("uptype", "circle");
+			if(isLogin()){
+				String comment = commentEdit.getEditableText().toString();
+				if(TextUtils.isEmpty(comment)){
+					Log.d(TAG, "onClick -> " + flag + " 想跟我说点什么呢？");
+					Toast.makeText(CreatePersonalInfoActivity.this, "想跟我说点什么呢？", Toast.LENGTH_SHORT).show();
+					return;
 				}
-				StringBuffer str = new StringBuffer();
-				for (String path : photos) {
-					Log.d(TAG, "path" + path);
-					if(!TextUtils.isEmpty(path)){
-						str.append(path + ";");
+				Log.d(TAG, "onClick -> " + flag + ",comment " + comment);
+				JSONObject paramsub = new JSONObject();
+				try {
+					paramsub.put("comment", "" + comment);
+					if(flag == HttpStatus.PUBLIC_FOR_PORTRAIT){
+						paramsub.put("uptype", "portrait");
+					}else if(flag == HttpStatus.PUBLIC_FOR_COOKBOOK){
+						paramsub.put("uptype", "follow");
+					}else if(flag == HttpStatus.PUBLIC_FOR_TOPIC){
+						paramsub.put("uptype", "topic");
+					}else if(flag == HttpStatus.PUBLIC_FOR_CIRCLE){
+						paramsub.put("uptype", "circle");
 					}
+					StringBuffer str = new StringBuffer();
+					for (String path : photos) {
+						Log.d(TAG, "path" + path);
+						if(!TextUtils.isEmpty(path)){
+							str.append(path + ";");
+						}
+					}
+					CommonUpload.commonMethod(CreatePersonalInfoActivity.this, HttpUrls.UPLOAD_IMG, paramsub, listResultListener, listErrorListener, str.subSequence(0, str.length() - 1) + "");
+				} catch (JSONException e) {
+					e.printStackTrace();
+					finish();
 				}
-				CommonUpload.commonMethod(CreatePersonalInfoActivity.this, HttpUrls.UPLOAD_IMG, paramsub, listResultListener, listErrorListener, str.subSequence(0, str.length() - 1) + "");
-			} catch (JSONException e) {
-				e.printStackTrace();
-				finish();
+			}else{
+				Intent intent = new Intent(CreatePersonalInfoActivity.this,PersonalLoginCommon.class);
+				startActivityForResult(intent, 1);
 			}
+			
 			break;
 		case R.id.image_1_id:
 			photoId = 0;

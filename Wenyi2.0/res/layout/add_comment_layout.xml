@@ -25,6 +25,7 @@
             android:scrollbars="vertical"
             android:scrollbarThumbVertical="@color/transparent"
             android:gravity="top"
+            android:background="@null"
             android:hint="@string/want_add_comment"
             android:textSize="18sp" />
     </RelativeLayout>

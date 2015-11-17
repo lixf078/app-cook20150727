@@ -3,6 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dip"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
     android:layout_marginRight="10dip"
     android:orientation="horizontal"
     android:paddingLeft="10dip"
@@ -53,11 +55,10 @@
 
         <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
             android:id="@+id/middle_image_cookbook"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/cookbook_homework_item_nickname"
             android:layout_marginRight="16dp"
-            android:background="@drawable/advertising_default_1"
             android:focusable="false"
             android:scaleType="fitXY" />
 
@@ -69,7 +70,8 @@
             android:text="@string/app_name"
             android:layout_below="@id/middle_image_cookbook"
             android:drawableLeft="@drawable/ico_02"
-            android:textColor="@color/text_color" />
+            android:textColor="@color/text_color"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/cookbook_homework_item_bottomline"

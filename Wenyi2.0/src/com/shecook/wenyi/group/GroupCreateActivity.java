@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shecook.wenyi.BaseActivity;
@@ -54,7 +55,7 @@ public class GroupCreateActivity extends BaseActivity {
 	private static final int GROUP_CREATE_FAILED = 4;
 	private ImageView camera;
 	private EditText name, content;
-	private ImageView right_img;
+	private TextView right_img, return_textview, middle_title;
 	private String circleImage = "";
 	private String photoPath = "";
 
@@ -69,6 +70,7 @@ public class GroupCreateActivity extends BaseActivity {
 	}
 
 	public void initView() {
+		circleid = getIntent().getStringExtra("circleid");
 		camera = (ImageView) findViewById(R.id.group_create_camera);
 		camera.setOnClickListener(new OnClickListener() {
 
@@ -80,8 +82,24 @@ public class GroupCreateActivity extends BaseActivity {
 		name = (EditText) findViewById(R.id.group_create_name);
 		
 		content = (EditText) findViewById(R.id.group_create_content);
-
-		right_img = (ImageView) findViewById(R.id.right_img);
+		
+		return_textview = (TextView) findViewById(R.id.return_textview);
+		return_textview.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+		middle_title = (TextView) findViewById(R.id.middle_title);
+		right_img = (TextView) findViewById(R.id.right_textview);
+		
+		if(TextUtils.isEmpty(circleid)){
+			right_img.setText("创建");
+			middle_title.setText("创建圈子");
+		}else{
+			right_img.setText("修改");
+			middle_title.setText("修改圈子");
+		}
 		right_img.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -97,7 +115,7 @@ public class GroupCreateActivity extends BaseActivity {
 			}
 		});
 		
-		circleid = getIntent().getStringExtra("circleid");
+		
 		if(!TextUtils.isEmpty(getIntent().getStringExtra("title"))){
 			name.setText("" + getIntent().getStringExtra("title"));
 		}

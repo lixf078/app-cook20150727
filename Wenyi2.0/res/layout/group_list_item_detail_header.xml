@@ -5,13 +5,13 @@
     android:orientation="horizontal"
     android:paddingLeft="14dp"
     android:paddingRight="14dp"
-    android:background="@color/white" >
+    android:background="@color/wenyi_common_background_color" >
 
     <RelativeLayout
         android:id="@+id/group_item_rl"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/item_background_color"
+        android:background="@color/wenyi_common_background_color"
         android:orientation="horizontal" >
 
         <com.shecook.wenyi.common.volley.toolbox.NetworkImageView

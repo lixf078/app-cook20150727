@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
@@ -138,12 +139,12 @@ public class LcSearchView extends LinearLayout {
     }
 
     public LcSearchView(Context context, AttributeSet attrs, int defStyle) {
-        this(context, attrs, defStyle, 0);
+    	this(context, attrs, defStyle, 0);
     }
-
+    
     public LcSearchView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-
+    	
+    	super(context, attrs, defStyleAttr);
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.lc_search_view, this, true);

@@ -2,16 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/white"
+    android:background="@color/white"
     android:orientation="vertical" >
 
-    <include
-        layout="@layout/wenyi_common_header"
-        android:background="@android:color/white" />
+    <include layout="@layout/wenyi_common_header" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:background="@color/wenyi_common_background_color"
         android:orientation="vertical" >
 
         <RadioGroup
@@ -31,15 +30,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:background="@drawable/background_selector"
+                android:background="@drawable/background_selector_left"
                 android:button="@null"
                 android:checked="true"
                 android:drawableTop="@null"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/piazza_discover_str"
-                android:textColor="#000000"
-                android:textSize="24sp" />
+                android:textColor="@drawable/radiobutton_textview_selector"
+                android:textSize="20sp" />
 
             <RadioButton
                 android:id="@+id/piazza_question_rb"
@@ -52,24 +51,25 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/piazza_question_str"
-                android:textColor="#000000"
-                android:textSize="24sp" />
+                android:textColor="@drawable/radiobutton_textview_selector"
+                android:textSize="20sp" />
 
             <RadioButton
                 android:id="@+id/piazza_food_rb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:background="@drawable/background_selector"
+                android:background="@drawable/background_selector_right"
                 android:button="@null"
                 android:drawableTop="@null"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/piazza_food_str"
-                android:textColor="#000000"
-                android:textSize="24sp" />
+                android:textColor="@drawable/radiobutton_textview_selector"
+                android:textSize="20sp" />
 
-<!--             <RadioButton
+            <!--
+                 <RadioButton
                 android:id="@+id/piazza_friend_rb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,7 +81,8 @@
                 android:singleLine="true"
                 android:text="@string/piazza_friend_str"
                 android:textColor="#000000"
-                android:textSize="24sp" /> -->
+                android:textSize="24sp" />
+            -->
         </RadioGroup>
 
         <FrameLayout

@@ -22,6 +22,7 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -148,6 +149,12 @@ public class StartActivity extends BaseActivity{
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if(keyCode == KeyEvent.KEYCODE_BACK){
+			Log.e("StartActivity", "onBackPressed");
+			if(baseFragment != null){
+				if(baseFragment.onBackpress()){
+					// return true;
+				}
+			}
 			if((System.currentTimeMillis() - systemlast) < 2000){
 				return super.onKeyDown(keyCode, event);
 			}else{
@@ -258,7 +265,6 @@ public class StartActivity extends BaseActivity{
 			}
 		};
 	};
-	
 	
 	protected void dialog(String title, String message) {
 		AlertDialog.Builder builder = new Builder(StartActivity.this);
@@ -387,7 +393,7 @@ public class StartActivity extends BaseActivity{
 						if(core_status == 200){
 							WenyiUser user = new WenyiUser();
 							user.set_flag(statuscode);
-							user.set_isLogin(true);
+//							user.set_isLogin(true);
 							user.set_token(dataJson.getString("token"));
 							
 							Util.saveUserData(StartActivity.this, user);
@@ -534,8 +540,44 @@ public class StartActivity extends BaseActivity{
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Log.e(TAG, "onActivityResult ............ currentFragment " + currentFragment + ", object is " + fragments.get(currentFragment));
-		
 		fragments.get(currentFragment).onActivityResult(requestCode, resultCode, data);
 	}
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		Log.e(TAG, "dispatchTouchEvent");
+		if(baseFragment != null){
+			baseFragment.dispatchTouchEvent(ev);
+		}
+		return super.dispatchTouchEvent(ev);
+	}
+	
+	public BaseFragment baseFragment;
+	
+	public BaseFragment getBaseFragment() {
+		return baseFragment;
+	}
+
+	public void setBaseFragment(BaseFragment baseFragment) {
+		this.baseFragment = baseFragment;
+	}
+	
+	public void toggleMenu(){
+		if(null != menu){
+			menu.toggle();
+		}
+	}
+	
+	/*@Override
+	public void onBackPressed() {
+		Log.e("StartActivity", "onBackPressed");
+		if(baseFragment != null){
+			if(baseFragment.onBackpress()){
+				return;
+			}
+		}
+		super.onBackPressed();
+	}
+	*/
+	
 }

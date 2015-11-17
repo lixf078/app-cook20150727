@@ -70,14 +70,14 @@ public class PersonalCommentListAdapter extends BaseAdapter {
 
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader1 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.item_img_1.setDefaultImageResId(R.drawable.icon_dialog);
-	    holder.item_img_1.setErrorImageResId(R.drawable.icon_dialog);
+//	    holder.item_img_1.setDefaultImageResId(R.drawable.icon_dialog);
+//	    holder.item_img_1.setErrorImageResId(R.drawable.icon_dialog);
 	    
 	    holder.item_img_1.setImageUrl(eli.getTop_imageurl(), imageLoader1);
 	    
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.item_img.setDefaultImageResId(R.drawable.icon_dialog);
-	    holder.item_img.setErrorImageResId(R.drawable.icon_dialog);
+//	    holder.item_img.setDefaultImageResId(R.drawable.icon_dialog);
+//	    holder.item_img.setErrorImageResId(R.drawable.icon_dialog);
 	    
 	    holder.item_img.setImageUrl(eli.getBottom_imageurl(), imageLoader);
 	    

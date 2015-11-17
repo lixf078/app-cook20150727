@@ -11,6 +11,7 @@ public class HttpStatus {
 	public static final int STATUS_LOAD_OTHER_OK = 22;
 	
 	public static final int USER_NOT_LOGIN = 10002;
+	public static final int USER_LOGOUT_SUCCESS = 10003;
 	
 	public static final int USER_TOKEN_OUTDATE = 10005;
 	

@@ -8,15 +8,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
 import com.shecook.wenyi.model.EssayListItem;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
+import com.umeng.socom.Log;
 
 public class EssayListAdapter extends BaseAdapter {
 	
@@ -59,7 +61,8 @@ public class EssayListAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			holder.advTitle = (TextView) view.findViewById(R.id.essay_item_title);
 			holder.advTime = (TextView) view.findViewById(R.id.essay_item_time);
-			holder.imageUrl = (NetworkImageView) view.findViewById(R.id.item_img);
+			holder.imageUrl = (NetworkImageRoundView) view.findViewById(R.id.item_img);
+			holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(Util.getWidth(context) / 5, Util.getWidth(context) / 5));
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
@@ -67,8 +70,8 @@ public class EssayListAdapter extends BaseAdapter {
 
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
-	    holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
+//	    holder.imageUrl.setDefaultImageResId(R.drawable.bg_color_while);
+//	    holder.imageUrl.setErrorImageResId(R.drawable.bg_color_while);
 	    
 	    holder.imageUrl.setImageUrl(eli.getIconurl(), imageLoader);
 	    holder.imageUrl.setOnClickListener(new OnClickListener() {
@@ -85,6 +88,6 @@ public class EssayListAdapter extends BaseAdapter {
 	private static class ViewHolder {
 		TextView advTitle;
 		TextView advTime;
-		NetworkImageView imageUrl;
+		NetworkImageRoundView imageUrl;
 	}
 }

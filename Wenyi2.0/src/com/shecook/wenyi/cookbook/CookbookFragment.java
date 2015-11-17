@@ -7,24 +7,40 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.letv.shared.widget.LcSearchView;
+import com.letv.shared.widget.LcSearchView.OnCancelListener;
+import com.letv.shared.widget.LcSearchView.OnClearListener;
+import com.shecook.wenyi.BaseFragment;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
@@ -34,9 +50,7 @@ import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnRefreshListener;
-import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.State;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView;
-import com.shecook.wenyi.common.pulltorefresh.internal.SoundPullEventListener;
 import com.shecook.wenyi.common.volley.Request.Method;
 import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
@@ -51,8 +65,8 @@ import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
-public class CookbookFragment extends Fragment implements
-		UpdateFragmentListener {
+public class CookbookFragment extends BaseFragment implements
+		UpdateFragmentListener , OnClickListener, TextWatcher, OnEditorActionListener, OnClearListener, OnCancelListener{
 
 	private static final String TAG = "CookbookFragment";
 
@@ -79,6 +93,7 @@ public class CookbookFragment extends Fragment implements
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		mActivity = (StartActivity) getActivity();
+		mActivity.setBaseFragment(this);
 		mActivity.setUpdateFragmentListener(this);
 		mCatalogItems = new LinkedList<CookbookCatalog>();
 		mListItems = new LinkedList<CookbookListItem>();
@@ -122,7 +137,7 @@ public class CookbookFragment extends Fragment implements
 							getCatalogList(HttpUrls.COOKBOOK_LIST, null,
 									listResultListener, listErrorListener);
 						}else{
-							Toast.makeText(mActivity, "End of List!", Toast.LENGTH_SHORT).show();
+							Toast.makeText(mActivity, "您已翻到底儿了!", Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
 					}
@@ -138,7 +153,7 @@ public class CookbookFragment extends Fragment implements
 							getCatalogList(HttpUrls.COOKBOOK_LIST, null,
 									listResultListener, listErrorListener);
 						} else {
-							Toast.makeText(mActivity, "End of List!",
+							Toast.makeText(mActivity, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 						}
 					}
@@ -170,17 +185,19 @@ public class CookbookFragment extends Fragment implements
 	private void initView(View view) {
 		ImageView returnImage = (ImageView) view.findViewById(R.id.return_img);
 		returnImage.setBackgroundResource(R.drawable.setting_alt);
+		returnImage.setOnClickListener(this);
+		
 		ImageView settingImage = (ImageView) view.findViewById(R.id.right_img);
 		settingImage.setBackgroundResource(R.drawable.search);
 		
-		settingImage.setOnClickListener(new OnClickListener() {
+		settingImage.setOnClickListener(this/*new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = new Intent(mActivity, CookbookSearchActivity.class);
 				startActivity(intent);
 			}
-		});
+		}*/);
 		
 		TextView titleView = (TextView) view.findViewById(R.id.middle_title);
 		if (TextUtils.isEmpty(title)) {
@@ -188,6 +205,18 @@ public class CookbookFragment extends Fragment implements
 		} else {
 			titleView.setText("" + title);
 		}
+		
+		wenyi_common_head_rl = (RelativeLayout) view.findViewById(R.id.wenyi_common_head_rl);
+		wenyi_common_header = (LinearLayout) view.findViewById(R.id.wenyi_common_header_layout);
+		
+		mAlphaLayout = view.findViewById(R.id.alphaLayout);
+        mAlphaLayout.setOnClickListener(this);
+        mSearchResultLayout = (RelativeLayout) view.findViewById(R.id.event_search_result_container);
+        FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
+        CookbookSearchFragment f = new CookbookSearchFragment(this);
+        ft.add(R.id.event_search_result_container, f);
+        ft.commit();
+        mInputManager = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
 	}
 
 	@Override
@@ -322,9 +351,6 @@ public class CookbookFragment extends Fragment implements
 		JSONObject paramsub = new JSONObject();
 
 		try {
-			if (TextUtils.isEmpty(catalogid)) {
-				catalogid = "10004";
-			}
 			paramsub.put("catalogid", catalogid);
 			paramsub.put("pindex", "" + ++index);
 			paramsub.put("count", "20");
@@ -456,6 +482,10 @@ public class CookbookFragment extends Fragment implements
 								eli.setTimeline(jb.getString("timeline"));
 								listTemp.add(eli);
 							}
+							if(updateCatalog){
+								mListItems.clear();
+								updateCatalog = false;
+							}
 							mListItems.addAll(listTemp);
 						}
 
@@ -477,12 +507,203 @@ public class CookbookFragment extends Fragment implements
 		}
 	}
 
+	private boolean updateCatalog = false;
+	
 	@Override
 	public void updateFragment(String cataId) {
 		Log.d(TAG, "updateFragment");
 		index = 0;
 		catalogid = cataId;
-		getCatalogList(HttpUrls.COOKBOOK_LIST, null,
-				listResultListener, listErrorListener);
+		updateCatalog = true;
+		getCatalogList(HttpUrls.COOKBOOK_LIST, null, listResultListener, listErrorListener);
 	}
+	
+	// ***************************************************************
+	
+		/*@Override
+		public boolean dispatchTouchEvent(MotionEvent ev) {
+			if(ev.getAction() == MotionEvent.ACTION_MOVE){
+				if(mLcSearchView != null){
+					mLcSearchView.clearFocus();
+				}
+			}
+			return super.dispatchTouchEvent(ev);
+		}
+	    @Override
+	    public void onBackPressed() {
+	        if(mLcSearchView != null && mLcSearchView.isShown()) {
+	        	cancleSearch();
+	        	return;
+	        }
+	        super.onBackPressed();
+	    }*/
+	    private LcSearchView.OnSuggestionListener mLcSuggestionListener = new LcSearchView.OnSuggestionListener() {
+
+	        @Override
+	        public boolean onSuggestionClick(int position) {
+	            return false;
+	        }
+	    };
+		public LcSearchView mLcSearchView;
+		private InputMethodManager mInputManager;
+		private View mAlphaLayout;
+	    private RelativeLayout mSearchResultLayout;
+	    RelativeLayout wenyi_common_head_rl;
+	    LinearLayout wenyi_common_header;
+		@Override
+		public void onClick(View v) {
+			int id = v.getId();
+			switch (id) {
+			case R.id.return_img:
+				mActivity.toggleMenu();
+				break;
+			case R.id.right_img:
+	            mLcSearchView = (LcSearchView) CookbookFragment.this.getActivity().getLayoutInflater().inflate(R.layout.all_in_one_title_bar_search, null);
+	            mLcSearchView.setQueryRefinementEnabled(true);
+	            mLcSearchView.setOnTextChangedListener(this);
+	            mLcSearchView.setOnEditorActionListener(this);
+	            mLcSearchView.setOnClearListener(this);
+	            mLcSearchView.setOnCancelListener(this);
+	            mLcSearchView.setOnSuggestionListener(mLcSuggestionListener);
+	            mLcSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+	            mLcSearchView.requestFocus();
+	            mLcSearchView.setVisibility(View.VISIBLE);
+	            mLcSearchView.setOnKeyListener(new OnKeyListener() {
+					
+					@Override
+					public boolean onKey(View arg0, int arg1, KeyEvent keyevent) {
+						Log.e("CookbookFragment", "setOnKeyListener keyevent " + keyevent.getKeyCode());
+						return false;
+					}
+				});
+	            mLcSearchView.setOnFocusChangeListener(new OnFocusChangeListener() {
+					
+					@Override
+					public void onFocusChange(View arg0, boolean focus) {
+						Log.e("CookbookFragment", "setOnFocusChangeListener focus " + focus);
+					}
+				});
+	            mInputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+	            mAlphaLayout.setVisibility(View.VISIBLE);
+
+	            wenyi_common_head_rl.setVisibility(View.GONE);
+	            wenyi_common_header.addView(mLcSearchView);
+				break;
+			case R.id.alphaLayout:
+				if(mLcSearchView != null && mLcSearchView.isShown()){
+					cancleSearch();
+				}
+	            break;
+			default:
+				break;
+			}
+		}
+		private void cancleSearch() {
+	        mLcSearchView.clearFocus();
+	        mLcSearchView.setVisibility(View.GONE);
+	        mSearchResultLayout.setVisibility(View.GONE);
+	        mAlphaLayout.setVisibility(View.GONE);
+	        wenyi_common_head_rl.setVisibility(View.VISIBLE);
+	        mPullRefreshListView.setVisibility(View.VISIBLE);
+	        if(keyworkChangeListener != null){
+	        	keyworkChangeListener.keyworkClear();
+	        }
+	    }
+		
+		@Override
+		public boolean onCancel() {
+			cancleSearch();
+			return false;
+		}
+
+		@Override
+		public boolean onClear() {
+			if(keyworkChangeListener != null){
+				keyworkChangeListener.keyworkClear();
+	        }
+			return false;
+		}
+
+		@Override
+		public boolean onEditorAction(TextView arg0, int arg1, KeyEvent event) {
+			
+			Log.e("CookbookFragment", "onEditorAction getKeyCode " + event.getKeyCode());
+			
+			return false;
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+			
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+			
+		}
+	    private void setResultLayoutStates (boolean isVisible) {
+	        if (isVisible) {
+	            mSearchResultLayout.setVisibility(View.GONE);
+	            mPullRefreshListView.setVisibility(View.VISIBLE);
+	            mAlphaLayout.setVisibility(View.VISIBLE);
+	        } else {
+	            mSearchResultLayout.setVisibility(View.VISIBLE);
+	            mPullRefreshListView.setVisibility(View.GONE);
+	            mAlphaLayout.setVisibility(View.GONE);
+	        }
+	    }
+		
+	    
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			Log.e(TAG, "onTextChanged keyword " + s.toString() + ", keyworkChangeListener " + keyworkChangeListener);
+	        if(s != null && !"".equals(s.toString().trim())) {
+	            if (mSearchResultLayout.getVisibility() == View.GONE) {
+	            	setResultLayoutStates(false);
+	            }
+	            mLcSearchView.setThreshold(Integer.MAX_VALUE);
+	            if(keyworkChangeListener != null){
+	            	keyworkChangeListener.keyworkChanged(s.toString().trim());
+	            }
+	        } else {
+	            if (mSearchResultLayout.getVisibility() == View.VISIBLE) {
+	            	setResultLayoutStates(true);
+	            }
+	            mLcSearchView.setThreshold(Integer.MAX_VALUE);
+	        }
+	    }
+		
+		OnKeywordChangeListener keyworkChangeListener;
+
+		public void setKeyworkChangeListener(
+				OnKeywordChangeListener keyworkChangeListener) {
+			Log.e(TAG, "setKeyworkChangeListener");
+			this.keyworkChangeListener = keyworkChangeListener;
+		}
+		public interface OnKeywordChangeListener{
+			void keyworkChanged(String keyword);
+			void keyworkClear();
+		}
+		@Override
+		public boolean onBackpress() {
+			Log.e("CookbookFragment", "onBackPressed");
+	        if(mLcSearchView != null && mLcSearchView.isShown()) {
+	        	cancleSearch();
+	        	return true;
+	        }
+	        return false;
+	    }
+
+		@Override
+		public boolean dispatchTouchEvent(MotionEvent ev) {
+			if (mSearchResultLayout.getVisibility() == View.VISIBLE) {
+				Log.e(TAG, "dispatchTouchEvent");
+				mInputManager.hideSoftInputFromWindow(mLcSearchView.getWindowToken(), 0);
+            }
+			return false;
+		}
+		
+		// ***************************************************************************
+	
 }

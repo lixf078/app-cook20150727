@@ -64,6 +64,7 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 	private String circleid = "";
 	private boolean shouldLoad = true;
 	private int pindex = 0;
+	private int apply = 0;
 
 	private LinearLayout common_tip_info_layout;
 	private TextView common_tip_info, common_tip_info_button;
@@ -150,7 +151,7 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 		});
 		if(((GroupItemDetailActivity)mActivity).getStatus() <= 10001){
 			View header = mActivity.getLayoutInflater().inflate(R.layout.group_detail_mem_list_header, mPullRefreshListView, false);
-			TextView num = (TextView) header.findViewById(R.id.group_detail_item_new_num);
+			num = (TextView) header.findViewById(R.id.group_detail_item_new_num);
 			num.setText("10");
 			header.setOnClickListener(new OnClickListener() {
 				
@@ -170,7 +171,7 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 		}
 		
 	}
-
+	TextView num = null;
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onActivityCreated");
@@ -231,6 +232,9 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 					common_tip_info.setText("该圈子目前还没有人加入");
 					common_tip_info_button.setText("立刻邀请好友");
 				}else{
+					if(null != null){
+						num.setText("" + apply);
+					}
 					common_tip_info_layout.setVisibility(View.GONE);
 				}
 				break;
@@ -333,7 +337,7 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 				e.printStackTrace();
 			}
 		}else{
-			Toast.makeText(mActivity, "End of List!",
+			Toast.makeText(mActivity, "您已翻到底儿了!",
 					Toast.LENGTH_SHORT).show();
 			handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 		}
@@ -351,8 +355,8 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
              * token:8ac7e6fada244eaa8087d2230d002a17
 			 */
 			// lixufeng text
-			commonsub.put("mid", "5A1469CD-4819-4863-A934-8871CA1A0281");
-			commonsub.put("token", "591f3c51eca2483b932ed1a64b896a63");
+//			commonsub.put("mid", "5A1469CD-4819-4863-A934-8871CA1A0281");
+//			commonsub.put("token", "591f3c51eca2483b932ed1a64b896a63");
 			if (paramsub != null) {
 				jsonObject.put("param", paramsub);
 			}
@@ -410,6 +414,11 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 								listTemp.add(pdi);
 							}
 							groupMemList.addAll(listTemp);
+						}
+						if(jsonObject.has("apply")){
+							apply = jsonObject.getInt("apply");
+						}else{
+							apply = 0;
 						}
 						if(data.has("pindex")){
 							pindex = data.getInt("pindex");

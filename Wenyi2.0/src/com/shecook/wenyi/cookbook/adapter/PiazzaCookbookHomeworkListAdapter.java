@@ -95,29 +95,29 @@ public class PiazzaCookbookHomeworkListAdapter extends BaseAdapter {
 				holder.essay_item_image_info_4.setVisibility(View.VISIBLE);
 
 			    ImageLoader imageLoader4 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-			    holder.essay_item_image_info_4.setDefaultImageResId(R.drawable.welcome_homework);
-			    holder.essay_item_image_info_4.setErrorImageResId(R.drawable.welcome_homework);
+//			    holder.essay_item_image_info_4.setDefaultImageResId(R.drawable.welcome_homework);
+//			    holder.essay_item_image_info_4.setErrorImageResId(R.drawable.welcome_homework);
 			    holder.essay_item_image_info_4.setImageUrl(chli.getImageList().get(3).getImageurl(), imageLoader4);
 			case 3:
 				holder.essay_item_image_info_3.setVisibility(View.VISIBLE);
 
 			    ImageLoader imageLoader3 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-			    holder.essay_item_image_info_3.setDefaultImageResId(R.drawable.welcome_homework);
-			    holder.essay_item_image_info_3.setErrorImageResId(R.drawable.welcome_homework);
+//			    holder.essay_item_image_info_3.setDefaultImageResId(R.drawable.welcome_homework);
+//			    holder.essay_item_image_info_3.setErrorImageResId(R.drawable.welcome_homework);
 			    holder.essay_item_image_info_3.setImageUrl(chli.getImageList().get(2).getImageurl(), imageLoader3);
 			case 2:
 				holder.essay_item_image_info_2.setVisibility(View.VISIBLE);
 
 			    ImageLoader imageLoader2 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-			    holder.essay_item_image_info_2.setDefaultImageResId(R.drawable.welcome_homework);
-			    holder.essay_item_image_info_2.setErrorImageResId(R.drawable.welcome_homework);
+//			    holder.essay_item_image_info_2.setDefaultImageResId(R.drawable.welcome_homework);
+//			    holder.essay_item_image_info_2.setErrorImageResId(R.drawable.welcome_homework);
 			    holder.essay_item_image_info_2.setImageUrl(chli.getImageList().get(1).getImageurl(), imageLoader2);
 			case 1:
 				holder.essay_item_image_info_1.setVisibility(View.VISIBLE);
 
 			    ImageLoader imageLoader1 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-			    holder.essay_item_image_info_1.setDefaultImageResId(R.drawable.welcome_homework);
-			    holder.essay_item_image_info_1.setErrorImageResId(R.drawable.welcome_homework);
+//			    holder.essay_item_image_info_1.setDefaultImageResId(R.drawable.welcome_homework);
+//			    holder.essay_item_image_info_1.setErrorImageResId(R.drawable.welcome_homework);
 			    holder.essay_item_image_info_1.setImageUrl(chli.getImageList().get(0).getImageurl(), imageLoader1);
 			default:
 				break;
@@ -133,8 +133,8 @@ public class PiazzaCookbookHomeworkListAdapter extends BaseAdapter {
 		holder.essay_item_content.setVisibility(View.VISIBLE);
 		
 		ImageLoader item_img = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-		holder.item_img.setDefaultImageResId(R.drawable.welcome_homework);
-		holder.item_img.setErrorImageResId(R.drawable.welcome_homework);
+//		holder.item_img.setDefaultImageResId(R.drawable.welcome_homework);
+//		holder.item_img.setErrorImageResId(R.drawable.welcome_homework);
 		holder.item_img.setImageUrl(chli.getUportrait(), item_img);
 		
 		holder.essay_item_title.setText(chli.getNickname());

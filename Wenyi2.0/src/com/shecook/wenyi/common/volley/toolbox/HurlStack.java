@@ -20,13 +20,10 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -37,7 +34,6 @@ import javax.net.ssl.SSLSocketFactory;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
@@ -52,19 +48,14 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Environment;
-
-import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.activeandroid.util.Log;
 import com.shecook.wenyi.common.volley.AuthFailureError;
 import com.shecook.wenyi.common.volley.Request;
-import com.shecook.wenyi.common.volley.VolleyLog;
 import com.shecook.wenyi.common.volley.Request.Method;
-import com.shecook.wenyi.util.WenyiLog;
+import com.shecook.wenyi.common.volley.VolleyLog;
 
 /**
  * 基于 {@link HttpURLConnection} 的 {@link HttpStack}。
@@ -344,6 +335,7 @@ public class HurlStack implements HttpStack {
 		}
 		try {
 			httpRequest.setEntity(httpentity);
+			Log.e("lixufeng","doPost httpRequest " + httpRequest);
 			HttpResponse response = httpClient.execute(httpRequest);
 			return response;
 		} catch (Exception e) {

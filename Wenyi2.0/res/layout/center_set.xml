@@ -2,9 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp" >
+    android:background="@color/white" >
 
     <include layout="@layout/wenyi_common_header" />
 
@@ -14,6 +12,8 @@
         android:layout_below="@id/wenyi_common_header"
         android:layout_marginTop="20dp"
         android:background="@null"
+        android:divider="@color/divider"
+        android:dividerHeight="1dp"
         android:listSelector="@android:color/transparent" >
     </ListView>
 

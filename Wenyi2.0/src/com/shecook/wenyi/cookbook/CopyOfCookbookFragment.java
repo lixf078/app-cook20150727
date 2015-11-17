@@ -154,7 +154,7 @@ public class CopyOfCookbookFragment extends Fragment {
 									listResultListener, listErrorListener);
 						} else {
 							Toast.makeText(mActivity,
-									"End of List!", Toast.LENGTH_SHORT).show();
+									"您已翻到底儿了!", Toast.LENGTH_SHORT).show();
 						}
 					}
 				});

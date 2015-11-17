@@ -58,6 +58,7 @@ public class CookbookListAdapter extends BaseAdapter {
      				R.layout.cookbook_list_item, null);
 			holder = new ViewHolder();
 			holder.title = (TextView) view.findViewById(R.id.cookbook_item_title);
+			holder.set_on_top = (TextView) view.findViewById(R.id.set_on_top);
 			holder.summary = (TextView) view.findViewById(R.id.cookbook_item_summary);
 			holder.imageUrl = (NetworkImageRoundView) view.findViewById(R.id.item_img);
 			view.setTag(holder);
@@ -67,8 +68,8 @@ public class CookbookListAdapter extends BaseAdapter {
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
 	    holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(Util.getWidth(context) / 4, Util.getWidth(context) / 4));
-	    holder.imageUrl.setDefaultImageResId(R.drawable.icon);
-	    holder.imageUrl.setErrorImageResId(R.drawable.icon);
+//	    holder.imageUrl.setDefaultImageResId(R.drawable.bg_color_while);
+//	    holder.imageUrl.setErrorImageResId(R.drawable.bg_color_while);
 	    
 	    holder.imageUrl.setImageUrl(cbli.getImgoriginal(), imageLoader);
 	    holder.imageUrl.setOnClickListener(new OnClickListener() {
@@ -78,6 +79,7 @@ public class CookbookListAdapter extends BaseAdapter {
 			}
 		});
 		holder.title.setText(cbli.getRecipename());
+		holder.set_on_top.setText(cbli.getTag());
 		if(!"".equals(cbli.getSummary())){
 			holder.summary.setText(cbli.getSummary());
 		}
@@ -85,7 +87,7 @@ public class CookbookListAdapter extends BaseAdapter {
 	}
 	
 	private static class ViewHolder {
-		TextView title;
+		TextView title, set_on_top;
 		TextView summary;
 		NetworkImageRoundView imageUrl;
 	}

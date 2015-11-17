@@ -313,7 +313,7 @@ public class GroupItemDetailSharedFragment extends BaseFragmeng implements OnCli
 				e.printStackTrace();
 			}
 		}else{
-			Toast.makeText(mActivity, "End of List!",
+			Toast.makeText(mActivity, "您已翻到底儿了!",
 					Toast.LENGTH_SHORT).show();
 		}
 	
@@ -396,6 +396,10 @@ public class GroupItemDetailSharedFragment extends BaseFragmeng implements OnCli
 								listTemp.add(pdi);
 							}
 							groupSharedList.addAll(listTemp);
+						}else{
+							Toast.makeText(mActivity,
+									"" + jsonObject.getString("msg"),
+									Toast.LENGTH_SHORT).show();
 						}
 						if(data.has("pindex")){
 							pindex = data.getInt("pindex");
@@ -414,6 +418,7 @@ public class GroupItemDetailSharedFragment extends BaseFragmeng implements OnCli
 				e.printStackTrace();
 			}
 		}
+		Log.e("lixufeng", "sendEmptyMessage groupItemdetailsharedfragment");
 		handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 	}
 

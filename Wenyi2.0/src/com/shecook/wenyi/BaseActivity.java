@@ -325,6 +325,7 @@ public class BaseActivity extends FragmentActivity {
 
 	public boolean isLogin(){
 		checkLogin();
+		Log.e(TAG, "isLogin " + isLogin);
 		return isLogin;
 	}
 

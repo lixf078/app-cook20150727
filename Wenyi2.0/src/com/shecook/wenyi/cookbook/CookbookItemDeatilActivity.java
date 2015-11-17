@@ -90,7 +90,7 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.cookbook_listitem_detail);
 		initView();
-
+		mPageViews = new ArrayList<WenyiGallery>();
 		getCookbookDetail(HttpUrls.COOKBOOK_LIST_ITEM_DETAIL, null,
 				detailResultListener, detailErrorListener);
 		mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
@@ -146,7 +146,7 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 			}
 		});
 		
-		mPageViews = new ArrayList<WenyiGallery>();
+		/*mPageViews = new ArrayList<WenyiGallery>();
 		footer = getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
 		
 		viewPager = (AutoScrollViewPager) footer.findViewById(R.id.view_pager_advert);
@@ -173,10 +173,41 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
         footer.setLayoutParams(layoutParams);
         ListView lv = mPullRefreshListView.getRefreshableView();
         footer.setVisibility(View.GONE);
-        lv.addFooterView(footer);
+        lv.addFooterView(footer);*/
 
 	}
 
+	private void initViewPaper(){
+		footer = getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
+		
+		viewPager = (AutoScrollViewPager) footer.findViewById(R.id.view_pager_advert);
+		mIndicator = (CirclePageIndicator) footer.findViewById(R.id.indicator);
+		
+		/*WenyiGallery eg = new WenyiGallery();
+		eg.setId(Integer.parseInt(recipeid));
+		eg.setTitle(getResources().getString(R.string.app_name));
+		eg.setImgUrl("");
+		eg.setEvent_type(11);
+		eg.setEvent_content("www.baidu.com");
+		mPageViews.add(eg);*/
+		
+		adapter = new ViewPagerAdapter(CookbookItemDeatilActivity.this, mPageViews);
+		viewPager.setAdapter(adapter);
+		mIndicator.setViewPager(viewPager);
+
+		viewPager.setInterval(4000);
+		viewPager.setCurrentItem(0);
+		viewPager.setStopScrollWhenTouch(true);
+		setViewPagerScrollSpeed(viewPager);
+		
+		AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
+        footer.setLayoutParams(layoutParams);
+        ListView lv = mPullRefreshListView.getRefreshableView();
+        footer.setVisibility(View.GONE);
+        lv.addFooterView(footer);
+        viewPager.startAutoScroll();
+	}
+	
 	private String recipeid = "";
 
 	private void initView() {
@@ -215,14 +246,18 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 	public void onResume() {
 		super.onResume();
 		WenyiLog.logv(TAG, "onResume");
-		viewPager.startAutoScroll();
+		if(viewPager != null){
+			viewPager.startAutoScroll();
+		}
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		WenyiLog.logv(TAG, "onPause");
-		viewPager.stopAutoScroll();
+		if(viewPager != null){
+			viewPager.stopAutoScroll();
+		}
 	}
 
 	@Override
@@ -246,6 +281,7 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 				// Call onRefreshComplete when the list has been refreshed.
 				mPullRefreshListView.onRefreshComplete();
 				if(mPageViews.size() > 0){
+					initViewPaper();
 					footer.setVisibility(View.VISIBLE);
 					adapter.notifyDataSetChanged();
 				}
@@ -336,7 +372,7 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 						if(null != indredients && indredients.length() > 0){
 							CookBookModel indredientCbmType = new CookBookModel();
 							indredientCbmType.setRowContent("原料：");
-							indredientCbmType.setRowType("ingredients");
+							indredientCbmType.setRowType("catalog");
 							listTemp.add(indredientCbmType);
 							for (int i = 0, j = indredients.length(); i < j; i++) {
 								JSONObject jb = indredients.getJSONObject(i);
@@ -357,29 +393,31 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 						JSONArray seasonings = detail.has("seasonings") ? detail.getJSONArray("seasonings") : null;
 						if(null != indredients){
 							CookBookModel seasoningsCbm = new CookBookModel();
-							seasoningsCbm.setRowType("seasonings");
-							seasoningsCbm.setRowContent("调料：\n");
+							seasoningsCbm.setRowType("catalog");
+							seasoningsCbm.setRowContent("调料：");
+							listTemp.add(seasoningsCbm);
+							
 							for (int i = 0, j = seasonings.length(); i < j; i++) {
 								JSONObject seasoningsjb = seasonings.getJSONObject(i);
-								seasoningsCbm.setId(seasoningsjb.getString("id"));
-								seasoningsCbm.setRecipeid(seasoningsjb.getString("recipeid"));
-								seasoningsCbm.setRowContent(seasoningsjb.getString("seasoning"));
-								seasoningsCbm.setRowContent(seasoningsjb.getString("unit"));
+								CookBookModel seasoningsCbm2 = new CookBookModel();
+								seasoningsCbm2.setId(seasoningsjb.getString("id"));
+								seasoningsCbm2.setRowType("seasonings");
+								seasoningsCbm2.setRecipeid(seasoningsjb.getString("recipeid"));
+								seasoningsCbm2.setRowContent(seasoningsjb.getString("seasoning") + ";");
+								seasoningsCbm2.setRowContent(seasoningsjb.getString("unit"));
+								listTemp.add(seasoningsCbm2);
 							}
-							listTemp.add(seasoningsCbm);
 						}
 						
+						listTemp.add(indredientCbmType);
 						
 						JSONArray contents = detail.has("contents") ? detail.getJSONArray("contents") : null;
 						if(null != indredients){
-							
-							listTemp.add(indredientCbmType);
-							
 							CookBookModel contentsCbm1 = new CookBookModel();
 							contentsCbm1.setId("");
 							contentsCbm1.setRecipeid("");
-							contentsCbm1.setRowType("paragraph");
-							contentsCbm1.setRowContent("内容：\n");
+							contentsCbm1.setRowType("catalog");
+							contentsCbm1.setRowContent("做法：");
 							listTemp.add(contentsCbm1);
 							for (int i = 0, j = contents.length(); i < j; i++) {
 								JSONObject contentsjb = contents.getJSONObject(i);
@@ -398,8 +436,8 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 							CookBookModel contentsCbm1 = new CookBookModel();
 							contentsCbm1.setId("");
 							contentsCbm1.setRecipeid("");
-							contentsCbm1.setRowType("paragraph");
-							contentsCbm1.setRowContent("超级啰嗦：\n");
+							contentsCbm1.setRowType("catalog");
+							contentsCbm1.setRowContent("超级啰嗦：");
 							listTemp.add(contentsCbm1);
 							for (int i = 0, j = notes.length(); i < j; i++) {
 								JSONObject notesjb = notes.getJSONObject(i);
@@ -435,8 +473,9 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 						// ******************************** add homework comments
 						JSONArray recipecomments = detail.has("recipecomments") ? detail.getJSONArray("recipecomments") : null;
 						Log.d(TAG, "recipecomments " + recipecomments);
-						if(null != recipecomments){
-							for (int i = 0, j = recipecomments.length(); i < j; i++) {
+						if(null != recipecomments && recipecomments.length() > 0){
+							listTemp.add(indredientCbmType);
+							for (int i = 0, j = recipecomments.length(); (i < j) && i < 3; i++) {
 								JSONObject recipecommentsjb = recipecomments.getJSONObject(i);
 								CookbookComment recipecommentsCbm = new CookbookComment();
 								recipecommentsCbm.setId(recipecommentsjb.getString("id"));
@@ -452,6 +491,7 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 								listTemp.add(recipecommentsCbm);
 							}
 						}
+						listTemp.add(indredientCbmType);
 						// ********************************
 						mListItems.addAll(listTemp);
 

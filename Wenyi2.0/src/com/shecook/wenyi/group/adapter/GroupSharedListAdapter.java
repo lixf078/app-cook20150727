@@ -14,6 +14,7 @@ import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.model.group.GroupListItemSharedModel;
+import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
@@ -79,14 +80,15 @@ public class GroupSharedListAdapter extends BaseAdapter {
 
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
-	    holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
+//	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
+//	    holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
 	    
 	    holder.imageUrl.setImageUrl(eli.getUportrait(), imageLoader);
 		holder.group_shared_item_title.setText(eli.getNickname());
-		if(!"".equals(eli.getComments())){
-			holder.group_shared_item_time.setText(eli.getComments());
-		}
+		holder.group_shared_item_time.setText(Util.formatTime2Away(eli.getTimeline()));
+//		if(!"".equals(eli.getComments())){
+//			holder.group_shared_item_time.setText(eli.getComments());
+//		}
 		holder.group_shared_item_summary.setText(eli.getBody());
 
 		holder.group_shared_item_delete.setOnClickListener(new OnClickListener() {
@@ -109,35 +111,35 @@ public class GroupSharedListAdapter extends BaseAdapter {
 				holder.group_detail_item_image_info_4.setVisibility(View.VISIBLE);
 				
 				ImageLoader imageLoader4 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-				holder.group_detail_item_image_info_4.setDefaultImageResId(R.drawable.welcome_homework);
-				holder.group_detail_item_image_info_4.setErrorImageResId(R.drawable.welcome_homework);
+//				holder.group_detail_item_image_info_4.setDefaultImageResId(R.drawable.welcome_homework);
+//				holder.group_detail_item_image_info_4.setErrorImageResId(R.drawable.welcome_homework);
 				holder.group_detail_item_image_info_4.setImageUrl(eli.getImages().get(3).getImageurl(), imageLoader4);
 			case 3:
 				holder.group_detail_item_image_info_3.setVisibility(View.VISIBLE);
 				
 				ImageLoader imageLoader3 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-				holder.group_detail_item_image_info_3.setDefaultImageResId(R.drawable.welcome_homework);
-				holder.group_detail_item_image_info_3.setErrorImageResId(R.drawable.welcome_homework);
+//				holder.group_detail_item_image_info_3.setDefaultImageResId(R.drawable.welcome_homework);
+//				holder.group_detail_item_image_info_3.setErrorImageResId(R.drawable.welcome_homework);
 				holder.group_detail_item_image_info_3.setImageUrl(eli.getImages().get(2).getImageurl(), imageLoader3);
 			case 2:
 				holder.group_detail_item_image_info_2.setVisibility(View.VISIBLE);
 				
 				ImageLoader imageLoader2 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-				holder.group_detail_item_image_info_2.setDefaultImageResId(R.drawable.welcome_homework);
-				holder.group_detail_item_image_info_2.setErrorImageResId(R.drawable.welcome_homework);
+//				holder.group_detail_item_image_info_2.setDefaultImageResId(R.drawable.welcome_homework);
+//				holder.group_detail_item_image_info_2.setErrorImageResId(R.drawable.welcome_homework);
 				holder.group_detail_item_image_info_2.setImageUrl(eli.getImages().get(1).getImageurl(), imageLoader2);
 			case 1:
 				holder.group_detail_item_image_info_1.setVisibility(View.VISIBLE);
-				
+
 				ImageLoader imageLoader1 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-				holder.group_detail_item_image_info_1.setDefaultImageResId(R.drawable.welcome_homework);
-				holder.group_detail_item_image_info_1.setErrorImageResId(R.drawable.welcome_homework);
+//				holder.group_detail_item_image_info_1.setDefaultImageResId(R.drawable.welcome_homework);
+//				holder.group_detail_item_image_info_1.setErrorImageResId(R.drawable.welcome_homework);
 				holder.group_detail_item_image_info_1.setImageUrl(eli.getImages().get(0).getImageurl(), imageLoader1);
 			default:
 				break;
 			}
 		}
-		
+
 		return view ;
 	}
 	

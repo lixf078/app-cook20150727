@@ -117,7 +117,7 @@ public class GroupHotFragment extends BaseFragmeng {
 									groupHotResultListener,
 									groupHotErrorListener);
 						} else {
-							Toast.makeText(mActivity, "End of List!",
+							Toast.makeText(mActivity, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
@@ -129,7 +129,7 @@ public class GroupHotFragment extends BaseFragmeng {
 		mListItems = new LinkedList<GroupHotListItem>();
 		mAdapter = new GroupHotListAdapter(mActivity, mListItems);
 
-		mPullRefreshListView.setMode(Mode.BOTH);
+		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
 		// You can also just use setListAdapter(mAdapter) or
 		mPullRefreshListView.setAdapter(mAdapter);
 		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {

@@ -105,7 +105,7 @@ public class PersonalEditionHomework extends Fragment {
 						if(shouldLoad){
 							getHomeworkList(HttpUrls.PERSONAL_EDITION_HOMEWORK, null, homeworkResultListener, homeworkErrorListener);
 						}else{
-							Toast.makeText(mActivity, "End of List!",
+							Toast.makeText(mActivity, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
@@ -121,7 +121,7 @@ public class PersonalEditionHomework extends Fragment {
 						if(shouldLoad){
 							getHomeworkList(HttpUrls.PERSONAL_EDITION_HOMEWORK, null, homeworkResultListener, homeworkErrorListener);
 						}else{
-							Toast.makeText(mActivity, "End of List!", Toast.LENGTH_SHORT).show();
+							Toast.makeText(mActivity, "您已翻到底儿了!", Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
 					}

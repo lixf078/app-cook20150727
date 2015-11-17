@@ -98,8 +98,8 @@ public class PiazzaDiscoverListAdapter extends BaseAdapter {
 			holder.discover_gallery_image.setLayoutParams(rl);
 
 		    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-		    holder.discover_gallery_image.setDefaultImageResId(R.drawable.welcome_homework);
-		    holder.discover_gallery_image.setErrorImageResId(R.drawable.welcome_homework);
+//		    holder.discover_gallery_image.setDefaultImageResId(R.drawable.welcome_homework);
+//		    holder.discover_gallery_image.setErrorImageResId(R.drawable.welcome_homework);
 		    holder.discover_gallery_image.setImageUrl(pdi.getImageurl(), imageLoader);
 		    
 		    holder.discover_gallery_text.setText(pdi.getDesc());
@@ -124,8 +124,8 @@ public class PiazzaDiscoverListAdapter extends BaseAdapter {
 //					holder.essay_item_image_info_4.setLayoutParams(rl);
 
 				    ImageLoader imageLoader4 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-				    holder.essay_item_image_info_4.setDefaultImageResId(R.drawable.welcome_homework);
-				    holder.essay_item_image_info_4.setErrorImageResId(R.drawable.welcome_homework);
+//				    holder.essay_item_image_info_4.setDefaultImageResId(R.drawable.welcome_homework);
+//				    holder.essay_item_image_info_4.setErrorImageResId(R.drawable.welcome_homework);
 				    holder.essay_item_image_info_4.setImageUrl(pdi.getImage_items()[3], imageLoader4);
 				case 3:
 					holder.essay_item_image_info_3.setVisibility(View.VISIBLE);
@@ -133,8 +133,8 @@ public class PiazzaDiscoverListAdapter extends BaseAdapter {
 //					holder.essay_item_image_info_3.setLayoutParams(rl);
 
 				    ImageLoader imageLoader3 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-				    holder.essay_item_image_info_3.setDefaultImageResId(R.drawable.welcome_homework);
-				    holder.essay_item_image_info_3.setErrorImageResId(R.drawable.welcome_homework);
+//				    holder.essay_item_image_info_3.setDefaultImageResId(R.drawable.welcome_homework);
+//				    holder.essay_item_image_info_3.setErrorImageResId(R.drawable.welcome_homework);
 				    holder.essay_item_image_info_3.setImageUrl(pdi.getImage_items()[2], imageLoader3);
 				case 2:
 					holder.essay_item_image_info_2.setVisibility(View.VISIBLE);
@@ -142,8 +142,8 @@ public class PiazzaDiscoverListAdapter extends BaseAdapter {
 //					holder.essay_item_image_info_2.setLayoutParams(rl);
 
 				    ImageLoader imageLoader2 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-				    holder.essay_item_image_info_2.setDefaultImageResId(R.drawable.welcome_homework);
-				    holder.essay_item_image_info_2.setErrorImageResId(R.drawable.welcome_homework);
+//				    holder.essay_item_image_info_2.setDefaultImageResId(R.drawable.welcome_homework);
+//				    holder.essay_item_image_info_2.setErrorImageResId(R.drawable.welcome_homework);
 				    holder.essay_item_image_info_2.setImageUrl(pdi.getImage_items()[1], imageLoader2);
 				case 1:
 					holder.essay_item_image_info_1.setVisibility(View.VISIBLE);
@@ -151,8 +151,8 @@ public class PiazzaDiscoverListAdapter extends BaseAdapter {
 //					holder.essay_item_image_info_1.setLayoutParams(rl);
 
 				    ImageLoader imageLoader1 = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-				    holder.essay_item_image_info_1.setDefaultImageResId(R.drawable.welcome_homework);
-				    holder.essay_item_image_info_1.setErrorImageResId(R.drawable.welcome_homework);
+//				    holder.essay_item_image_info_1.setDefaultImageResId(R.drawable.welcome_homework);
+//				    holder.essay_item_image_info_1.setErrorImageResId(R.drawable.welcome_homework);
 				    holder.essay_item_image_info_1.setImageUrl(pdi.getImage_items()[0], imageLoader1);
 				default:
 					break;
@@ -173,8 +173,8 @@ public class PiazzaDiscoverListAdapter extends BaseAdapter {
 				holder.essay_item_content.setVisibility(View.VISIBLE);
 				
 				ImageLoader item_img = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-				holder.item_img.setDefaultImageResId(R.drawable.welcome_homework);
-				holder.item_img.setErrorImageResId(R.drawable.welcome_homework);
+//				holder.item_img.setDefaultImageResId(R.drawable.welcome_homework);
+//				holder.item_img.setErrorImageResId(R.drawable.welcome_homework);
 				holder.item_img.setImageUrl(pdi.getImageurl(), item_img);
 
 				holder.essay_item_title.setText(pdi.getTitle());
@@ -190,8 +190,8 @@ public class PiazzaDiscoverListAdapter extends BaseAdapter {
 				holder.essay_item_content.setVisibility(View.VISIBLE);
 				
 				ImageLoader item_img = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-			    holder.item_img.setDefaultImageResId(R.drawable.welcome_homework);
-			    holder.item_img.setErrorImageResId(R.drawable.welcome_homework);
+//			    holder.item_img.setDefaultImageResId(R.drawable.welcome_homework);
+//			    holder.item_img.setErrorImageResId(R.drawable.welcome_homework);
 			    holder.item_img.setImageUrl(pdi.getImageurl(), item_img);
 				
 				holder.essay_item_title.setText(pdi.getTitle());

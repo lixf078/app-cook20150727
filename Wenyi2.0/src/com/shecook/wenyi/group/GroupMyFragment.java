@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.DateUtils;
@@ -126,7 +127,7 @@ public class GroupMyFragment extends BaseFragmeng implements OnClickListener{
 									groupHotResultListener,
 									groupHotErrorListener);
 						} else {
-							Toast.makeText(mActivity, "End of List!",
+							Toast.makeText(mActivity, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
@@ -146,7 +147,9 @@ public class GroupMyFragment extends BaseFragmeng implements OnClickListener{
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
-				
+				Intent intent = new Intent(mActivity, GroupItemDetailActivity.class);
+				intent.putExtra("circleid", "" + mListItems.get((int) position).getId());
+				startActivity(intent);
 			}
 		});
 		

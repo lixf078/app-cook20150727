@@ -70,7 +70,7 @@ public class PersonalEditionTopic extends Fragment {
 		if(shouldLoad){
 			getMyTopicList(HttpUrls.PERSONAL_TOPIC_MY_LIST, null, listResultListener, listErrorListener);
 		}else{
-			Toast.makeText(mActivity, "End of List!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mActivity, "您已翻到底儿了!", Toast.LENGTH_SHORT).show();
 		}
 		return rootView;
 	}
@@ -99,7 +99,7 @@ public class PersonalEditionTopic extends Fragment {
 						if(shouldLoad){
 							getMyTopicList(HttpUrls.PERSONAL_TOPIC_MY_LIST, null, listResultListener, listErrorListener);
 						}else{
-							Toast.makeText(mActivity, "End of List!",
+							Toast.makeText(mActivity, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
@@ -115,7 +115,7 @@ public class PersonalEditionTopic extends Fragment {
 						if(shouldLoad){
 							getMyTopicList(HttpUrls.PERSONAL_TOPIC_MY_LIST, null, listResultListener, listErrorListener);
 						}else{
-							Toast.makeText(mActivity, "End of List!",
+							Toast.makeText(mActivity, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}

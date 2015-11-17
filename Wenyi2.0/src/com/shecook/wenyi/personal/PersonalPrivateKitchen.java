@@ -2,6 +2,8 @@ package com.shecook.wenyi.personal;
 
 import java.util.LinkedList;
 
+import javax.crypto.Mac;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +19,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -156,7 +157,7 @@ public class PersonalPrivateKitchen extends BaseActivity implements
 			}
 
 		});
-		
+		categoryGridView.setSelected(true);
 		foodCatalogAdapter = new PersonalFoodCategoryAdapter(
 				PersonalPrivateKitchen.this, this, foodlist);
 		categoryGridView.setAdapter(foodCatalogAdapter);

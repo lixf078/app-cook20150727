@@ -104,7 +104,7 @@ public class EssaySearchActivity extends BaseActivity implements OnClickListener
 							getKeywordsList(HttpUrls.ESSAY_WENYI_SEARCH, null,
 									listResultListener, listErrorListener);
 						}else{
-							Toast.makeText(EssaySearchActivity.this, "End of List!", Toast.LENGTH_SHORT).show();
+							Toast.makeText(EssaySearchActivity.this, "您已翻到底儿了!", Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
 					}
@@ -120,7 +120,7 @@ public class EssaySearchActivity extends BaseActivity implements OnClickListener
 							getKeywordsList(HttpUrls.ESSAY_WENYI_SEARCH, null,
 									listResultListener, listErrorListener);
 						} else {
-							Toast.makeText(EssaySearchActivity.this, "End of List!",
+							Toast.makeText(EssaySearchActivity.this, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 						}
 					}

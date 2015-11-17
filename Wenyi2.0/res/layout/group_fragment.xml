@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/white"
+    android:background="@color/white"
     android:orientation="vertical" >
 
-    <include layout="@layout/wenyi_common_header"
-        android:background="@android:color/white" />
+    <include layout="@layout/wenyi_common_header_textview"/>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:background="@color/wenyi_common_background_color" >
 
         <RadioGroup
             android:id="@+id/tabs_rg"
@@ -22,14 +22,14 @@
             android:orientation="horizontal"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp" >
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp" >
 
             <RadioButton
                 android:id="@+id/group_hot_rb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_selector"
+                android:background="@drawable/background_selector_left"
                 android:button="@null"
                 android:checked="true"
                 android:drawableTop="@null"
@@ -37,22 +37,22 @@
                 android:layout_weight="1.0"
                 android:singleLine="true"
                 android:text="@string/group_hot_str"
-                android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textColor="@drawable/radiobutton_textview_selector"
+                android:textSize="20sp" />
 
             <RadioButton
                 android:id="@+id/group_personal_rb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_selector"
+                android:background="@drawable/background_selector_right"
                 android:button="@null"
                 android:drawableTop="@null"
                 android:layout_weight="1.0"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/group_personal_str"
-                android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textColor="@drawable/radiobutton_textview_selector"
+                android:textSize="20sp" />
 
         </RadioGroup>
 

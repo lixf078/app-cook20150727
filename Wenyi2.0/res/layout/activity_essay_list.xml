@@ -1,28 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <include layout="@layout/wenyi_common_header" />
-
+    <include
+        android:id="@+id/wenyi_common_header_layout"
+        layout="@layout/wenyi_common_header" />
     <!-- The PullToRefreshListView replaces a standard ListView widget. -->
 
     <com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView
         android:id="@id/pull_refresh_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_below="@id/wenyi_common_header_layout"
         android:layout_marginLeft="15dip"
         android:layout_marginRight="15dip"
         android:cacheColorHint="#00ffffff"
         android:divider="#d3c9c9"
         android:dividerHeight="1dp"
         android:fadingEdge="none"
-        android:scrollbars="none"
         android:fastScrollEnabled="false"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
+        android:scrollbars="none"
         android:smoothScrollbar="true" />
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/event_search_result_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/wenyi_common_header_layout"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/alphaLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/wenyi_common_header_layout"
+        android:background="#af000000"
+        android:visibility="gone" />
+
+</RelativeLayout>

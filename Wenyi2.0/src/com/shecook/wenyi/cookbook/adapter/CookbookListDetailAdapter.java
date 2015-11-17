@@ -96,8 +96,8 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 			LruImageCache lruImageCache = LruImageCache.instance();
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
-			holder.imageUrl.setDefaultImageResId(R.drawable.loadingpic);
-			holder.imageUrl.setErrorImageResId(R.drawable.loadingpic);
+//			holder.imageUrl.setDefaultImageResId(R.drawable.bg_color_while);
+//			holder.imageUrl.setErrorImageResId(R.drawable.bg_color_while);
 			
 			try {
 //				holder.layout.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 0));
@@ -133,8 +133,8 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 			LruImageCache lruImageCache = LruImageCache.instance();
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
-			holder.uportraitImage.setDefaultImageResId(R.drawable.icon);
-			holder.uportraitImage.setErrorImageResId(R.drawable.icon);
+//			holder.uportraitImage.setDefaultImageResId(R.drawable.bg_color_while);
+//			holder.uportraitImage.setErrorImageResId(R.drawable.bg_color_while);
 			
 			try {
 				// holder.imageUrl.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, Util.getMetricsHeigh(context, 500, 750)));
@@ -169,8 +169,8 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 			LruImageCache lruImageCache = LruImageCache.instance();
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
-			holder.imageUrl.setDefaultImageResId(R.drawable.loadingpic);
-			holder.imageUrl.setErrorImageResId(R.drawable.loadingpic);
+//			holder.imageUrl.setDefaultImageResId(R.drawable.bg_color_while);
+//			holder.imageUrl.setErrorImageResId(R.drawable.bg_color_while);
 			
 			try {
 //				holder.layout.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 0));
@@ -194,6 +194,10 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 		}else{
 			holder.imageUrl.setVisibility(View.GONE);
 			holder.advTitle.setVisibility(View.VISIBLE);
+			holder.advTitle.setTextSize(14);
+			holder.advTitle.setBackgroundResource(R.color.white);
+			holder.advTitle.setTextColor(context.getResources().getColor(R.color.black));
+			holder.advTitle.setText("");
 			holder.layout.setVisibility(View.GONE);
 //			holder.layout.setLayoutParams(new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.MATCH_PARENT, 0));
 			if("title".equals(rowtype)){
@@ -202,7 +206,7 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 				holder.cookbook_listitem_detail_text2.setVisibility(View.GONE);
 				holder.cookbook_listitem_detail_text3.setVisibility(View.GONE);
 				holder.advTitle.setText(elid.getRowContent());
-			}else if("ingredients".equals(rowtype)){
+			}else if("ingredients".equals(rowtype) || "seasonings".equals(rowtype)){
 				holder.advTitle.setTextSize(16);
 				holder.advTitle.setGravity(Gravity.LEFT);
 				String[] rows = elid.getRowContent().split(";");
@@ -215,12 +219,18 @@ public class CookbookListDetailAdapter extends BaseAdapter {
 					holder.advTitle.setText(elid.getRowContent().split(";")[0]);
 					holder.cookbook_listitem_detail_text3.setText(elid.getRowContent().split(";")[1]);
 				}else{
-					holder.advTitle.setBackgroundColor(context.getResources().getColor(R.color.wenyi_common_background_color));
+					holder.advTitle.setBackgroundColor(context.getResources().getColor(R.color.personal_comments_divider));
 					holder.advTitle.setText(elid.getRowContent().split(";")[0]);
 				}
 			}else if("space".equals(rowtype)){
 				holder.advTitle.setTextSize(16);
-				holder.advTitle.setBackgroundResource(R.color.wenyi_common_background_color);
+				holder.advTitle.setBackgroundResource(R.color.personal_comments_divider);
+				holder.cookbook_listitem_detail_text2.setVisibility(View.GONE);
+				holder.cookbook_listitem_detail_text3.setVisibility(View.GONE);
+			}else if("catalog".equals(rowtype)){
+				holder.advTitle.setText(elid.getRowContent());
+				holder.advTitle.setTextSize(18);
+				holder.advTitle.setTextColor(context.getResources().getColor(R.color.orange));
 				holder.cookbook_listitem_detail_text2.setVisibility(View.GONE);
 				holder.cookbook_listitem_detail_text3.setVisibility(View.GONE);
 			}else{

@@ -51,8 +51,6 @@ public class PersonalShiCaiAdaptre extends BaseAdapter {
 		
 		View view = LayoutInflater.from(mContext).inflate(R.layout.leibie, null);
 		TextView leibieText = (TextView) view.findViewById(R.id.leibieImage);
-		Log.e("lixufeng", "getView " + catalog);
-		Log.e("lixufeng", "getView " + itemList.get(catalog));
 		leibieText.setText(itemList.get(catalog).getSubList().get(position).getName());
 		
 		leibieText.setOnClickListener(new OnClickListener() {

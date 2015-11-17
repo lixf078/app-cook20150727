@@ -164,5 +164,9 @@
         <item name="@android:windowEnterAnimation">@anim/dialog_enter</item>
         <item name="@android:windowExitAnimation">@anim/dialog_exit</item>
     </style><!-- <item name="android:windowMinWidthMinor">80%</item> -->
-
+    
+    <style name="sharch_activity_theme" parent="android:Theme.Translucent.NoTitleBar">
+        <item name="@android:windowNoTitle">true</item>
+        <item name="@android:windowContentOverlay">@color/transparent2</item>
+    </style>
 </resources>

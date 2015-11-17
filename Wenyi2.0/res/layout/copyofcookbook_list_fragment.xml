@@ -2,45 +2,44 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/bgfile" >
+    android:background="@android:color/white" >
 
-    <LinearLayout
+    <include
+        android:id="@+id/wenyi_common_header_layout"
+        layout="@layout/wenyi_common_header" />
+
+    <!-- The PullToRefreshListView replaces a standard ListView widget. -->
+
+    <com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView
+        android:layout_below="@id/wenyi_common_header_layout"
+        android:id="@id/pull_refresh_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@android:color/white"
-        android:orientation="vertical" >
+        android:cacheColorHint="#00000000"
+        android:divider="@color/personal_comments_divider"
+        android:dividerHeight="1dp"
+        android:fadingEdge="none"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:scrollbars="none"
+        android:smoothScrollbar="true" />
 
-        <include layout="@layout/wenyi_common_header" />
+    <RelativeLayout
+        android:id="@+id/event_search_result_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/wenyi_common_header_layout"
+        android:visibility="gone" />
 
-        <!-- The PullToRefreshListView replaces a standard ListView widget. -->
-
-        <com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView
-            android:id="@id/pull_refresh_list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:cacheColorHint="#00000000"
-            android:divider="@null"
-            android:scrollbars="none"
-            android:fadingEdge="none"
-            android:fastScrollEnabled="false"
-            android:footerDividersEnabled="false"
-            android:headerDividersEnabled="false"
-            android:smoothScrollbar="true" />
-        <!--
-        <com.shecook.wenyi.common.pulltorefresh.PullToRefreshGridView
-            xmlns:ptr="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/pull_refresh_grid"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:columnWidth="100dp"
-            android:gravity="fill"
-            android:horizontalSpacing="1dp"
-            android:numColumns="auto_fit"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="1dp"
-            ptr:ptrDrawable="@drawable/ic_launcher" />
-            ptr:ptrMode="both"
-        -->
-    </LinearLayout>
+    <View
+        android:id="@+id/alphaLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/wenyi_common_header_layout"
+        android:background="#af000000"
+        android:visibility="gone" />
 
 </RelativeLayout>

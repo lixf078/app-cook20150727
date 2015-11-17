@@ -40,6 +40,8 @@ import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity;
 import com.shecook.wenyi.cookbook.CookbookItemDeatilActivity;
 import com.shecook.wenyi.essay.EssayItemDeatilActivity;
+import com.shecook.wenyi.group.GroupItemDetailActivity;
+import com.shecook.wenyi.group.GroupShareDeatilActivity;
 import com.shecook.wenyi.model.piazza.PiazzaDiscoverItem;
 import com.shecook.wenyi.piazza.adapter.PiazzaDiscoverListAdapter;
 import com.shecook.wenyi.util.AppException;
@@ -157,12 +159,12 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 				case 10000:
 
 					break;
-				case 10001:
+				case 10001:// 跳转网页
 					intent = new Intent(Intent.ACTION_VIEW, Uri.parse(event_content));
 					startActivity(intent);
 					startActivity(intent);
 					break;
-				case 10002:
+				case 10002:// 文怡随笔
 					intent = new Intent(mActivity, EssayItemDeatilActivity.class);
 					intent.putExtra("essaytitle", "" + mListItems.get((int) position).getTitle());
 					intent.putExtra("catalogtitle", "文怡随笔");
@@ -170,30 +172,37 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 					startActivity(intent);
 
 					break;
-				case 10003:
+				case 10003:// 跳转随笔详情界面 
 					intent = new Intent(mActivity, CookbookItemDeatilActivity.class);
 					intent.putExtra("cookbooktitle", "" + mListItems.get((int) position).getTitle());
 					intent.putExtra("recipeid", "" + event_content);
 					startActivity(intent);
 
 					break;
-				case 10004:
+				case 10004:// 采用webview形式打开链接 
 					intent = new Intent(mActivity, WebViewActivity.class);
 					intent.putExtra("weburl", "" + event_content);
 					startActivity(intent);
 
 					break;
-				case 10005:
-					/*intent = new Intent(Intent.ACTION_VIEW, Uri.parse(event_content));
-					startActivity(intent);*/
+				case 10005:// 跳转某圈子发布的分享信息 
+					intent = new Intent(mActivity, GroupShareDeatilActivity.class);
+					intent.putExtra("circleid", event_content);
+					intent.putExtra("shareid", event_content);
+					startActivity(intent);
 					break;
-				case 10006:
+				case 10006:// 跳转某条话题详情 
 					intent = new Intent(mActivity, PizzaQuestionDeatilActivity.class);
 					intent.putExtra("topicid", "" + event_content);
 					startActivity(intent);
-				case 10007:
+				case 10007:// 跳转某条作业详情 
 					intent = new Intent(mActivity, CookbookHomeworkDeatilActivity.class);
 					intent.putExtra("followid", "" + event_content);
+					startActivity(intent);
+					break;
+				case 10008:// 跳转某圈子详情页 
+					intent = new Intent(mActivity, GroupItemDetailActivity.class);
+					intent.putExtra("circleid", event_content);
 					startActivity(intent);
 					break;
 				default:

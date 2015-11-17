@@ -58,7 +58,7 @@ public class CookbookHomeworkList extends BaseActivity implements OnClickListene
 	private CookbookHomeworkListAdapter mAdapter;
 	private boolean shouldLoad = true;
 	
-	private ImageView return_img, right_img;
+	private TextView return_img, right_img;
 	private TextView middle_title;
 	String recipeid = "";
 	@Override
@@ -73,8 +73,16 @@ public class CookbookHomeworkList extends BaseActivity implements OnClickListene
 
 	public void initView(){
 		
-		right_img = (ImageView) findViewById(R.id.right_img);
+		right_img = (TextView) findViewById(R.id.right_textview);
+		right_img.setText("交作业");
+		right_img.setBackgroundResource(R.drawable.wenyi_border_selected_orange_red);
+		right_img.setTextColor(getResources().getColor(R.color.white));
+		
 		right_img.setOnClickListener(this);
+		
+		return_img = (TextView) findViewById(R.id.return_textview);
+		return_img.setText("返回");
+		return_img.setOnClickListener(this);
 		
 		networkImageView = (NetworkImageView) findViewById(R.id.main_layout_fillparent);
 		mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
@@ -100,7 +108,7 @@ public class CookbookHomeworkList extends BaseActivity implements OnClickListene
 						if(shouldLoad){
 							getHomeworkList(HttpUrls.COOKBOOK_HOMEWORK_LIST, null, listResultListener, listErrorListener);
 						}else{
-							Toast.makeText(CookbookHomeworkList.this, "End of List!",
+							Toast.makeText(CookbookHomeworkList.this, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
@@ -117,7 +125,7 @@ public class CookbookHomeworkList extends BaseActivity implements OnClickListene
 						if(shouldLoad){
 							getHomeworkList(HttpUrls.COOKBOOK_HOMEWORK_LIST, null, listResultListener, listErrorListener);
 						}else{
-							Toast.makeText(CookbookHomeworkList.this, "End of List!",
+							Toast.makeText(CookbookHomeworkList.this, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
@@ -204,13 +212,15 @@ public class CookbookHomeworkList extends BaseActivity implements OnClickListene
 	public void onClick(View v) {
 		int id = v.getId();
 		switch (id) {
-		case R.id.right_img:
+		case R.id.right_textview:
 			Intent intent = new Intent(CookbookHomeworkList.this, CreatePersonalInfoActivity.class);
 			intent.putExtra("ententId", recipeid);
 			intent.putExtra("flag", HttpStatus.PUBLIC_FOR_COOKBOOK);
 			startActivity(intent);
 			break;
-
+		case R.id.return_textview:
+			finish();
+			break;
 		default:
 			break;
 		}

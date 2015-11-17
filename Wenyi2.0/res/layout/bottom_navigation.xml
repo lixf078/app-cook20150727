@@ -9,8 +9,7 @@
         android:id="@+id/main_layout_fillparent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dip"
-        android:background="@drawable/wenyi_06"
+        android:background="@drawable/welcome"
         android:gravity="center"
         android:visibility="gone"
         android:scaleType="fitXY" />

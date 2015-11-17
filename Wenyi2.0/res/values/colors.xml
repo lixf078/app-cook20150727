@@ -448,6 +448,16 @@
     <color name="divider">#B6B6B6</color>
     <color name="color_a7a7c9">#a7a7c9</color>
     <color name="color_8b8bbc">#8b8bbc</color>
-    
-    
+    	
+	<color name="actionbar_bg">#ea4f40</color>
+	<color name="suggestion_adapter_item">#22000000</color>
+	<color name="menu_frame_bg">#db6009</color>
+	
+	<color name="radio_button_textcolor_normal">#dd600a</color>
+	<color name="radio_button_frame_normal">#dd600a</color>
+	<color name="radio_button_background_selected">#dd600a</color>
+	
+	<color name="personal_comments_background">#fcf4e7</color>
+	<color name="personal_comments_divider">#f8f7f2</color>
+	<color name="personal_buttom_background">#f0eff5</color>
 </resources>

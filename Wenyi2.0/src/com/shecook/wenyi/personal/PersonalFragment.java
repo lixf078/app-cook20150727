@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,7 +38,7 @@ import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.cookbook.CookbookCollectionActivity;
 import com.shecook.wenyi.model.WenyiUser;
 import com.shecook.wenyi.util.RequestHttpUtil;
@@ -51,11 +50,11 @@ import com.shecook.wenyi.util.volleybox.VolleyUtils;
 public class PersonalFragment extends Fragment implements OnClickListener {
 	private static final String TAG = "PersonalFragment";
 
-	private Activity mActivity;
+	private StartActivity mActivity;
 
 	private TextView user_level, personal_gold, personal_email, personal_experience, personal_username;
 	
-	private NetworkImageRoundView userIconView;
+	private NetworkImageView userIconView;
 	LinearLayout personal_my_collection, personal_my_topic, personal_my_edit,personal_my_kitchen;
 	CommonUpload commonUpload;
 	String iconUrl = null;
@@ -70,7 +69,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mActivity = getActivity();
+		mActivity = (StartActivity) getActivity();
 		RequestHttpUtil.getHttpData(mActivity, HttpUrls.PERSONAL_MYCARD, null,
 				userCardResultListener, userCardErrorListener);
 		commonUpload = CommonUpload.getInstance();
@@ -92,7 +91,13 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 				.findViewById(R.id.personal_center_settings);
 		settings.setOnClickListener(this);
 		
-		userIconView = (NetworkImageRoundView) rootView.findViewById(R.id.user_icon);
+		userIconView = (NetworkImageView) rootView.findViewById(R.id.user_icon);
+		userIconView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				commonUpload.showCameraDialog(mActivity);
+			}
+		});
 //		userIconView.setDefaultImageResId(R.drawable.icon);
 //		userIconView.setErrorImageResId(R.drawable.icon);
 		personal_username = (TextView) rootView.findViewById(R.id.personal_username);
@@ -133,6 +138,16 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onResume() {
 		WenyiLog.logv(TAG, "onResume");
+		if(!mActivity.isLogin()){
+			WenyiUser user = new WenyiUser();
+			user.set_score("积分");
+			user.set_level("厨房小毛猴");
+			user.set_msgcount("消息");
+			user.set_nickname("");
+			user.set_level_core("经验");
+			user.set_uimage50("");
+			updateView(user);
+		}
 		super.onResume();
 	}
 
@@ -168,8 +183,13 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onClick(View view) {
-		Intent intent = null;
 		int id = view.getId();
+		Intent intent = null;
+		if(!mActivity.isLogin() && id != R.id.personal_center_settings){
+			intent = new Intent(mActivity,PersonalLoginCommon.class);
+			startActivityForResult(intent, 1);
+			return;
+		}
 		switch (id) {
 		case R.id.personal_center_settings:
 			intent = new Intent(PersonalFragment.this.getActivity(),
@@ -241,17 +261,13 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		personal_gold.setText(user.get_score());
 		personal_email.setText(user.get_msgcount());
 		personal_experience.setText(user.get_level_core());
+		if("".equals(user.get_uimage50())){
+			userIconView.setImageBitmap(null);
+			return;
+		}
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    
-	    userIconView.setImageUrl(user.get_uimage30(), imageLoader);
-	    userIconView.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				commonUpload.showCameraDialog(mActivity);
-			}
-		});
+	    userIconView.setImageUrl(user.get_uimage50(), imageLoader);
 	}
 	
 	Listener<JSONObject> userCardResultListener = new Listener<JSONObject>() {
@@ -283,8 +299,12 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 						handler.sendMessage(msg);
 					} else if (statuscode == HttpStatus.USER_NOT_LOGIN) {
 						handler.sendEmptyMessage(HttpStatus.USER_NOT_LOGIN);
+						Util.updateBooleanData(mActivity, "islogin", false);
+						mActivity.isLogin = false;
 					}else if(statuscode == HttpStatus.USER_TOKEN_OUTDATE){
 						handler.sendEmptyMessage(HttpStatus.USER_TOKEN_OUTDATE);
+						Util.updateBooleanData(mActivity, "islogin", false);
+						mActivity.isLogin = false;
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

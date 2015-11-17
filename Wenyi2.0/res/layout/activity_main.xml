@@ -48,7 +48,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dip"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/ot_1"
                 android:gravity="center_horizontal"
                 android:text="@string/essay_new_action"
                 android:textColor="@color/black" />
@@ -59,7 +58,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dip"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/ot_3"
                 android:gravity="center_horizontal"
                 android:text="@string/essay_everyday_chart"
                 android:textColor="@color/black" />
@@ -70,7 +68,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dip"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/shicai_default"
                 android:gravity="center_horizontal"
                 android:text="@string/essay_life_way"
                 android:textColor="@color/black" />
@@ -88,7 +85,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dip"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/ot_1"
                 android:gravity="center_horizontal"
                 android:text="@string/essay_good_baby"
                 android:textColor="@color/black" />
@@ -99,7 +95,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dip"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/ot_3"
                 android:gravity="center_horizontal"
                 android:text="@string/essay_cook_knowledge"
                 android:textColor="@color/black" />
@@ -110,7 +105,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dip"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/shicai_default"
                 android:gravity="center_horizontal"
                 android:text="@string/essay_question_answer"
                 android:textColor="@color/black" />

@@ -104,7 +104,7 @@ public class CookbookSearchActivity extends BaseActivity implements OnClickListe
 							getKeywordsList(HttpUrls.COOKBOOK_WENYI_SEARCH, null,
 									listResultListener, listErrorListener);
 						}else{
-							Toast.makeText(CookbookSearchActivity.this, "End of List!", Toast.LENGTH_SHORT).show();
+							Toast.makeText(CookbookSearchActivity.this, "您已翻到底儿了!", Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
 					}
@@ -120,7 +120,7 @@ public class CookbookSearchActivity extends BaseActivity implements OnClickListe
 							getKeywordsList(HttpUrls.COOKBOOK_WENYI_SEARCH, null,
 									listResultListener, listErrorListener);
 						} else {
-							Toast.makeText(CookbookSearchActivity.this, "End of List!",
+							Toast.makeText(CookbookSearchActivity.this, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 						}
 					}

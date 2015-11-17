@@ -123,7 +123,7 @@ public class GroupPersonalSharedListFragment extends Fragment implements
 						if (shouldLoad) {
 							getMySharedList();
 						} else {
-							Toast.makeText(mActivity, "End of List!",
+							Toast.makeText(mActivity, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
@@ -139,7 +139,7 @@ public class GroupPersonalSharedListFragment extends Fragment implements
 						if (shouldLoad) {
 							getMySharedList();
 						} else {
-							Toast.makeText(mActivity, "End of List!",
+							Toast.makeText(mActivity, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}
@@ -380,7 +380,7 @@ public class GroupPersonalSharedListFragment extends Fragment implements
 				e.printStackTrace();
 			}
 		} else {
-			Toast.makeText(mActivity, "End of List!", Toast.LENGTH_SHORT)
+			Toast.makeText(mActivity, "您已翻到底儿了!", Toast.LENGTH_SHORT)
 					.show();
 		}
 

@@ -310,7 +310,7 @@ public class GroupItemDetailMemAuditActivity extends BaseActivity implements OnC
 				e.printStackTrace();
 			}
 		}else{
-			Toast.makeText(GroupItemDetailMemAuditActivity.this, "End of List!",
+			Toast.makeText(GroupItemDetailMemAuditActivity.this, "您已翻到底儿了!",
 					Toast.LENGTH_SHORT).show();
 			handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 		}

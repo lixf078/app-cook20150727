@@ -106,7 +106,7 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 				.findViewById(R.id.indicator);
 
 		
-		WenyiGallery eg = new WenyiGallery();
+		/*WenyiGallery eg = new WenyiGallery();
 		eg.setId(1000);
 		eg.setTitle(getResources().getString(R.string.app_name));
 		eg.setImgUrl("");
@@ -122,7 +122,7 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 		viewPager.setInterval(4000);
 		viewPager.setCurrentItem(0);
 		viewPager.setStopScrollWhenTouch(true);
-		setViewPagerScrollSpeed(viewPager);
+		setViewPagerScrollSpeed(viewPager);*/
 
 		NetworkTextView textView = (NetworkTextView) rootView
 				.findViewById(R.id.essay_new_action);
@@ -142,8 +142,8 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 		if (null != catalogList && catalogList.size() > 0) {
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
-			textView.setDefaultImageResId(R.drawable.shicai_default);
-			textView.setErrorImageResId(R.drawable.shicai_default);
+//			textView.setDefaultImageResId(R.drawable.shicai_default);
+//			textView.setErrorImageResId(R.drawable.shicai_default);
 
 			textView.setImageUrl(catalogList.get(0).getIconurl(), imageLoader);
 			textView.setText(catalogList.get(0).getTitle());
@@ -153,8 +153,8 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 		if (null != catalogList && catalogList.size() > 1) {
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
-			textView2.setDefaultImageResId(R.drawable.shicai_default);
-			textView2.setErrorImageResId(R.drawable.shicai_default);
+//			textView2.setDefaultImageResId(R.drawable.shicai_default);
+//			textView2.setErrorImageResId(R.drawable.shicai_default);
 			
 			textView2.setImageUrl(catalogList.get(1).getIconurl(), imageLoader);
 			textView2.setText(catalogList.get(1).getTitle());
@@ -163,8 +163,8 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 		if (null != catalogList && catalogList.size() > 2) {
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
-			textView3.setDefaultImageResId(R.drawable.shicai_default);
-			textView3.setErrorImageResId(R.drawable.shicai_default);
+//			textView3.setDefaultImageResId(R.drawable.shicai_default);
+//			textView3.setErrorImageResId(R.drawable.shicai_default);
 
 			textView3.setImageUrl(catalogList.get(2).getIconurl(), imageLoader);
 			textView3.setText(catalogList.get(2).getTitle());
@@ -174,8 +174,8 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 		if (null != catalogList && catalogList.size() > 3) {
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
-			textView4.setDefaultImageResId(R.drawable.shicai_default);
-			textView4.setErrorImageResId(R.drawable.shicai_default);
+//			textView4.setDefaultImageResId(R.drawable.shicai_default);
+//			textView4.setErrorImageResId(R.drawable.shicai_default);
 			
 			textView4.setImageUrl(catalogList.get(3).getIconurl(), imageLoader);
 			Log.d("lixufeng", "initView " + catalogList.get(3).getTitle());
@@ -185,8 +185,8 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 		if (null != catalogList && catalogList.size() > 4) {
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
-			textView5.setDefaultImageResId(R.drawable.shicai_default);
-			textView5.setErrorImageResId(R.drawable.shicai_default);
+//			textView5.setDefaultImageResId(R.drawable.shicai_default);
+//			textView5.setErrorImageResId(R.drawable.shicai_default);
 
 			textView5.setImageUrl(catalogList.get(4).getIconurl(), imageLoader);
 			textView5.setText(catalogList.get(4).getTitle());
@@ -196,27 +196,38 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 		if (null != catalogList && catalogList.size() > 5) {
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
-			textView6.setDefaultImageResId(R.drawable.shicai_default);
-			textView6.setErrorImageResId(R.drawable.shicai_default);
+//			textView6.setDefaultImageResId(R.drawable.shicai_default);
+//			textView6.setErrorImageResId(R.drawable.shicai_default);
 
 			textView6.setImageUrl(catalogList.get(5).getIconurl(), imageLoader);
 			textView6.setText(catalogList.get(5).getTitle());
 			textView6.setOnClickListener(this);
 		}
-
+		
+		if(mPageViews != null && mPageViews.size() > 0){
+			initViewPaper();
+		}
 	}
 
+	private void initViewPaper(){
+		adapter = new ViewPagerAdapter(this.getActivity()
+				.getApplicationContext(), mPageViews);
+		viewPager.setAdapter(adapter);
+		mIndicator.setViewPager(viewPager);
+
+		viewPager.setInterval(4000);
+		viewPager.setCurrentItem(0);
+		viewPager.setStopScrollWhenTouch(true);
+		setViewPagerScrollSpeed(viewPager);
+	}
+	
 	private void initData() {
-		WenyiLog.logv(LOGTAG, "initData 1111");
 		if (jsonObject != null) {
 			try {
-				WenyiLog.logv(LOGTAG, "initData 22222");
 				int status_code = jsonObject.isNull("statuscode") ? -1
 						: jsonObject.getInt("statuscode");
 				if (200 == status_code) {
-					WenyiLog.logv(LOGTAG, "initData 33333");
 					if (!jsonObject.isNull("data")) {
-						WenyiLog.logv(LOGTAG, "initData 44444");
 						JSONObject data = jsonObject.getJSONObject("data");
 						JSONArray gallery = data.getJSONArray("gallery");
 						if(gallery.length() > 0){
@@ -224,8 +235,6 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 						}
 						for (int i = 0, j = gallery.length(); i < j; i++) {
 							JSONObject jb = gallery.getJSONObject(i);
-							WenyiLog.logv(LOGTAG,
-									"initData 5555 jb " + jb.toString());
 							WenyiGallery eg = new WenyiGallery();
 							eg.setId(jb.getInt("id"));
 							eg.setTitle(jb.getString("title"));
@@ -239,8 +248,6 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 						JSONArray catalog = data.getJSONArray("catalog");
 						for (int i = 0, j = catalog.length(); i < j; i++) {
 							JSONObject catalogjb = catalog.getJSONObject(i);
-							WenyiLog.logv(LOGTAG, "initData 5555aaaaa jb "
-									+ catalogjb.toString());
 							EssayCatlog ec = new EssayCatlog();
 							ec.setId(catalogjb.getInt("id"));
 							ec.setTitle(catalogjb.getString("title"));

@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@color/white"
+    android:paddingBottom="6dp"
     android:tag="back" >
 
     <RelativeLayout
@@ -43,9 +44,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@color/white"
         android:orientation="horizontal"
         android:padding="5dp"
+        android:background="@color/personal_comments_background"
         android:tag="front" >
 
         <com.shecook.wenyi.common.volley.toolbox.NetworkImageView

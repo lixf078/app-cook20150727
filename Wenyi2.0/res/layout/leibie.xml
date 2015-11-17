@@ -9,7 +9,7 @@
         android:id="@+id/leibieImage"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:textColor="@color/black"
+        android:textColor="@drawable/wenyi_textview_selector"
         android:gravity="center"
         android:textSize="20sp"
         android:singleLine="true"

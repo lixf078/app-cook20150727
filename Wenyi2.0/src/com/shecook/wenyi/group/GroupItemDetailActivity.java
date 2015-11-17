@@ -151,6 +151,14 @@ public class GroupItemDetailActivity extends BaseActivity implements
 			case STATUS_EXIT_OK:
 				finish();
 				break;
+			case STATUS_ADD:
+				addGroup();
+				break;
+			case STATUS_ADD_OK:
+				if(alertdialog.isShowing()){
+					alertdialog.dismiss();
+				}
+				break;
 			default:
 				break;
 			}
@@ -162,6 +170,9 @@ public class GroupItemDetailActivity extends BaseActivity implements
 	
 	private static final int STATUS_EXIT = 102;
 	private static final int STATUS_EXIT_OK = 103;
+	
+	private static final int STATUS_ADD = 104;
+	private static final int STATUS_ADD_OK = 105;
 	
 	AlertDialog alertdialog;
 	private void getDisbandDialog(){
@@ -232,6 +243,7 @@ public class GroupItemDetailActivity extends BaseActivity implements
 			img5.setVisibility(View.VISIBLE);
 			button5.setVisibility(View.VISIBLE);
 			button5.setText("发布群分享");
+			
 			button3.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -313,7 +325,7 @@ public class GroupItemDetailActivity extends BaseActivity implements
 			img5.setVisibility(View.VISIBLE);
 			button5.setVisibility(View.VISIBLE);
 			button5.setText("退出圈子");
-			button4.setOnClickListener(new OnClickListener() {
+			button5.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View arg0) {
@@ -330,6 +342,17 @@ public class GroupItemDetailActivity extends BaseActivity implements
 			img4.setVisibility(View.VISIBLE);
 			button4.setVisibility(View.VISIBLE);
 			button4.setText("发布群分享");
+			button4.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					Intent intent = new Intent(GroupItemDetailActivity.this, CreatePersonalInfoActivity.class);
+					intent.putExtra("ententId", circleid);
+					intent.putExtra("flag", HttpStatus.PUBLIC_FOR_CIRCLE);
+					startActivity(intent);
+					dialog.dismiss();
+				}
+			});
 			
 			img5 = (ImageView) dialog
 					.findViewById(R.id.wenyi_bottomsheet_img_5);
@@ -338,6 +361,14 @@ public class GroupItemDetailActivity extends BaseActivity implements
 			img5.setVisibility(View.VISIBLE);
 			button5.setVisibility(View.VISIBLE);
 			button5.setText("退出圈子");
+			button5.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					dialog.dismiss();
+					handler.sendEmptyMessage(STATUS_EXIT);
+				}
+			});
 			break;
 		case 10004:// 非圈子成员
 			img5 = (ImageView) dialog
@@ -347,6 +378,14 @@ public class GroupItemDetailActivity extends BaseActivity implements
 			img5.setVisibility(View.VISIBLE);
 			button5.setVisibility(View.VISIBLE);
 			button5.setText("申请加入");
+			button5.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					dialog.dismiss();
+					handler.sendEmptyMessage(STATUS_ADD);
+				}
+			});
 			break;
 		default:
 			break;
@@ -396,6 +435,49 @@ public class GroupItemDetailActivity extends BaseActivity implements
 			Toast.makeText(GroupItemDetailActivity.this, msg,
 					Toast.LENGTH_SHORT).show();
 			handler.sendEmptyMessage(STATUS_EXIT_OK);
+		}
+	};
+	
+	public void addGroup() {
+		JSONObject paramObject = new JSONObject();
+		try {
+			paramObject.put("circleid", circleid);
+			getGroupInfo(HttpUrls.GROUP_CIRCLE_ADD, paramObject,
+					addResultListener, listErrorListener);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	Listener<JSONObject> addResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			Log.d(TAG, "catalogResultListener onResponse -> " + jsonObject.toString());
+			String msg = "";
+			if (jsonObject != null) {
+				try {
+					if (!jsonObject.isNull("statuscode")
+							&& 200 == jsonObject.getInt("statuscode")) {
+						if (!jsonObject.isNull("data")) {
+							JSONObject data = jsonObject.getJSONObject("data");
+							int core_status = data.getInt("core_status");
+							Log.e(TAG, "collectedResultListener core_status -> " + core_status);
+							if (core_status == 200) {
+								msg = "" + "申请圈子成功！";
+							} else {
+								msg = "" + data.getString("msg");
+							}
+						}
+					} else {
+						msg = "" + jsonObject.getString("errmsg");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			Toast.makeText(GroupItemDetailActivity.this, msg,
+					Toast.LENGTH_SHORT).show();
+			handler.sendEmptyMessage(STATUS_ADD_OK);
 		}
 	};
 	
@@ -464,8 +546,8 @@ public class GroupItemDetailActivity extends BaseActivity implements
 			if (paramsub != null) {
 				jsonObject.put("param", paramsub);
 			}
-			commonsub.put("mid", "5A1469CD-4819-4863-A934-8871CA1A0281");
-			commonsub.put("token", "591f3c51eca2483b932ed1a64b896a63");
+			// commonsub.put("mid", "5A1469CD-4819-4863-A934-8871CA1A0281");
+			// commonsub.put("token", "591f3c51eca2483b932ed1a64b896a63");
 			jsonObject.put("common", commonsub);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -498,7 +580,7 @@ public class GroupItemDetailActivity extends BaseActivity implements
 		}
 	};
 
-	GroupHotListItem pdi = null;
+	GroupHotListItem pdi = new GroupHotListItem();
 	public int status;
 
 	public int getStatus() {
@@ -518,7 +600,6 @@ public class GroupItemDetailActivity extends BaseActivity implements
 						JSONObject data = jsonObject.getJSONObject("data");
 						if (data.has("detail")) {
 							JSONObject jb = data.getJSONObject("detail");
-							pdi = new GroupHotListItem();
 							pdi.setId(jb.getString("id"));
 							pdi.setUid(jb.getString("uid"));
 							pdi.setUfounder(jb.getString("ufounder"));
@@ -532,8 +613,8 @@ public class GroupItemDetailActivity extends BaseActivity implements
 							pdi.setDatecreated(jb.getString("datecreated"));
 							pdi.setDateupd(jb.getString("dateupd"));
 						}
+						status = data.getInt("circle_status");
 						if (pdi != null) {
-							status = data.getInt("circle_status");
 							pdi.setStatus(status);
 						}
 					}

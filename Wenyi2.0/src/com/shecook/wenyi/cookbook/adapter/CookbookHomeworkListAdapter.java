@@ -6,7 +6,6 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -68,7 +67,7 @@ public class CookbookHomeworkListAdapter extends BaseAdapter {
 			lp.setMargins(30, 0, 0, 0);
 			back.setLayoutParams(lp);
 			holder.homeworkImage = (NetworkImageView) view.findViewById(R.id.middle_image_cookbook);
-			LayoutParams imlp = new RelativeLayout.LayoutParams(Util.getWidth(context) - 100, Util.getWidth(context) / 2);
+			LayoutParams imlp = new RelativeLayout.LayoutParams(Util.getWidth(context) - 300, Util.getWidth(context) - 300);
 			imlp.setMargins(5, 10, 0, 10);
 			imlp.addRule(RelativeLayout.BELOW, R.id.cookbook_homework_item_nickname);
 			holder.homeworkImage.setLayoutParams(imlp);
@@ -80,31 +79,23 @@ public class CookbookHomeworkListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) view.getTag();
 		}
+
 		try {
 			Log.e(TAG, "getView tiem is " + position + ",item " + item + ", holder " + holder);
 			holder.nickname.setText(item.getNickname());
 			holder.timeline.setText(Util.formatTime2Away(item.getTimeline()));
 			holder.comments.setText(" " + item.getComments());
 			
-			
 			LruImageCache lruImageCache = LruImageCache.instance();
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-			holder.uportraitImage.setDefaultImageResId(R.drawable.icon_dialog);
-			holder.uportraitImage.setErrorImageResId(R.drawable.icon_dialog);
+			holder.uportraitImage.setDefaultImageResId(R.drawable.bg_color_while);
+			holder.uportraitImage.setErrorImageResId(R.drawable.bg_color_while);
 			
 			holder.uportraitImage.setImageUrl(item.getUportrait(), imageLoader);
-			holder.uportraitImage.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					
-				}
-			});
-			
 			
 			ImageLoader homeworkImageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-			holder.homeworkImage.setDefaultImageResId(R.drawable.c_130);
-			holder.homeworkImage.setErrorImageResId(R.drawable.c_130);
+			holder.homeworkImage.setDefaultImageResId(R.drawable.bg_color_while);
+			holder.homeworkImage.setErrorImageResId(R.drawable.bg_color_while);
 			
 			if(item.getImageList().size() > 0){
 				holder.homeworkImage.setImageUrl(item.getImageList().get(0).getImageurl(), homeworkImageLoader);
@@ -122,11 +113,5 @@ public class CookbookHomeworkListAdapter extends BaseAdapter {
 		TextView comments;
 		NetworkImageView uportraitImage;
 		NetworkImageView homeworkImage;
-		@Override
-		public String toString() {
-			return "ViewHolder [nickname=" + nickname + ", timeline="
-					+ timeline + ", comments=" + comments + ", uportraitImage="
-					+ uportraitImage + ", homeworkImage=" + homeworkImage + "]";
-		}
 	}
 }

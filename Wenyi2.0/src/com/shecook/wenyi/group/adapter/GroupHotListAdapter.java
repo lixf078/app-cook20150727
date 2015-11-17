@@ -69,8 +69,8 @@ public class GroupHotListAdapter extends BaseAdapter {
 
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
-	    holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
+//	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
+//	    holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
 	    
 	    holder.imageUrl.setImageUrl(ghli.getIconurl(), imageLoader);
 	    holder.group_hot_item_title.setText(ghli.getTitle());

@@ -59,7 +59,6 @@ public class EssayListDetailAdapter extends BaseAdapter {
 	public View getView(int position, View view, ViewGroup arg2) {
 		ViewHolder holder = null;
 		EssayListItemDetail elid = mListItems.get(position);
-		Log.d("lixufeng1", "getview position " + position + ",elid " + elid);
 		String rowtype = elid.getRowtype();
 		
 		if (view == null) {
@@ -90,8 +89,8 @@ public class EssayListDetailAdapter extends BaseAdapter {
 			LruImageCache lruImageCache = LruImageCache.instance();
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
-			holder.imageUrl.setDefaultImageResId(R.drawable.loadingpic);
-			holder.imageUrl.setErrorImageResId(R.drawable.loadingpic);
+//			holder.imageUrl.setDefaultImageResId(R.drawable.bg_color_while);
+//			holder.imageUrl.setErrorImageResId(R.drawable.bg_color_while);
 			
 			try {
 				if(elid.getWidth() != 0){
@@ -124,8 +123,8 @@ public class EssayListDetailAdapter extends BaseAdapter {
 			LruImageCache lruImageCache = LruImageCache.instance();
 			ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance()
 					.getRequestQueue(), lruImageCache);
-			holder.uportraitImage.setDefaultImageResId(R.drawable.icon);
-			holder.uportraitImage.setErrorImageResId(R.drawable.icon);
+//			holder.uportraitImage.setDefaultImageResId(R.drawable.bg_color_while);
+//			holder.uportraitImage.setErrorImageResId(R.drawable.bg_color_while);
 			
 			try {
 				if(elid.getWidth() != 0){

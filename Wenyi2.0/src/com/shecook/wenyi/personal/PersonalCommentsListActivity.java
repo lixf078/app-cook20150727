@@ -59,7 +59,7 @@ public class PersonalCommentsListActivity extends BaseActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.common_pull_to_refresh_listview_divider);
+		setContentView(R.layout.comments_pull_to_refresh_listview_divider);
 		initView();
 		processParam();
 	}
@@ -283,7 +283,7 @@ public class PersonalCommentsListActivity extends BaseActivity implements
 				e.printStackTrace();
 			}
 		}else{
-			Toast.makeText(PersonalCommentsListActivity.this, "End of List!",
+			Toast.makeText(PersonalCommentsListActivity.this, "您已翻到底儿了!",
 					Toast.LENGTH_SHORT).show();
 			handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 		}

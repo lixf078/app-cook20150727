@@ -65,8 +65,8 @@ public class PiazzaQuestionListAdapter extends BaseAdapter {
 
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.imageUrl.setDefaultImageResId(R.drawable.icon);
-	    holder.imageUrl.setErrorImageResId(R.drawable.icon);
+//	    holder.imageUrl.setDefaultImageResId(R.drawable.icon);
+//	    holder.imageUrl.setErrorImageResId(R.drawable.icon);
 	    
 	    holder.imageUrl.setImageUrl(pdi.getUportrait(), imageLoader);
 		holder.advTitle.setText(pdi.getNickname());

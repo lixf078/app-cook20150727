@@ -57,6 +57,8 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 		login = (TextView) findViewById(R.id.exit_login_current_account);
 		if (isLogin()) {
 			login.setText(R.string.user_logout);
+		}else{
+			login.setText(R.string.user_login);
 		}
 		listView = (ListView) findViewById(R.id.listView);
 		findViewById(R.id.right_img).setVisibility(View.GONE);
@@ -187,6 +189,8 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 			case HttpStatus.STATUS_ERROR:
 				
 				break;
+			case HttpStatus.USER_LOGOUT_SUCCESS:
+				finish();
 			default:
 				break;
 			}
@@ -280,6 +284,7 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 							Util.updateBooleanData(PersonalSettings.this,
 									"islogin", false);
 							isLogin = false;
+							handler.sendEmptyMessage(HttpStatus.USER_LOGOUT_SUCCESS);
 						} else {
 							// 有错误情况
 						}

@@ -421,9 +421,17 @@ public class Util {
 		} else if (result >= 86400 && result < 2592000) {// 三十天内
 			long seconds = result / 86400;
 			r = seconds + "天前";
+		} else if (result >= 2592000 && result < 2592000 * 12) {// 一年内
+			long seconds = result / 2592000;
+			r = seconds + "个月前";
+		} else if (result >= 2592000 * 12) {// 一年内
+			long seconds = result / (2592000 * 12);
+			r = seconds + "年前";
 		} else {// 日期格式
-			format = "yyyy-MM-dd HH:mm";
-			r = sdf.format(ctime).toString();
+//			format = "yyyy-MM-dd HH:mm";
+//			r = sdf.format(ctime).toString();
+			long seconds = result / 86400;
+			r = seconds + "天前";
 		}
 		return r;
 	}
@@ -481,6 +489,7 @@ public class Util {
 			editor.putString("_uimage50", user.get_uimage50());
 			editor.putString("_uimage180", user.get_uimage180());
 			editor.putBoolean("islogin", user.is_isLogin());
+			new Exception().printStackTrace();
 			editor.commit();
 
 			wenyiUser.set_password(user.get_password());
@@ -517,6 +526,7 @@ public class Util {
 			editor.putString("_msgcount", "");
 			editor.putString("_level_score", "");
 			editor.putBoolean("islogin", false);
+			new Exception().printStackTrace();
 			editor.commit();
 			wenyiUser = null;
 		} catch (Exception e) {
@@ -573,6 +583,8 @@ public class Util {
 			boolean value) {
 		SharedPreferences userInfo = null;
 		try {
+			Log.e("lixufeng", "updateBooleanData " + key + ", value " + value);
+			new Exception().printStackTrace();
 			userInfo = context.getSharedPreferences("user_info", 0);
 			SharedPreferences.Editor editor = userInfo.edit();
 			editor.putBoolean(key, value);
@@ -666,6 +678,7 @@ public class Util {
 			wenyiUser.set_token(userInfo.getString("_token", ""));
 			wenyiUser.set_mID(userInfo.getString("_mid", ""));
 			wenyiUser.set_isLogin(userInfo.getBoolean("islogin", false));
+			new Exception().printStackTrace();
 		} catch (Exception e) {
 			wenyiUser = null;
 			e.printStackTrace();

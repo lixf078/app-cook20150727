@@ -118,7 +118,7 @@ public class PiazzaQuestionFragment extends BaseFragmeng {
 									piazzaDiscoverResultListener,
 									piazzaDiscoverErrorListener);
 						} else {
-							Toast.makeText(mActivity, "End of List!",
+							Toast.makeText(mActivity, "您已翻到底儿了!",
 									Toast.LENGTH_SHORT).show();
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}

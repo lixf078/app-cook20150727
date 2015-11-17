@@ -266,7 +266,7 @@ public class PersonalMessageListActivity extends BaseActivity implements
 				e.printStackTrace();
 			}
 		}else{
-			Toast.makeText(PersonalMessageListActivity.this, "End of List!",
+			Toast.makeText(PersonalMessageListActivity.this, "您已翻到底儿了!",
 					Toast.LENGTH_SHORT).show();
 			handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 		}

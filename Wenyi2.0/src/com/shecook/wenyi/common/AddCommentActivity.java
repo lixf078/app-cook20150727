@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,33 +93,39 @@ public class AddCommentActivity extends BaseActivity implements OnClickListener{
 		int id = v.getId();
 		switch (id) {
 		case R.id.right_textview:
-			String comment = commentEdit.getEditableText().toString();
-			if(TextUtils.isEmpty(comment)){
-				Log.d(TAG, "onClick -> " + flag + " 想跟我说点什么呢？");
-				Toast.makeText(AddCommentActivity.this, "想跟我说点什么呢？", Toast.LENGTH_SHORT).show();
-				return;
-			}
-			Log.d(TAG, "onClick -> " + flag + ",comment " + comment);
-			JSONObject paramsub = new JSONObject();
-			try {
-				paramsub.put("comment", "" + comment);
-				if(flag == HttpStatus.COMMENT_FOR_ESSAY){
-					paramsub.put("articleid", commentFor);
-					postComment(HttpUrls.ESSAY_WENYI_ITEM_DETAI_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
-				}else if(flag == HttpStatus.COMMENT_FOR_COOKBOOK){
-					paramsub.put("recipeid", commentFor);
-					postComment(HttpUrls.COOKBOOK_WENYI_ITEM_DETAI_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
-				}else if(flag == HttpStatus.COMMENT_FOR_TOPIC){
-					paramsub.put("topicid", commentFor);
-					postComment(HttpUrls.PIZZA_TOPIC_LIST_ITEM_DETAIL_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
-				}else if(flag == HttpStatus.COMMENT_FOR_CIRCLE){
-					paramsub.put("shareid", commentFor);
-					postComment(HttpUrls.GROUP_CIRCLE_SHARE_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
+			if(isLogin()){
+				String comment = commentEdit.getEditableText().toString();
+				if(TextUtils.isEmpty(comment)){
+					Log.e(TAG, "onClick -> " + flag + " 想跟我说点什么呢？");
+					Toast.makeText(AddCommentActivity.this, "想跟我说点什么呢？", Toast.LENGTH_SHORT).show();
+					return;
 				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-				finish();
+				Log.e(TAG, "onClick -> " + flag + ",comment " + comment);
+				JSONObject paramsub = new JSONObject();
+				try {
+					paramsub.put("comment", "" + comment);
+					if(flag == HttpStatus.COMMENT_FOR_ESSAY){
+						paramsub.put("articleid", commentFor);
+						postComment(HttpUrls.ESSAY_WENYI_ITEM_DETAI_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
+					}else if(flag == HttpStatus.COMMENT_FOR_COOKBOOK){
+						paramsub.put("recipeid", commentFor);
+						postComment(HttpUrls.COOKBOOK_WENYI_ITEM_DETAI_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
+					}else if(flag == HttpStatus.COMMENT_FOR_TOPIC){
+						paramsub.put("topicid", commentFor);
+						postComment(HttpUrls.PIZZA_TOPIC_LIST_ITEM_DETAIL_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
+					}else if(flag == HttpStatus.COMMENT_FOR_CIRCLE){
+						paramsub.put("shareid", commentFor);
+						postComment(HttpUrls.GROUP_CIRCLE_SHARE_ADD_COMMENT, null, commentResultListener, commentErrorListener, paramsub);
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+					finish();
+				}
+			}else{
+				Intent intent = new Intent(AddCommentActivity.this,PersonalLoginCommon.class);
+				startActivityForResult(intent, 1);
 			}
+			
 			break;
 		default:
 			break;
