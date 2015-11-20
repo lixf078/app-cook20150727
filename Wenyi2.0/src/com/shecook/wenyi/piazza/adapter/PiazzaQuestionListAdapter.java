@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
 import com.shecook.wenyi.model.piazza.PiazzaQuestionItem;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
@@ -57,7 +57,7 @@ public class PiazzaQuestionListAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			holder.advTitle = (TextView) view.findViewById(R.id.essay_item_title);
 			holder.advTime = (TextView) view.findViewById(R.id.essay_item_time);
-			holder.imageUrl = (NetworkImageView) view.findViewById(R.id.item_img);
+			holder.imageUrl = (NetworkImageRoundView) view.findViewById(R.id.item_img);
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
@@ -77,6 +77,6 @@ public class PiazzaQuestionListAdapter extends BaseAdapter {
 	private static class ViewHolder {
 		TextView advTitle;
 		TextView advTime;
-		NetworkImageView imageUrl;
+		NetworkImageRoundView imageUrl;
 	}
 }

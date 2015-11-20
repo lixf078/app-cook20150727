@@ -32,7 +32,7 @@
         android:paddingTop="8dp"
         android:tag="front" >
 
-        <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+        <com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView
             android:id="@+id/item_img"
             android:layout_width="60dp"
             android:layout_height="60dp"

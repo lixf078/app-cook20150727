@@ -5,14 +5,14 @@ import java.util.LinkedList;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
 import com.shecook.wenyi.model.personal.PersonalMessageModel;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
@@ -62,7 +62,7 @@ public class PersonalMessageListAdapter extends BaseAdapter {
 			holder.personal_message_item_messageto = (TextView) view.findViewById(R.id.personal_message_item_messageto);
 			holder.personal_message_item_timeline = (TextView) view.findViewById(R.id.personal_message_item_timeline);
 			holder.personal_message_item_desc = (TextView) view.findViewById(R.id.personal_message_item_desc);
-			holder.personal_message_item_img = (NetworkImageView) view.findViewById(R.id.personal_message_item_img);
+			holder.personal_message_item_img = (NetworkImageRoundView) view.findViewById(R.id.personal_message_item_img);
 			holder.message_delete = (TextView) view.findViewById(R.id.message_delete);
 			holder.message_delete.setTag(R.id.message_delete, position);
 			view.setTag(holder);
@@ -73,8 +73,8 @@ public class PersonalMessageListAdapter extends BaseAdapter {
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.personal_message_item_img.setDefaultImageResId(R.drawable.icon_dialog);
-	    holder.personal_message_item_img.setErrorImageResId(R.drawable.icon_dialog);
+//	    holder.personal_message_item_img.setDefaultImageResId(R.drawable.icon_dialog);
+//	    holder.personal_message_item_img.setErrorImageResId(R.drawable.icon_dialog);
 	    
 	    holder.personal_message_item_img.setImageUrl(eli.getFrom_imageurl(), imageLoader);
 	    
@@ -94,7 +94,7 @@ public class PersonalMessageListAdapter extends BaseAdapter {
 	
 	private static class ViewHolder {
 		TextView personal_message_item_nickname, personal_message_item_messageto, personal_message_item_timeline, personal_message_item_desc, message_delete;
-		NetworkImageView personal_message_item_img;
+		NetworkImageRoundView personal_message_item_img;
 	}
 	
 	public void setOnSwipeOperator(OnSwipeOperator operator){

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
 import com.shecook.wenyi.model.personal.PersonalCollectionModel;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
@@ -64,7 +64,7 @@ public class PersonalCollectionForGroupListAdapter extends BaseAdapter {
 			holder.personal_collection_item_summary = (TextView) view.findViewById(R.id.personal_collection_item_summary);
 			holder.collection_change_group = (TextView) view.findViewById(R.id.collection_change_group);
 			holder.collection_delete = (TextView) view.findViewById(R.id.collection_delete);
-			holder.imageUrl = (NetworkImageView) view.findViewById(R.id.item_img);
+			holder.imageUrl = (NetworkImageRoundView) view.findViewById(R.id.item_img);
 			
 			holder.collection_change_group.setTag(R.id.personal_collection_item_title, position);
 			holder.collection_delete.setTag(R.id.personal_collection_item_title, position);
@@ -76,8 +76,8 @@ public class PersonalCollectionForGroupListAdapter extends BaseAdapter {
 
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
-	    holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
+//	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
+//	    holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
 	    
 	    holder.imageUrl.setImageUrl(eli.getImgthumbnail(), imageLoader);
 		holder.advTitle.setText(eli.getRecipename());
@@ -110,7 +110,7 @@ public class PersonalCollectionForGroupListAdapter extends BaseAdapter {
 		TextView advTime;
 		TextView personal_collection_item_summary;
 		TextView collection_change_group, collection_delete;
-		NetworkImageView imageUrl;
+		NetworkImageRoundView imageUrl;
 	}
 	
 	public void setOnSwipeOperator(OnSwipeOperator operator){

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
 import com.shecook.wenyi.model.personal.PersonalCommentModel;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
@@ -61,8 +61,8 @@ public class PersonalCommentListAdapter extends BaseAdapter {
 			holder.personal_comment_item_title_1 = (TextView) view.findViewById(R.id.personal_comment_item_title_1);
 			holder.personal_comment_item_title = (TextView) view.findViewById(R.id.personal_comment_item_title);
 			holder.personal_comment_item_content = (TextView) view.findViewById(R.id.personal_comment_item_content);
-			holder.item_img_1 = (NetworkImageView) view.findViewById(R.id.item_img_1);
-			holder.item_img = (NetworkImageView) view.findViewById(R.id.item_img);
+			holder.item_img_1 = (NetworkImageRoundView) view.findViewById(R.id.item_img_1);
+			holder.item_img = (NetworkImageRoundView) view.findViewById(R.id.item_img);
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
@@ -91,7 +91,7 @@ public class PersonalCommentListAdapter extends BaseAdapter {
 	private static class ViewHolder {
 		TextView personal_comment_item_title_1, personal_comment_item_title;
 		TextView personal_comment_item_content;
-		NetworkImageView item_img_1,item_img;
+		NetworkImageRoundView item_img_1,item_img;
 	}
 	
 	public void setOnSwipeOperator(OnSwipeOperator operator){

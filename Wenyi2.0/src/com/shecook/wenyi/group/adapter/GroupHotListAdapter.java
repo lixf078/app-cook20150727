@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
 import com.shecook.wenyi.model.group.GroupHotListItem;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
@@ -60,7 +60,7 @@ public class GroupHotListAdapter extends BaseAdapter {
 			holder.group_hot_item_class = (TextView) view.findViewById(R.id.group_hot_item_class);
 			holder.group_hot_item_shared = (TextView) view.findViewById(R.id.group_hot_item_shared);
 			holder.group_hot_tiem_content = (TextView) view.findViewById(R.id.group_hot_tiem_content);
-			holder.imageUrl = (NetworkImageView) view.findViewById(R.id.item_img);
+			holder.imageUrl = (NetworkImageRoundView) view.findViewById(R.id.item_img);
 			
 			view.setTag(holder);
 		} else {
@@ -84,7 +84,7 @@ public class GroupHotListAdapter extends BaseAdapter {
 		TextView group_hot_item_title;
 		TextView group_hot_item_class, group_hot_item_shared;
 		TextView group_hot_tiem_content;
-		NetworkImageView imageUrl;
+		NetworkImageRoundView imageUrl;
 	}
 	
 }

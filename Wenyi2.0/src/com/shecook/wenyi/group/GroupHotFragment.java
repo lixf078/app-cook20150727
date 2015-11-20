@@ -24,6 +24,7 @@ import com.shecook.wenyi.BaseFragmeng;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.StartActivity;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
@@ -37,6 +38,7 @@ import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.group.adapter.GroupHotListAdapter;
 import com.shecook.wenyi.model.group.GroupHotListItem;
+import com.shecook.wenyi.personal.PersonalLoginCommon;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
@@ -45,7 +47,7 @@ import com.shecook.wenyi.util.volleybox.VolleyUtils;
 public class GroupHotFragment extends BaseFragmeng {
 	private static final String TAG = "GroupHotFragment";
 
-	private Activity mActivity = null;
+	private StartActivity mActivity = null;
 	
 	private PullToRefreshListView mPullRefreshListView;
 	GroupHotListAdapter mAdapter = null;
@@ -62,7 +64,7 @@ public class GroupHotFragment extends BaseFragmeng {
 	public void onCreate(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
-		mActivity = getActivity();
+		mActivity = (StartActivity) getActivity();
 	}
 
 	
@@ -137,10 +139,15 @@ public class GroupHotFragment extends BaseFragmeng {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
-				Intent intent = new Intent(mActivity, GroupItemDetailActivity.class);
-				intent.putExtra("circleid", "" + mListItems.get((int) position).getId());
-				startActivity(intent);
-				
+				Intent intent = null;
+				if(!mActivity.isLogin()){
+					intent = new Intent(mActivity,PersonalLoginCommon.class);
+					startActivity(intent);
+				}else{
+					intent = new Intent(mActivity, GroupItemDetailActivity.class);
+					intent.putExtra("circleid", "" + mListItems.get((int) position).getId());
+					startActivity(intent);
+				}
 			}
 		});
 		

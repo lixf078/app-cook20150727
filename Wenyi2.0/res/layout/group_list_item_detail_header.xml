@@ -14,7 +14,7 @@
         android:background="@color/wenyi_common_background_color"
         android:orientation="horizontal" >
 
-        <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+        <com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView
             android:id="@+id/item_img"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -22,7 +22,6 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
             android:focusable="false"
-            android:background="@drawable/icon"
             android:scaleType="fitXY" />
 
         <RelativeLayout

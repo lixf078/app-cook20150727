@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
 import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.model.CookbookHomeworkListItem;
 import com.shecook.wenyi.util.Util;
@@ -65,7 +66,7 @@ public class PiazzaCookbookHomeworkListAdapter extends BaseAdapter {
 //			holder.discover_gallery_text = (TextView) view.findViewById(R.id.discover_gallery_text);
 			holder.essay_item_content = (TextView) view.findViewById(R.id.essay_item_content);
 			
-			holder.item_img = (NetworkImageView) view.findViewById(R.id.item_img);
+			holder.item_img = (NetworkImageRoundView) view.findViewById(R.id.item_img);
 			holder.essay_item_image_info_1 = (NetworkImageView) view.findViewById(R.id.essay_item_image_info_1);
 			holder.essay_item_image_info_2 = (NetworkImageView) view.findViewById(R.id.essay_item_image_info_2);
 			holder.essay_item_image_info_3 = (NetworkImageView) view.findViewById(R.id.essay_item_image_info_3);
@@ -145,7 +146,8 @@ public class PiazzaCookbookHomeworkListAdapter extends BaseAdapter {
 	}
 	
 	private static class ViewHolder {
-		NetworkImageView item_img, essay_item_image_info_1, essay_item_image_info_2, essay_item_image_info_3, essay_item_image_info_4; // , discover_gallery_image;
+		NetworkImageRoundView item_img;
+		NetworkImageView essay_item_image_info_1, essay_item_image_info_2, essay_item_image_info_3, essay_item_image_info_4; // , discover_gallery_image;
 		RelativeLayout discover_common_layout, essay_item_info; // discover_gallery_layout, 
 		TextView  essay_item_content, essay_item_time, essay_item_title; // discover_gallery_text,
 		RelativeLayout essay_item_image_info;

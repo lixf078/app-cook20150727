@@ -27,6 +27,7 @@ import com.shecook.wenyi.BaseFragmeng;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.StartActivity;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.OnLastItemVisibleListener;
@@ -40,6 +41,7 @@ import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.group.adapter.GroupHotListAdapter;
 import com.shecook.wenyi.model.group.GroupHotListItem;
+import com.shecook.wenyi.personal.PersonalLoginCommon;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
@@ -48,7 +50,7 @@ import com.shecook.wenyi.util.volleybox.VolleyUtils;
 public class GroupMyFragment extends BaseFragmeng implements OnClickListener{
 	private static final String TAG = "GroupMyFragment";
 
-	private Activity mActivity = null;
+	private StartActivity mActivity = null;
 	
 	private PullToRefreshListView mPullRefreshListView;
 	GroupHotListAdapter mAdapter = null;
@@ -67,7 +69,7 @@ public class GroupMyFragment extends BaseFragmeng implements OnClickListener{
 	public void onCreate(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
-		mActivity = getActivity();
+		mActivity = (StartActivity) getActivity();
 	}
 
 	
@@ -78,8 +80,10 @@ public class GroupMyFragment extends BaseFragmeng implements OnClickListener{
 		View rootView = inflater.inflate(R.layout.common_fragment_polltorefreshlist_noheader,
 				container, false);
 		initView(rootView);
-		getDiscoverList(HttpUrls.GROUP_MY_LIST, null, listResultListener,
-				listErrorListener);
+		if(!mActivity.isLogin()){
+			Intent intent = new Intent(mActivity,PersonalLoginCommon.class);
+			startActivity(intent);
+		}
 		return rootView;
 	}
 	
@@ -147,9 +151,14 @@ public class GroupMyFragment extends BaseFragmeng implements OnClickListener{
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
-				Intent intent = new Intent(mActivity, GroupItemDetailActivity.class);
-				intent.putExtra("circleid", "" + mListItems.get((int) position).getId());
-				startActivity(intent);
+				if(!mActivity.isLogin()){
+					Intent intent = new Intent(mActivity,PersonalLoginCommon.class);
+					startActivity(intent);
+				}else{
+					Intent intent = new Intent(mActivity, GroupItemDetailActivity.class);
+					intent.putExtra("circleid", "" + mListItems.get((int) position).getId());
+					startActivity(intent);
+				}
 			}
 		});
 		
@@ -170,6 +179,8 @@ public class GroupMyFragment extends BaseFragmeng implements OnClickListener{
 	@Override
 	public void onResume() {
 		super.onResume();
+		getDiscoverList(HttpUrls.GROUP_MY_LIST, null, listResultListener,
+				listErrorListener);
 		WenyiLog.logv(TAG, "onResume");
 	}
 

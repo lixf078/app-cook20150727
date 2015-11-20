@@ -25,6 +25,7 @@ import com.shecook.wenyi.BaseFragmeng;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.StartActivity;
 import com.shecook.wenyi.common.WebViewActivity;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
@@ -43,6 +44,7 @@ import com.shecook.wenyi.essay.EssayItemDeatilActivity;
 import com.shecook.wenyi.group.GroupItemDetailActivity;
 import com.shecook.wenyi.group.GroupShareDeatilActivity;
 import com.shecook.wenyi.model.piazza.PiazzaDiscoverItem;
+import com.shecook.wenyi.personal.PersonalLoginCommon;
 import com.shecook.wenyi.piazza.adapter.PiazzaDiscoverListAdapter;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
@@ -52,7 +54,7 @@ import com.shecook.wenyi.util.volleybox.VolleyUtils;
 public class PiazzaDiscoverFragment extends BaseFragmeng {
 	private static final String TAG = "PiazzaDiscoverFragment";
 
-	private Activity mActivity = null;
+	private StartActivity mActivity = null;
 	
 	private PullToRefreshListView mPullRefreshListView;
 	PiazzaDiscoverListAdapter mAdapter = null;
@@ -69,7 +71,7 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 	public void onCreate(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
-		mActivity = getActivity();
+		mActivity = (StartActivity) getActivity();
 	}
 
 	
@@ -201,9 +203,14 @@ public class PiazzaDiscoverFragment extends BaseFragmeng {
 					startActivity(intent);
 					break;
 				case 10008:// 跳转某圈子详情页 
-					intent = new Intent(mActivity, GroupItemDetailActivity.class);
-					intent.putExtra("circleid", event_content);
-					startActivity(intent);
+					if(mActivity.isLogin()){
+						intent = new Intent(mActivity, GroupItemDetailActivity.class);
+						intent.putExtra("circleid", event_content);
+						startActivity(intent);
+					}else{
+						intent = new Intent(mActivity,PersonalLoginCommon.class);
+						startActivity(intent);
+					}
 					break;
 				default:
 					break;

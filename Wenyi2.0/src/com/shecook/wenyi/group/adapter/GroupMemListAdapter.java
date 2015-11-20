@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
 import com.shecook.wenyi.model.group.GroupListItemSharedModel;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
@@ -63,7 +63,7 @@ public class GroupMemListAdapter extends BaseAdapter {
 			holder.group_shared_item_time = (TextView) view.findViewById(R.id.group_shared_item_time);
 			holder.group_shared_item_summary = (TextView) view.findViewById(R.id.group_shared_item_summary);
 			holder.group_shared_item_delete = (TextView) view.findViewById(R.id.group_shared_item_delete);
-			holder.imageUrl = (NetworkImageView) view.findViewById(R.id.item_img);
+			holder.imageUrl = (NetworkImageRoundView) view.findViewById(R.id.item_img);
 			holder.group_shared_item_delete.setTag(R.id.group_shared_item_delete, position);
 			view.setTag(holder);
 		} else {
@@ -72,8 +72,8 @@ public class GroupMemListAdapter extends BaseAdapter {
 
 		LruImageCache lruImageCache = LruImageCache.instance();
 	    ImageLoader imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
-	    holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
+//	    holder.imageUrl.setDefaultImageResId(R.drawable.icon_dialog);
+//	    holder.imageUrl.setErrorImageResId(R.drawable.icon_dialog);
 	    
 	    holder.imageUrl.setImageUrl(eli.getUportrait(), imageLoader);
 		holder.group_shared_item_title.setText(eli.getNickname());
@@ -119,7 +119,7 @@ public class GroupMemListAdapter extends BaseAdapter {
 		TextView group_shared_item_summary;
 		RelativeLayout group_detail_item_image_info;
 		TextView group_shared_item_delete;
-		NetworkImageView imageUrl;
+		NetworkImageRoundView imageUrl;
 	}
 	
 	public void setOnSwipeOperator(OnSwipeOperator operator){

@@ -35,9 +35,10 @@ import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
-import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageRoundView;
 import com.shecook.wenyi.mainpackage.FragmentTabAdapter;
 import com.shecook.wenyi.model.group.GroupHotListItem;
+import com.shecook.wenyi.personal.PersonalLoginCommon;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
@@ -55,7 +56,7 @@ public class GroupItemDetailActivity extends BaseActivity implements
 	GroupItemDetailMemFragment memFragment;
 	private TextView group_hot_item_title, group_hot_item_class,
 			group_hot_item_shared, group_hot_tiem_content;
-	private NetworkImageView item_img;
+	private NetworkImageRoundView item_img;
 	private String circleid;
 
 	@Override
@@ -81,7 +82,7 @@ public class GroupItemDetailActivity extends BaseActivity implements
 		return_img = (ImageView) findViewById(R.id.return_img);
 		return_img.setOnClickListener(GroupItemDetailActivity.this);
 
-		item_img = (NetworkImageView) findViewById(R.id.item_img);
+		item_img = (NetworkImageRoundView) findViewById(R.id.item_img);
 		group_hot_item_title = (TextView) findViewById(R.id.group_hot_item_title);
 		group_hot_item_class = (TextView) findViewById(R.id.group_hot_item_class);
 		group_hot_item_shared = (TextView) findViewById(R.id.group_hot_item_shared);
@@ -390,7 +391,12 @@ public class GroupItemDetailActivity extends BaseActivity implements
 		default:
 			break;
 		}
-		dialog.show();
+		if(isLogin()){
+			dialog.show();
+		}else{
+			Intent intent = new Intent(GroupItemDetailActivity.this,PersonalLoginCommon.class);
+			startActivity(intent);
+		}
 	}
 
 	LeBottomSheet mBottomSheet;
