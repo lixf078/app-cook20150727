@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.model.personal.FoodBean;
-import com.umeng.socom.Log;
 
 public class PersonalShiCaiAdaptre extends BaseAdapter {
 

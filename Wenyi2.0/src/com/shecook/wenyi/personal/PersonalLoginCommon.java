@@ -1,5 +1,8 @@
 package com.shecook.wenyi.personal;
 
+import java.util.Map;
+import java.util.Set;
+
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
@@ -28,19 +31,23 @@ import com.shecook.wenyi.util.net.NetResult;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.bean.SocializeUser;
-import com.umeng.socialize.controller.RequestType;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.controller.listener.SocializeListeners.FetchUserListener;
 import com.umeng.socialize.controller.listener.SocializeListeners.SocializeClientListener;
+import com.umeng.socialize.controller.listener.SocializeListeners.UMAuthListener;
+import com.umeng.socialize.controller.listener.SocializeListeners.UMDataListener;
+import com.umeng.socialize.exception.SocializeException;
+import com.umeng.socialize.sso.SinaSsoHandler;
+import com.umeng.socialize.sso.UMQQSsoHandler;
+import com.umeng.socialize.sso.UMSsoHandler;
 
 public class PersonalLoginCommon extends BaseActivity implements OnClickListener{
 
 	public static final String TAG = "PersonalLoginCommon";
 	
 	private TextView sinaLogin, qqLogin, shecookLogin, register;
-	UMSocialService mController = UMServiceFactory.getUMSocialService(
-			"com.umeng.login", RequestType.SOCIAL);
+	UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.login");
 	
 	private EditText userName, password, email;
 	
@@ -107,8 +114,81 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 	}
 
 	private void qqLogin() {
-		mController.getConfig().supportQQPlatform(PersonalLoginCommon.this, HttpUrls.PERSONAL_LOGIN_3RD);
-		mController.login(PersonalLoginCommon.this, SHARE_MEDIA.QQ,
+		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(PersonalLoginCommon.this, "100487086",
+                "ce9077a0f1a63d76854b92c5b74deb81");
+		qqSsoHandler.addToSocialSDK();
+		mController.doOauthVerify(PersonalLoginCommon.this, SHARE_MEDIA.QQ,
+				new UMAuthListener() {
+					@Override
+					public void onStart(SHARE_MEDIA platform) {
+						Toast.makeText(PersonalLoginCommon.this, "授权开始",
+								Toast.LENGTH_SHORT).show();
+					}
+
+					@Override
+					public void onError(SocializeException e,
+							SHARE_MEDIA platform) {
+						Toast.makeText(PersonalLoginCommon.this, "授权错误",
+								Toast.LENGTH_SHORT).show();
+					}
+
+					@Override
+					public void onComplete(Bundle value, SHARE_MEDIA platform) {
+						Toast.makeText(PersonalLoginCommon.this, "授权完成",
+								Toast.LENGTH_SHORT).show();
+						uid = value.getString("uid");
+						// 获取相关授权信息
+						mController.getPlatformInfo(PersonalLoginCommon.this,
+								SHARE_MEDIA.QQ, new UMDataListener() {
+									@Override
+									public void onStart() {
+										Toast.makeText(
+												PersonalLoginCommon.this,
+												"获取平台数据开始...",
+												Toast.LENGTH_SHORT).show();
+									}
+
+									@Override
+									public void onComplete(int status,
+											Map<String, Object> info) {
+										if (status == 200 && info != null) {
+											StringBuilder sb = new StringBuilder();
+											Set<String> keys = info.keySet();
+											
+		                                    nickname = (String) info.get("screen_name");
+		                                    image = (String) info.get("profile_image_url");
+		                                    plat = "qq";
+		                                    Log.d("lixufeng", "onComplete uid " + uid + ", nickname " + nickname + ", image " + image);
+		                                    JSONObject jsonObject = new JSONObject();
+		                        			JSONObject paramSub = new JSONObject();
+		                        			try {
+		                        				paramSub.put("connectid", uid);
+		                        				paramSub.put("plat", plat);
+		                        				paramSub.put("nickname", nickname);
+		                        				paramSub.put("portrait", image);
+		                        				paramSub.put("sex", "" + info.get("gender"));
+
+		                        				jsonObject.put("param", paramSub);
+		                        				post3RD(jsonObject);
+		                        			}catch(Exception e){
+
+		                        			}
+										} else {
+											Log.e("TestData", "发生错误：" + status);
+										}
+									}
+								});
+					}
+
+					@Override
+					public void onCancel(SHARE_MEDIA platform) {
+						Toast.makeText(PersonalLoginCommon.this, "授权取消",
+								Toast.LENGTH_SHORT).show();
+					}
+				} );
+		
+//		mController.getConfig().supportQQPlatform(PersonalLoginCommon.this, HttpUrls.PERSONAL_LOGIN_3RD);
+		/*mController.login(PersonalLoginCommon.this, SHARE_MEDIA.QQ,
 				new SocializeClientListener() {
 
 					@Override
@@ -159,65 +239,150 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
                             });
                         }
 					}
-				});
+				});*/
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+	    /**使用SSO授权必须添加如下代码 */  
+	    UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode);
+	    if(ssoHandler != null){
+	       ssoHandler.authorizeCallBack(requestCode, resultCode, data);
+	    }
+	}
+	
 	private void sinaLogin() {
-        mController.login(PersonalLoginCommon.this, SHARE_MEDIA.SINA,
-                new SocializeClientListener() {
+		
+		mController.getConfig().setSsoHandler(new SinaSsoHandler());
+		
+		mController.doOauthVerify(PersonalLoginCommon.this, SHARE_MEDIA.SINA,
+				new UMAuthListener() {
+					@Override
+					public void onError(SocializeException e,
+							SHARE_MEDIA platform) {
+						Toast.makeText(PersonalLoginCommon.this, "授权错误",
+								Toast.LENGTH_SHORT).show();
+					}
 
-                    @Override
-                    public void onStart() {
+					@Override
+					public void onComplete(Bundle value, SHARE_MEDIA platform) {
+						if (value != null
+								&& !TextUtils.isEmpty(value.getString("uid"))) {
+							Toast.makeText(PersonalLoginCommon.this, "授权成功.",
+									Toast.LENGTH_SHORT).show();
+							Log.e("lixufeng", "onComplete value " + value);
+							uid = value.getString("uid");
+							// 获取相关授权信息
+							mController.getPlatformInfo(PersonalLoginCommon.this,
+									SHARE_MEDIA.SINA, new UMDataListener() {
+										@Override
+										public void onStart() {
+											Toast.makeText(
+													PersonalLoginCommon.this,
+													"获取平台数据开始...",
+													Toast.LENGTH_SHORT).show();
+										}
 
-                    }
+										@Override
+										public void onComplete(int status,
+												Map<String, Object> info) {
+											if (status == 200 && info != null) {
+			                                    nickname = (String) info.get("screen_name");
+			                                    image = (String) info.get("profile_image_url");
+			                                    plat = "sina";
+			                                    Log.d("lixufeng", "onComplete uid " + uid + ", nickname " + nickname + ", image " + image);
+			                                    JSONObject jsonObject = new JSONObject();
+			                        			JSONObject paramSub = new JSONObject();
+			                        			try {
+			                        				paramSub.put("connectid", uid);
+			                        				paramSub.put("plat", plat);
+			                        				paramSub.put("nickname", nickname);
+			                        				paramSub.put("portrait", image);
+			                        				paramSub.put("sex", "" + info.get("gender"));
+			                        				jsonObject.put("param", paramSub);
+			                        				post3RD(jsonObject);
+			                        			}catch(Exception e){
 
-                    @Override
-                    public void onComplete(int status, SocializeEntity entity) {
-                        Log.d("onComplete", "" + status);
-                        if (status == 200) {
-                            mController.getUserInfo(PersonalLoginCommon.this, new FetchUserListener() {
+			                        			}
+											} else {
+												Log.e("TestData", "发生错误：" + status);
+											}
+										}
+									});
+						} else {
+							Toast.makeText(PersonalLoginCommon.this, "授权失败",
+									Toast.LENGTH_SHORT).show();
+						}
+					}
 
-                                @Override
-                                public void onStart() {
+					@Override
+					public void onCancel(SHARE_MEDIA platform) {
+					}
 
-                                }
-
-                                @Override
-                                public void onComplete(int status, SocializeUser user) {
-                                    
-                                    uid = user.mLoginAccount.getUsid();
-                                    nickname = user.mLoginAccount.getUserName();
-                                    image = user.mLoginAccount.getAccountIconUrl();
-                                    plat = "sina";
-                                    Log.d("lixufeng", "onComplete uid " + uid + ", nickname " + nickname + ", image " + image);
-                                    JSONObject jsonObject = new JSONObject();
-                        			JSONObject paramSub = new JSONObject();
-                        			JSONObject commonSub = new JSONObject();
-                        			try {
-                        				paramSub.put("connectid", uid);
-                        				paramSub.put("plat", plat);
-                        				paramSub.put("nickname", nickname);
-                        				paramSub.put("portrait", image);
-                        				paramSub.put("sex", "");
-                        				
-                        				commonSub.put("mtype", "android");
-                        				commonSub.put("mid", "957aea62-3a50-49e3-9640-3824d38b2f45");
-                        				commonSub.put("token", PersonalLoginCommon.user.get_token());// 注册，登陆之后可能会更改
-                        				
-                        				jsonObject.put("param", paramSub);
-                        				jsonObject.put("common", commonSub);
-                        				post3RD(jsonObject);
-                        			}catch(Exception e){
-                        				
-                        			}
-                                    
-                                }
-                            });
-                        }else{
-
-                        }
-                    }
-                });
+					@Override
+					public void onStart(SHARE_MEDIA platform) {
+						Toast.makeText(PersonalLoginCommon.this, "授权开始",
+								Toast.LENGTH_SHORT).show();
+					}
+				});
+		
+		
+//       mController.login(PersonalLoginCommon.this, SHARE_MEDIA.SINA,
+//                new SocializeClientListener() {
+//
+//                    @Override
+//                    public void onStart() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete(int status, SocializeEntity entity) {
+//                        Log.d("onComplete", "" + status);
+//                        if (status == 200) {
+//                            mController.getUserInfo(PersonalLoginCommon.this, new FetchUserListener() {
+//
+//                                @Override
+//                                public void onStart() {
+//
+//                                }
+//
+//                                @Override
+//                                public void onComplete(int status, SocializeUser user) {
+//                                    
+//                                    uid = user.mLoginAccount.getUsid();
+//                                    nickname = user.mLoginAccount.getUserName();
+//                                    image = user.mLoginAccount.getAccountIconUrl();
+//                                    plat = "sina";
+//                                    Log.d("lixufeng", "onComplete uid " + uid + ", nickname " + nickname + ", image " + image);
+//                                    JSONObject jsonObject = new JSONObject();
+//                        			JSONObject paramSub = new JSONObject();
+//                        			JSONObject commonSub = new JSONObject();
+//                        			try {
+//                        				paramSub.put("connectid", uid);
+//                        				paramSub.put("plat", plat);
+//                        				paramSub.put("nickname", nickname);
+//                        				paramSub.put("portrait", image);
+//                        				paramSub.put("sex", "");
+//                        				
+//                        				commonSub.put("mtype", "android");
+//                        				commonSub.put("mid", "957aea62-3a50-49e3-9640-3824d38b2f45");
+//                        				commonSub.put("token", PersonalLoginCommon.user.get_token());// 注册，登陆之后可能会更改
+//                        				
+//                        				jsonObject.put("param", paramSub);
+//                        				jsonObject.put("common", commonSub);
+//                        				post3RD(jsonObject);
+//                        			}catch(Exception e){
+//                        				
+//                        			}
+//                                    
+//                                }
+//                            });
+//                        }else{
+//
+//                        }
+//                    }
+//                });
     }
 	
 	private String uid = "";
@@ -229,17 +394,12 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 	private void post(JSONObject jsonObject) {
 		Log.d(TAG, "wenyi login post start ");
 		handler.sendEmptyMessage(Util.SHOW_DIALOG);
-//		RegistreFactory registreFactory = new RegistreFactory();
-//		basePost(HttpUrls.PERSONAL_LOGIN, jsonObject.toString(), registreFactory, resultListener,errorListener);
-		
 		userOperator(HttpUrls.PERSONAL_LOGIN, jsonObject, loginResultListener, loginErrorListener);
 	}
 	
 	private void post3RD(JSONObject jsonObject) {
 		Log.d(TAG, "wenyi login post start ");
 		handler.sendEmptyMessage(Util.SHOW_DIALOG);
-//		RegistreFactory registreFactory = new RegistreFactory();
-//		basePost(HttpUrls.PERSONAL_LOGIN_3RD, jsonObject.toString(), registreFactory, resultListener,errorListener);
 		userOperator(HttpUrls.PERSONAL_LOGIN_3RD, jsonObject, loginResultListener, loginErrorListener);
 	}
 
@@ -327,6 +487,7 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 								user.set_token(dataJson.getString("token"));
 								user.set_nickname(nickname);
 								user.set_email(useremail);
+								user.set_uimage50(image);
 								user.set_password(passwd);
 								user.set_isLogin(true);
 								Util.saveUserData(PersonalLoginCommon.this, user);

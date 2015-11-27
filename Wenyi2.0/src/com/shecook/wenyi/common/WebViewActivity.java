@@ -1,13 +1,13 @@
 package com.shecook.wenyi.common;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.shecook.wenyi.BaseActivity;
 import com.shecook.wenyi.R;
-import com.umeng.socom.Log;
 
 public class WebViewActivity extends BaseActivity {
 	private WebView webView;

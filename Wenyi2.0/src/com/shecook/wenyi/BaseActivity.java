@@ -1,11 +1,14 @@
 package com.shecook.wenyi;
 
+import java.io.File;
 import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -31,21 +34,24 @@ import com.umeng.message.PushAgent;
 import com.umeng.socialize.bean.CustomPlatform;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
-import com.umeng.socialize.controller.RequestType;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
-import com.umeng.socialize.controller.UMWXHandler;
-import com.umeng.socialize.controller.listener.SocializeListeners.OnCustomPlatformClickListener;
+import com.umeng.socialize.controller.listener.SocializeListeners.OnSnsPlatformClickListener;
 import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
-import com.umeng.socialize.media.CircleShareContent;
+import com.umeng.socialize.media.GooglePlusShareContent;
+import com.umeng.socialize.media.QQShareContent;
+import com.umeng.socialize.media.QZoneShareContent;
+import com.umeng.socialize.media.RenrenShareContent;
 import com.umeng.socialize.media.SinaShareContent;
+import com.umeng.socialize.media.TencentWbShareContent;
+import com.umeng.socialize.media.TwitterShareContent;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMVideo;
 import com.umeng.socialize.media.UMusic;
-import com.umeng.socialize.media.WeiXinShareContent;
-import com.umeng.socialize.sso.QZoneSsoHandler;
 import com.umeng.socialize.sso.SinaSsoHandler;
-import com.umeng.socialize.sso.TencentWBSsoHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
+import com.umeng.socialize.weixin.media.CircleShareContent;
+import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 public class BaseActivity extends FragmentActivity {
 
@@ -56,19 +62,20 @@ public class BaseActivity extends FragmentActivity {
 	public String pwd = "";
 
 	public static boolean isNeedUpdate;
-	public static UMSocialService mController = UMServiceFactory.getUMSocialService(
-			"com.umeng.login", RequestType.SOCIAL);
+	public static UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
 	public String appId_wx = "wxf89758f00762d524";
+	public String appSecret = "db426a9829e4b49a0dcac7b4162da6b6";
 
 	public void openShareForCookbook(HashMap<String, String> map, final String recipeid) {
-		mController.getConfig().removePlatform(SHARE_MEDIA.RENREN,
-				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.TENCENT);
+//		mController.getConfig().removePlatform(SHARE_MEDIA.RENREN,
+//				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.TENCENT);
+		mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA);
+		configSso(map);
 		CustomPlatform customPlatform = new CustomPlatform("copy_link","收 藏", R.drawable.my_collection);
-		customPlatform.mClickListener = new OnCustomPlatformClickListener() {
+		customPlatform.mClickListener = new OnSnsPlatformClickListener() {
 			
 			@Override
-			public void onClick(CustomPlatform context, SocializeEntity entity,
-					SnsPostListener listener) {
+			public void onClick(Context arg0, SocializeEntity arg1, SnsPostListener arg2) {
 				Intent intent = new Intent(BaseActivity.this, CookbookCollectionActivity.class);
 				intent.putExtra("recipeid", recipeid);
 				intent.putExtra("event", "add");
@@ -76,10 +83,16 @@ public class BaseActivity extends FragmentActivity {
 			}
 		};
 		mController.getConfig().addCustomPlatform(customPlatform);
-		configSso(map);
+		mController.openShare(BaseActivity.this, false);
 	}
 
 	public void openShare(HashMap<String, String> map) {
+		UMWXHandler wxHandler = new UMWXHandler(BaseActivity.this, appId_wx, appSecret);
+		wxHandler.addToSocialSDK();
+		UMWXHandler wxCircleHandler = new UMWXHandler(BaseActivity.this, appId_wx, appSecret);
+		wxCircleHandler.setToCircle(true);
+		wxCircleHandler.addToSocialSDK();
+		
 		mController.getConfig().removePlatform(SHARE_MEDIA.RENREN,
 				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.TENCENT);
 		configSso(map);
@@ -88,7 +101,6 @@ public class BaseActivity extends FragmentActivity {
 	public void openShare(String content, String url) {
 		mController.getConfig().removePlatform(SHARE_MEDIA.RENREN,
 				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.TENCENT);
-		addPlatfromForWX("");
 		mController.setShareContent(content);
 
 		UMImage image = new UMImage(BaseActivity.this, url);
@@ -104,8 +116,8 @@ public class BaseActivity extends FragmentActivity {
 	 * @throws
 	 */
 	private void configSso(HashMap<String, String> map) {
+		mController.getConfig().setSsoHandler(new SinaSsoHandler());
 		String title = map.get("title");
-		String layer = map.get("layer");
 		String content = map.get("content");
 		String webUrl = map.get("url");
 		String imageUrl = map.get("image");
@@ -126,19 +138,19 @@ public class BaseActivity extends FragmentActivity {
 			shareContent = "我正在看@文怡家常菜 的@文怡 随笔【" + title + "】 " + content.substring(0, 30) + "...欲知后事如何，请狂戳" + webUrl;
 			weixinShareContent = "【" + title + "】 " + content.substring(0, 30);
 		}
-
-		mController.getConfig().supportWXPlatform(
+		
+		/*mController.getConfig().supportWXPlatform(
 				BaseActivity.this, appId_wx, "http://www.shecook.com/");
 		mController.getConfig().supportWXCirclePlatform(
 				BaseActivity.this, appId_wx, "http://www.shecook.com/");
 		mController.getConfig().supportQQPlatform(BaseActivity.this, "100424468",
-				"http://www.umeng.com/social");
+				"http://www.umeng.com/social");*/
 
 		// 配置SSO
-		mController.getConfig().setSsoHandler(new SinaSsoHandler());
+		/*mController.getConfig().setSsoHandler(new SinaSsoHandler());
 		mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
 		mController.getConfig().setSsoHandler(
-				new QZoneSsoHandler(BaseActivity.this));
+				new QZoneSsoHandler(BaseActivity.this));*/
 
 		UMImage localImage = new UMImage(BaseActivity.this, imageUrl);
 
@@ -150,7 +162,7 @@ public class BaseActivity extends FragmentActivity {
 		mController.setShareMedia(weixinContent);
 
 		// 设置朋友圈分享的内容
-		CircleShareContent circleMedia = new CircleShareContent(localImage);
+		WeiXinShareContent circleMedia = new WeiXinShareContent(localImage);
 		circleMedia.setShareContent(weixinShareContent);
 		circleMedia.setTitle(title);
 		circleMedia.setAppWebSite(webUrl);
@@ -186,9 +198,19 @@ public class BaseActivity extends FragmentActivity {
 		sinaContent.setAppWebSite(webUrl);
 		mController.setShareMedia(sinaContent);
 
-		mController.openShare(BaseActivity.this, false);
 	}
 
+	
+    /**
+     * 配置分享平台参数</br>
+     */
+    private void configPlatforms() {
+        // 添加新浪SSO授权
+        mController.getConfig().setSsoHandler(new SinaSsoHandler());
+        // 添加微信、微信朋友圈平台
+        addPlatfromForWX();
+    }
+	
 	public boolean netConnected = true;
 	
 	@Override
@@ -197,6 +219,9 @@ public class BaseActivity extends FragmentActivity {
 		
 		PushAgent.getInstance(this).onAppStart();
 		VolleyUtils.getInstance().initVolley(getApplicationContext());
+		
+		configPlatforms();
+//		setShareContent();
 		
 		if(!Util.checkConnection(this)){
 			Toast.makeText(this, getString(R.string.network_has_problem), Toast.LENGTH_SHORT).show();
@@ -218,99 +243,13 @@ public class BaseActivity extends FragmentActivity {
 	}
 
 	ImageView returnButton;
-	public void removePlatform() {
 
-	}
-
-	public void addPlatfromForWX(String url) {
-		UMWXHandler wx = mController.getConfig().supportWXPlatform(
-				BaseActivity.this, appId_wx, "http://www.wenyijcc.com");
-		wx.setWXTitle(getString(R.string.share_to_wenxin));
-		UMWXHandler wxp = mController.getConfig().supportWXCirclePlatform(
-				BaseActivity.this, appId_wx, "http://www.wenyijcc.com");
-		wxp.setCircleTitle(getString(R.string.share_to_wenxin_py));
-	}
-
-	/**
-	 * @功能描述 : 添加微信平台分享
-	 * @return
-	 */
-	private void addWXPlatform() {
-
-		// wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
-		String appId = "wx967daebe835fbeac";
-		// 微信图文分享,音乐必须设置一个url
-		String contentUrl = "http://m.babytree.com/app/#area-1";
-		// 添加微信平台
-		UMWXHandler wxHandler = mController.getConfig().supportWXPlatform(
-				BaseActivity.this, appId_wx, contentUrl);
-		wxHandler.setWXTitle("友盟社会化组件还不错-WXHandler...");
-
-		UMImage mUMImgBitmap = new UMImage(BaseActivity.this,
-				"http://www.umeng.com/images/pic/banner_module_social.png");
-
-		UMusic uMusic = new UMusic("http://sns.whalecloud.com/test_music.mp3");
-		uMusic.setAuthor("zhangliyong");
-		uMusic.setTitle("天籁之音");
-		// uMusic.setThumb("http://www.umeng.com/images/pic/banner_module_social.png");
-		// 非url类型的缩略图需要传递一个UMImage的对象
-		uMusic.setThumb(mUMImgBitmap);
-		//
-		// 视频分享
-		UMVideo umVedio = new UMVideo(
-				"http://v.youku.com/v_show/id_XNTc0ODM4OTM2.html");
-		umVedio.setTitle("友盟社会化组件视频");
-		// umVedio.setThumb("http://www.umeng.com/images/pic/banner_module_social.png");
-		umVedio.setThumb(mUMImgBitmap);
-		// 设置分享文字内容
-		mController
-				.setShareContent("友盟社会化组件还不错，让移动应用快速整合社交分享功能。www.umeng.com/social");
-		// mController.setShareContent(null);
-		// 设置分享图片
-		// mController.setShareMedia(mUMImgBitmap);
-		// 支持微信朋友圈
-		UMWXHandler circleHandler = mController.getConfig()
-				.supportWXCirclePlatform(BaseActivity.this, appId_wx, contentUrl);
-		circleHandler.setCircleTitle("友盟社会化组件还不错-CircleHandler...");
-
-		//
-		mController.getConfig().registerListener(new SnsPostListener() {
-
-			@Override
-			public void onStart() {
-				Toast.makeText(BaseActivity.this, "weixin -- xxxx onStart", 0).show();
-			}
-
-			@Override
-			public void onComplete(SHARE_MEDIA platform, int eCode,
-					SocializeEntity entity) {
-				Toast.makeText(BaseActivity.this, platform + " code = " + eCode, 0)
-						.show();
-			}
-		});
-
-		mController.openShare(BaseActivity.this, false);
-
-		// mController.postShare(BaseActivity.this, SHARE_MEDIA.WEIXIN, new
-		// SnsPostListener() {
-		//
-		// @Override
-		// public void onStart() {
-		//
-		// }
-		//
-		// @Override
-		// public void onComplete(SHARE_MEDIA platform, int eCode,
-		// SocializeEntity entity) {
-		// if (eCode == StatusCode.ST_CODE_SUCCESSED) {
-		// Toast.makeText(BaseActivity.this, "微信或者微信朋友圈分享完成啦",
-		// Toast.LENGTH_SHORT).show();
-		// } else {
-		// Toast.makeText(BaseActivity.this, "微信或者微信朋友圈分享失败...",
-		// Toast.LENGTH_SHORT).show();
-		// }
-		// }
-		// });
+	public void addPlatfromForWX() {
+		UMWXHandler wxHandler = new UMWXHandler(BaseActivity.this, appId_wx, appSecret);
+		wxHandler.addToSocialSDK();
+		UMWXHandler wxCircleHandler = new UMWXHandler(BaseActivity.this, appId_wx, appSecret);
+		wxCircleHandler.setToCircle(true);
+		wxCircleHandler.addToSocialSDK();
 	}
 
 	public void checkLogin(){
@@ -449,5 +388,121 @@ public class BaseActivity extends FragmentActivity {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+     * 根据不同的平台设置不同的分享内容</br>
+     */
+    private void setShareContent() {
+
+        // 配置SSO
+        mController.getConfig().setSsoHandler(new SinaSsoHandler());
+
+        UMImage localImage = new UMImage(BaseActivity.this, R.drawable.icon);
+        UMImage urlImage = new UMImage(BaseActivity.this,
+                "http://www.umeng.com/images/pic/social/integrated_3.png");
+        // UMImage resImage = new UMImage(BaseActivity.this, R.drawable.icon);
+
+        // 视频分享
+        UMVideo video = new UMVideo(
+                "http://v.youku.com/v_show/id_XNTc0ODM4OTM2.html");
+        // vedio.setThumb("http://www.umeng.com/images/pic/home/social/img-1.png");
+        video.setTitle("友盟社会化组件视频");
+        video.setThumb(urlImage);
+
+        UMusic uMusic = new UMusic(
+                "http://music.huoxing.com/upload/20130330/1364651263157_1085.mp3");
+        uMusic.setAuthor("umeng");
+        uMusic.setTitle("天籁之音");
+        // uMusic.setThumb(urlImage);
+        uMusic.setThumb("http://www.umeng.com/images/pic/social/chart_1.png");
+
+        // UMEmoji emoji = new UMEmoji(BaseActivity.this,
+        // "http://www.pc6.com/uploadimages/2010214917283624.gif");
+        // UMEmoji emoji = new UMEmoji(BaseActivity.this,
+        // "/storage/sdcard0/emoji.gif");
+
+        WeiXinShareContent weixinContent = new WeiXinShareContent();
+        weixinContent
+                .setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-微信。http://www.umeng.com/social");
+        weixinContent.setTitle("友盟社会化分享组件-微信");
+        weixinContent.setTargetUrl("http://www.umeng.com/social");
+        weixinContent.setShareMedia(urlImage);
+        mController.setShareMedia(weixinContent);
+
+        // 设置朋友圈分享的内容
+        CircleShareContent circleMedia = new CircleShareContent();
+        circleMedia
+                .setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-朋友圈。http://www.umeng.com/social");
+        circleMedia.setTitle("友盟社会化分享组件-朋友圈");
+        circleMedia.setShareMedia(urlImage);
+        // circleMedia.setShareMedia(uMusic);
+        // circleMedia.setShareMedia(video);
+        circleMedia.setTargetUrl("http://www.umeng.com/social");
+        mController.setShareMedia(circleMedia);
+
+        // 设置renren分享内容
+        RenrenShareContent renrenShareContent = new RenrenShareContent();
+        renrenShareContent.setShareContent("人人分享内容");
+        UMImage image = new UMImage(BaseActivity.this,
+                BitmapFactory.decodeResource(getResources(), R.drawable.icon));
+        image.setTitle("thumb title");
+        image.setThumb("http://www.umeng.com/images/pic/social/integrated_3.png");
+        renrenShareContent.setShareImage(image);
+        renrenShareContent.setAppWebSite("http://www.umeng.com/social");
+        mController.setShareMedia(renrenShareContent);
+
+        UMImage qzoneImage = new UMImage(BaseActivity.this,
+                "http://www.umeng.com/images/pic/social/integrated_3.png");
+        qzoneImage
+                .setTargetUrl("http://www.umeng.com/images/pic/social/integrated_3.png");
+
+        // 设置QQ空间分享内容
+        QZoneShareContent qzone = new QZoneShareContent();
+        qzone.setShareContent("share test");
+        qzone.setTargetUrl("http://www.umeng.com");
+        qzone.setTitle("QZone title");
+        qzone.setShareMedia(urlImage);
+        // qzone.setShareMedia(uMusic);
+        mController.setShareMedia(qzone);
+
+        video.setThumb(new UMImage(BaseActivity.this, BitmapFactory.decodeResource(
+                getResources(), R.drawable.icon)));
+
+        QQShareContent qqShareContent = new QQShareContent();
+        qqShareContent.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能 -- QQ");
+        qqShareContent.setTitle("hello, title");
+        qqShareContent.setShareMedia(image);
+        qqShareContent.setTargetUrl("http://www.umeng.com/social");
+        mController.setShareMedia(qqShareContent);
+
+        // 视频分享
+        UMVideo umVideo = new UMVideo(
+                "http://v.youku.com/v_show/id_XNTc0ODM4OTM2.html");
+        umVideo.setThumb("http://www.umeng.com/images/pic/home/social/img-1.png");
+        umVideo.setTitle("友盟社会化组件视频");
+
+        TencentWbShareContent tencent = new TencentWbShareContent();
+        tencent.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-腾讯微博。http://www.umeng.com/social");
+        // 设置tencent分享内容
+        mController.setShareMedia(tencent);
+
+
+        SinaShareContent sinaContent = new SinaShareContent();
+        sinaContent
+                .setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-新浪微博。http://www.umeng.com/social");
+        sinaContent.setShareImage( new UMImage( BaseActivity.this, R.drawable.icon));
+        mController.setShareMedia(sinaContent);
+
+        TwitterShareContent twitterShareContent = new TwitterShareContent();
+        twitterShareContent
+                .setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-TWITTER。http://www.umeng.com/social");
+        twitterShareContent.setShareMedia(new UMImage(BaseActivity.this, new File(
+                "/storage/sdcard0/emoji.gif")));
+        mController.setShareMedia(twitterShareContent);
+
+        GooglePlusShareContent googlePlusShareContent = new GooglePlusShareContent();
+        googlePlusShareContent
+                .setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-G+。http://www.umeng.com/social");
+        googlePlusShareContent.setShareMedia(localImage);
+        mController.setShareMedia(googlePlusShareContent);
+    }
 }

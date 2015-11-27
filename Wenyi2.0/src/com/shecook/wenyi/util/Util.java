@@ -489,7 +489,6 @@ public class Util {
 			editor.putString("_uimage50", user.get_uimage50());
 			editor.putString("_uimage180", user.get_uimage180());
 			editor.putBoolean("islogin", user.is_isLogin());
-			new Exception().printStackTrace();
 			editor.commit();
 
 			wenyiUser.set_password(user.get_password());
@@ -526,7 +525,6 @@ public class Util {
 			editor.putString("_msgcount", "");
 			editor.putString("_level_score", "");
 			editor.putBoolean("islogin", false);
-			new Exception().printStackTrace();
 			editor.commit();
 			wenyiUser = null;
 		} catch (Exception e) {
@@ -584,7 +582,6 @@ public class Util {
 		SharedPreferences userInfo = null;
 		try {
 			Log.e("lixufeng", "updateBooleanData " + key + ", value " + value);
-			new Exception().printStackTrace();
 			userInfo = context.getSharedPreferences("user_info", 0);
 			SharedPreferences.Editor editor = userInfo.edit();
 			editor.putBoolean(key, value);
@@ -678,7 +675,6 @@ public class Util {
 			wenyiUser.set_token(userInfo.getString("_token", ""));
 			wenyiUser.set_mID(userInfo.getString("_mid", ""));
 			wenyiUser.set_isLogin(userInfo.getBoolean("islogin", false));
-			new Exception().printStackTrace();
 		} catch (Exception e) {
 			wenyiUser = null;
 			e.printStackTrace();

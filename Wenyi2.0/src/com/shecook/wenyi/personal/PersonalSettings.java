@@ -227,19 +227,25 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 	}
 
 	public void logout(final Activity from, final Class to, SHARE_MEDIA media) {
+		
 		mController.deleteOauth(PersonalSettings.this, media,
 				new SocializeClientListener() {
-
 					@Override
 					public void onStart() {
-
 					}
 
 					@Override
-					public void onComplete(int arg0, SocializeEntity arg1) {
-
+					public void onComplete(int status, SocializeEntity entity) {
+						if (status == 200) {
+							Toast.makeText(PersonalSettings.this, "删除成功.",
+									Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(PersonalSettings.this, "删除失败",
+									Toast.LENGTH_SHORT).show();
+						}
 					}
 				});
+		
 		mController.loginout(PersonalSettings.this,
 				new SocializeClientListener() {
 

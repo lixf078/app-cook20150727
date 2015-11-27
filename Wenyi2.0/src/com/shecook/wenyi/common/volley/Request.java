@@ -27,10 +27,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 
-import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.VolleyLog.MarkerLog;
-import com.umeng.socom.Log;
+import com.shecook.wenyi.common.volley.toolbox.HttpClientStack;
+import com.shecook.wenyi.common.volley.toolbox.HurlStack;
 
 /**
  * 所有网络请求的基类。 T 代表与 Request 绑定的 Response。

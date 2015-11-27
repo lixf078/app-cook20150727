@@ -18,7 +18,6 @@ import com.shecook.wenyi.model.EssayListItem;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
-import com.umeng.socom.Log;
 
 public class EssayListAdapter extends BaseAdapter {
 	

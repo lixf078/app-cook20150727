@@ -3,6 +3,7 @@ package com.shecook.wenyi.piazza.adapter;
 import java.util.LinkedList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ import com.shecook.wenyi.model.piazza.PiazzaDiscoverItem;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
-import com.umeng.socom.Log;
 
 public class PiazzaDiscoverListAdapter extends BaseAdapter {
 	

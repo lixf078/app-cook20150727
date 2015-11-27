@@ -73,7 +73,6 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		RequestHttpUtil.getHttpData(mActivity, HttpUrls.PERSONAL_MYCARD, null,
 				userCardResultListener, userCardErrorListener);
 		commonUpload = CommonUpload.getInstance();
-		
 		// retrieveContactInfoFromSIM();
 	}
 
@@ -95,7 +94,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		userIconView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				commonUpload.showCameraDialog(mActivity);
+				commonUpload.showCameraDialog2(mActivity);
 			}
 		});
 //		userIconView.setDefaultImageResId(R.drawable.icon);
@@ -138,14 +137,19 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onResume() {
 		WenyiLog.logv(TAG, "onResume");
+		WenyiUser user = null;
 		if(!mActivity.isLogin()){
-			WenyiUser user = new WenyiUser();
+			user = new WenyiUser();
 			user.set_score("积分");
 			user.set_level("厨房小毛猴");
 			user.set_msgcount("消息");
 			user.set_nickname("");
 			user.set_level_core("经验");
 			user.set_uimage50("");
+		}else{
+			user = Util.getUserData(mActivity);
+		}
+		if(null != user){
 			updateView(user);
 		}
 		super.onResume();
@@ -441,6 +445,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 	}
 	
 	public void createInfo() {
+		
+		RequestHttpUtil.getHttpData(mActivity, HttpUrls.PERSONAL_MYCARD, null,
+				userCardResultListener, userCardErrorListener);
 		/*
 		JSONObject paramObject = new JSONObject();
 		try {

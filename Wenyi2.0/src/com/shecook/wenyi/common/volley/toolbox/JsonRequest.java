@@ -18,15 +18,12 @@ package com.shecook.wenyi.common.volley.toolbox;
 
 import java.io.UnsupportedEncodingException;
 
-import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.NetworkResponse;
 import com.shecook.wenyi.common.volley.Request;
-import com.shecook.wenyi.common.volley.Request.Method;
 import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyLog;
-import com.umeng.socom.Log;
 
 /**
  * A request for retrieving a T type response body at a given URL that also

@@ -310,7 +310,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="tencent100424468" /> <!-- 100498017 -->
+                <data android:scheme="tencent100487086" /> <!-- 100498017 -->
             </intent-filter>
         </activity>
         <activity android:name="com.tencent.plus.ImageActivity" />
@@ -319,12 +319,12 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- 微信回调activity -->
-        <activity
-            android:name="com.shecook.wenyi.wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+		<activity
+		   android:name=".wxapi.WXEntryActivity"
+		   android:theme="@android:style/Theme.Translucent.NoTitleBar"
+		   android:configChanges="keyboardHidden|orientation|screenSize"
+		   android:exported="true"
+		   android:screenOrientation="portrait" />
         <!-- Socialize Activitys Start -->
         <activity
             android:name="com.umeng.socialize.view.CommentActivity"

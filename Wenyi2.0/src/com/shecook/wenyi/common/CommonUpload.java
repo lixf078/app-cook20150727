@@ -32,7 +32,6 @@ import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
-import com.tencent.mm.sdk.platformtools.PhoneUtil.MacInfo;
 
 public class CommonUpload {
 	
@@ -179,11 +178,46 @@ public class CommonUpload {
     	
     	Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+//        Intent intent2 = new Intent(Intent.ACTION_GET_CONTENT, null);
+		intent.setType("image/*");
+		intent.putExtra("crop", "true");
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
+		intent.putExtra("outputX", 290);
+		intent.putExtra("outputY", 290);
+		intent.putExtra("scale", true);
+		intent.putExtra("return-data", false);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+		intent.putExtra("noFaceDetection", true);
+        
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
 			mContext.startActivityForResult(intent, SELECT_PIC_KITKAT);
 		} else {
 			mContext.startActivityForResult(intent, PHOTO_PICKED_WITH_DATA);
 		}
+    	
+    	
+    	/*Intent intent = new Intent(Intent.ACTION_PICK, null);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+			mContext.startActivityForResult(intent, SELECT_PIC_KITKAT);
+		} else {
+			Intent intent2 = new Intent(Intent.ACTION_GET_CONTENT, null);
+			intent.setType("image/*");
+			intent.putExtra("crop", "true");
+			intent.putExtra("aspectX", 1);
+			intent.putExtra("aspectY", 1);
+			intent.putExtra("outputX", 290);
+			intent.putExtra("outputY", 290);
+			intent.putExtra("scale", true);
+			intent.putExtra("return-data", false);
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+			intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+			intent.putExtra("noFaceDetection", true);
+		
+			mContext.startActivityForResult(intent2, PHOTO_PICKED_WITH_DATA);
+		}*/
     }
     
     public void startPhotoZoom(Uri uri, int size) {
