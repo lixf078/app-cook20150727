@@ -229,37 +229,41 @@ public class WelcomeFragment extends BaseFragmeng implements OnClickListener{
 				if (200 == status_code) {
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
-						JSONArray gallery = data.getJSONArray("gallery");
-						if(gallery.length() > 0){
-							mPageViews.clear();
+						if(data.has("gallery")){
+							JSONArray gallery = data.getJSONArray("gallery");
+							if(gallery.length() > 0){
+								mPageViews.clear();
+							}
+							for (int i = 0, j = gallery.length(); i < j; i++) {
+								JSONObject jb = gallery.getJSONObject(i);
+								WenyiGallery eg = new WenyiGallery();
+								eg.setId(jb.getInt("id"));
+								eg.setTitle(jb.getString("title"));
+								eg.setImgUrl(jb.getString("imgurl"));
+								eg.setEvent_type(jb.getInt("event_type"));
+								eg.setEvent_content(jb.getString("event_content"));
+								eg.setTimeline(jb.getString("timeline"));
+								mPageViews.add(eg);
+							}
 						}
-						for (int i = 0, j = gallery.length(); i < j; i++) {
-							JSONObject jb = gallery.getJSONObject(i);
-							WenyiGallery eg = new WenyiGallery();
-							eg.setId(jb.getInt("id"));
-							eg.setTitle(jb.getString("title"));
-							eg.setImgUrl(jb.getString("imgurl"));
-							eg.setEvent_type(jb.getInt("event_type"));
-							eg.setEvent_content(jb.getString("event_content"));
-							eg.setTimeline(jb.getString("timeline"));
-							mPageViews.add(eg);
-						}
-
-						JSONArray catalog = data.getJSONArray("catalog");
-						for (int i = 0, j = catalog.length(); i < j; i++) {
-							JSONObject catalogjb = catalog.getJSONObject(i);
-							EssayCatlog ec = new EssayCatlog();
-							ec.setId(catalogjb.getInt("id"));
-							ec.setTitle(catalogjb.getString("title"));
-							ec.setIconurl(catalogjb.getString("iconurl"));
-							ec.setSort(catalogjb.getString("sort"));
-							ec.setIspub(catalogjb.getBoolean("ispub"));
-							ec.setCount(catalogjb.getInt("count"));
-							ec.setEvent_type(catalogjb.getInt("event_type"));
-							ec.setEvent_content(catalogjb
-									.getString("event_content"));
-							ec.setTimeline(catalogjb.getString("timeline"));
-							catalogList.add(ec);
+						
+						if(data.has("catalog")){
+							JSONArray catalog = data.getJSONArray("catalog");
+							for (int i = 0, j = catalog.length(); i < j; i++) {
+								JSONObject catalogjb = catalog.getJSONObject(i);
+								EssayCatlog ec = new EssayCatlog();
+								ec.setId(catalogjb.getInt("id"));
+								ec.setTitle(catalogjb.getString("title"));
+								ec.setIconurl(catalogjb.getString("iconurl"));
+								ec.setSort(catalogjb.getString("sort"));
+								ec.setIspub(catalogjb.getBoolean("ispub"));
+								ec.setCount(catalogjb.getInt("count"));
+								ec.setEvent_type(catalogjb.getInt("event_type"));
+								ec.setEvent_content(catalogjb
+										.getString("event_content"));
+								ec.setTimeline(catalogjb.getString("timeline"));
+								catalogList.add(ec);
+							}
 						}
 					}
 				} else {

@@ -457,23 +457,25 @@ public class CopyOfCookbookFragment extends Fragment {
 						&& 200 == jsonObject.getInt("statuscode")) {
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
-						JSONArray list = data.getJSONArray("list");
-						LinkedList<CookbookListItem> listTemp = new LinkedList<CookbookListItem>();
-						for (int i = 0, j = list.length(); i < j; i++) {
-							JSONObject jb = list.getJSONObject(i);
-							CookbookListItem eli = new CookbookListItem();
-							eli.setId(jb.getString("id"));
-							eli.setRecipename(jb.getString("recipename"));
-							eli.setSummary(jb.getString("summary"));
-							eli.setImgoriginal(jb.getString("imgoriginal"));
-							eli.setImgthumbnail(jb.getString("imgthumbnail"));
-							eli.setComments(jb.getString("comments"));
-							eli.setFollows(jb.getString("follows"));
-							eli.setTag(jb.getString("tag"));
-							eli.setTimeline(jb.getString("timeline"));
-							listTemp.add(eli);
+						if(data.has("list")){
+							JSONArray list = data.getJSONArray("list");
+							LinkedList<CookbookListItem> listTemp = new LinkedList<CookbookListItem>();
+							for (int i = 0, j = list.length(); i < j; i++) {
+								JSONObject jb = list.getJSONObject(i);
+								CookbookListItem eli = new CookbookListItem();
+								eli.setId(jb.getString("id"));
+								eli.setRecipename(jb.getString("recipename"));
+								eli.setSummary(jb.getString("summary"));
+								eli.setImgoriginal(jb.getString("imgoriginal"));
+								eli.setImgthumbnail(jb.getString("imgthumbnail"));
+								eli.setComments(jb.getString("comments"));
+								eli.setFollows(jb.getString("follows"));
+								eli.setTag(jb.getString("tag"));
+								eli.setTimeline(jb.getString("timeline"));
+								listTemp.add(eli);
+							}
+							mListItems.addAll(listTemp);
 						}
-						mListItems.addAll(listTemp);
 
 						index = data.getInt("pindex");
 						int core_status = data.getInt("core_status");

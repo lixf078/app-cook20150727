@@ -226,6 +226,7 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 		TextView titleView = (TextView) findViewById(R.id.middle_title);
 		String title = getIntent().getStringExtra("cookbooktitle");
 		recipeid = getIntent().getStringExtra("recipeid");
+		contentIconUrl = getIntent().getStringExtra("contentIconUrl");
 		Log.d(TAG, "getCookbookDetail recipeid is " + recipeid);
 		if (TextUtils.isEmpty(title)) {
 			titleView.setText(R.string.cook_book_title);
@@ -298,6 +299,38 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 		};
 	};
 
+	@Override
+	public void onClick(View view) {
+		int id = view.getId();
+		switch (id) {
+		case R.id.add_comments_cancel:
+			handler.sendEmptyMessage(Util.DISMISS_DIALOG_COMMENTS);
+			break;
+		case R.id.add_comments_ok:
+			// sendCommentsLoadMoreData();
+			break;
+		case R.id.comment_text_id:
+			handler.sendEmptyMessage(Util.SHOW_DIALOG_COMMENTS);
+			break;
+		case R.id.right_img:
+			if (contentIconUrl != null) {
+				ownerIconUrl = contentIconUrl;
+			}
+
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("title", titleContent);
+			map.put("content", content);
+			map.put("layer", layer);
+			map.put("image", ownerIconUrl);
+			map.put("url", "http://wenyijcc.com/recipe/" + recipeid);
+			map.put("from", "book");
+			openShareForCookbook(map,recipeid);
+		default:
+			break;
+		}
+	}
+	
+	
 	public void getCookbookDetail(String url, JSONObject jsonObject,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		if (null == jsonObject) {
@@ -352,12 +385,15 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 						JSONObject data = jsonObject.getJSONObject("data");
 
 						JSONObject detail = data.getJSONObject("detail");
+						titleContent = detail.getString("recipename");
+						content = detail.getString("summary");
+						
 						LinkedList<CookBookModel> listTemp = new LinkedList<CookBookModel>();
 						
 						CookBookModel cbm = new CookBookModel();
 						cbm.setId(detail.getString("id"));
 						cbm.setRowType("title");
-						cbm.setRowContent(detail.getString("recipename"));
+						cbm.setRowContent(titleContent);
 						listTemp.add(cbm);
 						
 						CookBookModel imageCbm = new CookBookModel();
@@ -508,37 +544,6 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 		}
 	}
 
-	@Override
-	public void onClick(View view) {
-		int id = view.getId();
-		switch (id) {
-		case R.id.add_comments_cancel:
-			handler.sendEmptyMessage(Util.DISMISS_DIALOG_COMMENTS);
-			break;
-		case R.id.add_comments_ok:
-			// sendCommentsLoadMoreData();
-			break;
-		case R.id.comment_text_id:
-			handler.sendEmptyMessage(Util.SHOW_DIALOG_COMMENTS);
-			break;
-		case R.id.right_img:
-			if (contentIconUrl != null) {
-				ownerIconUrl = contentIconUrl;
-			}
-
-			HashMap<String, String> map = new HashMap<String, String>();
-			map.put("title", titleContent);
-			map.put("content", content);
-			map.put("layer", layer);
-			map.put("image", ownerIconUrl);
-			map.put("url", HttpUrls.COOKBOOK_LIST_ITEM_DETAIL);
-			map.put("from", "book");
-			openShareForCookbook(map,recipeid);
-		default:
-			break;
-		}
-	}
-	
 	private void setViewPagerScrollSpeed(AutoScrollViewPager mViewPager) {
 		try {
 			Field mScroller = null;

@@ -71,7 +71,7 @@ public class CookbookListAdapter extends BaseAdapter {
 //	    holder.imageUrl.setDefaultImageResId(R.drawable.bg_color_while);
 //	    holder.imageUrl.setErrorImageResId(R.drawable.bg_color_while);
 	    
-	    holder.imageUrl.setImageUrl(cbli.getImgoriginal(), imageLoader);
+	    holder.imageUrl.setImageUrl(cbli.getImgthumbnail(), imageLoader);
 	    holder.imageUrl.setOnClickListener(new OnClickListener() {
 			
 			@Override

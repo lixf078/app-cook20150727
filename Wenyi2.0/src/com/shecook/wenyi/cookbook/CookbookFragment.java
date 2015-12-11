@@ -170,10 +170,10 @@ public class CookbookFragment extends BaseFragment implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
-				Log.d(TAG,"onItemClick arg2 " + arg2 + ",position " + position + ",recipeid " + mListItems.get((int) position).getId() + ",cookbooktitle " + mListItems.get((int) position).getRecipename());
 				Intent intent = new Intent(mActivity, CookbookItemDeatilActivity.class);
 				intent.putExtra("cookbooktitle", "" + mListItems.get((int) position).getRecipename());
 				intent.putExtra("recipeid", "" + mListItems.get((int) position).getId());
+				intent.putExtra("contentIconUrl", "" + mListItems.get((int) position).getImgthumbnail());
 				startActivity(intent);
 			}
 		});
@@ -414,36 +414,38 @@ public class CookbookFragment extends BaseFragment implements
 					if (!jsonObject.isNull("data")) {
 
 						JSONObject data = jsonObject.getJSONObject("data");
-						JSONArray list = data.getJSONArray("catalog");
-						LinkedList<CookbookCatalog> listTemp = new LinkedList<CookbookCatalog>();
-
-						for (int i = 0, j = list.length(); i < j; i++) {
-							JSONObject jb = list.getJSONObject(i);
-							CookbookCatalog cbc = new CookbookCatalog();
-							cbc.setId(jb.getString("id"));
-							cbc.setCataname(jb.getString("cataname"));
-							cbc.setParentid(jb.getString("parentid"));
-
-							LinkedList<CookbookCatalog> listTemp2 = null;
-							listTemp2 = new LinkedList<CookbookCatalog>();
-							if (jb.has("cata_items")) {
-								JSONArray sublist = jb
-										.getJSONArray("cata_items");
-								for (int k = 0, t = sublist.length(); k < t; k++) {
-									JSONObject subjb = sublist.getJSONObject(k);
-									CookbookCatalog subCbc = new CookbookCatalog();
-									subCbc.setId(subjb.getString("id"));
-									subCbc.setCataname(subjb
-											.getString("cataname"));
-									subCbc.setParentid(subjb
-											.getString("parentid"));
-									listTemp2.add(subCbc);
+						if(data.has("catalog")){
+							JSONArray list = data.getJSONArray("catalog");
+							LinkedList<CookbookCatalog> listTemp = new LinkedList<CookbookCatalog>();
+							
+							for (int i = 0, j = list.length(); i < j; i++) {
+								JSONObject jb = list.getJSONObject(i);
+								CookbookCatalog cbc = new CookbookCatalog();
+								cbc.setId(jb.getString("id"));
+								cbc.setCataname(jb.getString("cataname"));
+								cbc.setParentid(jb.getString("parentid"));
+								
+								LinkedList<CookbookCatalog> listTemp2 = null;
+								listTemp2 = new LinkedList<CookbookCatalog>();
+								if (jb.has("cata_items")) {
+									JSONArray sublist = jb
+											.getJSONArray("cata_items");
+									for (int k = 0, t = sublist.length(); k < t; k++) {
+										JSONObject subjb = sublist.getJSONObject(k);
+										CookbookCatalog subCbc = new CookbookCatalog();
+										subCbc.setId(subjb.getString("id"));
+										subCbc.setCataname(subjb
+												.getString("cataname"));
+										subCbc.setParentid(subjb
+												.getString("parentid"));
+										listTemp2.add(subCbc);
+									}
 								}
+								cbc.setCata_items(listTemp2);
+								listTemp.add(cbc);
 							}
-							cbc.setCata_items(listTemp2);
-							listTemp.add(cbc);
+							mCatalogItems.addAll(listTemp);
 						}
-						mCatalogItems.addAll(listTemp);
 
 						handler.sendEmptyMessage(2);
 					}

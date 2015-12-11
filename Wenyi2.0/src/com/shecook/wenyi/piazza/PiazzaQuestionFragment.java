@@ -266,42 +266,43 @@ public class PiazzaQuestionFragment extends BaseFragmeng {
 						&& 200 == jsonObject.getInt("statuscode")) {
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
-
-						JSONArray list = data.getJSONArray("list");
-						LinkedList<PiazzaQuestionItem> listTemp = new LinkedList<PiazzaQuestionItem>();
-						for (int i = 0, j = list.length(); i < j; i++) {
-							JSONObject jb = list.getJSONObject(i);
-							PiazzaQuestionItem pdi = new PiazzaQuestionItem();
-							pdi.setId(jb.getString("id"));
-							pdi.setUid(jb.getString("uid"));
-							pdi.setUgid(jb.getString("ugid"));
-							pdi.setNickname(jb.getString("nickname"));
-							pdi.setUportrait(jb.getString("uportrait"));
-							pdi.setBody(jb.getString("body"));
-							pdi.setTags(jb.getString("tags"));
-							pdi.setComments(jb.getString("comments"));
-							pdi.setTimeline(jb.getString("timeline"));
-							if(jb.has("images")){
-								JSONArray imagelist = jb.getJSONArray("images");
-								LinkedList<WenyiImage> toplistTemp = new LinkedList<WenyiImage>();
-								for (int k = 0, t = imagelist.length(); k < t; k++) {
-									JSONObject imagejb = imagelist.getJSONObject(k);
-									WenyiImage homeWorkImage = new WenyiImage();
-									homeWorkImage.setId(imagejb.getString("id"));
-									if(imagejb.has("imagejb")){
-										homeWorkImage.setFollowid(imagejb
-												.getString("followid"));
+						if(data.has("list")){
+							JSONArray list = data.getJSONArray("list");
+							LinkedList<PiazzaQuestionItem> listTemp = new LinkedList<PiazzaQuestionItem>();
+							for (int i = 0, j = list.length(); i < j; i++) {
+								JSONObject jb = list.getJSONObject(i);
+								PiazzaQuestionItem pdi = new PiazzaQuestionItem();
+								pdi.setId(jb.getString("id"));
+								pdi.setUid(jb.getString("uid"));
+								pdi.setUgid(jb.getString("ugid"));
+								pdi.setNickname(jb.getString("nickname"));
+								pdi.setUportrait(jb.getString("uportrait"));
+								pdi.setBody(jb.getString("body"));
+								pdi.setTags(jb.getString("tags"));
+								pdi.setComments(jb.getString("comments"));
+								pdi.setTimeline(jb.getString("timeline"));
+								if(jb.has("images")){
+									JSONArray imagelist = jb.getJSONArray("images");
+									LinkedList<WenyiImage> toplistTemp = new LinkedList<WenyiImage>();
+									for (int k = 0, t = imagelist.length(); k < t; k++) {
+										JSONObject imagejb = imagelist.getJSONObject(k);
+										WenyiImage homeWorkImage = new WenyiImage();
+										homeWorkImage.setId(imagejb.getString("id"));
+										if(imagejb.has("imagejb")){
+											homeWorkImage.setFollowid(imagejb
+													.getString("followid"));
+										}
+										if(imagejb.has("imageurl")){
+											homeWorkImage.setImageurl(imagejb
+													.getString("imageurl"));
+										}
+										pdi.getImages().add(homeWorkImage);
 									}
-									if(imagejb.has("imageurl")){
-										homeWorkImage.setImageurl(imagejb
-												.getString("imageurl"));
-									}
-									pdi.getImages().add(homeWorkImage);
 								}
+								listTemp.add(pdi);
 							}
-							listTemp.add(pdi);
+							mListItems.addAll(listTemp);
 						}
-						mListItems.addAll(listTemp);
 
 						index = data.getInt("pindex");
 						int core_status = data.getInt("core_status");

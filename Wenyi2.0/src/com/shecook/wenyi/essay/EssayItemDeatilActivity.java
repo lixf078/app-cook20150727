@@ -52,6 +52,7 @@ import com.shecook.wenyi.model.essay.EssayListCommentsItemDetail;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
+import com.umeng.socialize.sso.UMSsoHandler;
 
 public class EssayItemDeatilActivity extends BaseActivity implements
 		OnClickListener {
@@ -195,6 +196,10 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 		if(resultCode == RESULT_OK){
 			handler.sendEmptyMessage(HttpStatus.STATUS_LOAD_OTHER);
 		}
+		UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode) ;
+	    if(ssoHandler != null){
+	       ssoHandler.authorizeCallBack(requestCode, resultCode, intent);
+	    }
 	};
 	
 	Handler handler = new Handler() {
@@ -293,6 +298,37 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 		};
 	};
 
+	@Override
+	public void onClick(View view) {
+		int id = view.getId();
+		switch (id) {
+		case R.id.add_comments_cancel:
+			handler.sendEmptyMessage(Util.DISMISS_DIALOG_COMMENTS);
+			break;
+		case R.id.add_comments_ok:
+			// sendCommentsLoadMoreData();
+			break;
+		case R.id.comment_text_id:
+			handler.sendEmptyMessage(Util.SHOW_DIALOG_COMMENTS);
+			break;
+		case R.id.right_img:
+			if (contentIconUrl != null) {
+				ownerIconUrl = contentIconUrl;
+			}
+
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("title", titleContent);
+			map.put("content", titleContent);
+			map.put("layer", layer);
+			map.put("image", ownerIconUrl);
+			map.put("url", "http://wenyijcc.com/article/" + articleid);
+			map.put("from", "essay");
+			openShare(map);
+		default:
+			break;
+		}
+	}
+	
 	public void getCatalogList(String url, JSONObject jsonObject,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		Log.d("lixufeng", "getCatalogList " + user + ",articleid " + articleid);
@@ -345,29 +381,31 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 						&& 200 == jsonObject.getInt("statuscode")) {
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
-
-						JSONArray list = data.getJSONArray("detail");
-						LinkedList<EssayListItemDetail> listTemp = new LinkedList<EssayListItemDetail>();
-						for (int i = 0, j = list.length(); i < j; i++) {
-							JSONObject jb = list.getJSONObject(i);
-							EssayListItemDetail elid = new EssayListItemDetail();
-							elid.setId(jb.getString("id"));
-							elid.setCataid(jb.getString("cataid"));
-							elid.setArticleid(jb.getString("articleid"));
-							elid.setRowtype(jb.getString("rowtype"));
-							elid.setRowcontent(jb.getString("rowcontent"));
-							elid.setWidth(jb.getInt("img_width"));
-							elid.setHeight(jb.getInt("img_height"));
-							listTemp.add(elid);
+						
+						if(data.has("detail")){
+							JSONArray list = data.getJSONArray("detail");
+							LinkedList<EssayListItemDetail> listTemp = new LinkedList<EssayListItemDetail>();
+							for (int i = 0, j = list.length(); i < j; i++) {
+								JSONObject jb = list.getJSONObject(i);
+								EssayListItemDetail elid = new EssayListItemDetail();
+								elid.setId(jb.getString("id"));
+								elid.setCataid(jb.getString("cataid"));
+								elid.setArticleid(jb.getString("articleid"));
+								elid.setRowtype(jb.getString("rowtype"));
+								elid.setRowcontent(jb.getString("rowcontent"));
+								elid.setWidth(jb.getInt("img_width"));
+								elid.setHeight(jb.getInt("img_height"));
+								listTemp.add(elid);
+							}
+							mListItems.addAll(listTemp);
 						}
-						mListItems.addAll(listTemp);
 						EssayListItemDetail essayTitleElid = new EssayListItemDetail();
 						essayTitleElid.setId("");
 						essayTitleElid.setCataid("");
 						essayTitleElid.setArticleid("");
 						essayTitleElid.setRowtype("essayTitleElid");
-						String title = EssayItemDeatilActivity.this.getIntent().getStringExtra("essaytitle");
-						essayTitleElid.setRowcontent(title);
+						titleContent = EssayItemDeatilActivity.this.getIntent().getStringExtra("essaytitle");
+						essayTitleElid.setRowcontent(titleContent);
 						mListItems.add(0, essayTitleElid);
 						
 						handler.sendEmptyMessage(HttpStatus.STATUS_OK);
@@ -384,37 +422,6 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 		}
 	}
 
-	@Override
-	public void onClick(View view) {
-		int id = view.getId();
-		switch (id) {
-		case R.id.add_comments_cancel:
-			handler.sendEmptyMessage(Util.DISMISS_DIALOG_COMMENTS);
-			break;
-		case R.id.add_comments_ok:
-			// sendCommentsLoadMoreData();
-			break;
-		case R.id.comment_text_id:
-			handler.sendEmptyMessage(Util.SHOW_DIALOG_COMMENTS);
-			break;
-		case R.id.right_img:
-			if (contentIconUrl != null) {
-				ownerIconUrl = contentIconUrl;
-			}
-
-			HashMap<String, String> map = new HashMap<String, String>();
-			map.put("title", titleContent);
-			map.put("content", content);
-			map.put("layer", layer);
-			map.put("image", ownerIconUrl);
-			map.put("url", HttpUrls.ESSAY_WENYILIST_ITEM_DETAIL);
-			map.put("from", "book");
-			openShare(map);
-		default:
-			break;
-		}
-	}
-	
 	public void getDataList(String url, JSONObject paramsub,
 			Listener<JSONObject> resultListener, ErrorListener errorListener, String commentid) {
 		Log.d("lixufeng", "getDataList " + user + ",articleid " + articleid);

@@ -49,6 +49,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMVideo;
 import com.umeng.socialize.media.UMusic;
 import com.umeng.socialize.sso.SinaSsoHandler;
+import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
@@ -69,8 +70,8 @@ public class BaseActivity extends FragmentActivity {
 	public void openShareForCookbook(HashMap<String, String> map, final String recipeid) {
 //		mController.getConfig().removePlatform(SHARE_MEDIA.RENREN,
 //				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.TENCENT);
-		mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA);
 		configSso(map);
+		mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA,SHARE_MEDIA.GENERIC);
 		CustomPlatform customPlatform = new CustomPlatform("copy_link","收 藏", R.drawable.my_collection);
 		customPlatform.mClickListener = new OnSnsPlatformClickListener() {
 			
@@ -83,10 +84,16 @@ public class BaseActivity extends FragmentActivity {
 			}
 		};
 		mController.getConfig().addCustomPlatform(customPlatform);
+
 		mController.openShare(BaseActivity.this, false);
 	}
 
 	public void openShare(HashMap<String, String> map) {
+		
+		mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA,SHARE_MEDIA.GENERIC);
+		configSso(map);
+		mController.openShare(BaseActivity.this, false);
+		/*
 		UMWXHandler wxHandler = new UMWXHandler(BaseActivity.this, appId_wx, appSecret);
 		wxHandler.addToSocialSDK();
 		UMWXHandler wxCircleHandler = new UMWXHandler(BaseActivity.this, appId_wx, appSecret);
@@ -96,7 +103,7 @@ public class BaseActivity extends FragmentActivity {
 		mController.getConfig().removePlatform(SHARE_MEDIA.RENREN,
 				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.TENCENT);
 		configSso(map);
-	}
+	*/}
 	
 	public void openShare(String content, String url) {
 		mController.getConfig().removePlatform(SHARE_MEDIA.RENREN,
@@ -121,7 +128,6 @@ public class BaseActivity extends FragmentActivity {
 		String content = map.get("content");
 		String webUrl = map.get("url");
 		String imageUrl = map.get("image");
-
 		String shareContent = "";
 		String weixinShareContent = "";
 
@@ -131,8 +137,13 @@ public class BaseActivity extends FragmentActivity {
 				shareContent = "我正在使用宇宙无敌超级大美丽@文怡 的菜谱APP@文怡家常菜 ，我能吃香的，喝辣的，掌握一道菜馋死别人的本事，还能看画，读随笔，你都没有哦！【"+ title + "】 肉指头戳" + webUrl;
 				weixinShareContent = "我正在使用宇宙无敌超级大美丽文怡的菜谱APP ，我能吃香的，喝辣的，你有吗？";
 			}else{
-				shareContent = "我正在看@文怡家常菜 的@文怡 随笔【" + title + "】 " + content.substring(0, 30) + "...欲知后事如何，请狂戳" + webUrl;
-				weixinShareContent = "【" + title + "】 " + content.substring(0, 30);
+				if(content.length() > 30){
+					shareContent = "我正在看@文怡家常菜 的@文怡 随笔【" + title + "】 " + content.substring(0, 30) + "...欲知后事如何，请狂戳" + webUrl;
+					weixinShareContent = "【" + title + "】 " + content.substring(0, 30);
+				}else {
+					shareContent = "我正在看@文怡家常菜 的@文怡 随笔【" + title + "】 ";
+					weixinShareContent = "【" + title + "】 ";
+				}
 			}
 		}else{
 			shareContent = "我正在看@文怡家常菜 的@文怡 随笔【" + title + "】 " + content.substring(0, 30) + "...欲知后事如何，请狂戳" + webUrl;
@@ -145,7 +156,7 @@ public class BaseActivity extends FragmentActivity {
 				BaseActivity.this, appId_wx, "http://www.shecook.com/");
 		mController.getConfig().supportQQPlatform(BaseActivity.this, "100424468",
 				"http://www.umeng.com/social");*/
-
+		mController.getConfig().setSsoHandler(new SinaSsoHandler());
 		// 配置SSO
 		/*mController.getConfig().setSsoHandler(new SinaSsoHandler());
 		mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
@@ -162,12 +173,13 @@ public class BaseActivity extends FragmentActivity {
 		mController.setShareMedia(weixinContent);
 
 		// 设置朋友圈分享的内容
-		WeiXinShareContent circleMedia = new WeiXinShareContent(localImage);
+		CircleShareContent circleMedia = new CircleShareContent(localImage);
 		circleMedia.setShareContent(weixinShareContent);
 		circleMedia.setTitle(title);
 		circleMedia.setAppWebSite(webUrl);
 		circleMedia.setTargetUrl(webUrl);
 		mController.setShareMedia(circleMedia);
+		
 
 		/*// 设置QQ空间分享内容
 		QZoneShareContent qzone = new QZoneShareContent();
@@ -293,19 +305,15 @@ public class BaseActivity extends FragmentActivity {
 	}
 
 	/**使用SSO授权必须添加如下代码 */
-	/*@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    super.onActivityResult(requestCode, resultCode, data);
-	    UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode) ;
-	    if(ssoHandler != null){
-	       ssoHandler.authorizeCallBack(requestCode, resultCode, data);
-	    }
-	}*/
-	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
-	    Log.d("lixufeng", "baseActivity onActivityResult");
+	    Log.e("lixufeng", "baseActivity onActivityResult 11111111");
+	    UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode) ;
+	    if(ssoHandler != null){
+	    	Log.e("lixufeng", "baseActivity onActivityResult 2222222222");
+	       ssoHandler.authorizeCallBack(requestCode, resultCode, data);
+	    }
 	}
 	
 	public String basePost(String url, String strRequest,
