@@ -11,7 +11,7 @@
     <item type="color" name="qianhui">#e8e8e8</item><!-- #faebd7,f5f5f5 -->
     <item type="color" name="black_half">#8f000000</item><!-- #faebd7,f5f5f5 -->
     <item type="color" name="text_color">#1b1b1b</item>
-    <item type="color" name="date_color">#d1c0a5</item><!-- 209 192 165 -->
+    <item type="color" name="date_color">#b7b7b7</item><!-- 209 192 165 -->
     <item type="color" name="item_background_color">#FFFFFF</item>
     <item type="color" name="nickname_color">#959595</item><!-- 149 149 149 -->
     <item type="color" name="sort_black">#cbbdae</item><!-- 普通选择后背景色203 189 174 -->

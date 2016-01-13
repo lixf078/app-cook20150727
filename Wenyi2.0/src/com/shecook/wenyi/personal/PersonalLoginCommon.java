@@ -252,6 +252,8 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 	    }
 	}
 	
+	boolean alreadyGetData = false;
+	
 	private void sinaLogin() {
 		
 		mController.getConfig().setSsoHandler(new SinaSsoHandler());
@@ -271,45 +273,51 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 								&& !TextUtils.isEmpty(value.getString("uid"))) {
 							Toast.makeText(PersonalLoginCommon.this, "授权成功.",
 									Toast.LENGTH_SHORT).show();
-							Log.e("lixufeng", "onComplete value " + value);
+							Log.e("lixufeng", "UMAuthListener onComplete value " + value);
 							uid = value.getString("uid");
-							// 获取相关授权信息
-							mController.getPlatformInfo(PersonalLoginCommon.this,
-									SHARE_MEDIA.SINA, new UMDataListener() {
-										@Override
-										public void onStart() {
-											Toast.makeText(
-													PersonalLoginCommon.this,
-													"获取平台数据开始...",
-													Toast.LENGTH_SHORT).show();
-										}
-
-										@Override
-										public void onComplete(int status,
-												Map<String, Object> info) {
+							
+								// 获取相关授权信息
+								mController.getPlatformInfo(PersonalLoginCommon.this,
+										SHARE_MEDIA.SINA, new UMDataListener() {
+									@Override
+									public void onStart() {
+										Toast.makeText(
+												PersonalLoginCommon.this,
+												"获取平台数据开始...",
+												Toast.LENGTH_SHORT).show();
+									}
+									
+									@Override
+									public void onComplete(int status,
+											Map<String, Object> info) {
+										if(!alreadyGetData){
+											alreadyGetData = true;
+											Log.e("lixufeng", "UMDataListener onComplete");
 											if (status == 200 && info != null) {
-			                                    nickname = (String) info.get("screen_name");
-			                                    image = (String) info.get("profile_image_url");
-			                                    plat = "sina";
-			                                    Log.d("lixufeng", "onComplete uid " + uid + ", nickname " + nickname + ", image " + image);
-			                                    JSONObject jsonObject = new JSONObject();
-			                        			JSONObject paramSub = new JSONObject();
-			                        			try {
-			                        				paramSub.put("connectid", uid);
-			                        				paramSub.put("plat", plat);
-			                        				paramSub.put("nickname", nickname);
-			                        				paramSub.put("portrait", image);
-			                        				paramSub.put("sex", "" + info.get("gender"));
-			                        				jsonObject.put("param", paramSub);
-			                        				post3RD(jsonObject);
-			                        			}catch(Exception e){
-
-			                        			}
+												nickname = (String) info.get("screen_name");
+												image = (String) info.get("profile_image_url");
+												plat = "sina";
+												Log.e("lixufeng", "onComplete uid " + uid + ", nickname " + nickname + ", image " + image);
+												JSONObject jsonObject = new JSONObject();
+												JSONObject paramSub = new JSONObject();
+												try {
+													paramSub.put("connectid", uid);
+													paramSub.put("plat", plat);
+													paramSub.put("nickname", nickname);
+													paramSub.put("portrait", image);
+													paramSub.put("sex", "" + info.get("gender"));
+													jsonObject.put("param", paramSub);
+													post3RD(jsonObject);
+												}catch(Exception e){
+													
+												}
 											} else {
 												Log.e("TestData", "发生错误：" + status);
 											}
 										}
-									});
+									}
+									
+								});
 						} else {
 							Toast.makeText(PersonalLoginCommon.this, "授权失败",
 									Toast.LENGTH_SHORT).show();
@@ -398,7 +406,8 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 	}
 	
 	private void post3RD(JSONObject jsonObject) {
-		Log.d(TAG, "wenyi login post start ");
+		new Exception().printStackTrace();
+		Log.e(TAG, "wenyi login post start ");
 		handler.sendEmptyMessage(Util.SHOW_DIALOG);
 		userOperator(HttpUrls.PERSONAL_LOGIN_3RD, jsonObject, loginResultListener, loginErrorListener);
 	}

@@ -68,11 +68,9 @@ public class BaseActivity extends FragmentActivity {
 	public String appSecret = "db426a9829e4b49a0dcac7b4162da6b6";
 
 	public void openShareForCookbook(HashMap<String, String> map, final String recipeid) {
-//		mController.getConfig().removePlatform(SHARE_MEDIA.RENREN,
-//				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.TENCENT);
-		configSso(map);
-		mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA,SHARE_MEDIA.GENERIC);
-		CustomPlatform customPlatform = new CustomPlatform("copy_link","收 藏", R.drawable.my_collection);
+		mController.getConfig().removePlatform(SHARE_MEDIA.RENREN,
+				SHARE_MEDIA.DOUBAN, SHARE_MEDIA.EMAIL,SHARE_MEDIA.SMS,SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.TENCENT);
+		CustomPlatform customPlatform = new CustomPlatform("收 藏", R.drawable.my_collection);
 		customPlatform.mClickListener = new OnSnsPlatformClickListener() {
 			
 			@Override
@@ -84,7 +82,8 @@ public class BaseActivity extends FragmentActivity {
 			}
 		};
 		mController.getConfig().addCustomPlatform(customPlatform);
-
+		configSso(map);
+//		mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA);
 		mController.openShare(BaseActivity.this, false);
 	}
 
