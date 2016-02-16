@@ -59,7 +59,7 @@ public class StartActivity extends BaseActivity{
 	public static final String TAG = "StartActivity";
 
 	public interface UpdateFragmentListener{
-		public void updateFragment(String info);
+		public void updateFragment(String info, String cataName);
 	}
 	
 	/*
@@ -116,7 +116,7 @@ public class StartActivity extends BaseActivity{
 		Log.d(TAG, "catalogResultListener onCreate -> " + castTime);
 
 		if(netConnected){
-			getTokenFrom(false,tokenResultListener,tokenErrorListener);
+			getTokenFrom(true,tokenResultListener,tokenErrorListener);
 		}else{
 			initView();
 			handler.sendEmptyMessage(2);
@@ -208,7 +208,7 @@ public class StartActivity extends BaseActivity{
             public boolean onChildClick(ExpandableListView parent, View v,
                     int groupPosition, int childPosition, long id) {
             	WenyiLog.logv(TAG, "onChildClick groupPosition " + groupPosition + ",childPosition " + childPosition);
-            	updateFragmentListener.updateFragment(mCatalogItems.get(groupPosition).getCata_items().get(childPosition).getId());
+            	updateFragmentListener.updateFragment(mCatalogItems.get(groupPosition).getCata_items().get(childPosition).getId(), mCatalogItems.get(groupPosition).getCata_items().get(childPosition).getCataname());
             	menu.toggle();
                 return false;
             }
@@ -221,7 +221,7 @@ public class StartActivity extends BaseActivity{
 				WenyiLog.logv(TAG, "onGroupClick groupPosition " + groupPosition);
 				if(mCatalogItems.get(groupPosition).getCata_items().size() == 0){
 					menu.toggle();
-					updateFragmentListener.updateFragment(mCatalogItems.get(groupPosition).getId());
+					updateFragmentListener.updateFragment(mCatalogItems.get(groupPosition).getId(), mCatalogItems.get(groupPosition).getCataname());
 				}
 				return false;
 			}
@@ -396,7 +396,9 @@ public class StartActivity extends BaseActivity{
 //							user.set_isLogin(true);
 							user.set_token(dataJson.getString("token"));
 							
-							Util.saveUserData(StartActivity.this, user);
+							//Util.saveUserData(StartActivity.this, user);
+							Util.updateIntData(StartActivity.this, "_flag", statuscode);
+							Util.updateStringData(StartActivity.this, "_token", dataJson.getString("token"));
 							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						}else{
 							// 有错误情况

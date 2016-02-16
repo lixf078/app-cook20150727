@@ -27,10 +27,12 @@ import com.shecook.wenyi.BaseActivity;
 import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
+import com.shecook.wenyi.StartActivity;
 import com.shecook.wenyi.common.WebViewActivity;
 import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
+import com.shecook.wenyi.model.WenyiUser;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.util.Util;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -345,17 +347,65 @@ public class PersonalSettings extends BaseActivity implements OnClickListener {
 						JSONObject data = jsonObject.getJSONObject("data");
 						account_status = data.getInt("account_status");
 						handler.sendEmptyMessage(HttpStatus.STATUS_OK);
+						return;
 					}
 				} else {
 					Toast.makeText(PersonalSettings.this,
 							"" + jsonObject.getString("errmsg"),
 							Toast.LENGTH_SHORT).show();
+					
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 			handler.sendEmptyMessage(HttpStatus.STATUS_ERROR);
+			getTokenFrom(true,tokenResultListener,tokenErrorListener);
 		}
 	}
+	
+	Listener<JSONObject> tokenResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.d(TAG, "tokenResultListener onResponse -> " + result.toString());
+			String response = result.toString();
+			if(!TextUtils.isEmpty(response)){
+				try {
+					JSONObject jsonObject = new JSONObject(response);
+					int statuscode = jsonObject.getInt("statuscode");
+					if(statuscode == 200){
+						JSONObject dataJson = jsonObject.getJSONObject("data");
+						int core_status = dataJson.getInt("core_status");
+						if(core_status == 200){
+							WenyiUser user = new WenyiUser();
+							user.set_flag(statuscode);
+//							user.set_isLogin(true);
+							user.set_token(dataJson.getString("token"));
+							
+							//Util.saveUserData(StartActivity.this, user);
+							Util.updateIntData(PersonalSettings.this, "_flag", statuscode);
+							Util.updateStringData(PersonalSettings.this, "_token", dataJson.getString("token"));
+							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
+						}else{
+							// 有错误情况
+						}
+					}else{
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else{
+			}
+			
+			
+		}
+	};
+	
+	ErrorListener tokenErrorListener = new Response.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError error) {
+			Log.e(TAG, error.getMessage(), error);
+		}
+	};
 
 }

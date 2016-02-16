@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,6 +30,7 @@ import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
+import com.shecook.wenyi.essay.EssayItemDeatilActivity;
 import com.shecook.wenyi.personal.PersonalLoginCommon;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
@@ -48,6 +50,8 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 	
 	private int flag = -1;
 	private String ententId = ""; // 作业，圈子分享等的id
+	
+	private AlertDialog alertDialog = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -116,11 +120,11 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 			if(isLogin()){
 				String comment = commentEdit.getEditableText().toString();
 				if(TextUtils.isEmpty(comment)){
-					Log.d(TAG, "onClick -> " + flag + " 想跟我说点什么呢？");
+					Log.e(TAG, "onClick -> " + flag + " 想跟我说点什么呢？");
 					Toast.makeText(CreatePersonalInfoActivity.this, "想跟我说点什么呢？", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				Log.d(TAG, "onClick -> " + flag + ",comment " + comment);
+				Log.e(TAG, "onClick -> " + flag + ",comment " + comment);
 				JSONObject paramsub = new JSONObject();
 				try {
 					paramsub.put("comment", "" + comment);
@@ -140,7 +144,13 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 							str.append(path + ";");
 						}
 					}
-					CommonUpload.commonMethod(CreatePersonalInfoActivity.this, HttpUrls.UPLOAD_IMG, paramsub, listResultListener, listErrorListener, str.subSequence(0, str.length() - 1) + "");
+					handler.sendEmptyMessage(HttpStatus.STATUS_SHOWPROGRESS);
+					if(str.length() > 0){
+						CommonUpload.commonMethod(CreatePersonalInfoActivity.this, HttpUrls.UPLOAD_IMG, paramsub, listResultListener, listErrorListener, str.length() > 0 ? str.subSequence(0, str.length() - 1) + "" : "");
+					}else{
+						handler.sendEmptyMessage(CommonUpload.UPLOAD_SUCESS);
+					}
+					
 				} catch (JSONException e) {
 					e.printStackTrace();
 					finish();
@@ -250,6 +260,11 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 				CreatePersonalInfoActivity.this.finish();
 				break;
 			case CommonUpload.UPLOAD_SUCESS:
+				if (null == alertDialog) {
+					if (alertDialog.isShowing()) {
+						alertDialog.cancel();
+					}
+				}
 				createInfo();
 				break;
 			case CommonUpload.GROUP_CREATE_SUCESS:
@@ -257,6 +272,15 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 				break;
 			case CommonUpload.GROUP_CREATE_FAILED:
 				finish();
+				break;
+			case HttpStatus.STATUS_SHOWPROGRESS:
+				if (null == alertDialog) {
+					alertDialog = Util
+							.showLoadDataDialog(CreatePersonalInfoActivity.this, "正在加载，请等待");
+				}
+				if (!alertDialog.isShowing()) {
+					alertDialog.show();
+				}
 				break;
 			default:
 				break;
@@ -324,10 +348,10 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 				paramObject.put("circleid", ententId);
 			}else if(flag == HttpStatus.PUBLIC_FOR_COOKBOOK){
 				paramObject.put("recipeid", ententId);
-			}else if(flag == HttpStatus.PUBLIC_FOR_CIRCLE){
-				paramObject.put("circleid", ententId);
-			}else if(flag == HttpStatus.PUBLIC_FOR_CIRCLE){
-				paramObject.put("circleid", ententId);
+			}else if(flag == HttpStatus.PUBLIC_FOR_PORTRAIT){
+				// paramObject.put("circleid", ententId);
+			}else if(flag == HttpStatus.PUBLIC_FOR_TOPIC){
+				//paramObject.put("circleid", ententId);
 			}
 			String info = commentEdit.getEditableText().toString();
 
@@ -351,6 +375,9 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 		}else if(flag == HttpStatus.PUBLIC_FOR_COOKBOOK){
 			CommonUpload.commonMethod(CreatePersonalInfoActivity.this,HttpUrls.COOKBOOK_WENYI_HOMEWORK_ADD, paramObject,
 					crtateResultListener, crtateErrorListener, "");
+		}else if(flag == HttpStatus.PUBLIC_FOR_TOPIC){
+			CommonUpload.commonMethod(CreatePersonalInfoActivity.this,HttpUrls.PIZZA_TOPIC_ADD, paramObject,
+					crtateResultListener, crtateErrorListener, "");
 		}
 	}
 	Listener<JSONObject> crtateResultListener = new Listener<JSONObject>() {
@@ -373,6 +400,8 @@ public class CreatePersonalInfoActivity extends BaseActivity implements OnClickL
 									msg = "" + "圈子分享成功！";
 								}else if(flag == HttpStatus.PUBLIC_FOR_COOKBOOK){
 									msg = "" + "作业发布成功！";
+								}else if(flag == HttpStatus.PUBLIC_FOR_TOPIC){
+									msg = "" + "话题发布成功！";
 								}
 								Toast.makeText(CreatePersonalInfoActivity.this, msg,
 										Toast.LENGTH_SHORT).show();

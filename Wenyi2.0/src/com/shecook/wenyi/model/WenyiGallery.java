@@ -72,4 +72,11 @@ public class WenyiGallery {
 		this.timeline = timeline;
 	}
 
+	@Override
+	public String toString() {
+		return "WenyiGallery [id=" + id + ", title=" + title + ", imgUrl=" + imgUrl + ", event_type=" + event_type
+				+ ", event_content=" + event_content + ", timeline=" + timeline + "]";
+	}
+
+	
 }

@@ -316,12 +316,13 @@ public class GroupShareDeatilActivity extends BaseActivity implements
 			group_share_item_level.setText(chm.getBody());
 			LruImageCache lruImageCache = LruImageCache.instance();
 			imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-			imageUrl.setDefaultImageResId(R.drawable.icon);
-			imageUrl.setErrorImageResId(R.drawable.icon);
+//			imageUrl.setDefaultImageResId(R.drawable.icon);
+//			imageUrl.setErrorImageResId(R.drawable.icon);
 			imageUrl.setImageUrl(chm.getUportrait(), imageLoader);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		userheader.setLayoutParams(layoutParams);
         lv.addHeaderView(userheader);
 	}
 	
@@ -413,7 +414,8 @@ public class GroupShareDeatilActivity extends BaseActivity implements
 								WenyiGallery shareImage = new WenyiGallery();
 								shareImage.setId(imagejb.getInt("id"));
 								if(imagejb.has("shareid")){
-									shareImage.setTitle(imagejb.getString("shareid"));
+//									shareImage.setTitle(imagejb.getString("shareid"));
+									shareImage.setTitle("");
 								}
 								if(imagejb.has("imageurl")){
 									shareImage.setImgUrl(imagejb.getString("imageurl"));

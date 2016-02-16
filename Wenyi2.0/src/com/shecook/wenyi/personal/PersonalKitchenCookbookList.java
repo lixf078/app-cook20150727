@@ -348,7 +348,7 @@ public class PersonalKitchenCookbookList extends BaseActivity implements
 	}
 
 	@Override
-	public void updateFragment(String cataId) {
+	public void updateFragment(String cataId, String cataName) {
 		Log.d(TAG, "updateFragment");
 		keyword = cataId;
 		getCatalogList(HttpUrls.ESSAY_WENYI_LIST, null, listResultListener,

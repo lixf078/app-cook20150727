@@ -104,6 +104,10 @@ public class PiazzaQuestionFragment extends BaseFragmeng {
 
 						// Do work to refresh the list here.
 						// getCatalogList(HttpUrls.ESSAY_WENYI_LIST,null,listResultListener,listErrorListener);
+						getNewQuestion(HttpUrls.PIZZA_TOPIC_LIST, null,
+								piazzaDiscoverResultListener,
+								piazzaDiscoverErrorListener);
+						
 					}
 				});
 
@@ -212,6 +216,15 @@ public class PiazzaQuestionFragment extends BaseFragmeng {
 		};
 	};
 
+	
+	public void getNewQuestion(String url, JSONObject jsonObject,
+			Listener<JSONObject> resultListener, ErrorListener errorListener){
+		index = 0;
+		getDiscoverList(HttpUrls.PIZZA_TOPIC_LIST, null,
+				newQuestionResultListener,
+				piazzaDiscoverErrorListener);
+	}
+	
 	private int index = 0;
 
 	public void getDiscoverList(String url, JSONObject jsonObject,
@@ -260,6 +273,7 @@ public class PiazzaQuestionFragment extends BaseFragmeng {
 	};
 
 	private void initData(JSONObject jsonObject, int flag) {
+		
 		if (jsonObject != null) {
 			try {
 				if (!jsonObject.isNull("statuscode")
@@ -267,6 +281,9 @@ public class PiazzaQuestionFragment extends BaseFragmeng {
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
 						if(data.has("list")){
+							if(flag == 1){
+								mListItems.clear();
+							}
 							JSONArray list = data.getJSONArray("list");
 							LinkedList<PiazzaQuestionItem> listTemp = new LinkedList<PiazzaQuestionItem>();
 							for (int i = 0, j = list.length(); i < j; i++) {
@@ -329,6 +346,16 @@ public class PiazzaQuestionFragment extends BaseFragmeng {
 		}
 	};
 
+	Listener<JSONObject> newQuestionResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			initData(result, 1);
+			Log.d(TAG,
+					"catalogResultListener onResponse -> " + result.toString());
+		}
+	};
+	
 	Listener<JSONObject> piazzaDiscoverResultListener = new Listener<JSONObject>() {
 
 		@Override

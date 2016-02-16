@@ -3,71 +3,78 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="15dip"
+    android:paddingLeft="20dp"
     android:layout_marginRight="15dip"
+    android:background="@color/item_background_color"
     android:orientation="horizontal" >
 
+    <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+        android:id="@+id/item_img"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:focusable="false"
+        android:scaleType="fitXY" />
+    
     <RelativeLayout
-        android:id="@+id/piazza_question_list_item_info"
+        android:id="@+id/pizza_question_item_info"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/item_background_color"
-        android:orientation="horizontal"
-        android:padding="20dip" >
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dip"
+        android:layout_toRightOf="@id/item_img"
+        android:orientation="horizontal" >
 
-        <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
-            android:id="@+id/item_img"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
-            android:focusable="false"
-            android:scaleType="fitXY" />
+        <TextView
+            android:id="@+id/pizza_question_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/text_color" />
 
-        <RelativeLayout
-            android:id="@+id/pizza_question_item_info"
+        <TextView
+            android:id="@+id/pizza_question_item_time"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dip"
-            android:layout_toRightOf="@id/item_img"
-            android:orientation="horizontal" >
+            android:paddingRight="20dp"
+            android:layout_alignBottom="@id/pizza_question_item_title"
+            android:layout_marginTop="10dip"
+            android:layout_toRightOf="@id/pizza_question_item_title"
+            android:ellipsize="marquee"
+            android:gravity="right"
+            android:textSize="12sp"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:textColor="@color/date_color" />
 
-            <TextView
-                android:id="@+id/pizza_question_item_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color" />
+        <TextView
+            android:id="@+id/pizza_question_item_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pizza_question_item_title"
+            android:textColor="@color/text_color"
+            android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/pizza_question_item_time"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
-                android:layout_alignBottom="@id/pizza_question_item_title"
-                android:layout_toRightOf="@id/pizza_question_item_title"
-                android:ellipsize="marquee"
-                android:gravity="right"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:textColor="@color/date_color" />
-
-            <TextView
-                android:id="@+id/pizza_question_item_level"
-                android:layout_width="wrap_content"
-                android:visibility="gone"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/pizza_question_item_title"
-                android:textColor="@color/text_color" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/pizza_question_list_content"
+            android:layout_width="fill_parent"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pizza_question_item_title"
+            android:textColor="@color/text_color"
+            android:paddingBottom="5dp"
+            android:textSize="14sp" />
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/pizza_question_list_content"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_below="@id/piazza_question_list_item_info" />
+        android:id="@+id/catalog_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@id/pizza_question_item_info"
+        android:layout_alignParentBottom="true"
+        android:textSize="14sp"
+        android:background="#e4e4e4" />
 
 </RelativeLayout>

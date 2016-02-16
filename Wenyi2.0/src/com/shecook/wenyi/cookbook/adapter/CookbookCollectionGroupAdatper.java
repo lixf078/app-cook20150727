@@ -35,8 +35,7 @@ public class CookbookCollectionGroupAdatper extends BaseAdapter {
 
 	@Override
 	public Object getItem(int arg0) {
-		mListItems.get(arg0);
-		return null;
+		return mListItems.get(arg0);
 	}
 
 	@Override

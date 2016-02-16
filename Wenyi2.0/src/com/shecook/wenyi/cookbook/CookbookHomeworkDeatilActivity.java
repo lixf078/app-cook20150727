@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
@@ -43,7 +44,9 @@ import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
+import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
 import com.shecook.wenyi.cookbook.adapter.CookbookHomewrokListItemDetialAdapter;
 import com.shecook.wenyi.essay.adapter.ViewPagerAdapter;
 import com.shecook.wenyi.essay.view.AutoScrollViewPager;
@@ -52,6 +55,7 @@ import com.shecook.wenyi.model.WenyiGallery;
 import com.shecook.wenyi.model.cookbook.CookbookHomeworkModel;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
+import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 import com.shecook.wenyi.view.FixedSpeedScroller;
 import com.shecook.wenyi.view.PageIndicator;
@@ -76,6 +80,9 @@ public class CookbookHomeworkDeatilActivity extends BaseActivity implements
 	private AlertDialog alertDialog = null;
 	private Dialog commentsAlertDialog = null;
 
+	NetworkImageView head_image;
+	private TextView pizza_cookbook_item_header_title, pizza_cookbook_item_header_time, pizza_cookbook_item_header_level, pizza_cookbook_list_header_content, cookbook_homework_from;
+	
 	private boolean shouldLoad = true;
 	private int index = 0;
 	
@@ -285,8 +292,8 @@ public class CookbookHomeworkDeatilActivity extends BaseActivity implements
 				.findViewById(R.id.view_pager_advert);
 		mIndicator = (CirclePageIndicator) header
 				.findViewById(R.id.indicator);
-		CookbookHomeworkModel chm = (CookbookHomeworkModel) mListItems.get(0);
-		mPageViews.addAll(chm.getImages());
+//		CookbookHomeworkModel chm = (CookbookHomeworkModel) mListItems.get(0);
+		mPageViews.addAll(chminfo.getImages());
 		
 		adapter = new ViewPagerAdapter(CookbookHomeworkDeatilActivity.this, mPageViews);
 		viewPager.setAdapter(adapter);
@@ -304,6 +311,49 @@ public class CookbookHomeworkDeatilActivity extends BaseActivity implements
         if(viewPager != null){
 			viewPager.startAutoScroll();
 		}
+        
+        
+        View infoHeader = getLayoutInflater().inflate(R.layout.piazza_cookbook_item_detail_header, mPullRefreshListView, false);
+		pizza_cookbook_item_header_title = (TextView) infoHeader.findViewById(R.id.pizza_question_item_header_title);
+		pizza_cookbook_item_header_time = (TextView) infoHeader.findViewById(R.id.pizza_question_item_header_time);
+		pizza_cookbook_item_header_level = (TextView) infoHeader.findViewById(R.id.pizza_question_item_header_level);
+		pizza_cookbook_list_header_content = (TextView) infoHeader.findViewById(R.id.pizza_question_list_header_content);
+		cookbook_homework_from = (TextView) infoHeader.findViewById(R.id.cookbook_homework_header_from);
+		head_image = (NetworkImageView) infoHeader.findViewById(R.id.item_img);
+		
+		
+		ImageLoader imageLoader;
+		try {
+			LruImageCache lruImageCache = LruImageCache.instance();
+			imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+			head_image.setImageUrl(chminfo.getUportrait(), imageLoader);
+			pizza_cookbook_item_header_title.setText(chminfo.getNickname());
+			pizza_cookbook_item_header_time.setText(Util.formatTime2Away(chminfo.getTimeline()));
+			pizza_cookbook_item_header_level.setText(chminfo.getUserlvl());
+			if(chminfo.getDescription() == null || chminfo.getDescription().equals("")){
+				pizza_cookbook_list_header_content.setVisibility(View.GONE);
+			}
+			if(!TextUtils.isEmpty(chminfo.getRecipeid())&& !"0".equals(chminfo.getRecipeid())){
+				cookbook_homework_from.setVisibility(View.VISIBLE);
+				cookbook_homework_from.setText("来自菜谱" + chminfo.getRecipename());
+//				cookbook_homework_from.setOnClickListener(new View.OnClickListener() {
+//					
+//					@Override
+//					public void onClick(View v) {
+//						
+//					}
+//				});
+			}
+			pizza_cookbook_list_header_content.setText("" + chminfo.getDescription());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+//		AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
+		infoHeader.setLayoutParams(layoutParams);
+//		ListView lv = mPullRefreshListView.getRefreshableView();
+		lv.addHeaderView(infoHeader);
+        
 	}
 	
 	private void setViewPagerScrollSpeed(AutoScrollViewPager mViewPager) {
@@ -361,7 +411,7 @@ public class CookbookHomeworkDeatilActivity extends BaseActivity implements
 			Log.e(TAG, error.getMessage(), error);
 		}
 	};
-
+	CookbookHomeworkModel chminfo;
 	/**
 	 * @param jsonObject
 	 * @param flag 0 topic 1 comments
@@ -374,18 +424,18 @@ public class CookbookHomeworkDeatilActivity extends BaseActivity implements
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
 						JSONObject detail = data.getJSONObject("detail");
-						CookbookHomeworkModel chm = new CookbookHomeworkModel();
+						chminfo = new CookbookHomeworkModel();
 						
-						chm.setUserlvl(detail.getString("userlvl"));
-						chm.setRecipename(detail.getString("recipename"));
-						chm.setId(detail.getString("id"));
-						chm.setRecipeid(detail.getString("recipeid"));
-						chm.setUid(detail.getString("uid"));
-						chm.setNickname(detail.getString("nickname"));
-						chm.setUportrait(detail.getString("uportrait"));
-						chm.setDescription(detail.getString("description"));
-						chm.setComments(detail.getString("comments"));
-						chm.setTimeline(detail.getString("timeline"));
+						chminfo.setUserlvl(detail.getString("userlvl"));
+						chminfo.setRecipename(detail.getString("recipename"));
+						chminfo.setId(detail.getString("id"));
+						chminfo.setRecipeid(detail.getString("recipeid"));
+						chminfo.setUid(detail.getString("uid"));
+						chminfo.setNickname(detail.getString("nickname"));
+						chminfo.setUportrait(detail.getString("uportrait"));
+						chminfo.setDescription(detail.getString("description"));
+						chminfo.setComments(detail.getString("comments"));
+						chminfo.setTimeline(detail.getString("timeline"));
 						
 						if(detail.has("images")){
 							JSONArray imagelist = detail.getJSONArray("images");
@@ -394,17 +444,18 @@ public class CookbookHomeworkDeatilActivity extends BaseActivity implements
 								WenyiGallery homeWorkImage = new WenyiGallery();
 								homeWorkImage.setId(imagejb.getInt("id"));
 								if(imagejb.has("followid")){
-									homeWorkImage.setTitle(imagejb.getString("followid"));
+									// homeWorkImage.setTitle(imagejb.getString("followid"));
+									 homeWorkImage.setTitle("");
 								}
 								if(imagejb.has("imageurl")){
 									homeWorkImage.setImgUrl(imagejb.getString("imageurl"));
 								}
-								chm.getImages().add(homeWorkImage);
+								chminfo.getImages().add(homeWorkImage);
 							}
 						}
-						mListItems.add(chm);
+//						mListItems.add(chm);
 					}
-					handler.sendEmptyMessage(HttpStatus.STATUS_OK);
+					
 //						handler.sendEmptyMessage(HttpStatus.STATUS_LOAD_OTHER); // 暂时没有添加评论接口
 				} else {
 					Toast.makeText(CookbookHomeworkDeatilActivity.this,
@@ -415,6 +466,7 @@ public class CookbookHomeworkDeatilActivity extends BaseActivity implements
 				e.printStackTrace();
 			}
 		}
+		handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 	}
 
 	public void getDataList(String url, JSONObject paramsub,

@@ -18,7 +18,7 @@ public class HttpStatus {
 	public static final int REQUEST_CODE_ESSAY = 1;
 	public static final int REQUEST_CODE_COOKBOOK = 2;
 	public static final int REQUEST_CODE_TOPIC = 3;
-	public static final int REQUEST_CODE_CIRCLE = 3;
+	public static final int REQUEST_CODE_CIRCLE = 4;
 	
 	public static final int COMMENT_FOR_ESSAY = 1;
 	public static final int COMMENT_FOR_COOKBOOK = 2;
@@ -26,8 +26,17 @@ public class HttpStatus {
 	public static final int COMMENT_FOR_CIRCLE = 4;
 	
 	
-	public static final int PUBLIC_FOR_PORTRAIT = 10003;
-	public static final int PUBLIC_FOR_TOPIC = 10004;
+	public static final int PUBLIC_FOR_PORTRAIT = 10001;
+	public static final int PUBLIC_FOR_TOPIC = 10002;
 	public static final int PUBLIC_FOR_COOKBOOK = 10003;
 	public static final int PUBLIC_FOR_CIRCLE = 10004;
+	
+	
+	public static final int REQUEST_TARGET_COOKBOOK_HOMEWORKLIST = 2;;
+	public static final int REQUEST_TARGET_EXTERNAL_LINK = 10001;
+	public static final int REQUEST_TARGET_ESSAY = 10002;
+	public static final int REQUEST_TARGET_COOKBOOK = 10003;
+	public static final int REQUEST_TARGET_INTERNAL_LINK = 10004;
+	
+	
 }

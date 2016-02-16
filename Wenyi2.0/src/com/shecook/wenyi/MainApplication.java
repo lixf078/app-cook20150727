@@ -94,11 +94,15 @@ public class MainApplication extends Application {
 							JSONObject dataJson = jsonObject.getJSONObject("data");
 							int core_status = dataJson.getInt("core_status");
 							if(core_status == 200){
-								WenyiUser user = new WenyiUser();
-								user.set_flag(statuscode);
-								user.set_mID(mid);
-								user.set_token(dataJson.getString("token"));
-								Util.saveUserData(MainApplication.this, user);
+//								WenyiUser user = new WenyiUser();
+//								user.set_flag(statuscode);
+//								user.set_mID(mid);
+//								user.set_token(dataJson.getString("token"));
+//								Util.saveUserData(MainApplication.this, user);
+								Util.updateIntData(MainApplication.this, "_flag", statuscode);
+								Util.updateStringData(MainApplication.this, "_token", dataJson.getString("token"));
+								Util.updateStringData(MainApplication.this, "_mid", mid);
+								
 							}else{
 								// 有错误情况
 							}

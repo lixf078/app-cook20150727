@@ -59,6 +59,8 @@ public class GroupCreateActivity extends BaseActivity {
 	private String circleImage = "";
 	private String photoPath = "";
 
+	private AlertDialog alertDialog = null;
+	
 	private String circleid = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -130,9 +132,20 @@ public class GroupCreateActivity extends BaseActivity {
 			int what = msg.what;
 			switch (what) {
 			case HttpStatus.STATUS_SHOWPROGRESS:
-				// Util.showDialog(GroupCreateActivity.this, -1);
+				if (null == alertDialog) {
+					alertDialog = Util
+							.showLoadDataDialog(GroupCreateActivity.this, "图片正在上传，请等待");
+				}
+				if (!alertDialog.isShowing()) {
+					alertDialog.show();
+				}
 				break;
 			case UPLOAD_SUCESS:
+				if (null == alertDialog) {
+					if (alertDialog.isShowing()) {
+						alertDialog.cancel();
+					}
+				}
 				createCircle();
 				break;
 			case UPLOAD_FAILED:
@@ -157,6 +170,7 @@ public class GroupCreateActivity extends BaseActivity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		handler.sendEmptyMessage(HttpStatus.STATUS_SHOWPROGRESS);
 		commonMethod(HttpUrls.UPLOAD_IMG, paramObject, listResultListener,
 				listErrorListener, filepath);
 	}
@@ -170,11 +184,13 @@ public class GroupCreateActivity extends BaseActivity {
 			paramObject.put("desc", circleContent);
 			paramObject.put("image", circleImage);
 			paramObject.put("title", circleName);
-			paramObject.put("circleid", "" + circleid);
+			if(TextUtils.isEmpty(circleid)){
+			    paramObject.put("circleid", "" + circleid);
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		if(TextUtils.isEmpty(circleid)){
+		if(!TextUtils.isEmpty(circleid)){
 			commonMethod(HttpUrls.GROUP_CIRCLE_EDIT, paramObject,
 					crtateResultListener, crtateErrorListener, "");
 		}else{

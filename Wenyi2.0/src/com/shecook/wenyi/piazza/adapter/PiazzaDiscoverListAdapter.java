@@ -40,7 +40,6 @@ public class PiazzaDiscoverListAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
-		Log.e("lixufeng", "getCount " + mListItems.size());
 		return mListItems.size();
 	}
 

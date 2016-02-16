@@ -76,23 +76,29 @@ public class PiazzaQuestionListDetialAdapter extends BaseAdapter {
 		try {
 			LruImageCache lruImageCache = LruImageCache.instance();
 			imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-			holder.imageUrl.setDefaultImageResId(R.drawable.icon);
-			holder.imageUrl.setErrorImageResId(R.drawable.icon);
+//			holder.imageUrl.setDefaultImageResId(R.drawable.icon);
+//			holder.imageUrl.setErrorImageResId(R.drawable.icon);
 			holder.imageUrl.setImageUrl(pqi.getUportrait(), imageLoader);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		if(pqi.isComment()){
-			holder.advTitle.setText(pqci.getNickname());
-			holder.advTime.setText(Util.formatTime2Away(pqci.getTimeline()));
-			holder.pizza_question_list_content.setText(pqci.getComment());
-		}else{
-			holder.advTitle.setText(pqi.getNickname());
-			holder.advTime.setText(Util.formatTime2Away(pqi.getTimeline()));
-			holder.pizza_question_list_content.setText(pqi.getBody());
-			holder.pizza_question_item_level.setText(pqi.getNickname());
-		}
+		holder.advTitle.setText(pqci.getNickname());
+		holder.advTime.setText(Util.formatTime2Away(pqci.getTimeline()));
+		holder.pizza_question_list_content.setText(pqci.getComment());
+		
+//		if(pqi.isComment()){
+//			holder.advTitle.setText(pqci.getNickname());
+//			holder.advTime.setText(Util.formatTime2Away(pqci.getTimeline()));
+//			holder.pizza_question_list_content.setText(pqci.getComment());
+//			holder.pizza_question_item_level.setVisibility(View.GONE);
+//		}else{
+//			holder.advTitle.setText(pqi.getNickname());
+//			holder.advTime.setText(Util.formatTime2Away(pqi.getTimeline()));
+//			holder.pizza_question_list_content.setText(pqi.getBody());
+//			holder.pizza_question_item_level.setVisibility(View.VISIBLE);
+//			holder.pizza_question_item_level.setText(pqi.getNickname());
+//		}
 		
 		return view ;
 	}

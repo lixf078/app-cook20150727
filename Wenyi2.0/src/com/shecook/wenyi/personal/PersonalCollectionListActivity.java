@@ -38,6 +38,7 @@ import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.cookbook.CookbookCollectionActivity;
+import com.shecook.wenyi.cookbook.CookbookItemDeatilActivity;
 import com.shecook.wenyi.model.personal.PersonalCollectionModel;
 import com.shecook.wenyi.personal.adapter.PersonalCollectionForGroupListAdapter;
 import com.shecook.wenyi.personal.adapter.PersonalCollectionForGroupListAdapter.OnSwipeOperator;
@@ -126,7 +127,9 @@ public class PersonalCollectionListActivity extends BaseActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
-				
+				Intent intent = new Intent(PersonalCollectionListActivity.this, CookbookItemDeatilActivity.class);
+				intent.putExtra("recipeid", "" + collectionList.get((int) position).getRecipeid());
+				startActivity(intent);
 			}
 		});
 	}

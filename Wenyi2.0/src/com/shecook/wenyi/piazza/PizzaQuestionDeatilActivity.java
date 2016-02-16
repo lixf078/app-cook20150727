@@ -1,34 +1,13 @@
 package com.shecook.wenyi.piazza;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.DialogInterface.OnKeyListener;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.text.format.DateUtils;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shecook.wenyi.BaseActivity;
 import com.shecook.wenyi.HttpStatus;
@@ -45,15 +24,50 @@ import com.shecook.wenyi.common.volley.Response;
 import com.shecook.wenyi.common.volley.Response.ErrorListener;
 import com.shecook.wenyi.common.volley.Response.Listener;
 import com.shecook.wenyi.common.volley.VolleyError;
+import com.shecook.wenyi.common.volley.toolbox.ImageLoader;
 import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
-import com.shecook.wenyi.essay.EssayItemDeatilActivity;
+import com.shecook.wenyi.common.volley.toolbox.NetworkImageView;
+import com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity;
+import com.shecook.wenyi.essay.adapter.ViewPagerAdapter;
+import com.shecook.wenyi.essay.view.AutoScrollViewPager;
+import com.shecook.wenyi.essay.view.CirclePageIndicator;
+import com.shecook.wenyi.group.GroupItemDetailMemAuditActivity;
+import com.shecook.wenyi.model.WenyiGallery;
 import com.shecook.wenyi.model.WenyiImage;
+import com.shecook.wenyi.model.cookbook.CookbookHomeworkModel;
 import com.shecook.wenyi.model.piazza.PiazzaQuestionCommentItem;
 import com.shecook.wenyi.model.piazza.PiazzaQuestionItem;
 import com.shecook.wenyi.piazza.adapter.PiazzaQuestionListDetialAdapter;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
+import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
+import com.shecook.wenyi.view.FixedSpeedScroller;
+import com.shecook.wenyi.view.PageIndicator;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnKeyListener;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.ViewPager;
+import android.text.format.DateUtils;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class PizzaQuestionDeatilActivity extends BaseActivity implements
 		OnClickListener {
@@ -65,6 +79,9 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 	EditText comment = null; // add comments edit
 	EditText bottomcomment = null; // bottom add comments edit
 	private ImageView shareImg;
+	
+	NetworkImageView head_image;
+	private TextView pizza_question_item_header_title, pizza_question_item_header_time, pizza_question_item_header_level, pizza_question_list_header_content;
 
 	public String titleContent = ""; // 分享title
 	public String ownerIconUrl = ""; // 分享icon url
@@ -125,7 +142,7 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 					}
 				});
 
-		// ListView actualListView = mPullRefreshListView.getRefreshableView();
+		// ListView actualListView = mPullRefreshListView.vvgetRefreshableView();
 
 		mListItems = new LinkedList<Object>();
 		mAdapter = new PiazzaQuestionListDetialAdapter(this, mListItems);
@@ -140,6 +157,8 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 					long arg3) {
 			}
 		});
+		
+		
 
 	}
 
@@ -163,19 +182,112 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 		bottomcomment.setOnClickListener(this);
 	}
 
+	private AutoScrollViewPager viewPager;
+	private PageIndicator mIndicator;
+	private ArrayList<WenyiGallery> mPageViews;
+	private ViewPagerAdapter adapter;
+	
+	private void inifViewPaper(){
+        
+		View header = PizzaQuestionDeatilActivity.this.getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
+		
+		viewPager = (AutoScrollViewPager) header
+				.findViewById(R.id.view_pager_advert);
+		mIndicator = (CirclePageIndicator) header
+				.findViewById(R.id.indicator);
+		
+		ArrayList<WenyiImage> images = pdi.getImages();
+		if(images.size() != 0){
+			ArrayList<WenyiGallery> gallerys = new ArrayList<WenyiGallery>();
+			for(WenyiImage img : images){
+				WenyiGallery gallery = new WenyiGallery();
+				gallery.setId(Integer.parseInt(img.getId()));
+				gallery.setImgUrl(img.getImageurl());
+				gallery.setTitle("");
+				gallerys.add(gallery);
+			}
+			adapter = new ViewPagerAdapter(PizzaQuestionDeatilActivity.this, gallerys);
+			viewPager.setAdapter(adapter);
+			mIndicator.setViewPager(viewPager);
+
+			viewPager.setInterval(4000);
+			viewPager.setCurrentItem(0);
+			viewPager.setStopScrollWhenTouch(true);
+			setViewPagerScrollSpeed(viewPager);
+			
+			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
+	        header.setLayoutParams(layoutParams);
+	        ListView lv = mPullRefreshListView.getRefreshableView();
+	        lv.addHeaderView(header);
+	        if(viewPager != null){
+				viewPager.startAutoScroll();
+			}
+		}
+		
+		View infoHeader = getLayoutInflater().inflate(R.layout.piazza_question_item_detail_header, mPullRefreshListView, false);
+		pizza_question_item_header_title = (TextView) infoHeader.findViewById(R.id.pizza_question_item_header_title);
+		pizza_question_item_header_time = (TextView) infoHeader.findViewById(R.id.pizza_question_item_header_time);
+		pizza_question_item_header_level = (TextView) infoHeader.findViewById(R.id.pizza_question_item_header_level);
+		pizza_question_list_header_content = (TextView) infoHeader.findViewById(R.id.pizza_question_list_header_content);
+		head_image = (NetworkImageView) infoHeader.findViewById(R.id.item_img);
+		
+		
+		ImageLoader imageLoader;
+		try {
+			LruImageCache lruImageCache = LruImageCache.instance();
+			imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+			head_image.setImageUrl(pdi.getUportrait(), imageLoader);
+			pizza_question_item_header_title.setText(pdi.getNickname());
+			pizza_question_item_header_time.setText(Util.formatTime2Away(pdi.getTimeline()));
+			pizza_question_item_header_level.setText(pdi.getLvlname());
+			pizza_question_list_header_content.setText("" + pdi.getBody());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
+		infoHeader.setLayoutParams(layoutParams);
+		ListView lv = mPullRefreshListView.getRefreshableView();
+		lv.addHeaderView(infoHeader);
+		
+	}
+	
+	private void setViewPagerScrollSpeed(AutoScrollViewPager mViewPager) {
+		try {
+			Field mScroller = null;
+			mScroller = ViewPager.class.getDeclaredField("mScroller");
+			mScroller.setAccessible(true);
+			FixedSpeedScroller scroller = new FixedSpeedScroller(
+					mViewPager.getContext());
+			mScroller.set(mViewPager, scroller);
+		} catch (NoSuchFieldException e) {
+
+		} catch (IllegalArgumentException e) {
+
+		} catch (IllegalAccessException e) {
+
+		}
+	}
+	
 	@Override
 	protected void onStart() {
 		super.onStart();
 	}
 
 	@Override
-	protected void onResume() {
+	public void onResume() {
 		super.onResume();
+		if(viewPager != null){
+			viewPager.startAutoScroll();
+		}
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
+		if(viewPager != null){
+			viewPager.stopAutoScroll();
+		}
 	}
 
 	@Override
@@ -188,11 +300,17 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 		super.onDestroy();
 	}
 
+	boolean bool = false;
+	
 	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
 			switch (what) {
 			case HttpStatus.STATUS_OK:
+				if(!bool){
+					inifViewPaper();
+					bool = true;
+				}
 				mAdapter.notifyDataSetChanged();
 				// Call onRefreshComplete when the list has been refreshed.
 				mPullRefreshListView.onRefreshComplete();
@@ -332,9 +450,10 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 		}
 	};
 
+	private PiazzaQuestionItem pdi = null;
 	/**
 	 * @param jsonObject
-	 * @param flag 0 topic 1 comments
+	 * @param flag 0 topic 1 comments lvlname
 	 */
 	private void initData(JSONObject jsonObject, int flag) {
 		if (jsonObject != null) {
@@ -344,7 +463,7 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 					if (!jsonObject.isNull("data")) {
 						JSONObject data = jsonObject.getJSONObject("data");
 						JSONObject jb = data.getJSONObject("detail");
-						PiazzaQuestionItem pdi = new PiazzaQuestionItem();
+						pdi = new PiazzaQuestionItem();
 						pdi.setId(jb.getString("id"));
 						pdi.setUid(jb.getString("uid"));
 						pdi.setUgid(jb.getString("ugid"));
@@ -354,6 +473,7 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 						pdi.setTags(jb.getString("tags"));
 						pdi.setComments(jb.getString("comments"));
 						pdi.setTimeline(jb.getString("timeline"));
+						pdi.setLvlname(jb.getString("lvlname"));
 						if(jb.has("images")){
 							JSONArray imagelist = jb.getJSONArray("images");
 							for (int k = 0, t = imagelist.length(); k < t; k++) {
@@ -371,7 +491,8 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 								pdi.getImages().add(homeWorkImage);
 							}
 						}
-						mListItems.add(pdi);
+//						mListItems.add(pdi);
+						
 						handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 						handler.sendEmptyMessage(HttpStatus.STATUS_LOAD_OTHER);
 					}
@@ -479,7 +600,7 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 								elcid.setFloor(jb.getString("floor"));
 								elcid.setComments(jb.getString("comments"));
 								elcid.setTimeline(jb.getString("timeline"));
-								
+//								elcid.setLvlname(jb.getString("lvlname"));
 								listTemp.add(elcid);
 							}
 							mListItems.addAll(listTemp);
@@ -501,9 +622,9 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 	
 	private void initCommentsData(JSONObject jsonObject, int flag) {
 		if(index == 1){
-			PiazzaQuestionItem pqi = (PiazzaQuestionItem) mListItems.get(0);
+			// PiazzaQuestionItem pqi = (PiazzaQuestionItem) mListItems.get(0);
 			mListItems.clear();
-			mListItems.add(pqi);
+			// mListItems.add(pqi);
 		}
 		if (jsonObject != null) {
 			try {
@@ -526,7 +647,7 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 								elcid.setFloor(jb.getString("floor"));
 								elcid.setComments(jb.getString("comments"));
 								elcid.setTimeline(jb.getString("timeline"));
-								
+								elcid.setComment(true);
 								listTemp.add(elcid);
 								if(data.has("comment_items")){
 									JSONArray secondCommentlist = data.getJSONArray("comment_items");
@@ -545,7 +666,7 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 										secPqci.getComment_items().add(secPqci);
 									}
 								}
-								elcid.setComment(true);
+								
 							}
 
 							mListItems.addAll(listTemp);

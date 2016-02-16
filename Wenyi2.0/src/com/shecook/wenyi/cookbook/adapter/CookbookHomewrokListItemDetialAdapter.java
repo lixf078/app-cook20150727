@@ -75,8 +75,8 @@ public class CookbookHomewrokListItemDetialAdapter extends BaseAdapter {
 		try {
 			LruImageCache lruImageCache = LruImageCache.instance();
 			imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
-			holder.imageUrl.setDefaultImageResId(R.drawable.icon);
-			holder.imageUrl.setErrorImageResId(R.drawable.icon);
+//			holder.imageUrl.setDefaultImageResId(R.drawable.icon);
+//			holder.imageUrl.setErrorImageResId(R.drawable.icon);
 			holder.imageUrl.setImageUrl(pqi.getUportrait(), imageLoader);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -89,7 +89,9 @@ public class CookbookHomewrokListItemDetialAdapter extends BaseAdapter {
 			holder.cookbook_homework_from.setVisibility(View.GONE);
 			holder.cookbook_homework_item_level.setVisibility(View.GONE);
 		}else{
-			holder.cookbook_homework_from.setVisibility(View.VISIBLE);
+			if(pqi.getRecipeid() != null && pqi.getRecipeid() != "0"){
+				holder.cookbook_homework_from.setVisibility(View.VISIBLE);
+			}
 			holder.cookbook_homework_item_level.setVisibility(View.VISIBLE);
 			holder.advTitle.setText(pqi.getNickname());
 			holder.advTime.setText(Util.formatTime2Away(pqi.getTimeline()));

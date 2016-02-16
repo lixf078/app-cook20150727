@@ -181,7 +181,7 @@ public class CookbookFragment extends BaseFragment implements
 	}
 
 	String title = "";
-
+	TextView titleView;
 	private void initView(View view) {
 		ImageView returnImage = (ImageView) view.findViewById(R.id.return_img);
 		returnImage.setBackgroundResource(R.drawable.setting_alt);
@@ -199,7 +199,7 @@ public class CookbookFragment extends BaseFragment implements
 			}
 		}*/);
 		
-		TextView titleView = (TextView) view.findViewById(R.id.middle_title);
+		titleView = (TextView) view.findViewById(R.id.middle_title);
 		if (TextUtils.isEmpty(title)) {
 			titleView.setText(R.string.caipu);
 		} else {
@@ -512,10 +512,11 @@ public class CookbookFragment extends BaseFragment implements
 	private boolean updateCatalog = false;
 	
 	@Override
-	public void updateFragment(String cataId) {
+	public void updateFragment(String cataId, String cataName) {
 		Log.d(TAG, "updateFragment");
 		index = 0;
 		catalogid = cataId;
+		titleView.setText("" + cataName);
 		updateCatalog = true;
 		getCatalogList(HttpUrls.COOKBOOK_LIST, null, listResultListener, listErrorListener);
 	}

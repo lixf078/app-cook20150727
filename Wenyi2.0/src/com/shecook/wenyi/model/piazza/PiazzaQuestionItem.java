@@ -14,6 +14,7 @@ public class PiazzaQuestionItem {
 	private String body; // 内容
 	private String comments; // 评论数
 	private String timeline; // 时间
+	private String lvlname; // 等级
 	private ArrayList<WenyiImage> images; // 图片集合，默认第一张
 
 	public boolean isComment;
@@ -33,7 +34,7 @@ public class PiazzaQuestionItem {
 
 	public PiazzaQuestionItem(String id, String uid, String ugid,
 			String tags, String nickname, String uportrait, String body,
-			String comments, String timeline, ArrayList<WenyiImage> images, boolean isComment) {
+			String comments, String timeline, String lvlname, ArrayList<WenyiImage> images, boolean isComment) {
 		super();
 		this.id = id;
 		this.uid = uid;
@@ -44,6 +45,7 @@ public class PiazzaQuestionItem {
 		this.body = body;
 		this.comments = comments;
 		this.timeline = timeline;
+		this.lvlname = lvlname;
 		this.images = images;
 		this.isComment = isComment;
 	}
@@ -119,6 +121,14 @@ public class PiazzaQuestionItem {
 	public void setTimeline(String timeline) {
 		this.timeline = timeline;
 	}
+	
+	public String getLvlname() {
+		return lvlname;
+	}
+
+	public void setLvlname(String lvlname) {
+		this.lvlname = lvlname;
+	}
 
 	public ArrayList<WenyiImage> getImages() {
 		return images;
@@ -133,7 +143,7 @@ public class PiazzaQuestionItem {
 		return "PersonalHomeworkItem [id=" + id + ", uid=" + uid + ", ugid="
 				+ ugid + ", tags=" + tags + ", nickname=" + nickname
 				+ ", uportrait=" + uportrait + ", body=" + body + ", comments="
-				+ comments + ", timeline=" + timeline + ", images=" + images
+				+ comments + ", timeline=" + timeline + ", lvlname " + lvlname + ", images=" + images
 				+ "]";
 	}
 

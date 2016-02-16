@@ -2,20 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="5dip"
-    android:layout_marginRight="5dip"
+    android:layout_marginLeft="15dip"
+    android:layout_marginRight="15dip"
     android:orientation="horizontal" >
 
     <RelativeLayout
-        android:id="@+id/cookbook_homework_list_item_info"
+        android:id="@+id/piazza_question_list_item_info"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/item_background_color"
         android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp" >
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingTop="12dip"
+        android:paddingBottom="12dip" >
 
         <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
             android:id="@+id/item_img"
@@ -23,72 +23,83 @@
             android:layout_height="60dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="16dp"
             android:focusable="false"
             android:scaleType="fitXY" />
 
         <RelativeLayout
-            android:id="@+id/cookbook_homework_item_info"
+            android:id="@+id/pizza_question_item_header_info"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dip"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical"
             android:layout_toRightOf="@id/item_img"
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/cookbook_homework_item_title"
+                android:id="@+id/pizza_question_item_header_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/text_color" />
+                android:textColor="@color/text_color"
+                android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/cookbook_homework_item_time"
+                android:id="@+id/pizza_question_item_header_time"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/cookbook_homework_item_title"
+                android:layout_alignBottom="@id/pizza_question_item_header_title"
                 android:layout_marginTop="10dip"
-                android:layout_toRightOf="@id/cookbook_homework_item_title"
+                android:layout_toRightOf="@id/pizza_question_item_header_title"
                 android:ellipsize="marquee"
                 android:gravity="right"
+                android:textSize="12sp"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:textColor="@color/date_color" />
 
             <TextView
-                android:id="@+id/cookbook_homework_item_level"
+                android:id="@+id/pizza_question_item_header_level"
                 android:layout_width="wrap_content"
+                android:paddingTop="10dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cookbook_homework_item_title"
-                android:textColor="@color/text_color"
-                android:visibility="gone" />
+                android:textSize="12sp"
+                android:layout_below="@id/pizza_question_item_header_title"
+                android:textColor="@color/date_color" />
         </RelativeLayout>
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/cookbook_homework_list_content"
+        android:id="@+id/pizza_question_list_header_content"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cookbook_homework_list_item_info"
-        android:paddingLeft="10dp"
+        android:layout_below="@id/piazza_question_list_item_info"
+        android:layout_marginBottom="12dip"
+        android:paddingBottom="5dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:textColor="@color/text_color"
-        android:paddingRight="10dp"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/cookbook_homework_from"
+        android:id="@+id/catalog_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/pizza_question_list_header_content"
+        android:background="#e4e4e4" />
+
+    <TextView
+        android:id="@+id/cookbook_homework_header_from"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cookbook_homework_list_content"
+        android:layout_below="@id/catalog_divider"
         android:background="@drawable/wenyi_border_circle"
         android:gravity="center"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:paddingTop="5dp"
+        android:visibility="gone"
         android:paddingBottom="5dp"
         android:textColor="@color/orange"
         android:textSize="20sp" />
-
+    
 </RelativeLayout>

@@ -53,8 +53,9 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/textview_circle_while"
             android:padding="5dp"
+            
             android:hint="@string/enter_user_email" />
-
+<!-- android:text="34425617@qq.com" -->
         <EditText
             android:id="@id/wenyi_user_password"
             style="@style/matchW"
@@ -62,9 +63,11 @@
             android:background="@drawable/textview_circle_while"
             android:layout_below="@id/wenyi_user_email"
             android:layout_marginTop="10dp"
+            
             android:hint="@string/enter_user_password"
             android:password="true" />
-
+<!-- android:text="151018" -->
+        
         <TextView
             android:id="@+id/login_passwd_forget"
             android:layout_width="60dp"

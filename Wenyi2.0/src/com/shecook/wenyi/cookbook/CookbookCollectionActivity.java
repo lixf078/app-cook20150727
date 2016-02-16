@@ -100,8 +100,10 @@ public class CookbookCollectionActivity extends BaseActivity implements OnClickL
 					intent.putExtra("groupid", groupList.get((int) position).getId());
 					startActivity(intent);
 				}else{
+					CookbookCollectionGroup item = (CookbookCollectionGroup) arg0.getAdapter().getItem(arg2);
+					Log.e("lixufeng", "onItemClick arg2 " + arg2 + ", position " + position + ", groupList " + groupList + ",item " + item);
 					String selectedGroupid = groupList.get((int) position).getId();
-					if(groupid.equals(selectedGroupid)){
+					if(selectedGroupid.equals(groupid)){
 						Toast.makeText(CookbookCollectionActivity.this, "您就在这个分组里", Toast.LENGTH_SHORT).show();
 						return;
 					}

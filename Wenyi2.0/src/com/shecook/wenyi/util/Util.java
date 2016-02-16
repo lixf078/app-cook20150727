@@ -1,15 +1,31 @@
 package com.shecook.wenyi.util;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.zip.DataFormatException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.shecook.wenyi.R;
+import com.shecook.wenyi.common.WebViewActivity;
+import com.shecook.wenyi.common.volley.Request.Method;
+import com.shecook.wenyi.common.volley.Response.ErrorListener;
+import com.shecook.wenyi.common.volley.Response.Listener;
+import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
+import com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity;
+import com.shecook.wenyi.cookbook.CookbookItemDeatilActivity;
+import com.shecook.wenyi.essay.EssayItemDeatilActivity;
+import com.shecook.wenyi.model.WenyiUser;
+import com.shecook.wenyi.piazza.PizzaQuestionDeatilActivity;
+import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,11 +38,13 @@ import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore.Images;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -43,19 +61,6 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.shecook.wenyi.R;
-import com.shecook.wenyi.common.WebViewActivity;
-import com.shecook.wenyi.common.volley.Request.Method;
-import com.shecook.wenyi.common.volley.Response.ErrorListener;
-import com.shecook.wenyi.common.volley.Response.Listener;
-import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
-import com.shecook.wenyi.cookbook.CookbookHomeworkDeatilActivity;
-import com.shecook.wenyi.cookbook.CookbookItemDeatilActivity;
-import com.shecook.wenyi.essay.EssayItemDeatilActivity;
-import com.shecook.wenyi.model.WenyiUser;
-import com.shecook.wenyi.piazza.PizzaQuestionDeatilActivity;
-import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
 public class Util {
 
@@ -99,6 +104,9 @@ public class Util {
 	public Context mContext;
 
 	private static Object dataObject;
+	
+	public final static String DOWNLOAD_PATH
+    = Environment.getExternalStorageDirectory() + "/wenyi/";
 
 	public Util(Context context) {
 		this.mContext = context;
@@ -108,8 +116,7 @@ public class Util {
 
 	public static int getWidth(Context context) {
 		if (width == 0) {
-			Display display = ((Activity) context).getWindowManager()
-					.getDefaultDisplay();
+			Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
 			width = display.getWidth();
 		}
 		// height = display.getHeight();
@@ -117,17 +124,14 @@ public class Util {
 		return width;
 	}
 
-	public static int getHeight(Context context, int sourceWidth,
-			int sourceHeight) {
+	public static int getHeight(Context context, int sourceWidth, int sourceHeight) {
 
-		Display display = ((Activity) context).getWindowManager()
-				.getDefaultDisplay();
+		Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
 		width = display.getWidth();
 		height = display.getHeight();
 		float descHeight = (sourceHeight / sourceWidth) * width;
-		Log.d(TAG, "getHeight width " + width + ",sourceWidth " + sourceWidth
-				+ ", sourceHeight " + sourceHeight + ",descHeight "
-				+ descHeight);
+		Log.d(TAG, "getHeight width " + width + ",sourceWidth " + sourceWidth + ", sourceHeight " + sourceHeight
+				+ ",descHeight " + descHeight);
 		return width;
 	}
 
@@ -136,18 +140,15 @@ public class Util {
 
 		}
 		DisplayMetrics dm = new DisplayMetrics();
-		((Activity) context).getWindowManager().getDefaultDisplay()
-				.getMetrics(dm);
+		((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
 		int mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
 		return mScreenWidth;
 	}
 
-	public static int getMetricsHeigh(Context context, int sourceWidth,
-			int sourceHeight) {
+	public static int getMetricsHeigh(Context context, int sourceWidth, int sourceHeight) {
 		if (mScreenWidth == 0) {
 			DisplayMetrics dm = new DisplayMetrics();
-			((Activity) context).getWindowManager().getDefaultDisplay()
-					.getMetrics(dm);
+			((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
 			mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
 		}
 		// int mScreenHeight = dm.heightPixels;
@@ -163,18 +164,15 @@ public class Util {
 
 		}
 		DisplayMetrics dm = new DisplayMetrics();
-		((Activity) context).getWindowManager().getDefaultDisplay()
-				.getMetrics(dm);
+		((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
 		int mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
 		return (int) (mScreenWidth * scale);
 	}
 
-	public static int getAdapterMetricsHeigh(Context context, int sourceWidth,
-			int sourceHeight, float scale) {
+	public static int getAdapterMetricsHeigh(Context context, int sourceWidth, int sourceHeight, float scale) {
 		if (mScreenWidth == 0) {
 			DisplayMetrics dm = new DisplayMetrics();
-			((Activity) context).getWindowManager().getDefaultDisplay()
-					.getMetrics(dm);
+			((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
 			mScreenWidth = dm.widthPixels;// 获取屏幕分辨率宽度
 		}
 		// int mScreenHeight = dm.heightPixels;
@@ -200,25 +198,38 @@ public class Util {
 	public static void setHeight(int height) {
 		Util.height = height;
 	}
-	
-	public static AlertDialog showDialog(Context context,String title, String message, android.content.DialogInterface.OnClickListener listener, android.content.DialogInterface.OnClickListener cancleListener) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context/*,R.style.maskDialog2*/);
-		if(title != null){
+
+	public static AlertDialog showDialog(Context context, String title, String message,
+			android.content.DialogInterface.OnClickListener listener,
+			android.content.DialogInterface.OnClickListener cancleListener) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				context/* ,R.style.maskDialog2 */);
+		if (title != null) {
 			builder.setTitle(title);
 		}
-		if(message != null){
+		if (message != null) {
 			builder.setMessage(message);
 		}
 		builder.setPositiveButton("确定", listener);
 		builder.setNegativeButton("取消", cancleListener);
 		return builder.create();
 	}
-	
+
 	public static AlertDialog showLoadDataDialog(Context context) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		View view = inflater.inflate(R.layout.loading_data_dialog, null);
 
+		AlertDialog dialog = builder.setView(view).create();
+		dialog.setCanceledOnTouchOutside(false);
+		return dialog;
+	}
+	public static AlertDialog showLoadDataDialog(Context context, String content) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		View view = inflater.inflate(R.layout.loading_data_dialog, null);
+		TextView load_data_info = (TextView) view.findViewById(R.id.load_data_info);
+		load_data_info.setText(content);
 		AlertDialog dialog = builder.setView(view).create();
 		dialog.setCanceledOnTouchOutside(false);
 		return dialog;
@@ -230,8 +241,7 @@ public class Util {
 		View view = inflater.inflate(R.layout.loading_data_dialog, null);
 
 		if (infoId != -1) {
-			TextView textView = (TextView) view
-					.findViewById(R.id.load_data_info);
+			TextView textView = (TextView) view.findViewById(R.id.load_data_info);
 			textView.setText(infoId);
 		}
 
@@ -242,8 +252,7 @@ public class Util {
 
 	public static Dialog showDialog(Context context, int layout) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		width = ((Activity) context).getWindowManager().getDefaultDisplay()
-				.getWidth();
+		width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
 		Dialog dialog = new Dialog(context);
 		View view = inflater.inflate(layout, null);
 		dialog.setContentView(view);
@@ -251,23 +260,20 @@ public class Util {
 	}
 
 	public static Dialog getBottomDialog(Context context, int layout) {
-		int width = ((Activity) context).getWindowManager().getDefaultDisplay()
-				.getWidth();
+		int width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
 		LayoutInflater inflater = LayoutInflater.from(context);
-		Dialog dialog = new Dialog(context,R.style.maskDialog);
+		Dialog dialog = new Dialog(context, R.style.maskDialog);
 		View view = inflater.inflate(layout, null);
 		Window window = dialog.getWindow();
 		window.setGravity(Gravity.BOTTOM); // 此处可以设置dialog显示的位置
 		window.setWindowAnimations(R.style.mybottomdialog); // 添加动画
-		dialog.setContentView(view, new LinearLayout.LayoutParams(width,
-				LayoutParams.WRAP_CONTENT));
+		dialog.setContentView(view, new LinearLayout.LayoutParams(width, LayoutParams.WRAP_CONTENT));
 		return dialog;
 	}
 
 	public static Dialog showAddCommentDialog(Context context) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		width = ((Activity) context).getWindowManager().getDefaultDisplay()
-				.getWidth();
+		width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
 		final Dialog dialog = new Dialog(context, R.style.maskDialog);
 		Window window = dialog.getWindow();
 		window.setGravity(Gravity.BOTTOM);
@@ -277,28 +283,24 @@ public class Util {
 		dialog.setOnKeyListener(new OnKeyListener() {
 
 			@Override
-			public boolean onKey(DialogInterface dialog, int keyCode,
-					KeyEvent event) {
+			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
 				dialog.dismiss();
 				return false;
 			}
 		});
-		dialog.setContentView(view, new LinearLayout.LayoutParams(width,
-				LayoutParams.WRAP_CONTENT));
+		dialog.setContentView(view, new LinearLayout.LayoutParams(width, LayoutParams.WRAP_CONTENT));
 		return dialog;
 	}
 
-	public static Dialog showDialog(Context context, int layoutId,
-			Bitmap bitmap, boolean cancel) {
+	public static Dialog showDialog(Context context, int layoutId, Bitmap bitmap, boolean cancel) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		final Dialog dialog = new Dialog(context, R.style.maskDialog);
-		RelativeLayout layout = (RelativeLayout) inflater.inflate(layoutId,
-				null);
+		RelativeLayout layout = (RelativeLayout) inflater.inflate(layoutId, null);
 
-		ImageView imageView = (ImageView) layout.findViewById(0/*
-																 * R.id.
-																 * cookbook_zoom_img
-																 */);
+		ImageView imageView = (ImageView) layout
+				.findViewById(0/*
+								 * R.id. cookbook_zoom_img
+								 */);
 		imageView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -307,10 +309,8 @@ public class Util {
 			}
 		});
 		imageView.setImageBitmap(bitmap);
-		width = ((Activity) context).getWindowManager().getDefaultDisplay()
-				.getWidth();
-		dialog.setContentView(layout, new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
+		width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
+		dialog.setContentView(layout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT));
 		return dialog;
 	}
@@ -403,7 +403,7 @@ public class Util {
 		long nowtimelong = System.currentTimeMillis();
 
 		long ctimelong = ctime.getTime();
-		long result = Math.abs(nowtimelong - ctimelong)/1000;
+		long result = Math.abs(nowtimelong - ctimelong) / 1000;
 
 		if (result < 60) {// 一分钟内
 			long seconds = result;
@@ -428,28 +428,27 @@ public class Util {
 			long seconds = result / (2592000 * 12);
 			r = seconds + "年前";
 		} else {// 日期格式
-//			format = "yyyy-MM-dd HH:mm";
-//			r = sdf.format(ctime).toString();
+			// format = "yyyy-MM-dd HH:mm";
+			// r = sdf.format(ctime).toString();
 			long seconds = result / 86400;
 			r = seconds + "天前";
 		}
 		return r;
 	}
-	
+
 	public static int saveUserData(Context context, WenyiUser user) {
 		SharedPreferences userInfo = null;
 		try {
 			userInfo = context.getSharedPreferences("user_info", 0);
 			SharedPreferences.Editor editor = userInfo.edit();
 			Log.e(TAG,
-					"email: " + user.get_email() + ", message: "
-							+ user.get_msgcount() + ",token "
-							+ user.get_token());
+					"saveUserData email: " + user.get_email() + ", message: " + user.get_msgcount() + ",token " + user.get_token());
 			if (null != user.get_email() && !"".equals(user.get_email())) {
 				editor.putString("useremail", user.get_email());
 				wenyiUser.set_email(user.get_email());
 			}
-			if ((token = user.get_token()) != null && !"".equals(token)) {
+			if (user.get_token() != null && !"".equals(token)) {
+				token = user.get_token();
 				editor.putString("_token", token);
 				wenyiUser.set_token(user.get_token());
 			}
@@ -463,9 +462,9 @@ public class Util {
 				wenyiUser.set_nickname(user.get_nickname());
 			}
 
-			if (user.get_uimage30() != null && !"".equals(user.get_uimage30())) {
-				editor.putString("_uimage30", user.get_uimage30());
-				wenyiUser.set_uimage30(user.get_uimage30());
+			if (user.get_uimage50() != null && !"".equals(user.get_uimage50())) {
+				editor.putString("_uimage50", user.get_uimage50());
+				wenyiUser.set_uimage50(user.get_uimage50());
 			}
 
 			if (user.get_score() != null && !"".equals(user.get_score())) {
@@ -486,11 +485,11 @@ public class Util {
 			editor.putString("userpasswd", user.get_password());
 			editor.putString("_userguid", user.get_userguid());
 			editor.putInt("_flag", user.get_flag());
-			editor.putString("_uimage50", user.get_uimage50());
+			editor.putString("_uimage30", user.get_uimage30());
 			editor.putString("_uimage180", user.get_uimage180());
 			editor.putBoolean("islogin", user.is_isLogin());
 			editor.commit();
-
+			
 			wenyiUser.set_password(user.get_password());
 			wenyiUser.set_userguid(user.get_userguid());
 			wenyiUser.set_flag(user.get_flag());
@@ -577,11 +576,10 @@ public class Util {
 		return token;
 	}
 
-	public static boolean updateBooleanData(Context context, String key,
-			boolean value) {
+	public static boolean updateBooleanData(Context context, String key, boolean value) {
 		SharedPreferences userInfo = null;
 		try {
-			Log.e("lixufeng", "updateBooleanData " + key + ", value " + value);
+			Log.e(TAG, "updateBooleanData " + key + ", value " + value);
 			userInfo = context.getSharedPreferences("user_info", 0);
 			SharedPreferences.Editor editor = userInfo.edit();
 			editor.putBoolean(key, value);
@@ -593,15 +591,29 @@ public class Util {
 		return false;
 	}
 
-	public static boolean updateStringData(Context context, String key,
-			String value) {
+	public static boolean updateStringData(Context context, String key, String value) {
 		SharedPreferences userInfo = null;
 		try {
-			Log.e("lixufeng", "updateStringData key " + key + ", value "
-					+ value);
+			new Exception().printStackTrace();
+			Log.e(TAG, "updateStringData key " + key + ", value " + value);
 			userInfo = context.getSharedPreferences("user_info", 0);
 			SharedPreferences.Editor editor = userInfo.edit();
 			editor.putString(key, value);
+			editor.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		}
+		return false;
+	}
+	
+	public static boolean updateIntData(Context context, String key, int value) {
+		SharedPreferences userInfo = null;
+		try {
+			Log.e(TAG, "updateIntData key " + key + ", value " + value);
+			userInfo = context.getSharedPreferences("user_info", 0);
+			SharedPreferences.Editor editor = userInfo.edit();
+			editor.putInt(key, value);
 			editor.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -617,8 +629,7 @@ public class Util {
 			updateStringData(context, "_mid", mid);
 		}
 		try {
-			Log.e(TAG, "getCommonParam token " + getToken(context) + ", mid "
-					+ mid);
+			Log.e(TAG, "getCommonParam token " + getToken(context) + ", mid " + mid);
 			sub.put("mtype", "android");
 			sub.put("mid", mid);
 			sub.put("token", token = getToken(context));
@@ -628,6 +639,27 @@ public class Util {
 		return sub;
 	}
 
+	public static JSONObject getCommonParam(Context context, boolean newToken) {
+		JSONObject sub = new JSONObject();
+		if (TextUtils.isEmpty(mid = getMid(context))) {
+			mid = UUID.randomUUID().toString();
+			updateStringData(context, "_mid", mid);
+		}
+		if(newToken){
+			updateStringData(context, "_token", "");
+			token = "";
+		}
+		try {
+			Log.e(TAG, "getCommonParam token " + getToken(context) + ", mid " + mid);
+			sub.put("mtype", "android");
+			sub.put("mid", mid);
+			sub.put("token", token = getToken(context));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return sub;
+	}
+	
 	public static void commonHttpMethod(Activity activity, String url, JSONObject paramsub,
 			Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		JSONObject jsonObject = new JSONObject();
@@ -641,8 +673,8 @@ public class Util {
 			e.printStackTrace();
 		}
 
-		JsonObjectRequest wenyiRequest = new JsonObjectRequest(Method.POST,
-				url, jsonObject, resultListener, errorListener);
+		JsonObjectRequest wenyiRequest = new JsonObjectRequest(Method.POST, url, jsonObject, resultListener,
+				errorListener);
 
 		try {
 			VolleyUtils.getInstance().addReequest(wenyiRequest);
@@ -650,7 +682,7 @@ public class Util {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static WenyiUser wenyiUser = null;
 
 	public static WenyiUser getUserData(Context context) {
@@ -659,7 +691,7 @@ public class Util {
 			if (null == wenyiUser) {
 				wenyiUser = new WenyiUser();
 			}
-			userInfo = context.getSharedPreferences("user_info", 0);
+			userInfo = context.getSharedPreferences("user_info", Context.MODE_PRIVATE);
 			wenyiUser.set_email(userInfo.getString("useremail", ""));
 			wenyiUser.set_password(userInfo.getString("userpasswd", ""));
 			wenyiUser.set_userguid(userInfo.getString("_userguid", ""));
@@ -733,18 +765,15 @@ public class Util {
 
 		// 缩放图片动作
 		matrix.postScale(scaleWidth, scaleHeight);
-		Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight
-				+ ",width " + width);
+		Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
 
 		// 创建新的图片
-		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
-				bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 		return resizedBitmap;
 	}
 
 	public static Bitmap reSizeBitmap(Context context, Bitmap bitmap, int colume) {
-		width = ((Activity) context).getWindowManager().getDefaultDisplay()
-				.getWidth();
+		width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
 		if (width == 0) {
 		}
 		// 获取这个图片的宽和高
@@ -764,17 +793,14 @@ public class Util {
 
 		// 缩放图片动作
 		matrix.postScale(scaleWidth, scaleHeight);
-		Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight
-				+ ",width " + width);
+		Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
 
 		// 创建新的图片
-		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
-				bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 		return resizedBitmap;
 	}
 
-	public static Bitmap reSizeBitmap(Context context, Bitmap bitmap,
-			int colume, int widthx, int heighty) {
+	public static Bitmap reSizeBitmap(Context context, Bitmap bitmap, int colume, int widthx, int heighty) {
 		getWidth(context);
 		// 获取这个图片的宽和高
 		int pwidth = bitmap.getWidth();
@@ -794,19 +820,15 @@ public class Util {
 
 		// 缩放图片动作
 		matrix.postScale(scaleWidth, scaleHeight);
-		Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight
-				+ ",width " + width);
+		Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
 
 		// 创建新的图片
-		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
-				bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 		return resizedBitmap;
 	}
 
-	public static Bitmap reSizeBitmapForJuXing(Context context, Bitmap bitmap,
-			int colume) {
-		width = ((Activity) context).getWindowManager().getDefaultDisplay()
-				.getWidth();
+	public static Bitmap reSizeBitmapForJuXing(Context context, Bitmap bitmap, int colume) {
+		width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
 		if (width == 0) {
 		}
 		// 获取这个图片的宽和高
@@ -826,19 +848,15 @@ public class Util {
 
 		// 缩放图片动作
 		matrix.postScale(scaleWidth, scaleHeight);
-		Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight
-				+ ",width " + width);
+		Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
 
 		// 创建新的图片
-		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
-				bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 		return resizedBitmap;
 	}
 
-	public static Bitmap reSizeBitmapForHeight(Context context, Bitmap bitmap,
-			int colume) {
-		width = ((Activity) context).getWindowManager().getDefaultDisplay()
-				.getWidth();
+	public static Bitmap reSizeBitmapForHeight(Context context, Bitmap bitmap, int colume) {
+		width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
 		if (width == 0) {
 		}
 		// 获取这个图片的宽和高
@@ -858,19 +876,16 @@ public class Util {
 
 		// 缩放图片动作
 		matrix.postScale(scaleWidth, scaleHeight);
-		Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight
-				+ ",width " + width);
+		Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
 
 		// 创建新的图片
-		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
-				bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 		return resizedBitmap;
 	}
 
-	public static Bitmap reSizeBitmapForHeight(Context context, Bitmap bitmap,
-			int colume, int jianheight, int jianwidth) {
-		width = ((Activity) context).getWindowManager().getDefaultDisplay()
-				.getWidth();
+	public static Bitmap reSizeBitmapForHeight(Context context, Bitmap bitmap, int colume, int jianheight,
+			int jianwidth) {
+		width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
 		if (width == 0) {
 		}
 		// 获取这个图片的宽和高
@@ -891,12 +906,10 @@ public class Util {
 
 		// 缩放图片动作
 		matrix.postScale(scaleWidth, scaleHeight);
-		Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight
-				+ ",width " + width);
+		Log.d(TAG, "newWidth " + newWidth + ",newHeight " + newHeight + ",width " + width);
 
 		// 创建新的图片
-		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
-				bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 		return resizedBitmap;
 	}
 
@@ -908,8 +921,7 @@ public class Util {
 	private static final Uri STORAGE_URI = Images.Media.EXTERNAL_CONTENT_URI;
 	private static final String IMAGE_MIME_TYPE = "image/png";
 
-	public static int addImageToDB(Context context, String title,
-			String fileName, String path, String size) {
+	public static int addImageToDB(Context context, String title, String fileName, String path, String size) {
 
 		try {
 			ContentResolver contentResolver = context.getContentResolver();
@@ -917,8 +929,7 @@ public class Util {
 
 			values.put(Images.Media.TITLE, title);
 			values.put(Images.Media.DISPLAY_NAME, fileName);
-			values.put(Images.Media.DATE_TAKEN,
-					new Date(System.currentTimeMillis()).toString());
+			values.put(Images.Media.DATE_TAKEN, new Date(System.currentTimeMillis()).toString());
 			values.put(Images.Media.MIME_TYPE, IMAGE_MIME_TYPE);
 			values.put(Images.Media.ORIENTATION, 0);
 			values.put(Images.Media.DATA, path);
@@ -940,9 +951,8 @@ public class Util {
 		return dataObject;
 	}
 
-	public static void dispatchClickEvent(Context context, String event_type,
-			String event_content, String[] info) {
-		Log.d("lixufeng", "dispatchClickEvent event_type " + event_type + ", event_content " + event_content);
+	public static void dispatchClickEvent(Context context, String event_type, String event_content, String[] info) {
+		Log.d(TAG, "dispatchClickEvent event_type " + event_type + ", event_content " + event_content);
 		int type = -1;
 		try {
 			type = Integer.parseInt(event_type);
@@ -957,8 +967,7 @@ public class Util {
 
 				break;
 			case 10001:
-				intent = new Intent(Intent.ACTION_VIEW,
-						Uri.parse(event_content));
+				intent = new Intent(Intent.ACTION_VIEW, Uri.parse(event_content));
 				context.startActivity(intent);
 				context.startActivity(intent);
 				break;
@@ -994,8 +1003,7 @@ public class Util {
 				intent.putExtra("topicid", "" + event_content);
 				context.startActivity(intent);
 			case 10007:
-				intent = new Intent(context,
-						CookbookHomeworkDeatilActivity.class);
+				intent = new Intent(context, CookbookHomeworkDeatilActivity.class);
 				intent.putExtra("followid", "" + event_content);
 				context.startActivity(intent);
 				break;
@@ -1019,8 +1027,7 @@ public class Util {
 			} else if (event_type.equals("recipe_comment")) {
 
 			} else if (event_type.equals("follow")) {
-				intent = new Intent(context,
-						CookbookHomeworkDeatilActivity.class);
+				intent = new Intent(context, CookbookHomeworkDeatilActivity.class);
 				intent.putExtra("followid", "" + event_content);
 				context.startActivity(intent);
 			} else if (event_type.equals("follow_comment")) {
@@ -1036,4 +1043,59 @@ public class Util {
 
 	}
 
+	// 计算图片的缩放值
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+			final int heightRatio = Math.round((float) height / (float) reqHeight);
+			final int widthRatio = Math.round((float) width / (float) reqWidth);
+			inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+		}
+		return inSampleSize;
+	}
+
+	// 根据路径获得图片并压缩，返回bitmap用于显示
+	public static File getSmallFile(String filePath) {
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(filePath, options);
+
+		// Calculate inSampleSize
+		options.inSampleSize = calculateInSampleSize(options, 320, 480);
+
+		// Decode bitmap with inSampleSize set
+		options.inJustDecodeBounds = false;
+
+		return saveBitmap(BitmapFactory.decodeFile(filePath, options));
+	}
+
+	public static File saveBitmap(Bitmap bm) {
+		String picName = System.currentTimeMillis() + ".png";
+		
+		File dirFile = new File(DOWNLOAD_PATH);
+        if(!dirFile.exists()){
+            dirFile.mkdir();
+        }
+        File myCaptureFile = new File(DOWNLOAD_PATH + picName);
+        
+		try {
+			
+			FileOutputStream out = new FileOutputStream(myCaptureFile);
+			bm.compress(Bitmap.CompressFormat.PNG, 10, out);
+			out.flush();
+			out.close();
+			Log.e(TAG, "已经保存");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return myCaptureFile;
+
+	}
 }

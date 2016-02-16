@@ -423,6 +423,7 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 			if (!TextUtils.isEmpty(response)) {
 				try {
 					Log.d(TAG, "response -> " + response.toString());
+					
 					Message message = new Message();
 					message.what = Util.DISMISS_DIALOG;
 					message.obj = response.toString();
@@ -494,9 +495,17 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 								user.set_flag(statuscode);
 								user.set_ID(dataJson.getString("uid"));
 								user.set_token(dataJson.getString("token"));
+								if(TextUtils.isEmpty(nickname) && dataJson.has("nickname")){
+									nickname = dataJson.getString("nickname");
+								}
 								user.set_nickname(nickname);
 								user.set_email(useremail);
-								user.set_uimage50(image);
+								if(dataJson.has("u_portrait")){
+									image = dataJson.getString("u_portrait");
+								}
+								if(!TextUtils.isEmpty(image)){
+									user.set_uimage50(image);
+								}
 								user.set_password(passwd);
 								user.set_isLogin(true);
 								Util.saveUserData(PersonalLoginCommon.this, user);

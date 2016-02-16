@@ -54,12 +54,14 @@
                 android:id="@+id/group_shared_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="16dp"
                 android:textColor="@color/text_color" />
 
             <TextView
                 android:id="@+id/group_shared_item_time"
                 android:layout_width="wrap_content"
                 android:paddingRight="5dp"
+                android:textSize="12dp"
                 android:paddingLeft="5dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -69,17 +71,19 @@
             <TextView
                 android:id="@+id/group_shared_item_summary"
                 android:layout_width="wrap_content"
+                android:textSize="14dp"
                 android:layout_below="@id/group_shared_item_title"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_color" />
+                android:layout_marginTop="15dp"
+                android:textColor="@color/date_color" />
 
             <RelativeLayout
                 android:id="@+id/group_detail_item_image_info"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/group_shared_item_summary"
-                android:layout_marginLeft="10dip"
-                android:layout_marginTop="5dip"
+                android:layout_marginLeft="5dip"
+                android:layout_marginTop="8dip"
                 android:orientation="horizontal" >
 
                 <com.shecook.wenyi.common.volley.toolbox.NetworkImageView

@@ -6,24 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.format.DateUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.letv.shared.widget.BaseSwipeHelper;
 import com.letv.shared.widget.LeListView;
 import com.letv.shared.widget.pulltorefresh.PullToRefreshBase;
@@ -49,10 +31,28 @@ import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.WenyiLog;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.format.DateUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickListener, OnSwipeOperator{
 	private static final String TAG = "GroupItemDetailMemFragment";
 
-	private Activity mActivity = null;
+	private GroupItemDetailActivity mActivity = null;
 	
 	public static final int STATUS_OK_COLLECTION_GROUP = 1;
 	public static final int STATUS_OK_COLLECTION_CREATE = 2;
@@ -79,7 +79,7 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 	public void onCreate(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
-		mActivity = getActivity();
+		mActivity = (GroupItemDetailActivity) getActivity();
 	}
 	
 	@Override
@@ -119,7 +119,13 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 						// Update the LastUpdatedLabel
 						refreshView.getLoadingLayoutProxy()
 								.setLastUpdatedLabel(label);
-						processParam(false);
+						if(shouldLoad){
+							processParam(false);
+						}else{
+							Toast.makeText(mActivity, "您已翻到底儿了!",
+									Toast.LENGTH_SHORT).show();
+							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
+						}
 					}
 				});
 
@@ -150,10 +156,10 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 			}
 		});
 		if(((GroupItemDetailActivity)mActivity).getStatus() <= 10001){
-			View header = mActivity.getLayoutInflater().inflate(R.layout.group_detail_mem_list_header, mPullRefreshListView, false);
-			num = (TextView) header.findViewById(R.id.group_detail_item_new_num);
-			num.setText("10");
-			header.setOnClickListener(new OnClickListener() {
+		    listHeaderView = mActivity.getLayoutInflater().inflate(R.layout.group_detail_mem_list_header, mPullRefreshListView, false);
+			num = (TextView) listHeaderView.findViewById(R.id.group_detail_item_new_num);
+			num.setText("");
+			listHeaderView.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
@@ -163,15 +169,16 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 				}
 			});
 			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
-			header.setLayoutParams(layoutParams);
+			listHeaderView.setLayoutParams(layoutParams);
 			ListView lv = mPullRefreshListView.getRefreshableView();
-			lv.addHeaderView(header);
+			lv.addHeaderView(listHeaderView);
 		}else{
 			mPullRefreshListView.getRefreshableView().setLeListViewMode(LeListView.LE_NONE);
 		}
 		
 	}
 	TextView num = null;
+	View listHeaderView = null;
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		WenyiLog.logv(TAG, "onActivityCreated");
@@ -223,20 +230,43 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
+			Log.e(TAG, "handleMessage mst " + what);
 			switch (what) {
 			case HttpStatus.STATUS_OK:
-				mAdapter.notifyDataSetChanged();
-				mPullRefreshListView.onRefreshComplete();
+				
 				if(groupMemList == null || groupMemList.size() == 0){
-					common_tip_info_layout.setVisibility(View.VISIBLE);
-					common_tip_info.setText("该圈子目前还没有人加入");
-					common_tip_info_button.setText("立刻邀请好友");
+					
+					if(mActivity.getStatus() <= 10004){
+						Toast.makeText(mActivity, "当前账户尚未加入圈子，不能查看本圈子成员", Toast.LENGTH_SHORT).show();
+					}else{
+						common_tip_info_layout.setVisibility(View.VISIBLE);
+						common_tip_info.setText("该圈子目前还没有人加入");
+						common_tip_info_button.setText("立刻邀请好友");
+					}
+					
 				}else{
-					if(null != null){
+					Log.e(TAG, "handleMessage mst " + what + ", apply " + apply);
+					if(apply != 0 && listHeaderView != null){
+						listHeaderView.setVisibility(View.VISIBLE);
+						listHeaderView.findViewById(R.id.group_detail_item_new_img).setVisibility(View.VISIBLE);
+						listHeaderView.findViewById(R.id.group_detail_item_new_str).setVisibility(View.VISIBLE);;
+						listHeaderView.findViewById(R.id.group_detail_item_new_num).setVisibility(View.VISIBLE);;
+						listHeaderView.findViewById(R.id.group_detail_item_new_num_ico).setVisibility(View.VISIBLE);;
 						num.setText("" + apply);
+					}else{
+						if(listHeaderView != null){
+							listHeaderView.setVisibility(View.GONE);
+							listHeaderView.findViewById(R.id.group_detail_item_new_img).setVisibility(View.GONE);
+							listHeaderView.findViewById(R.id.group_detail_item_new_str).setVisibility(View.GONE);;
+							listHeaderView.findViewById(R.id.group_detail_item_new_num).setVisibility(View.GONE);;
+							listHeaderView.findViewById(R.id.group_detail_item_new_num_ico).setVisibility(View.GONE);;
+						}
 					}
 					common_tip_info_layout.setVisibility(View.GONE);
 				}
+				
+				mAdapter.notifyDataSetChanged();
+				mPullRefreshListView.onRefreshComplete();
 				break;
 			case STATUS_OK_GROUP_MEM_DELETE:
 				mAdapter.notifyDataSetChanged();
@@ -265,7 +295,6 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 	@Override
 	public void onDeleteItem(int position) {
 		this.position = position;
-		Log.e("lixufeng", "onDeleteItem position " + position + ", groupMemList " + groupMemList.size());
 		JSONObject paramObject = new JSONObject();
 		try {
 			paramObject.put("circleid", groupMemList.get(position).getCircleid());
@@ -439,21 +468,4 @@ public class GroupItemDetailMemFragment extends BaseFragmeng implements OnClickL
 		}
 		handler.sendEmptyMessage(HttpStatus.STATUS_OK);
 	}
-
-	ErrorListener groupHotErrorListener = new Response.ErrorListener() {
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			Log.e(TAG, error.getMessage(), error);
-		}
-	};
-
-	Listener<JSONObject> groupHotResultListener = new Listener<JSONObject>() {
-
-		@Override
-		public void onResponse(JSONObject result) {
-			initData(result, 0);
-			Log.d(TAG,
-					"catalogResultListener onResponse -> " + result.toString());
-		}
-	};
 }

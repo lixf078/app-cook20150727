@@ -105,13 +105,15 @@ public class PiazzaCookbookHomeworkList extends BaseFragmeng implements OnClickL
 								.setLastUpdatedLabel(label);
 
 						// Do work to refresh the list here.
-						if(shouldLoad){
-							getHomeworkList(HttpUrls.COOKBOOK_HOMEWORK_LIST, null, listResultListener, listErrorListener);
-						}else{
-							Toast.makeText(mActivity, "您已翻到底儿了!",
-									Toast.LENGTH_SHORT).show();
-							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
-						}
+//						if(shouldLoad){
+//							getHomeworkList(HttpUrls.COOKBOOK_HOMEWORK_LIST, null, listResultListener, listErrorListener);
+//						}else{
+//							Toast.makeText(mActivity, "您已翻到底儿了!",
+//									Toast.LENGTH_SHORT).show();
+//							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
+//						}
+						
+						getNewHomeworkList();
 					}
 				});
 
@@ -140,7 +142,7 @@ public class PiazzaCookbookHomeworkList extends BaseFragmeng implements OnClickL
 		/**
 		 * Add Sound Event Listener
 		 */
-		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
+		mPullRefreshListView.setMode(Mode.BOTH);
 		// You can also just use setListAdapter(mAdapter) or
 		mPullRefreshListView.setAdapter(mAdapter);
 		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
@@ -220,6 +222,11 @@ public class PiazzaCookbookHomeworkList extends BaseFragmeng implements OnClickL
 		}
 	}
 
+	public void getNewHomeworkList(){
+		index = 0;
+		getHomeworkList(HttpUrls.COOKBOOK_HOMEWORK_LIST, null, newListResultListener, listErrorListener);
+	}
+	
 	private int index = 0;
 	public void getHomeworkList(String url, JSONObject jsonObject, Listener<JSONObject> resultListener, ErrorListener errorListener) {
 		if(null == jsonObject){
@@ -252,6 +259,15 @@ public class PiazzaCookbookHomeworkList extends BaseFragmeng implements OnClickL
 		}
 	}
 	
+	Listener<JSONObject> newListResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.d(TAG, "catalogResultListener onResponse -> " + result.toString());
+			initData(result, 1);
+		}
+	};
+	
 	Listener<JSONObject> listResultListener = new Listener<JSONObject>() {
 
 		@Override
@@ -278,6 +294,9 @@ public class PiazzaCookbookHomeworkList extends BaseFragmeng implements OnClickL
 						JSONObject data = jsonObject.getJSONObject("data");
 						
 						if(data.has("list")){
+							if(flag == 1){
+								mListItems.clear();
+							}
 							JSONArray list = data.getJSONArray("list");
 							LinkedList<CookbookHomeworkListItem> listTemp = new LinkedList<CookbookHomeworkListItem>();
 							Log.d(TAG, "initData list length -> " + list.length());

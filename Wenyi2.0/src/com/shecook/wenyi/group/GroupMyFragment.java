@@ -115,6 +115,16 @@ public class GroupMyFragment extends BaseFragmeng implements OnClickListener{
 						refreshView.getLoadingLayoutProxy()
 								.setLastUpdatedLabel(label);
 
+						if (shouldLoad) {
+							getDiscoverList(HttpUrls.GROUP_MY_LIST, null,
+									groupHotResultListener,
+									groupHotErrorListener);
+						} else {
+							Toast.makeText(mActivity, "您已翻到底儿了!",
+									Toast.LENGTH_SHORT).show();
+							handler.sendEmptyMessage(HttpStatus.STATUS_OK);
+						}
+						
 						// Do work to refresh the list here.
 						// getCatalogList(HttpUrls.ESSAY_WENYI_LIST,null,listResultListener,listErrorListener);
 					}

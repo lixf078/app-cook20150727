@@ -1,6 +1,6 @@
 package com.shecook.wenyi.model;
 
-public class WenyiImage {
+public class WenyiImage{
 
 	private String id;
 	private String followid;

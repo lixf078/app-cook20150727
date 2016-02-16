@@ -82,7 +82,6 @@ public class GroupHotFragment extends BaseFragmeng {
 	
 	public void initView(View rootView) {
 		
-		
 		mPullRefreshListView = (PullToRefreshListView) rootView
 				.findViewById(R.id.pull_refresh_list);
 
@@ -102,9 +101,8 @@ public class GroupHotFragment extends BaseFragmeng {
 						// Update the LastUpdatedLabel
 						refreshView.getLoadingLayoutProxy()
 								.setLastUpdatedLabel(label);
-
-						// Do work to refresh the list here.
-						// getCatalogList(HttpUrls.ESSAY_WENYI_LIST,null,listResultListener,listErrorListener);
+						
+						getHotGroup();
 					}
 				});
 
@@ -131,7 +129,7 @@ public class GroupHotFragment extends BaseFragmeng {
 		mListItems = new LinkedList<GroupHotListItem>();
 		mAdapter = new GroupHotListAdapter(mActivity, mListItems);
 
-		mPullRefreshListView.setMode(Mode.PULL_FROM_END);
+		mPullRefreshListView.setMode(Mode.BOTH);
 		// You can also just use setListAdapter(mAdapter) or
 		mPullRefreshListView.setAdapter(mAdapter);
 		mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
@@ -204,6 +202,7 @@ public class GroupHotFragment extends BaseFragmeng {
 	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
+			WenyiLog.loge(TAG, "handleMessage what " + what);
 			switch (what) {
 			case HttpStatus.STATUS_OK:
 				mAdapter.notifyDataSetChanged();
@@ -218,6 +217,13 @@ public class GroupHotFragment extends BaseFragmeng {
 		};
 	};
 
+	public void getHotGroup(){
+		index = 0;
+		getDiscoverList(HttpUrls.GROUP_HOT_LIST, null,
+				newHotResultListener,
+				listErrorListener);
+	}
+	
 	private int index = 0;
 
 	public void getDiscoverList(String url, JSONObject jsonObject,
@@ -248,6 +254,16 @@ public class GroupHotFragment extends BaseFragmeng {
 		}
 	}
 
+	Listener<JSONObject> newHotResultListener = new Listener<JSONObject>() {
+
+		@Override
+		public void onResponse(JSONObject result) {
+			Log.d(TAG,
+					"catalogResultListener onResponse -> " + result.toString());
+			initData(result, 1);
+		}
+	};
+	
 	Listener<JSONObject> listResultListener = new Listener<JSONObject>() {
 
 		@Override
@@ -271,6 +287,9 @@ public class GroupHotFragment extends BaseFragmeng {
 				if (!jsonObject.isNull("statuscode")
 						&& 200 == jsonObject.getInt("statuscode")) {
 					if (!jsonObject.isNull("data")) {
+						if(flag == 1){
+							mListItems.clear();
+						}
 						JSONObject data = jsonObject.getJSONObject("data");
 						if(data.has("list")){
 							JSONArray list = data.getJSONArray("list");
@@ -297,7 +316,7 @@ public class GroupHotFragment extends BaseFragmeng {
 						if(data.has("pindex")){
 							index = data.getInt("pindex");
 							int core_status = data.getInt("core_status");
-							if (core_status == 0 && index == 0) {
+							if (core_status == 200 && index == 0) {
 								shouldLoad = false;
 							}
 						}

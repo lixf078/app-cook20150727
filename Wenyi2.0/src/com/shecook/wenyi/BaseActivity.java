@@ -338,7 +338,7 @@ public class BaseActivity extends FragmentActivity {
 			// return ;
 		}
 		JSONObject jsonObject = new JSONObject();
-		JSONObject sub = Util.getCommonParam(BaseActivity.this);
+		JSONObject sub = Util.getCommonParam(BaseActivity.this, force);
 		try {
 			jsonObject.put("common", sub);
 		} catch (JSONException e) {

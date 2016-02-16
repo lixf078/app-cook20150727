@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:background="@color/item_background_color"
         android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp" >
 
@@ -39,6 +39,7 @@
                 android:id="@+id/group_share_user_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="16dp"
                 android:textColor="@color/text_color" />
 
             <TextView
@@ -50,13 +51,16 @@
                 android:layout_toRightOf="@id/group_share_user_item_title"
                 android:ellipsize="marquee"
                 android:gravity="right"
+                android:textSize="12dp"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:textColor="@color/date_color" />
 
             <TextView
                 android:id="@+id/group_share_user_item_level"
                 android:layout_width="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_height="wrap_content"
+                android:textSize="14dp"
                 android:layout_below="@id/group_share_user_item_title"
                 android:textColor="@color/black" />
         </RelativeLayout>

@@ -146,10 +146,15 @@ public class GroupItemDetailSharedFragment extends BaseFragmeng implements OnCli
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
-				Intent intent = new Intent(mActivity, GroupShareDeatilActivity.class);
-				intent.putExtra("circleid", "" + groupSharedList.get((int) position).getCircleid());
-				intent.putExtra("shareid", "" + groupSharedList.get((int) position).getId());
-				startActivity(intent);
+				if(((GroupItemDetailActivity)mActivity).getStatus() <= 10002){
+					Intent intent = new Intent(mActivity, GroupShareDeatilActivity.class);
+					intent.putExtra("circleid", "" + groupSharedList.get((int) position).getCircleid());
+					intent.putExtra("shareid", "" + groupSharedList.get((int) position).getId());
+					startActivity(intent);
+				}else{
+					Toast.makeText(mActivity, "不是圈子成员，不能浏览详情", Toast.LENGTH_SHORT).show();
+				}
+				
 			}
 		});
 		

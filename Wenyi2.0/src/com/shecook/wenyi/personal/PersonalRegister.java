@@ -131,6 +131,7 @@ public class PersonalRegister extends BaseActivity implements OnClickListener{
 								user.set_nickname(nickname);
 								user.set_email(useremail);
 								user.set_password(passwd);
+								user.set_isLogin(true);
 								Util.saveUserData(PersonalRegister.this, user);
 								isLogin = true;
 							}else{

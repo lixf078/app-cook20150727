@@ -328,6 +328,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
             if(((LeFooterRotateLoadingLayout)mFooterLayout).cancelAnimator==false){
                 ((LeFooterRotateLoadingLayout)mFooterLayout).cancelAnimator=true;
             }
+            setState(State.RESET);
         }
 
     }

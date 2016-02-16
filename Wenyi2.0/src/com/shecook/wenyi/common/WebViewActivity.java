@@ -1,13 +1,16 @@
 package com.shecook.wenyi.common;
 
+import com.shecook.wenyi.BaseActivity;
+import com.shecook.wenyi.R;
+
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.shecook.wenyi.BaseActivity;
-import com.shecook.wenyi.R;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class WebViewActivity extends BaseActivity {
 	private WebView webView;
@@ -20,6 +23,21 @@ public class WebViewActivity extends BaseActivity {
 	}
 
 	private void init() {
+		
+		ImageView return_img = (ImageView) findViewById(R.id.return_img);
+		return_img.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
+		ImageView right_img = (ImageView) findViewById(R.id.right_img);
+		right_img.setVisibility(View.GONE);
+		TextView middle_title = (TextView) findViewById(R.id.middle_title);
+		right_img.setVisibility(View.GONE);
+		
 		webView = (WebView) findViewById(R.id.webView);
 		//启用支持javascript
 		WebSettings settings = webView.getSettings();

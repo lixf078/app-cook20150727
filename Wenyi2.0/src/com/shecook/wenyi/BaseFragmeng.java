@@ -57,11 +57,15 @@ public class BaseFragmeng extends Fragment {
 									.getJSONObject("data");
 							int core_status = dataJson.getInt("core_status");
 							if (core_status == 200) {
-								WenyiUser user = new WenyiUser();
-								user.set_flag(statuscode);
-								user.set_mID(mid);
-								user.set_token(dataJson.getString("token"));
-								Util.saveUserData(getActivity(), user);
+//								WenyiUser user = new WenyiUser();
+//								user.set_flag(statuscode);
+//								user.set_mID(mid);
+//								user.set_token(dataJson.getString("token"));
+//								Util.saveUserData(getActivity(), user);
+								
+								Util.updateIntData(getActivity(), "_flag", statuscode);
+								Util.updateStringData(getActivity(), "_token", dataJson.getString("token"));
+								Util.updateStringData(getActivity(), "_mid", mid);
 							} else {
 								// 有错误情况
 							}

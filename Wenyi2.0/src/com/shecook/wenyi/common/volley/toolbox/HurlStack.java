@@ -56,6 +56,7 @@ import com.shecook.wenyi.common.volley.AuthFailureError;
 import com.shecook.wenyi.common.volley.Request;
 import com.shecook.wenyi.common.volley.Request.Method;
 import com.shecook.wenyi.common.volley.VolleyLog;
+import com.shecook.wenyi.util.Util;
 
 /**
  * 基于 {@link HttpURLConnection} 的 {@link HttpStack}。
@@ -321,10 +322,10 @@ public class HurlStack implements HttpStack {
 				String[] files = params.get(2).getValue().split(";");
 				Log.e("lixufeng", "file value " + params.get(2).getValue());
 				for (String tempfile : files) {
-					builder.addBinaryBody("file" + count, new File(tempfile));
+					builder.addBinaryBody("file" + count, Util.getSmallFile(tempfile));
 					count++;
 				}
-				httpentity = builder.build();// 生成 HTTP POST 实体 
+				httpentity = builder.build();// 生成 HTTP POST 实体
 				// upload file end
 			}else{
 				httpentity = new UrlEncodedFormEntity(params, "utf-8");
@@ -364,7 +365,6 @@ public class HurlStack implements HttpStack {
 		}
 
 		return params;
-	}
-	
+	} 
 
 }

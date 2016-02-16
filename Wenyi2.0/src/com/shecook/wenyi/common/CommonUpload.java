@@ -68,7 +68,7 @@ public class CommonUpload {
 	public static void commonMethod(Activity context, String url, JSONObject paramsub,
 			Listener<JSONObject> resultListener, ErrorListener errorListener,
 			String files) {
-		Log.d("lixufeng", "commonMethod upload file " + ",param " + paramsub + ",files " + files);
+		Log.e("lixufeng", "commonMethod upload file " + ",param " + paramsub + ",files " + files);
 		mContext = context;
 		JSONObject jsonObject = new JSONObject();
 		JSONObject commonsub = Util.getCommonParam(mContext);

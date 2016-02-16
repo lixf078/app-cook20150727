@@ -142,7 +142,7 @@ public class GroupItemDetailActivity extends BaseActivity implements
 				getDisbandDialog();
 				break;
 			case STATUS_DISBAND_OK:
-				if(alertdialog.isShowing()){
+				if(alertdialog != null && alertdialog.isShowing()){
 					alertdialog.dismiss();
 				}
 				break;
@@ -156,7 +156,7 @@ public class GroupItemDetailActivity extends BaseActivity implements
 				addGroup();
 				break;
 			case STATUS_ADD_OK:
-				if(alertdialog.isShowing()){
+				if(alertdialog != null && alertdialog.isShowing()){
 					alertdialog.dismiss();
 				}
 				break;

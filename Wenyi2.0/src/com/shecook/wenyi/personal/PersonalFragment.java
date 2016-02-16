@@ -191,7 +191,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		Intent intent = null;
 		if(!mActivity.isLogin() && id != R.id.personal_center_settings){
 			intent = new Intent(mActivity,PersonalLoginCommon.class);
-			startActivityForResult(intent, 1);
+			startActivityForResult(intent, 10000);
 			return;
 		}
 		switch (id) {
@@ -242,7 +242,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 				break;
 			case HttpStatus.USER_TOKEN_OUTDATE:
 				Util.updateBooleanData(mActivity, "islogin", false);
-				((StartActivity)getActivity()).getTokenFrom(false, tokenResultListener, tokenErrorListener);
+				((StartActivity)getActivity()).getTokenFrom(true, tokenResultListener, tokenErrorListener);
 				break;
 			case HttpStatus.STATUS_OK:
 				WenyiUser user = (WenyiUser) msg.obj;
@@ -257,7 +257,6 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 			}
 		};
 	};
-
 	
 	public void updateView(WenyiUser user){
 		personal_username.setText(user.get_nickname());
@@ -342,11 +341,14 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 						JSONObject dataJson = jsonObject.getJSONObject("data");
 						int core_status = dataJson.getInt("core_status");
 						if(core_status == 200){
-							WenyiUser user = new WenyiUser();
-							user.set_flag(statuscode);
-							user.set_mID(Util.getMid(mActivity));
-							user.set_token(dataJson.getString("token"));
-							Util.saveUserData(mActivity, user);
+//							WenyiUser user = new WenyiUser();
+//							user.set_flag(statuscode);
+//							user.set_mID(Util.getMid(mActivity));
+//							user.set_token(dataJson.getString("token"));
+//							Util.saveUserData(mActivity, user);
+							Util.updateIntData(mActivity, "_flag", statuscode);
+							Util.updateStringData(mActivity, "_token", dataJson.getString("token"));
+							Util.updateStringData(mActivity, "_mid", Util.getMid(mActivity));
 							handler.sendEmptyMessage(HttpStatus.USER_NOT_LOGIN);
 						}else{
 							// 有错误情况
@@ -378,7 +380,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 		}
 		
 		switch (requestCode) {
-		case 1:
+		case CommonUpload.UPLOAD_SUCESS:
 			RequestHttpUtil.getHttpData(mActivity, HttpUrls.PERSONAL_MYCARD, null,
 					userCardResultListener, userCardErrorListener);
 			break;
@@ -441,6 +443,10 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 			}
 			CommonUpload.commonMethod(mActivity, HttpUrls.UPLOAD_IMG, paramsub, listResultListener, listErrorListener, iconUrl);
 			break;
+		case 10000:{
+			RequestHttpUtil.getHttpData(mActivity, HttpUrls.PERSONAL_MYCARD, null,
+					userCardResultListener, userCardErrorListener);
+		}
 		}
 	}
 	
@@ -520,7 +526,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 							JSONObject data = jsonObject.getJSONObject("data");
 							int core_status = data.getInt("core_status");
 							if (core_status == 200) {
-								msg = "" + "文件上传成功！";
+								msg = "" + "头像上传成功！";
 								Toast.makeText(mActivity, msg,
 										Toast.LENGTH_SHORT).show();
 								if(data.has("imageitems")){
