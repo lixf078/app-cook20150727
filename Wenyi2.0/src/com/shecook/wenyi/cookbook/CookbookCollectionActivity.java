@@ -27,9 +27,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shecook.wenyi.BaseActivity;
+import com.shecook.wenyi.HttpStatus;
 import com.shecook.wenyi.HttpUrls;
 import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshBase.Mode;
+import com.shecook.wenyi.common.CreatePersonalInfoActivity;
 import com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView;
 import com.shecook.wenyi.common.volley.Request.Method;
 import com.shecook.wenyi.common.volley.Response;
@@ -40,6 +42,7 @@ import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.cookbook.adapter.CookbookCollectionGroupAdatper;
 import com.shecook.wenyi.model.cookbook.CookbookCollectionGroup;
 import com.shecook.wenyi.personal.PersonalCollectionListActivity;
+import com.shecook.wenyi.personal.PersonalLoginCommon;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
@@ -62,7 +65,12 @@ public class CookbookCollectionActivity extends BaseActivity implements OnClickL
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.cookbook_collection_list);
-
+		if(!isLogin()){
+			Intent commentIntent = new Intent(CookbookCollectionActivity.this, PersonalLoginCommon.class);
+			commentIntent.putExtra("flag", "" + HttpStatus.COMMENT_FOR_ESSAY);
+			startActivityForResult(commentIntent, HttpStatus.REQUEST_CODE_ESSAY);
+			return;
+		}
 		initView();
 	}
 

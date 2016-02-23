@@ -324,7 +324,8 @@ public class CookbookItemDeatilActivity extends BaseActivity implements
 			map.put("image", ownerIconUrl);
 			map.put("url", "http://wenyijcc.com/recipe/" + recipeid);
 			map.put("from", "book");
-			openShareForCookbook(map,recipeid);
+//			openShareForCookbook(map,recipeid);
+			shareCookbook(map, recipeid);
 		default:
 			break;
 		}

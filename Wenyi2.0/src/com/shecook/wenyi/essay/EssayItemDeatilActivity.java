@@ -323,7 +323,8 @@ public class EssayItemDeatilActivity extends BaseActivity implements
 			map.put("image", ownerIconUrl);
 			map.put("url", "http://wenyijcc.com/article/" + articleid);
 			map.put("from", "essay");
-			openShare(map);
+//			openShare(map);
+			shareEssay(map);
 		default:
 			break;
 		}

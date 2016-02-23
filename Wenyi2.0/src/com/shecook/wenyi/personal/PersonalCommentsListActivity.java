@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.DateUtils;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,6 +41,7 @@ import com.shecook.wenyi.common.volley.toolbox.JsonObjectRequest;
 import com.shecook.wenyi.model.personal.PersonalCommentModel;
 import com.shecook.wenyi.personal.adapter.PersonalCommentListAdapter;
 import com.shecook.wenyi.personal.adapter.PersonalCommentListAdapter.OnSwipeOperator;
+import com.shecook.wenyi.piazza.PizzaQuestionDeatilActivity;
 import com.shecook.wenyi.util.AppException;
 import com.shecook.wenyi.util.Util;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
@@ -119,7 +123,7 @@ public class PersonalCommentsListActivity extends BaseActivity implements
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long position) {
-				showBottomSheet((int) position);
+				getBottomDialog((int) position);
 			}
 		});
 	}
@@ -179,6 +183,64 @@ public class PersonalCommentsListActivity extends BaseActivity implements
 		}
 	}
 
+	// ********************************
+	
+	Dialog dialog = null;
+	private void getBottomDialog(final int position) {
+		dialog = Util.getBottomDialog(PersonalCommentsListActivity.this,
+				R.layout.a_common_bottom_dialog_layout);
+		ImageView img3 = null;
+		Button button3 = null;
+		ImageView img4 = null;
+		Button button4 = null;
+		ImageView img5 = null;
+		Button button5 = null;
+
+		img3 = (ImageView) dialog.findViewById(R.id.wenyi_bottomsheet_img_3);
+		button3 = (Button) dialog.findViewById(R.id.wenyi_bottomsheet_btn_3);
+		img3.setVisibility(View.VISIBLE);
+		button3.setVisibility(View.VISIBLE);
+		button3.setText("删除");
+		img4 = (ImageView) dialog.findViewById(R.id.wenyi_bottomsheet_img_4);
+		button4 = (Button) dialog.findViewById(R.id.wenyi_bottomsheet_btn_4);
+		img4.setVisibility(View.VISIBLE);
+		button4.setVisibility(View.VISIBLE);
+		button4.setText("查看");
+		img5 = (ImageView) dialog.findViewById(R.id.wenyi_bottomsheet_img_5);
+		button5 = (Button) dialog.findViewById(R.id.wenyi_bottomsheet_btn_5);
+		img5.setVisibility(View.VISIBLE);
+		button5.setVisibility(View.VISIBLE);
+		button5.setText("取消");
+
+		button3.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				onDeleteItem(position);
+				dialog.dismiss();
+			}
+		});
+
+		button4.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Util.dispatchClickEvent(PersonalCommentsListActivity.this, commentList.get(position).getClickto(), commentList.get(position).getMainid(), new String[]{commentList.get(position).getCommentid()});
+				dialog.dismiss();
+			}
+		});
+
+		button5.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				dialog.dismiss();
+			}
+		});
+		dialog.show();
+	}
+	// ********************************
+	
+	
 	LeBottomSheet mBottomSheet;
 	public void showBottomSheet(final int position){
 		mBottomSheet = new LeBottomSheet(PersonalCommentsListActivity.this,R.style.wenyi_bottom_dialog);

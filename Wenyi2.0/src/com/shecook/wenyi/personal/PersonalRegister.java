@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shecook.wenyi.BaseActivity;
@@ -30,7 +31,7 @@ import com.shecook.wenyi.util.net.NetResult;
 public class PersonalRegister extends BaseActivity implements OnClickListener{
 	public static final String TAG = "PersonalRegister";
 
-	private ImageView registerImg;
+	private TextView registerImg;
 
 	private EditText userName, password, email;
 
@@ -44,7 +45,7 @@ public class PersonalRegister extends BaseActivity implements OnClickListener{
 	}
 
 	private void initView() {
-		registerImg = (ImageView) findViewById(R.id.register);
+		registerImg = (TextView) findViewById(R.id.register);
 		userName = (EditText) findViewById(R.id.wenyi_user_nickname);
 		password = (EditText) findViewById(R.id.wenyi_user_password);
 		email = (EditText) findViewById(R.id.wenyi_user_email);
@@ -72,9 +73,9 @@ public class PersonalRegister extends BaseActivity implements OnClickListener{
 				paramSub.put("pwd", passwd);
 				paramSub.put("nickname", nickname);
 				
-				paramSub.put("loginid", "694809649@qq.com");
-				paramSub.put("pwd", "aaaaaa");
-				paramSub.put("nickname", "ja_lxfqqqqq");
+				// paramSub.put("loginid", "694809649@qq.com");
+//				paramSub.put("pwd", "aaaaaa");
+//				paramSub.put("nickname", "ja_lxfqqqqq");
 				
 				commonSub.put("mtype", "android");
 				commonSub.put("mid", "957aea62-3a50-49e3-9640-3824d38b2f45");

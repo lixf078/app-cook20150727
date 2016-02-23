@@ -628,10 +628,38 @@ public class CookbookFragment extends BaseFragment implements
 		}
 
 		@Override
-		public boolean onEditorAction(TextView arg0, int arg1, KeyEvent event) {
+		public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
 			
-			Log.e("CookbookFragment", "onEditorAction getKeyCode " + event.getKeyCode());
-			
+			// Log.e("CookbookFragment", "onEditorAction getKeyCode " + event.getKeyCode());
+			/*判断是否是“GO”键*/  
+            if(actionId == EditorInfo.IME_ACTION_GO){  
+                /*隐藏软键盘*/  
+                InputMethodManager imm = (InputMethodManager) view  
+                        .getContext().getSystemService(  
+                                Context.INPUT_METHOD_SERVICE);  
+                if (imm.isActive()) {  
+                    imm.hideSoftInputFromWindow(  
+                    		view.getApplicationWindowToken(), 0);  
+                }  
+                String s = view.getText().toString();
+                if(s != null && !"".equals(s.toString().trim())) {
+    	            if (mSearchResultLayout.getVisibility() == View.GONE) {
+    	            	setResultLayoutStates(false);
+    	            }
+    	            mLcSearchView.setThreshold(Integer.MAX_VALUE);
+    	            if(keyworkChangeListener != null){
+    	            	keyworkChangeListener.keyworkChanged(s.toString().trim());
+    	            }
+    	        } else {
+    	        	Toast.makeText(mActivity, "请输入搜索关键词", Toast.LENGTH_SHORT).show();
+    	            if (mSearchResultLayout.getVisibility() == View.VISIBLE) {
+    	            	setResultLayoutStates(true);
+    	            }
+    	            mLcSearchView.setThreshold(Integer.MAX_VALUE);
+    	        } 
+                  
+                return true;
+            }  
 			return false;
 		}
 

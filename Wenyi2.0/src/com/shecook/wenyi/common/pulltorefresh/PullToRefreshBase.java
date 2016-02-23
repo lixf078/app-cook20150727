@@ -1096,7 +1096,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 
 		if (a.hasValue(R.styleable.PullToRefresh_ptrAnimationStyle)) {
 			mLoadingAnimationStyle = AnimationStyle.mapIntToValue(a.getInteger(
-					R.styleable.PullToRefresh_ptrAnimationStyle, 0));
+					R.styleable.PullToRefresh_ptrAnimationStyle, 1));
 		}
 
 		// Refreshable View
@@ -1300,7 +1300,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		FLIP;
 
 		static AnimationStyle getDefault() {
-			return ROTATE;
+			return FLIP;
 		}
 
 		/**

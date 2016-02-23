@@ -78,6 +78,7 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 		case R.id.register:
 			Intent intent = new Intent(this,PersonalRegister.class);
 			startActivity(intent);
+			break;
 		case R.id.sinalogin:
 		    sinaLogin();
 			break;
@@ -245,6 +246,7 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
+	    Log.e("PersonalLoginCommon", "onActivityResult requestCode " + requestCode + ", resultCode " + resultCode);
 	    /**使用SSO授权必须添加如下代码 */  
 	    UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode);
 	    if(ssoHandler != null){
@@ -296,7 +298,7 @@ public class PersonalLoginCommon extends BaseActivity implements OnClickListener
 											if (status == 200 && info != null) {
 												nickname = (String) info.get("screen_name");
 												image = (String) info.get("profile_image_url");
-												plat = "sina";
+												plat = "weibo";
 												Log.e("lixufeng", "onComplete uid " + uid + ", nickname " + nickname + ", image " + image);
 												JSONObject jsonObject = new JSONObject();
 												JSONObject paramSub = new JSONObject();

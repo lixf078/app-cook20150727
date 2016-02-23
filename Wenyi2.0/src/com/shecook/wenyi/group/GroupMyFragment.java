@@ -83,7 +83,9 @@ public class GroupMyFragment extends BaseFragmeng implements OnClickListener{
 		if(!mActivity.isLogin()){
 			Intent intent = new Intent(mActivity,PersonalLoginCommon.class);
 			startActivity(intent);
-		}
+		}else
+		getDiscoverList(HttpUrls.GROUP_MY_LIST, null, listResultListener,
+				listErrorListener);
 		return rootView;
 	}
 	
@@ -189,8 +191,6 @@ public class GroupMyFragment extends BaseFragmeng implements OnClickListener{
 	@Override
 	public void onResume() {
 		super.onResume();
-		getDiscoverList(HttpUrls.GROUP_MY_LIST, null, listResultListener,
-				listErrorListener);
 		WenyiLog.logv(TAG, "onResume");
 	}
 

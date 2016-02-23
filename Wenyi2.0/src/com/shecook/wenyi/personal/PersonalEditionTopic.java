@@ -333,6 +333,25 @@ public class PersonalEditionTopic extends Fragment {
 								}
 								listTemp.add(eli);
 							}
+							
+							// test start 
+//							PersonalTopicModel eli = new PersonalTopicModel();
+//							eli.setId("1");
+//							eli.setUid("1");
+//							eli.setUgid("1");
+//							eli.setNickname("lixufeng");
+//							eli.setUportrait("lixufeng");
+//							eli.setBody("lixufeasdfalsdfasng");
+//							eli.setTags("lixufeng");
+//							eli.setComments("lixufeng");
+//							eli.setTimeline("2016-06-12");
+//							mListItems.add(eli);
+//							mListItems.add(eli);
+//							mListItems.add(eli);
+//							mListItems.add(eli);
+//							mListItems.add(eli);
+							// test end
+							
 							mListItems.addAll(listTemp);
 						}else{
 							Toast.makeText(mActivity, "" + data.getString("msg"), Toast.LENGTH_SHORT).show();

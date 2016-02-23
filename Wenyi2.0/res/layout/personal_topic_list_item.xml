@@ -2,8 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
     android:orientation="horizontal" >
 
     <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
@@ -28,6 +30,7 @@
             android:id="@+id/personal_topic_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="18sp"
             android:layout_marginTop="5dip"
             android:textColor="@color/text_color" />
 
@@ -40,6 +43,7 @@
             android:layout_toRightOf="@id/personal_topic_item_title"
             android:ellipsize="marquee"
             android:gravity="right"
+            android:textSize="14sp"
             android:marqueeRepeatLimit="marquee_forever"
             android:textColor="@color/date_color"
             android:visibility="gone" />
@@ -50,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/personal_topic_item_title"
             android:layout_marginTop="5dip"
+            android:textSize="16sp"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
             android:textColor="@color/date_color" />

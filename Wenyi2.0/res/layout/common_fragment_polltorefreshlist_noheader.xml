@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    xmlns:ptr="http://schemas.android.com/apk/res-auto" >
 
     <com.shecook.wenyi.common.pulltorefresh.PullToRefreshListView
         android:id="@id/pull_refresh_list"
@@ -52,7 +53,8 @@
             android:gravity="center"
             android:textColor="@color/white"
             android:background="@drawable/wenyi_circle"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+             />
     </LinearLayout>
 
 </RelativeLayout>

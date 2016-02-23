@@ -333,6 +333,11 @@ public class PersonalEditionHomework extends Fragment {
 								}
 								listTemp.add(phi);
 							}
+//							mListItems.addAll(listTemp);
+//							mListItems.addAll(listTemp);
+//							mListItems.addAll(listTemp);
+//							mListItems.addAll(listTemp);
+//							mListItems.addAll(listTemp);
 							mListItems.addAll(listTemp);
 						}else{
 							Toast.makeText(mActivity, "" + data.getString("msg"), Toast.LENGTH_SHORT).show();

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:background="@drawable/bgfile" >
+    android:background="@color/white" >
 
     <RelativeLayout
        	android:id="@id/title"
@@ -26,14 +26,6 @@
             android:layout_centerVertical="true"
             android:text="@string/register_by_wenyi" />
 
-        <ImageView
-            android:id="@id/register"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/f133" />
-
     </RelativeLayout>
 
     <include layout="@layout/public_layout_line"/>
@@ -41,28 +33,42 @@
     <LinearLayout
         android:layout_below="@id/title"
         style="@style/matchW"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:gravity="center_horizontal"
         android:orientation="vertical" >
-
-        <EditText
-            android:id="@id/wenyi_user_nickname"
-            style="@style/matchW"
-            android:layout_marginTop="10dp"
-            android:hint="@string/enter_user_nickname" />
-
         <EditText
             android:id="@id/wenyi_user_email"
             style="@style/matchW"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:hint="@string/enter_user_email" />
 
         <EditText
             android:id="@id/wenyi_user_password"
             style="@style/matchW"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:hint="@string/enter_user_password"
             android:password="true" />
 
+        <EditText
+            android:id="@id/wenyi_user_nickname"
+            style="@style/matchW"
+            android:layout_marginTop="20dp"
+            android:hint="@string/enter_user_nickname" />
+        
+        
+        <TextView
+            android:id="@+id/register"
+            style="@style/matchW"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:textSize="24sp" 
+            android:background="@color/orange"
+            android:textColor="@color/white"
+            android:text="@string/user_register"/>
     </LinearLayout>
 
 </RelativeLayout>
