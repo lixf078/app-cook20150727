@@ -48,6 +48,7 @@ import com.shecook.wenyi.essay.view.AutoScrollViewPager;
 import com.shecook.wenyi.essay.view.CirclePageIndicator;
 import com.shecook.wenyi.group.adapter.GroupShareItemDetialAdapter;
 import com.shecook.wenyi.model.WenyiGallery;
+import com.shecook.wenyi.model.cookbook.CookbookHomeworkModel;
 import com.shecook.wenyi.model.group.GroupShareCommentItem;
 import com.shecook.wenyi.model.group.GroupShareModel;
 import com.shecook.wenyi.util.AppException;
@@ -280,28 +281,28 @@ public class GroupShareDeatilActivity extends BaseActivity implements
 		ListView lv = mPullRefreshListView.getRefreshableView();
 		AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
 		
-        View header = GroupShareDeatilActivity.this.getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
-		
-		viewPager = (AutoScrollViewPager) header
-				.findViewById(R.id.view_pager_advert);
-		mIndicator = (CirclePageIndicator) header
-				.findViewById(R.id.indicator);
-		mPageViews.addAll(chm.getImages());
-		
-		adapter = new ViewPagerAdapter(GroupShareDeatilActivity.this, mPageViews);
-		viewPager.setAdapter(adapter);
-		mIndicator.setViewPager(viewPager);
-
-		viewPager.setInterval(4000);
-		viewPager.setCurrentItem(0);
-		viewPager.setStopScrollWhenTouch(true);
-		setViewPagerScrollSpeed(viewPager);
-		
-        header.setLayoutParams(layoutParams);
-        lv.addHeaderView(header);
-        if(viewPager != null){
-			viewPager.startAutoScroll();
-		}
+//        View header = GroupShareDeatilActivity.this.getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
+//		
+//		viewPager = (AutoScrollViewPager) header
+//				.findViewById(R.id.view_pager_advert);
+//		mIndicator = (CirclePageIndicator) header
+//				.findViewById(R.id.indicator);
+//		mPageViews.addAll(chm.getImages());
+//		
+//		adapter = new ViewPagerAdapter(GroupShareDeatilActivity.this, mPageViews);
+//		viewPager.setAdapter(adapter);
+//		mIndicator.setViewPager(viewPager);
+//
+//		viewPager.setInterval(4000);
+//		viewPager.setCurrentItem(0);
+//		viewPager.setStopScrollWhenTouch(true);
+//		setViewPagerScrollSpeed(viewPager);
+//		
+//        header.setLayoutParams(layoutParams);
+//        lv.addHeaderView(header);
+//        if(viewPager != null){
+//			viewPager.startAutoScroll();
+//		}
 		
 		
         View userheader = GroupShareDeatilActivity.this.getLayoutInflater().inflate(R.layout.group_share_item_detail_userinfo, mPullRefreshListView, false);
@@ -411,6 +412,16 @@ public class GroupShareDeatilActivity extends BaseActivity implements
 							JSONArray imagelist = detail.getJSONArray("images");
 							for (int k = 0, t = imagelist.length(); k < t; k++) {
 								JSONObject imagejb = imagelist.getJSONObject(k);
+								
+								GroupShareCommentItem imgItem = new GroupShareCommentItem();
+								
+								imgItem.imgUrl = imagejb.getString("imageurl");
+								imgItem.type = 1;
+								imgItem.width = imagejb.getInt("width");
+								imgItem.height = imagejb.getInt("height");
+								imgItem.setComment(false);
+								mListItems.add(imgItem);
+								
 								WenyiGallery shareImage = new WenyiGallery();
 								shareImage.setId(imagejb.getInt("id"));
 								if(imagejb.has("shareid")){
@@ -420,6 +431,8 @@ public class GroupShareDeatilActivity extends BaseActivity implements
 								if(imagejb.has("imageurl")){
 									shareImage.setImgUrl(imagejb.getString("imageurl"));
 								}
+								shareImage.width = imagejb.getInt("width");
+								shareImage.height = imagejb.getInt("height");
 								chm.getImages().add(shareImage);
 							}
 						}
@@ -480,6 +493,7 @@ public class GroupShareDeatilActivity extends BaseActivity implements
 		
 		if(index == 1){
 			mListItems.clear();
+			initImageData();
 		}
 		if (jsonObject != null) {
 			try {
@@ -542,6 +556,23 @@ public class GroupShareDeatilActivity extends BaseActivity implements
 			}
 			handler.sendEmptyMessage(HttpStatus.STATUS_LOAD_OTHER_OK);
 		}
+	}
+	
+	public void initImageData(){
+		if(chm != null && chm.getImages() != null){
+			LinkedList<WenyiGallery> gallery = chm.getImages();
+			for (int k = 0, t = gallery.size(); k < t; k++) {
+				GroupShareCommentItem imgItem = new GroupShareCommentItem();
+				WenyiGallery ga = gallery.get(k);
+				imgItem.imgUrl = ga.getImgUrl();
+				imgItem.type = 1;
+				imgItem.width = ga.width;
+				imgItem.height = ga.height;
+				imgItem.setComment(false);
+				mListItems.add(imgItem);
+			}
+		}
+			
 	}
 	
 }

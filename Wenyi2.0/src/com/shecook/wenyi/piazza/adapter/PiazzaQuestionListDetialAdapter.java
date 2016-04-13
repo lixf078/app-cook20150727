@@ -3,10 +3,12 @@ package com.shecook.wenyi.piazza.adapter;
 import java.util.LinkedList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shecook.wenyi.R;
@@ -19,7 +21,6 @@ import com.shecook.wenyi.util.volleybox.LruImageCache;
 import com.shecook.wenyi.util.volleybox.VolleyUtils;
 
 public class PiazzaQuestionListDetialAdapter extends BaseAdapter {
-	
 	
 	private LinkedList<Object> mListItems;
 	private Context context;
@@ -40,8 +41,8 @@ public class PiazzaQuestionListDetialAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int arg0) {
-		mListItems.get(arg0);
-		return null;
+		
+		return mListItems.get(arg0);
 	}
 
 	@Override
@@ -67,6 +68,11 @@ public class PiazzaQuestionListDetialAdapter extends BaseAdapter {
 			holder.pizza_question_list_content = (TextView) view.findViewById(R.id.pizza_question_list_content);
 			
 			holder.imageUrl = (NetworkImageView) view.findViewById(R.id.item_img);
+			holder.imageUrl_ = (NetworkImageView) view.findViewById(R.id.item_img_);
+			
+			holder.relativeLayout = (RelativeLayout) view.findViewById(R.id.pizza_question_item_info);
+			holder.catalog_divider = (TextView) view.findViewById(R.id.catalog_divider);
+			
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
@@ -74,18 +80,49 @@ public class PiazzaQuestionListDetialAdapter extends BaseAdapter {
 
 		ImageLoader imageLoader;
 		try {
-			LruImageCache lruImageCache = LruImageCache.instance();
-			imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(),lruImageCache);
+			
 //			holder.imageUrl.setDefaultImageResId(R.drawable.icon);
 //			holder.imageUrl.setErrorImageResId(R.drawable.icon);
-			holder.imageUrl.setImageUrl(pqi.getUportrait(), imageLoader);
+
+			if(pqi.type == 100){
+				LruImageCache lruImageCache = LruImageCache.instance();
+				imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(), lruImageCache);
+				holder.relativeLayout.setVisibility(View.GONE);
+				holder.advTitle.setVisibility(View.GONE);
+				holder.advTime.setVisibility(View.GONE);
+				holder.pizza_question_list_content.setVisibility(View.GONE);
+				holder.pizza_question_item_level.setVisibility(View.GONE);
+				holder.imageUrl.setVisibility(View.GONE);
+				holder.imageUrl_.setVisibility(View.VISIBLE);
+				if(pqi.image.getWidth() != 0){
+					RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(Util.getAdapterMetricsWidth(context, 0.8f), Util.getAdapterMetricsHeigh(context, pqi.image.getWidth(), pqi.image.getHeight(), 0.8f));
+					rl.addRule(RelativeLayout.CENTER_HORIZONTAL,RelativeLayout.TRUE);
+					holder.imageUrl_.setLayoutParams(rl);
+				}
+				holder.imageUrl_.setImageUrl(pqi.image.getImageurl(), imageLoader);
+				holder.catalog_divider.setVisibility(View.GONE);
+			}else{
+				LruImageCache lruImageCache = LruImageCache.instance();
+				imageLoader = new ImageLoader(VolleyUtils.getInstance().getRequestQueue(), lruImageCache);
+				holder.relativeLayout.setVisibility(View.VISIBLE);
+				Log.e("PiazzaQuestionListDetialAdapter", "");
+				holder.advTitle.setText(pqci.getNickname());
+				holder.advTime.setText(Util.formatTime2Away(pqci.getTimeline()));
+				holder.pizza_question_list_content.setText(pqci.getComment());
+				
+				holder.imageUrl.setImageUrl(pqi.getUportrait(), imageLoader);
+				
+				holder.imageUrl_.setVisibility(View.GONE);
+				holder.imageUrl.setVisibility(View.VISIBLE);
+				holder.advTitle.setVisibility(View.VISIBLE);
+				holder.advTime.setVisibility(View.VISIBLE);
+				holder.pizza_question_list_content.setVisibility(View.VISIBLE);
+				holder.catalog_divider.setVisibility(View.VISIBLE);
+			}
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		holder.advTitle.setText(pqci.getNickname());
-		holder.advTime.setText(Util.formatTime2Away(pqci.getTimeline()));
-		holder.pizza_question_list_content.setText(pqci.getComment());
 		
 //		if(pqi.isComment()){
 //			holder.advTitle.setText(pqci.getNickname());
@@ -104,8 +141,9 @@ public class PiazzaQuestionListDetialAdapter extends BaseAdapter {
 	}
 	
 	private static class ViewHolder {
-		TextView advTitle, pizza_question_item_level, pizza_question_list_content;
+		TextView advTitle, pizza_question_item_level, pizza_question_list_content, catalog_divider;
 		TextView advTime;
-		NetworkImageView imageUrl;
+		NetworkImageView imageUrl, imageUrl_;
+		RelativeLayout relativeLayout;
 	}
 }

@@ -8,6 +8,9 @@ public class WenyiImage{
 	private String cuturl;
 	private String thumbnailurl;
 	private String originalurl;
+	
+	public int width;
+	public int height;
 
 	public String getId() {
 		return id;
@@ -55,6 +58,22 @@ public class WenyiImage{
 
 	public void setOriginalurl(String originalurl) {
 		this.originalurl = originalurl;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
 	}
 
 	public WenyiImage(String id, String followid, String imageurl,

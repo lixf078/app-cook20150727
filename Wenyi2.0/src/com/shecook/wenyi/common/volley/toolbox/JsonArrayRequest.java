@@ -21,7 +21,6 @@ import java.io.UnsupportedEncodingException;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.shecook.wenyi.R;
 import com.shecook.wenyi.common.volley.NetworkResponse;
 import com.shecook.wenyi.common.volley.ParseError;
 import com.shecook.wenyi.common.volley.Response;

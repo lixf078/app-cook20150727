@@ -5,26 +5,28 @@
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:orientation="horizontal" >
-
-    <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+	<com.shecook.wenyi.common.volley.toolbox.NetworkImageView
         android:id="@+id/item_img_"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:focusable="false"
+        android:layout_marginRight="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:focusable="false"
         android:scaleType="centerCrop" />
-
     <RelativeLayout
-        android:id="@+id/group_share_list_item_info"
+        android:id="@+id/cookbook_homework_list_item_info"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/item_background_color"
         android:orientation="horizontal"
-        android:paddingBottom="5dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="5dp" >
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" >
 
         <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
             android:id="@+id/item_img"
@@ -37,56 +39,59 @@
             android:scaleType="fitXY" />
 
         <RelativeLayout
-            android:id="@+id/group_share_item_info"
+            android:id="@+id/cookbook_homework_item_info"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
             android:layout_toRightOf="@id/item_img"
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/group_share_item_title"
+                android:id="@+id/cookbook_homework_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
                 android:textColor="@color/text_color" />
 
             <TextView
-                android:id="@+id/group_share_item_time"
+                android:id="@+id/cookbook_homework_item_time"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/group_share_item_title"
+                android:layout_alignBottom="@id/cookbook_homework_item_title"
                 android:layout_marginTop="10dip"
-                android:layout_toRightOf="@id/group_share_item_title"
+                android:layout_toRightOf="@id/cookbook_homework_item_title"
                 android:ellipsize="marquee"
                 android:gravity="right"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:textColor="@color/date_color" />
 
             <TextView
-                android:id="@+id/group_share_item_level"
+                android:id="@+id/cookbook_homework_item_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/group_share_item_title"
-                android:textColor="@color/text_color" />
+                android:layout_below="@id/cookbook_homework_item_title"
+                android:textColor="@color/text_color"
+                android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/group_share_list_content"
+        android:id="@+id/cookbook_homework_list_content"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/group_share_list_item_info"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:textSize="20sp"
-        android:visibility="gone" />
+        android:layout_below="@id/cookbook_homework_list_item_info"
+        android:paddingLeft="10dp"
+        android:textColor="@color/text_color"
+        android:paddingRight="10dp"
+        android:textSize="20sp" />
 
-    <!--
-         <TextView
-        android:id="@+id/group_share_from"
+    <TextView
+        android:id="@+id/cookbook_homework_from"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/group_share_list_content"
+        android:layout_below="@id/cookbook_homework_list_content"
         android:background="@drawable/wenyi_border_circle"
         android:gravity="center"
         android:layout_marginLeft="20dp"
@@ -96,6 +101,5 @@
         android:paddingBottom="5dp"
         android:textColor="@color/orange"
         android:textSize="20sp" />
-    -->
 
 </RelativeLayout>

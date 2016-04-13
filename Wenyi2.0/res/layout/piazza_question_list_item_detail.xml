@@ -3,10 +3,20 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="15dip"
-    android:paddingLeft="20dp"
     android:layout_marginRight="15dip"
     android:background="@color/item_background_color"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:paddingLeft="20dp" >
+
+    <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
+        android:id="@+id/item_img_"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:scaleType="centerCrop" />
 
     <com.shecook.wenyi.common.volley.toolbox.NetworkImageView
         android:id="@+id/item_img"
@@ -17,7 +27,7 @@
         android:layout_marginRight="5dp"
         android:focusable="false"
         android:scaleType="fitXY" />
-    
+
     <RelativeLayout
         android:id="@+id/pizza_question_item_info"
         android:layout_width="fill_parent"
@@ -31,22 +41,22 @@
             android:id="@+id/pizza_question_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/text_color" />
+            android:textColor="@color/text_color"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/pizza_question_item_time"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingRight="20dp"
             android:layout_alignBottom="@id/pizza_question_item_title"
             android:layout_marginTop="10dip"
             android:layout_toRightOf="@id/pizza_question_item_title"
             android:ellipsize="marquee"
             android:gravity="right"
-            android:textSize="12sp"
             android:marqueeRepeatLimit="marquee_forever"
-            android:textColor="@color/date_color" />
+            android:paddingRight="20dp"
+            android:textColor="@color/date_color"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/pizza_question_item_level"
@@ -59,12 +69,12 @@
         <TextView
             android:id="@+id/pizza_question_list_content"
             android:layout_width="fill_parent"
-            android:paddingTop="10dp"
-            android:paddingRight="20dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/pizza_question_item_title"
-            android:textColor="@color/text_color"
             android:paddingBottom="5dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:textColor="@color/text_color"
             android:textSize="14sp" />
     </RelativeLayout>
 
@@ -74,7 +84,9 @@
         android:layout_height="1dp"
         android:layout_alignLeft="@id/pizza_question_item_info"
         android:layout_alignParentBottom="true"
-        android:textSize="14sp"
-        android:background="#e4e4e4" />
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#e4e4e4"
+        android:textSize="14sp" />
 
 </RelativeLayout>

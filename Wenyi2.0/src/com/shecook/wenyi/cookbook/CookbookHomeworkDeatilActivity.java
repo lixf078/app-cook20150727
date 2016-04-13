@@ -286,31 +286,31 @@ public class CookbookHomeworkDeatilActivity extends BaseActivity implements
 	
 	private void inifViewPaper(){
         
-		View header = CookbookHomeworkDeatilActivity.this.getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
-		
-		viewPager = (AutoScrollViewPager) header
-				.findViewById(R.id.view_pager_advert);
-		mIndicator = (CirclePageIndicator) header
-				.findViewById(R.id.indicator);
-//		CookbookHomeworkModel chm = (CookbookHomeworkModel) mListItems.get(0);
-		mPageViews.addAll(chminfo.getImages());
-		
-		adapter = new ViewPagerAdapter(CookbookHomeworkDeatilActivity.this, mPageViews);
-		viewPager.setAdapter(adapter);
-		mIndicator.setViewPager(viewPager);
-
-		viewPager.setInterval(4000);
-		viewPager.setCurrentItem(0);
-		viewPager.setStopScrollWhenTouch(true);
-		setViewPagerScrollSpeed(viewPager);
-		
+//		View header = CookbookHomeworkDeatilActivity.this.getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
+//		
+//		viewPager = (AutoScrollViewPager) header
+//				.findViewById(R.id.view_pager_advert);
+//		mIndicator = (CirclePageIndicator) header
+//				.findViewById(R.id.indicator);
+////		CookbookHomeworkModel chm = (CookbookHomeworkModel) mListItems.get(0);
+//		mPageViews.addAll(chminfo.getImages());
+//		
+//		adapter = new ViewPagerAdapter(CookbookHomeworkDeatilActivity.this, mPageViews);
+//		viewPager.setAdapter(adapter);
+//		mIndicator.setViewPager(viewPager);
+//
+//		viewPager.setInterval(4000);
+//		viewPager.setCurrentItem(0);
+//		viewPager.setStopScrollWhenTouch(true);
+//		setViewPagerScrollSpeed(viewPager);
+//		
 		AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
-        header.setLayoutParams(layoutParams);
+//        header.setLayoutParams(layoutParams);
         ListView lv = mPullRefreshListView.getRefreshableView();
-        lv.addHeaderView(header);
-        if(viewPager != null){
-			viewPager.startAutoScroll();
-		}
+//        lv.addHeaderView(header);
+//        if(viewPager != null){
+//			viewPager.startAutoScroll();
+//		}
         
         
         View infoHeader = getLayoutInflater().inflate(R.layout.piazza_cookbook_item_detail_header, mPullRefreshListView, false);
@@ -320,7 +320,6 @@ public class CookbookHomeworkDeatilActivity extends BaseActivity implements
 		pizza_cookbook_list_header_content = (TextView) infoHeader.findViewById(R.id.pizza_question_list_header_content);
 		cookbook_homework_from = (TextView) infoHeader.findViewById(R.id.cookbook_homework_header_from);
 		head_image = (NetworkImageView) infoHeader.findViewById(R.id.item_img);
-		
 		
 		ImageLoader imageLoader;
 		try {
@@ -334,7 +333,7 @@ public class CookbookHomeworkDeatilActivity extends BaseActivity implements
 				pizza_cookbook_list_header_content.setVisibility(View.GONE);
 			}
 			if(!TextUtils.isEmpty(chminfo.getRecipeid())&& !"0".equals(chminfo.getRecipeid())){
-				cookbook_homework_from.setVisibility(View.VISIBLE);
+//				cookbook_homework_from.setVisibility(View.VISIBLE);
 				cookbook_homework_from.setText("来自菜谱" + chminfo.getRecipename());
 //				cookbook_homework_from.setOnClickListener(new View.OnClickListener() {
 //					
@@ -441,6 +440,13 @@ public class CookbookHomeworkDeatilActivity extends BaseActivity implements
 							JSONArray imagelist = detail.getJSONArray("images");
 							for (int k = 0, t = imagelist.length(); k < t; k++) {
 								JSONObject imagejb = imagelist.getJSONObject(k);
+								CookbookHomeworkModel homeworkImg = new CookbookHomeworkModel();
+								homeworkImg.imgUrl = imagejb.getString("imageurl");
+								homeworkImg.type = 1;
+								homeworkImg.width = imagejb.getInt("width");
+								homeworkImg.height = imagejb.getInt("height");
+								homeworkImg.setComment(false);
+								
 								WenyiGallery homeWorkImage = new WenyiGallery();
 								homeWorkImage.setId(imagejb.getInt("id"));
 								if(imagejb.has("followid")){
@@ -451,9 +457,21 @@ public class CookbookHomeworkDeatilActivity extends BaseActivity implements
 									homeWorkImage.setImgUrl(imagejb.getString("imageurl"));
 								}
 								chminfo.getImages().add(homeWorkImage);
+								
+								mListItems.add(homeworkImg);
 							}
 						}
-//						mListItems.add(chm);
+						
+						
+						if(!TextUtils.isEmpty(chminfo.getRecipeid())&& !"0".equals(chminfo.getRecipeid())){
+							CookbookHomeworkModel homeworkRecipied = new CookbookHomeworkModel();
+							homeworkRecipied.setRecipeid(chminfo.getRecipeid());
+							homeworkRecipied.setRecipename(chminfo.getRecipename());
+							homeworkRecipied.setComment(false);
+							homeworkRecipied.type = 2;
+							mListItems.add(homeworkRecipied);
+						}
+						
 					}
 					
 //						handler.sendEmptyMessage(HttpStatus.STATUS_LOAD_OTHER); // 暂时没有添加评论接口

@@ -78,7 +78,6 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 
 	EditText comment = null; // add comments edit
 	EditText bottomcomment = null; // bottom add comments edit
-	private ImageView shareImg;
 	
 	NetworkImageView head_image;
 	private TextView pizza_question_item_header_title, pizza_question_item_header_time, pizza_question_item_header_level, pizza_question_list_header_content;
@@ -189,40 +188,40 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 	
 	private void inifViewPaper(){
         
-		View header = PizzaQuestionDeatilActivity.this.getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
+//		View header = PizzaQuestionDeatilActivity.this.getLayoutInflater().inflate(R.layout.piazza_discover_viewpager_fragment, mPullRefreshListView, false);
+//		
+//		viewPager = (AutoScrollViewPager) header
+//				.findViewById(R.id.view_pager_advert);
+//		mIndicator = (CirclePageIndicator) header
+//				.findViewById(R.id.indicator);
 		
-		viewPager = (AutoScrollViewPager) header
-				.findViewById(R.id.view_pager_advert);
-		mIndicator = (CirclePageIndicator) header
-				.findViewById(R.id.indicator);
-		
-		ArrayList<WenyiImage> images = pdi.getImages();
-		if(images.size() != 0){
-			ArrayList<WenyiGallery> gallerys = new ArrayList<WenyiGallery>();
-			for(WenyiImage img : images){
-				WenyiGallery gallery = new WenyiGallery();
-				gallery.setId(Integer.parseInt(img.getId()));
-				gallery.setImgUrl(img.getImageurl());
-				gallery.setTitle("");
-				gallerys.add(gallery);
-			}
-			adapter = new ViewPagerAdapter(PizzaQuestionDeatilActivity.this, gallerys);
-			viewPager.setAdapter(adapter);
-			mIndicator.setViewPager(viewPager);
-
-			viewPager.setInterval(4000);
-			viewPager.setCurrentItem(0);
-			viewPager.setStopScrollWhenTouch(true);
-			setViewPagerScrollSpeed(viewPager);
-			
-			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
-	        header.setLayoutParams(layoutParams);
-	        ListView lv = mPullRefreshListView.getRefreshableView();
-	        lv.addHeaderView(header);
-	        if(viewPager != null){
-				viewPager.startAutoScroll();
-			}
-		}
+//		ArrayList<WenyiImage> images = pdi.getImages();
+//		if(images.size() != 0){
+//			ArrayList<WenyiGallery> gallerys = new ArrayList<WenyiGallery>();
+//			for(WenyiImage img : images){
+//				WenyiGallery gallery = new WenyiGallery();
+//				gallery.setId(Integer.parseInt(img.getId()));
+//				gallery.setImgUrl(img.getImageurl());
+//				gallery.setTitle("");
+//				gallerys.add(gallery);
+//			}
+//			adapter = new ViewPagerAdapter(PizzaQuestionDeatilActivity.this, gallerys);
+//			viewPager.setAdapter(adapter);
+//			mIndicator.setViewPager(viewPager);
+//
+//			viewPager.setInterval(4000);
+//			viewPager.setCurrentItem(0);
+//			viewPager.setStopScrollWhenTouch(true);
+//			setViewPagerScrollSpeed(viewPager);
+//			
+//			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
+//	        header.setLayoutParams(layoutParams);
+//	        ListView lv = mPullRefreshListView.getRefreshableView();
+//	        lv.addHeaderView(header);
+//	        if(viewPager != null){
+//				viewPager.startAutoScroll();
+//			}
+//		}
 		
 		View infoHeader = getLayoutInflater().inflate(R.layout.piazza_question_item_detail_header, mPullRefreshListView, false);
 		pizza_question_item_header_title = (TextView) infoHeader.findViewById(R.id.pizza_question_item_header_title);
@@ -488,6 +487,10 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 									homeWorkImage.setImageurl(imagejb
 											.getString("imageurl"));
 								}
+								PiazzaQuestionItem tempPdi = new PiazzaQuestionItem();
+								tempPdi.type = 100;// 表示该条目为图片
+								tempPdi.image = homeWorkImage;
+								mListItems.add(k, tempPdi);
 								pdi.getImages().add(homeWorkImage);
 							}
 						}
@@ -621,7 +624,7 @@ public class PizzaQuestionDeatilActivity extends BaseActivity implements
 	
 	
 	private void initCommentsData(JSONObject jsonObject, int flag) {
-		if(index == 1){
+		if(flag == 1){
 			// PiazzaQuestionItem pqi = (PiazzaQuestionItem) mListItems.get(0);
 			mListItems.clear();
 			// mListItems.add(pqi);

@@ -16,6 +16,8 @@ public class PiazzaQuestionItem {
 	private String timeline; // 时间
 	private String lvlname; // 等级
 	private ArrayList<WenyiImage> images; // 图片集合，默认第一张
+	public WenyiImage image;
+	public int type = -1;
 
 	public boolean isComment;
 	

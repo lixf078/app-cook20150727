@@ -8,6 +8,8 @@ public class WenyiGallery {
 	public int event_type;
 	public String event_content;
 	public String timeline;
+	public int width;
+	public int height;
 
 	public WenyiGallery(int id, String title, String imgUrl, int event_type,
 			String event_content, String timeline) {

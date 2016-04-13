@@ -122,7 +122,7 @@
             android:background="@color/white"
             android:paddingBottom="15dp"
             android:paddingTop="15dp"
-            android:text="菜谱关键字"
+            android:text="近日热搜"
             android:textColor="@color/black"
             android:textSize="20sp" />
 

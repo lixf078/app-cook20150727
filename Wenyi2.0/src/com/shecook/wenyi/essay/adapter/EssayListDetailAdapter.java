@@ -98,7 +98,6 @@ public class EssayListDetailAdapter extends BaseAdapter {
 					rl.addRule(RelativeLayout.CENTER_HORIZONTAL,RelativeLayout.TRUE);
 					holder.imageUrl.setLayoutParams(rl);
 				}
-//				Util.getHeight(context, elid.getWidth(), elid.getHeight());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

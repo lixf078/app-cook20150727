@@ -1,5 +1,7 @@
 package com.shecook.wenyi.group;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -60,8 +62,9 @@ public class GroupCreateActivity extends BaseActivity {
 	private String photoPath = "";
 
 	private AlertDialog alertDialog = null;
-	
+
 	private String circleid = "";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,9 +85,9 @@ public class GroupCreateActivity extends BaseActivity {
 			}
 		});
 		name = (EditText) findViewById(R.id.group_create_name);
-		
+
 		content = (EditText) findViewById(R.id.group_create_content);
-		
+
 		return_textview = (TextView) findViewById(R.id.return_textview);
 		return_textview.setOnClickListener(new OnClickListener() {
 			@Override
@@ -94,11 +97,11 @@ public class GroupCreateActivity extends BaseActivity {
 		});
 		middle_title = (TextView) findViewById(R.id.middle_title);
 		right_img = (TextView) findViewById(R.id.right_textview);
-		
-		if(TextUtils.isEmpty(circleid)){
+
+		if (TextUtils.isEmpty(circleid)) {
 			right_img.setText("创建");
 			middle_title.setText("创建圈子");
-		}else{
+		} else {
 			right_img.setText("修改");
 			middle_title.setText("修改圈子");
 		}
@@ -116,15 +119,14 @@ public class GroupCreateActivity extends BaseActivity {
 				processParam(filePath);
 			}
 		});
-		
-		
-		if(!TextUtils.isEmpty(getIntent().getStringExtra("title"))){
+
+		if (!TextUtils.isEmpty(getIntent().getStringExtra("title"))) {
 			name.setText("" + getIntent().getStringExtra("title"));
 		}
-		if(!TextUtils.isEmpty(getIntent().getStringExtra("desc"))){
+		if (!TextUtils.isEmpty(getIntent().getStringExtra("desc"))) {
 			content.setText("" + getIntent().getStringExtra("desc"));
 		}
-		
+
 	}
 
 	Handler handler = new Handler() {
@@ -133,8 +135,7 @@ public class GroupCreateActivity extends BaseActivity {
 			switch (what) {
 			case HttpStatus.STATUS_SHOWPROGRESS:
 				if (null == alertDialog) {
-					alertDialog = Util
-							.showLoadDataDialog(GroupCreateActivity.this, "图片正在上传，请等待");
+					alertDialog = Util.showLoadDataDialog(GroupCreateActivity.this, "图片正在上传，请等待");
 				}
 				if (!alertDialog.isShowing()) {
 					alertDialog.show();
@@ -171,8 +172,7 @@ public class GroupCreateActivity extends BaseActivity {
 			e.printStackTrace();
 		}
 		handler.sendEmptyMessage(HttpStatus.STATUS_SHOWPROGRESS);
-		commonMethod(HttpUrls.UPLOAD_IMG, paramObject, listResultListener,
-				listErrorListener, filepath);
+		commonMethod(HttpUrls.UPLOAD_IMG, paramObject, listResultListener, listErrorListener, filepath);
 	}
 
 	public void createCircle() {
@@ -184,18 +184,16 @@ public class GroupCreateActivity extends BaseActivity {
 			paramObject.put("desc", circleContent);
 			paramObject.put("image", circleImage);
 			paramObject.put("title", circleName);
-			if(TextUtils.isEmpty(circleid)){
-			    paramObject.put("circleid", "" + circleid);
+			if (TextUtils.isEmpty(circleid)) {
+				paramObject.put("circleid", "" + circleid);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		if(!TextUtils.isEmpty(circleid)){
-			commonMethod(HttpUrls.GROUP_CIRCLE_EDIT, paramObject,
-					crtateResultListener, crtateErrorListener, "");
-		}else{
-			commonMethod(HttpUrls.GROUP_CREATE_CIRCLE, paramObject,
-					crtateResultListener, crtateErrorListener, "");
+		if (!TextUtils.isEmpty(circleid)) {
+			commonMethod(HttpUrls.GROUP_CIRCLE_EDIT, paramObject, crtateResultListener, crtateErrorListener, "");
+		} else {
+			commonMethod(HttpUrls.GROUP_CREATE_CIRCLE, paramObject, crtateResultListener, crtateErrorListener, "");
 		}
 	}
 
@@ -203,25 +201,21 @@ public class GroupCreateActivity extends BaseActivity {
 
 		@Override
 		public void onResponse(JSONObject jsonObject) {
-			Log.d(TAG,
-					"catalogResultListener onResponse -> "
-							+ jsonObject.toString());
+			Log.d(TAG, "catalogResultListener onResponse -> " + jsonObject.toString());
 			String msg = "";
 			if (jsonObject != null) {
 				try {
-					if (!jsonObject.isNull("statuscode")
-							&& 200 == jsonObject.getInt("statuscode")) {
+					if (!jsonObject.isNull("statuscode") && 200 == jsonObject.getInt("statuscode")) {
 						if (!jsonObject.isNull("data")) {
 							JSONObject data = jsonObject.getJSONObject("data");
 							int core_status = data.getInt("core_status");
 							if (core_status == 200) {
-								if(TextUtils.isEmpty(circleid)){
+								if (TextUtils.isEmpty(circleid)) {
 									msg = "" + "圈子创建成功！";
-								}else{
+								} else {
 									msg = "" + "圈子修改成功！";
 								}
-								Toast.makeText(GroupCreateActivity.this, msg,
-										Toast.LENGTH_SHORT).show();
+								Toast.makeText(GroupCreateActivity.this, msg, Toast.LENGTH_SHORT).show();
 								handler.sendEmptyMessage(GROUP_CREATE_SUCESS);
 								return;
 							} else {
@@ -235,8 +229,7 @@ public class GroupCreateActivity extends BaseActivity {
 					e.printStackTrace();
 				}
 			}
-			Toast.makeText(GroupCreateActivity.this, msg, Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(GroupCreateActivity.this, msg, Toast.LENGTH_SHORT).show();
 			handler.sendEmptyMessage(GROUP_CREATE_FAILED);
 		}
 	};
@@ -248,9 +241,8 @@ public class GroupCreateActivity extends BaseActivity {
 		}
 	};
 
-	public void commonMethod(String url, JSONObject paramsub,
-			Listener<JSONObject> resultListener, ErrorListener errorListener,
-			String files) {
+	public void commonMethod(String url, JSONObject paramsub, Listener<JSONObject> resultListener,
+			ErrorListener errorListener, String files) {
 		JSONObject jsonObject = new JSONObject();
 		JSONObject commonsub = Util.getCommonParam(GroupCreateActivity.this);
 		try {
@@ -267,8 +259,8 @@ public class GroupCreateActivity extends BaseActivity {
 			e.printStackTrace();
 		}
 
-		JsonObjectRequest wenyiRequest = new JsonObjectRequest(Method.POST,
-				url, jsonObject, resultListener, errorListener);
+		JsonObjectRequest wenyiRequest = new JsonObjectRequest(Method.POST, url, jsonObject, resultListener,
+				errorListener);
 
 		try {
 			VolleyUtils.getInstance().addReequest(wenyiRequest);
@@ -281,23 +273,18 @@ public class GroupCreateActivity extends BaseActivity {
 
 		@Override
 		public void onResponse(JSONObject jsonObject) {
-			Log.d(TAG,
-					"catalogResultListener onResponse -> "
-							+ jsonObject.toString());
+			Log.d(TAG, "catalogResultListener onResponse -> " + jsonObject.toString());
 			String msg = "";
 			if (jsonObject != null) {
 				try {
-					if (!jsonObject.isNull("statuscode")
-							&& 200 == jsonObject.getInt("statuscode")) {
+					if (!jsonObject.isNull("statuscode") && 200 == jsonObject.getInt("statuscode")) {
 						if (!jsonObject.isNull("data")) {
 							JSONObject data = jsonObject.getJSONObject("data");
 							int core_status = data.getInt("core_status");
 							if (core_status == 200) {
 								msg = "" + "文件上传成功！";
-								Toast.makeText(GroupCreateActivity.this, msg,
-										Toast.LENGTH_SHORT).show();
-								JSONArray imagesJson = data
-										.getJSONArray("imageitems");
+								Toast.makeText(GroupCreateActivity.this, msg, Toast.LENGTH_SHORT).show();
+								JSONArray imagesJson = data.getJSONArray("imageitems");
 								JSONObject image = imagesJson.getJSONObject(0);
 								circleImage = image.getString("name");
 								handler.sendEmptyMessage(UPLOAD_SUCESS);
@@ -313,8 +300,7 @@ public class GroupCreateActivity extends BaseActivity {
 					e.printStackTrace();
 				}
 			}
-			Toast.makeText(GroupCreateActivity.this, msg, Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(GroupCreateActivity.this, msg, Toast.LENGTH_SHORT).show();
 			handler.sendEmptyMessage(HttpStatus.STATUS_OK_2);
 		}
 	};
@@ -331,16 +317,18 @@ public class GroupCreateActivity extends BaseActivity {
 	private static final int CAMERA_WITH_DATA = 0x11;// 请求相机功能
 	private static final int CAMERA_PICK_PHOTO = 0x13;// 请求相机功能
 	private static final int PHOTO_PICKED_WITH_DATA = 0x12; // 请求相册
-	private static final String IMAGE_FILE_LOCATION = "file:///sdcard/temp.jpg";
+	private static final String IMAGE_FILE_LOCATION = Environment.getExternalStorageDirectory().getPath() + "/temp.jpg"; //"file:///sdcard/temp.jpg";
 	private Uri imageUri = Uri.parse(IMAGE_FILE_LOCATION);// 调用相册用Uri
 	private Uri cameraImageUri = null; // 调用相机用的Uri
 	private static String imageString = "file:///sdcard/";
-
+	private static final int PHOTO_REQUEST_GALLERY = 2000;// 从相册中选择
+	
+	private static final int PHOTO_REQUEST_CUT = PHOTO_REQUEST_GALLERY + 1;// 结果
+	
 	private void showCameraDialog() {
 
 		// 创建一个对话框
-		Dialog dialog = new AlertDialog.Builder(GroupCreateActivity.this)
-				.setTitle("上传照片")
+		Dialog dialog = new AlertDialog.Builder(GroupCreateActivity.this).setTitle("上传照片")
 				// 创建标题
 				.setMessage("我要上传照片")
 				// 设置对话框中的内容
@@ -348,19 +336,21 @@ public class GroupCreateActivity extends BaseActivity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						cameraImageUri = getUri();
-						Intent intent = new Intent(
-								MediaStore.ACTION_IMAGE_CAPTURE);// action is
-																	// capture
+						Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// action
+																					// is
+																					// capture
 						intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri);
 						startActivityForResult(intent, CAMERA_WITH_DATA);// or
 																			// TAKE_SMALL_PICTURE
 					}
-				})
-				.setNegativeButton("相册", new DialogInterface.OnClickListener() {
+				}).setNegativeButton("相册", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// getPhotoPickIntent();
-						startPickPhotoActivity();
+//						getPhotoPickIntent();
+//						 startPickPhotoActivity();
+						Intent intent = new Intent(Intent.ACTION_PICK, null);
+                        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+                        startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
 					}
 				}).create();
 		// 显示对话框
@@ -384,16 +374,16 @@ public class GroupCreateActivity extends BaseActivity {
 		switch (requestCode) {
 		case CAMERA_WITH_DATA:
 			imgType = 1;
-			Bitmap bitmap = BitmapFactory.decodeFile(cameraImageUri.getPath());
-			camera.setImageBitmap(bitmap);
-			// cropImageUri(cameraImageUri, 290, 290, CAMERA_PICK_PHOTO);
+			// Bitmap bitmap =
+			// BitmapFactory.decodeFile(cameraImageUri.getPath());
+			// camera.setImageBitmap(bitmap);
+			cropImageUri(cameraImageUri, 290, 290, CAMERA_PICK_PHOTO);
 			break;
 		case PHOTO_PICKED_WITH_DATA:
 			imgType = 0;
 			Bitmap bitmap2 = null;
 
-			photoPath = getDataColumn(getApplicationContext(), data.getData(),
-					null, null);
+			photoPath = getDataColumn(getApplicationContext(), data.getData(), null, null);
 			Log.e("lixufeng", "mFileName: " + photoPath);
 			bitmap2 = getBitmap(photoPath);
 			camera.setImageBitmap(bitmap2);
@@ -407,6 +397,9 @@ public class GroupCreateActivity extends BaseActivity {
 			 */
 			break;
 		case CAMERA_PICK_PHOTO:
+
+			Bitmap bitmap = BitmapFactory.decodeFile(cameraImageUri.getPath());
+			camera.setImageBitmap(bitmap);
 			/*
 			 * if (cameraImageUri != null) { Intent intent = new
 			 * Intent(GroupCreateActivity.this,
@@ -415,7 +408,7 @@ public class GroupCreateActivity extends BaseActivity {
 			 * startActivity(intent); }
 			 */
 			break;
-		case SELECT_PIC_KITKAT:
+		case SELECT_PIC_KITKAT:{
 			imgType = 0;
 			Bitmap bitmap3 = null;
 			photoPath = getPath(GroupCreateActivity.this, data.getData());
@@ -423,14 +416,56 @@ public class GroupCreateActivity extends BaseActivity {
 			bitmap3 = getBitmap(photoPath);
 			camera.setImageBitmap(bitmap3);
 			break;
+			}
+		case PHOTO_REQUEST_GALLERY:
+			imgType = 0;
+            if (data != null)
+                startPhotoZoom(data.getData(), 150);
+            break;
+            
+		case PHOTO_REQUEST_CUT:
+			imgType = 0;
+            if (data != null) {
+            	Bitmap bitmap3 = null;
+    			photoPath = getPath(GroupCreateActivity.this, data.getData());
+    			Log.e("lixufeng", "photoPath: " + photoPath);
+    			bitmap3 = getBitmap(photoPath);
+    			camera.setImageBitmap(bitmap3);
+//            	photoPath = getDataColumn(getApplicationContext(), data.getData(), null, null);
+//    			Log.e("lixufeng", "mFileName: " + photoPath);
+//    			
+//    			photoPath = getPath(GroupCreateActivity.this, data.getData());
+//    			Log.e("lixufeng", "photoPath: " + photoPath);
+            }
+//                setPicToView(data);
+            break;
 		}
 	}
 
-/*	// 调用相机拍照截图
+	private void startPhotoZoom(Uri uri, int size) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // crop为true是设置在开启的intent中设置显示的view可以剪裁
+        intent.putExtra("crop", "true");
+
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 2);
+        intent.putExtra("aspectY", 2);
+
+        // outputX,outputY 是剪裁图片的宽高
+        intent.putExtra("outputX", size);
+        intent.putExtra("outputY", size);
+        intent.putExtra("return-data", false);
+        intent.putExtra("scale", true);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
+        startActivityForResult(intent, PHOTO_REQUEST_CUT);
+    }
+	
+	// 调用相机拍照截图
 	private void cropImageUri(Uri uri, int outputX, int outputY, int requestCode) {
 		Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setDataAndType(uri, "image/*");
-		// intent.putExtra("crop", "true");
+		intent.putExtra("crop", "true");
 		intent.putExtra("aspectX", 2);
 		intent.putExtra("aspectY", 2);
 		intent.putExtra("outputX", outputX);
@@ -442,24 +477,35 @@ public class GroupCreateActivity extends BaseActivity {
 		intent.putExtra("noFaceDetection", true); // no face detection
 		System.out.println("相机");
 		startActivityForResult(intent, requestCode);
-	}*/
+	}
 
-/*	// 调用相册截图
+	// 调用相册截图
 	public void getPhotoPickIntent() {
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
 		intent.setType("image/*");
-		// intent.putExtra("crop", "true");
+		intent.putExtra("crop", "true");
 		intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
 		intent.putExtra("outputX", 290);
 		intent.putExtra("outputY", 290);
 		intent.putExtra("scale", true);
 		intent.putExtra("return-data", false);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+		
+		File file = new File(IMAGE_FILE_LOCATION);
+		if(!file.exists()){
+			try {
+				file.createNewFile();
+				imageUri = Uri.fromFile(file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+//		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
 		intent.putExtra("noFaceDetection", true);
 		startActivityForResult(intent, PHOTO_PICKED_WITH_DATA);
-	}*/
+	}
 
 	public static final int SELECT_PIC_KITKAT = 1;
 	public static final int SELECT_PIC = 1;
@@ -468,6 +514,27 @@ public class GroupCreateActivity extends BaseActivity {
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);// ACTION_OPEN_DOCUMENT
 		intent.addCategory(Intent.CATEGORY_OPENABLE);
 		intent.setType("image/*");
+		
+		intent.putExtra("crop", "true");
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
+		intent.putExtra("outputX", 290);
+		intent.putExtra("outputY", 290);
+		intent.putExtra("scale", true);
+		intent.putExtra("return-data", false);
+		File file = new File(IMAGE_FILE_LOCATION);
+		if(!file.exists()){
+			try {
+				file.createNewFile();
+				imageUri = Uri.fromFile(file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+		intent.putExtra("noFaceDetection", true);
+		
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
 			startActivityForResult(intent, SELECT_PIC_KITKAT);
 		} else {
@@ -481,9 +548,8 @@ public class GroupCreateActivity extends BaseActivity {
 			Options options = new Options();
 			options.inJustDecodeBounds = true;
 			BitmapFactory.decodeFile(fileName, options);
-			options.inSampleSize = Math.max(1, (int) Math.ceil(Math.max(
-					(double) options.outWidth / 1024f,
-					(double) options.outHeight / 1024f)));
+			options.inSampleSize = Math.max(1,
+					(int) Math.ceil(Math.max((double) options.outWidth / 1024f, (double) options.outHeight / 1024f)));
 			options.inJustDecodeBounds = false;
 			bitmap = BitmapFactory.decodeFile(fileName, options);
 		} catch (OutOfMemoryError error) {
@@ -506,8 +572,7 @@ public class GroupCreateActivity extends BaseActivity {
 				final String type = split[0];
 
 				if ("primary".equalsIgnoreCase(type)) {
-					return Environment.getExternalStorageDirectory() + "/"
-							+ split[1];
+					return Environment.getExternalStorageDirectory() + "/" + split[1];
 				}
 
 				// TODO handle non-primary volumes
@@ -516,8 +581,7 @@ public class GroupCreateActivity extends BaseActivity {
 			else if (isDownloadsDocument(uri)) {
 
 				final String id = DocumentsContract.getDocumentId(uri);
-				final Uri contentUri = ContentUris.withAppendedId(
-						Uri.parse("content://downloads/public_downloads"),
+				final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),
 						Long.valueOf(id));
 
 				return getDataColumn(context, contentUri, null, null);
@@ -540,8 +604,7 @@ public class GroupCreateActivity extends BaseActivity {
 				final String selection = "_id=?";
 				final String[] selectionArgs = new String[] { split[1] };
 
-				return getDataColumn(context, contentUri, selection,
-						selectionArgs);
+				return getDataColumn(context, contentUri, selection, selectionArgs);
 			}
 		}
 		// MediaStore (and general)
@@ -575,16 +638,14 @@ public class GroupCreateActivity extends BaseActivity {
 	 *            (Optional) Selection arguments used in the query.
 	 * @return The value of the _data column, which is typically a file path.
 	 */
-	public static String getDataColumn(Context context, Uri uri,
-			String selection, String[] selectionArgs) {
+	public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
 
 		Cursor cursor = null;
 		final String column = "_data";
 		final String[] projection = { column };
 
 		try {
-			cursor = context.getContentResolver().query(uri, projection,
-					selection, selectionArgs, null);
+			cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
 			if (cursor != null && cursor.moveToFirst()) {
 				final int index = cursor.getColumnIndexOrThrow(column);
 				return cursor.getString(index);
@@ -602,8 +663,7 @@ public class GroupCreateActivity extends BaseActivity {
 	 * @return Whether the Uri authority is ExternalStorageProvider.
 	 */
 	public static boolean isExternalStorageDocument(Uri uri) {
-		return "com.android.externalstorage.documents".equals(uri
-				.getAuthority());
+		return "com.android.externalstorage.documents".equals(uri.getAuthority());
 	}
 
 	/**
@@ -612,8 +672,7 @@ public class GroupCreateActivity extends BaseActivity {
 	 * @return Whether the Uri authority is DownloadsProvider.
 	 */
 	public static boolean isDownloadsDocument(Uri uri) {
-		return "com.android.providers.downloads.documents".equals(uri
-				.getAuthority());
+		return "com.android.providers.downloads.documents".equals(uri.getAuthority());
 	}
 
 	/**
@@ -622,8 +681,7 @@ public class GroupCreateActivity extends BaseActivity {
 	 * @return Whether the Uri authority is MediaProvider.
 	 */
 	public static boolean isMediaDocument(Uri uri) {
-		return "com.android.providers.media.documents".equals(uri
-				.getAuthority());
+		return "com.android.providers.media.documents".equals(uri.getAuthority());
 	}
 
 	/**
@@ -632,8 +690,7 @@ public class GroupCreateActivity extends BaseActivity {
 	 * @return Whether the Uri authority is Google Photos.
 	 */
 	public static boolean isGooglePhotosUri(Uri uri) {
-		return "com.google.android.apps.photos.content".equals(uri
-				.getAuthority());
+		return "com.google.android.apps.photos.content".equals(uri.getAuthority());
 	}
 
 	public static String selectImage(Context context, Intent data) {
@@ -643,14 +700,12 @@ public class GroupCreateActivity extends BaseActivity {
 			String uriStr = selectedImage.toString();
 			String path = uriStr.substring(10, uriStr.length());
 			if (path.startsWith("com.android.gallery3d")) {
-				Log.e(TAG,
-						"It's auto backup pic path:" + selectedImage.toString());
+				Log.e(TAG, "It's auto backup pic path:" + selectedImage.toString());
 				return null;
 			}
 		}
 		String[] filePathColumn = { MediaStore.Images.Media.DATA };
-		Cursor cursor = context.getContentResolver().query(selectedImage,
-				filePathColumn, null, null, null);
+		Cursor cursor = context.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
 		cursor.moveToFirst();
 		int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 		String picturePath = cursor.getString(columnIndex);

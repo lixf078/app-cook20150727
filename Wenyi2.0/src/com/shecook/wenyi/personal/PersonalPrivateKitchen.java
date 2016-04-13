@@ -458,6 +458,7 @@ public class PersonalPrivateKitchen extends BaseActivity implements
 	public void loadHotword(TextView button, int position) {
 		Intent intent = new Intent(PersonalPrivateKitchen.this,
 				PersonalKitchenCookbookList.class);
+		Log.e(TAG, "loadHotword " + hotwordList.get((int)position).getId());
 		intent.putExtra("keyword", hotwordList.get((int)position).getId());
 		intent.putExtra("flag", "hotword");
 		startActivity(intent);

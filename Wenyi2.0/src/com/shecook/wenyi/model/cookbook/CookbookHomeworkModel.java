@@ -39,6 +39,11 @@ public class CookbookHomeworkModel {
 	private LinkedList<WenyiGallery> images;
 	private boolean isComment;
 
+	public String imgUrl; // 添加 多余字段， 临时改需求，导致现有数据结构无法满足
+	public int type = -1;
+	public int width;
+	public int height;
+	
 	public CookbookHomeworkModel() {
 		super();
 	}
